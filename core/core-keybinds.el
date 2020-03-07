@@ -1,7 +1,5 @@
 ;;; core/core-keybinds.el -*- lexical-binding: t; -*-
 
-
-
 ;; A centralized keybinds system, integrated with `which-key' to preview
 ;; available keybindings. All built into one powerful macro: `map!'. If evil is
 ;; never loaded, then evil bindings set with `map!' are ignored (i.e. omitted
@@ -24,14 +22,12 @@ and Emacs states, and for non-evil users.")
 (defvar poly-leader-map (make-sparse-keymap)
   "An overriding keymap for <leader> keys.")
 
-
 ;;
 ;;; Keybind settings
 
 (when IS-MAC
   (setq mac-command-modifier 'super
         mac-option-modifier 'meta))
-
 ;;
 ;;; Universal, non-nuclear escape
 
@@ -69,7 +65,6 @@ all hooks after it are ignored.")
         ((keyboard-quit))))
 
 (global-set-key [remap keyboard-quit] #'poly/escape)
-
 
 ;;
 ;;; General + leader/localleader keys
@@ -135,7 +130,6 @@ interface.
 
 See `poly-localleader-key' and `poly-localleader-alt-key' to change the
 localleader prefix."
-  (if (featurep 'evil)
       ;; :non-normal-prefix doesn't apply to non-evil sessions (only evil's
       ;; emacs state)
       `(general-define-key
@@ -143,11 +137,7 @@ localleader prefix."
         :major-modes t
         :prefix poly-localleader-key
         :non-normal-prefix poly-localleader-alt-key
-        ,@args)
-    `(general-define-key
-      :major-modes t
-      :prefix poly-localleader-alt-key
-      ,@args)))
+        ,@args))
 
 ;; We use a prefix commands instead of general's :prefix/:non-normal-prefix
 ;; properties because general is incredibly slow binding keys en mass with them
@@ -161,25 +151,15 @@ localleader prefix."
   (defun poly-init-leader-keys-h ()
     "Bind `poly-leader-key' and `poly-leader-alt-key'."
     (let ((map general-override-mode-map))
-      (if (not (featurep 'evil))
-          (progn
-            (cond ((equal poly-leader-alt-key "C-c")
-                   (set-keymap-parent poly-leader-map mode-specific-map))
-                  ((equal poly-leader-alt-key "C-x")
-                   (set-keymap-parent poly-leader-map ctl-x-map)))
-            (define-key map (kbd poly-leader-alt-key) 'poly/leader))
         (evil-define-key* '(normal visual motion) map (kbd poly-leader-key) 'poly/leader)
-        (evil-define-key* '(emacs insert) map (kbd poly-leader-alt-key) 'poly/leader))
+        (evil-define-key* '(emacs insert) map (kbd poly-leader-alt-key) 'poly/leader)
       (general-override-mode +1))))
-
 
 ;;
 ;;; Packages
-
 (use-package which-key
   :straight t
   :defer 1
-  :after pre-command-hook
   :init
   (setq which-key-sort-order #'which-key-prefix-then-key-order
         which-key-sort-uppercase-first nil
@@ -198,10 +178,13 @@ localleader prefix."
 
   (which-key-mode +1))
 
+(use-package hydra
+  :straight t
+  :init
+  (setq hydra-if-helpful t))
 
 ;;
 ;;; `map!' macro
-
 (defvar poly-evil-state-alist
   '((?n . normal)
     (?v . visual)
@@ -243,6 +226,8 @@ For example, :nvi will map to (list 'normal 'visual 'insert). See
 (after! evil (setq poly--map-evil-p t))
 
 (defun poly--map-process (rest)
+  ; (message "poly--map-process invoked")
+
   (let ((poly--map-fn poly--map-fn)
         poly--map-state
         poly--map-forms
@@ -251,7 +236,6 @@ For example, :nvi will map to (list 'normal 'visual 'insert). See
       (let ((key (pop rest)))
         (cond ((listp key)
                (poly--map-nested nil key))
-
               ((keywordp key)
                (pcase key
                  (:leader

@@ -47,55 +47,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-; (use-package general
-;     :straight t)
-
-;; used to provide spacemacs like transient states
-(use-package hydra
-  :straight t
-  :init
-  (setq hydra-if-helpful t))
-
-; (use-package which-key
-;   :straight t
-;   :defer .1
-;   :custom
-;   (which-key-separator " ")
-;   (which-key-prefix-prefix "+")
-;   :config (which-key-mode))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; replaces isearch
-(use-package swiper
-  :straight t
-  :commands swiper
-  :after ivy)
-
-;; provide completion functions that use ivy
-(use-package counsel
-  :straight t
-  :after ivy
-  :demand t
-  :delight
-  :config
-  (counsel-mode t))
-
-;; use projectile to interact with projects
-(use-package projectile
-  :straight t
-  :commands projectile-global-mode
-  :delight
-  :config
-  (setq projectile-cache-file (expand-file-name "projectile.cache" poly-cache-dir)
-        projectile-known-projects-file (concat poly-cache-dir "projectile-bookmarks.eld")
-        projectile-completion-system 'ivy)
-  (projectile-global-mode))
-
-(use-package counsel-projectile
-  :straight t
-  :commands counsel-projectile-mode
-  :after (counsel projectile)
-  :config
-  (counsel-projectile-mode))
 
 (provide 'core-packages)

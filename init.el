@@ -31,15 +31,17 @@
 (require 'init-recentf)
 (require 'init-evil)
 
-;;; programming
-(require 'init-vc)
-(require 'init-lsp)
-
 ;;; tools
 (require 'init-wakatime)
 (require 'init-keyfreq)
 (require 'init-format)
 (require 'init-rime)
 (require 'init-keybinds)
+
+;;; programming
+(require 'init-projectile)
+(require 'init-vc)
+(require 'init-lsp)
+(require 'init-go)
 
 ;;; init.el ends here
