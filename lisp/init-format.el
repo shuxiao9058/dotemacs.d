@@ -62,3 +62,4 @@
 ;; (advice-add #'format-all-buffer :override #'+format/buffer)
 
 (provide 'init-format)
+;;; init-format.el ends here

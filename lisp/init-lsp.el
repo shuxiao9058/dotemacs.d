@@ -1,6 +1,5 @@
 ;;; lisp/init-lsp.el -*- lexical-binding: t; -*-
 
-;; lsp-mode configuration
 (use-package lsp-mode
   :straight t
   :commands (lsp lsp-deferred)
@@ -49,3 +48,5 @@
   (company-quickhelp-mode))
 
 (provide 'init-lsp)
+
+;;; init-lsp ends here

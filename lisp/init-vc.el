@@ -64,3 +64,5 @@
 
 
 (provide 'init-vc)
+
+;;; init-vc.el ends here

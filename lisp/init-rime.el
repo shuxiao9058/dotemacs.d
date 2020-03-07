@@ -50,3 +50,5 @@
   )
 
 (provide 'init-rime)
+
+;;; init-rime.el ends here

@@ -65,3 +65,4 @@
   )
 
 (provide 'init-keyfreq)
+;;; init-keyfreq.el ends here

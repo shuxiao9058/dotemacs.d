@@ -13,3 +13,5 @@
   )
 
 (provide 'init-wakatime)
+
+;;; init-wakatime.el ends here
