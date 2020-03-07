@@ -15,10 +15,13 @@
   :defer 1
   :init
   (setq liberime-user-data-dir (expand-file-name "rime" poly-local-dir))
-
   (add-hook 'liberime-after-start-hook
             (lambda ()
               (liberime-select-schema "guhuwubi")))
+  :config
+  ;; build liberime-core.so
+  (unless (file-exists-p (liberime-get-module-file))
+    (liberime-build))
   )
 
 (use-package rime

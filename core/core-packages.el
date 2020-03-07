@@ -47,8 +47,8 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package general
-    :straight t)
+; (use-package general
+;     :straight t)
 
 ;; used to provide spacemacs like transient states
 (use-package hydra
@@ -56,13 +56,13 @@
   :init
   (setq hydra-if-helpful t))
 
-(use-package which-key
-  :straight t
-  :defer .1
-  :custom
-  (which-key-separator " ")
-  (which-key-prefix-prefix "+")
-  :config (which-key-mode))
+; (use-package which-key
+;   :straight t
+;   :defer .1
+;   :custom
+;   (which-key-separator " ")
+;   (which-key-prefix-prefix "+")
+;   :config (which-key-mode))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; replaces isearch
@@ -70,17 +70,6 @@
   :straight t
   :commands swiper
   :after ivy)
-
-;; generic completion front-end
-(use-package ivy
-  :straight t
-  :delight
-  :config
-  (setq ivy-use-virtual-buffers t
-        ivy-wrap t
-        ivy-display-style 'fancy
-        ivy-count-format "(%d/%d ")
-  (ivy-mode t))
 
 ;; provide completion functions that use ivy
 (use-package counsel

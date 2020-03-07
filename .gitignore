@@ -1,0 +1,16 @@
+.DS_Store
+.idea
+*~
+*.dat
+*.eld
+*.log
+*.elc
+tmp*
+recentf
+# dir 
+elpa/
+eshell/
+transient/
+auto-save-list/
+history/
+.local/
