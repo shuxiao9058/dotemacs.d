@@ -3,7 +3,8 @@
 
 (use-package magit
   :straight t
-  :commands (magit-status magit-checkout)
+  :commands (magit-file-delete magit-status magit-checkout)
+  ;; :defer-incrementally (dash f s with-editor git-commit package eieio lv transient)
   ;; :bind (("C-x g" . magit-status)
   ;;        ("C-c g b" . magit-checkout)
   ;;        ("C-c g B" . magit-blame))
@@ -22,14 +23,23 @@
 	magit-use-overlays nil
 	magit-auto-revert-mode t
 	git-commit-finish-query-functions nil)
-  ;; Use flyspell in the commit buffer
-  (add-hook 'git-commit-setup-hook 'git-commit-turn-on-flyspell)
+  ;; ;; Use flyspell in the commit buffer
+  ;; (add-hook 'git-commit-setup-hook 'git-commit-turn-on-flyspell)
+  (add-hook 'magit-popup-mode-hook #'hide-mode-line-mode)
+
+ ;;   ;; Add --tags switch
+ ;;  (transient-append-suffix 'magit-fetch "-p"
+ ;;   '("-t" "Fetch all tags" ("-t" "--tags")))
+ ;;  (transient-append-suffix 'magit-pull "-r"
+ ;;   '("-a" "Autostash" "--autostash"))
   )
 
 (use-package magit-gitflow
   :straight t
-  :hook (magit-mode . turn-on-magit-gitflow))
-
+  :after magit
+  :commands magit-gitflow-popup
+  :hook (magit-mode . turn-on-magit-gitflow)
+  )
 ;; git-gutter-plus - View, stage and revert Git changes from the buffer (inspired by package of same name from vim)
 (use-package git-gutter+
   :straight t
@@ -81,9 +91,9 @@
     "0") ; moved to g=
   (evil-define-key* 'normal magit-status-mode-map [escape] nil) ; q is enough
   (evil-define-key* '(normal visual) magit-mode-map
-		    "%"  #'magit-gitflow-popup
-		    "zz" #'evil-scroll-line-to-center
-		    "g=" #'magit-diff-default-context)
+		    ;; "%"  'magit-gitflow-popup
+		    "zz" 'evil-scroll-line-to-center
+		    "g=" 'magit-diff-default-context)
 
   (general-def 'normal
     (magit-status-mode-map
@@ -113,8 +123,11 @@
     (mapc #'kill-buffer buffers)))
 
 (eval-after-load 'magit
-  ;; Temporary workaround for +magit/quit hang with lots of buffers
-  `(define-key magit-status-mode-map [remap magit-mode-bury-buffer] #'magit-kill-buffers)
+  `(progn
+     ;; Temporary workaround for +magit/quit hang with lots of buffers
+     (define-key magit-status-mode-map [remap magit-mode-bury-buffer] #'magit-kill-buffers)
+     (define-key magit-mode-map "%" 'magit-gitflow-popup)
+     )
   )
 
 ;; Close transient with ESC

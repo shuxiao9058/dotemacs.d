@@ -52,13 +52,14 @@
   :commands evil-exchange
   :straight t)
 
-(use-package evil-matchit
-  :straight t
-  :config (global-evil-matchit-mode 1)
-  :init
-  ;; (map! [remap evil-jump-item] #'evilmi-jump-items
-  ;;       :textobj "%" #'evilmi-text-object #'evilmi-text-object)
-  )
+;;; TODO 
+;; (use-package evil-matchit
+;;   :straight t
+;;   :config (global-evil-matchit-mode 1)
+;;   :init
+;;   ;; (map! [remap evil-jump-item] #'evilmi-jump-items
+;;   ;;       :textobj "%" #'evilmi-text-object #'evilmi-text-object)
+;;   )
 
 (use-package evil-snipe
   :commands (evil-snipe-mode evil-snipe-override-mode

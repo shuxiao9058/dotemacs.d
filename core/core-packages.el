@@ -28,4 +28,9 @@
   :init
   (setq hydra-if-helpful t))
 
+;;; magit
+(use-package hide-mode-line
+    :straight t
+    :commands (hide-mode-line-mode))
+
 (provide 'core-packages)
