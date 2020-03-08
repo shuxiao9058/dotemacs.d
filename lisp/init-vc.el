@@ -8,7 +8,7 @@
   ;;        ("C-c g b" . magit-checkout)
   ;;        ("C-c g B" . magit-blame))
   :init
-   ;; Must be set early to prevent ~/.emacs.d/transient from being created
+  ;; Must be set early to prevent ~/.emacs.d/transient from being created
   (setq transient-levels-file  (concat poly-etc-dir "transient/levels")
         transient-values-file  (concat poly-etc-dir "transient/values")
         transient-history-file (concat poly-etc-dir "transient/history"))
@@ -17,14 +17,14 @@
         magit-push-always-verify nil
         git-commit-summary-max-length 70
         ;; use colored graph lines. Could be a performance issue.
-   magit-log-arguments (quote ("-n256" "--graph" "--decorate" "--color" "--stat"))
-   magit-diff-use-overlays nil
-   magit-use-overlays nil
-   magit-auto-revert-mode t
-   git-commit-finish-query-functions nil)
+	magit-log-arguments (quote ("-n256" "--graph" "--decorate" "--color" "--stat"))
+	magit-diff-use-overlays nil
+	magit-use-overlays nil
+	magit-auto-revert-mode t
+	git-commit-finish-query-functions nil)
   ;; Use flyspell in the commit buffer
-  (add-hook 'git-commit-setup-hook 'git-commit-turn-on-flyspell))
-
+  (add-hook 'git-commit-setup-hook 'git-commit-turn-on-flyspell)
+  )
 
 (use-package magit-gitflow
   :straight t
@@ -37,22 +37,22 @@
   :demand t
   :bind (("C-c g n" . git-gutter+-next-hunk)
          ("C-c g p" . git-gutter+-previous-hunk))
-:config
-(progn
-  (global-git-gutter+-mode)
-  (use-package git-gutter-fringe+ :straight t)))
+  :config
+  (progn
+    (global-git-gutter+-mode)
+    (use-package git-gutter-fringe+ :straight t)))
 
 ;; git-messenger - Provides a function popup commit message at current line (port of package of same name from vim)
 (use-package git-messenger
-:straight t
-:bind ("C-c g p" . git-messenger:popup-message)
-:init
-(custom-set-variables
- '(git-messenger:use-magit-popup t))
-(setq git-messenger:show-detail t)
-:config
-(progn
-  (define-key git-messenger-map (kbd "RET") 'git-messenger:popup-close)))
+  :straight t
+  :bind ("C-c g p" . git-messenger:popup-message)
+  :init
+  (custom-set-variables
+   '(git-messenger:use-magit-popup t))
+  (setq git-messenger:show-detail t)
+  :config
+  (progn
+    (define-key git-messenger-map (kbd "RET") 'git-messenger:popup-close)))
 
 ;; git-timemachine - Step through historic versions of a git controlled file
 (use-package git-timemachine
@@ -66,8 +66,6 @@
 (use-package browse-at-remote
   :straight t
   :bind ("C-c g b" . browse-at-remote/browse))
-
-
 
 (use-package evil-magit
   :straight t
@@ -85,9 +83,9 @@
     "0") ; moved to g=
   (evil-define-key* 'normal magit-status-mode-map [escape] nil) ; q is enough
   (evil-define-key* '(normal visual) magit-mode-map
-    "%"  #'magit-gitflow-popup
-    "zz" #'evil-scroll-line-to-center
-    "g=" #'magit-diff-default-context)
+		    "%"  #'magit-gitflow-popup
+		    "zz" #'evil-scroll-line-to-center
+		    "g=" #'magit-diff-default-context)
 
   (general-def 'normal
     (magit-status-mode-map
@@ -97,26 +95,32 @@
     [tab] #'magit-section-toggle)
 
   (eval-after-load 'git-rebase
-     `(progn
-         (dolist (key '(("M-k" . "gk") ("M-j" . "gj")))
-      (when-let (desc (assoc (car key) evil-magit-rebase-commands-w-descriptions))
-        (setcar desc (cdr key))))
-    (evil-define-key* evil-magit-state git-rebase-mode-map
-      "gj" #'git-rebase-move-line-down
-      "gk" #'git-rebase-move-line-up)
-      )
+    `(progn
+       (dolist (key '(("M-k" . "gk") ("M-j" . "gj")))
+	 (when-let (desc (assoc (car key) evil-magit-rebase-commands-w-descriptions))
+           (setcar desc (cdr key))))
+       (evil-define-key* evil-magit-state git-rebase-mode-map
+			 "gj" #'git-rebase-move-line-down
+			 "gk" #'git-rebase-move-line-up)
+       )
     )
   )
 
- ; ;; Clean up after magit by killing leftover magit buffers and reverting
- ;  ;; affected buffers (or at least marking them as need-to-be-reverted).
- ;  (define-key magit-status-mode-map [remap magit-mode-bury-buffer] #'+magit/quit)
+;; based on http://manuel-uberti.github.io/emacs/2018/02/17/magit-bury-buffer/
+(defun magit-kill-buffers ()
+  "Restore window configuration and kill all Magit buffers."
+  (interactive)
+  (let ((buffers (magit-mode-get-buffers)))
+    (magit-restore-window-configuration)
+    (mapc #'kill-buffer buffers)))
 
- ;  ;; Close transient with ESC
- ;  (define-key transient-map [escape] #'transient-quit-one)
+(eval-after-load 'magit
+  ;; Temporary workaround for +magit/quit hang with lots of buffers
+  `(define-key magit-status-mode-map [remap magit-mode-bury-buffer] nil)
+  )
 
-
+;; Close transient with ESC
+(define-key transient-map [escape] #'transient-quit-one)
 
 (provide 'init-vc)
-
 ;;; init-vc.el ends here
