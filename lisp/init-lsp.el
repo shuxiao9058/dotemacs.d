@@ -46,10 +46,19 @@
   (lsp-ui-doc-background ((t (:background nil))))
   (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
   :hook ((lsp-mode-hook . lisp-ui-mode))
-  :bind (:map lsp-ui-mode-map
-              ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
-              ([remap xref-find-references] . lsp-ui-peek-find-references)
-              ("C-c u" . lsp-ui-imenu))
+  ; :bind (:map lsp-ui-mode-map
+  ;             ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+  ;             ([remap xref-find-references] . lsp-ui-peek-find-references)
+  ;             ("C-c u" . lsp-ui-imenu))
+  :general
+  (nmap
+    :keymaps 'lsp-ui-mode-map
+    [remap evil-goto-definition] #'lsp-ui-peek-find-definitions
+    "gD" #'lsp-ui-peek-find-references)
+(general-def
+    :keymaps 'lsp-ui-peek-mode-map
+    "C-j" 'lsp-ui-peek--select-next
+    "C-k" 'lsp-ui-peek--select-prev)
   :custom
   (lsp-ui-doc-enable nil)
   (lsp-ui-doc-header nil)
@@ -89,13 +98,15 @@
   :straight t
   :commands company-mode
   :hook (((prog-mode latex-mode) . company-mode)
-	 (after-init . global-company-mode))
-  :general
-  (:states '(insert normal) "<backtab>" 'company-complete)
-  :bind
-  (:map company-active-map
-        ([tab] . smarter-yas-expand-next-field-complete)
-        ("TAB" . smarter-yas-expand-next-field-complete))
+	        (after-init . global-company-mode))
+  :bind (:map company-active-map
+              ([return] . nil)
+              ("RET" . nil)
+              ("TAB" . company-select-next)
+              ([tab] . company-select-next)
+              ("S-TAB" . company-select-previous)
+              ([backtab] . company-select-previous)
+              ("C-j" . company-complete-selection))
   :custom
   (company-minimum-prefix-length 1)
   (company-tooltip-align-annotations t)

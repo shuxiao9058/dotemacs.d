@@ -15,8 +15,8 @@
 (require 'core-variables)
 
 ;; *** watcher
-(add-to-list 'load-path 
-  (expand-file-name "watcher" (file-name-directory load-file-name)))
+(add-to-list 'load-path
+	     (expand-file-name "watcher" (file-name-directory load-file-name)))
 (require 'watcher)
 
 ;; Load the bare necessities
@@ -27,12 +27,12 @@
 
 (defun poly-initialize-core ()
   "Load Poly's core files for an interactive session."
-  (if  poly-initialize-core-p 
-    nil
-      (require 'core-straight)
-      (require 'core-packages)
-      (setq poly-initialize-core-p t)
-      )
+  (if  poly-initialize-core-p
+      nil
+    (require 'core-straight)
+    (require 'core-packages)
+    (setq poly-initialize-core-p t)
+    )
   )
 
 (poly-initialize-core)

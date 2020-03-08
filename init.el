@@ -24,9 +24,6 @@
 ;; lisp
 (add-to-list 'load-path (concat user-emacs-directory "lisp"))
 
-;;; keybinds
-(require 'init-keybinds)
-
 ;;; core
 (require 'init-env)
 (require 'init-ivy)
@@ -47,5 +44,7 @@
 (require 'init-lsp)
 (require 'init-go)
 
+;;; keybinds
+(require 'init-keybinds)
 
 ;;; init.el ends here

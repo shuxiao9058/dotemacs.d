@@ -30,10 +30,6 @@
 
 ;;
 ;;; General + leader/localleader keys
-(use-package general
-  :straight t
-  :after evil
-  :config
   ;; Removing emacs state from non-normal list allow the use of SPC
  ;; (delete 'emacs general-non-normal-states)
 
@@ -51,6 +47,7 @@
 
       ;;<leader> j --- Buffer
   "b" '(:ignore t :wk "buffers")
+  "bb" '(ivy-switch-buffer :wk "Switch Buffer")
   "bo" '(other-buffer :wk "Other Buffer")
   "bk" '(kill-buffer :wk "Kill Buffer")
   "bs" '(save-buffer :wk "Save Buffer")
@@ -68,10 +65,20 @@
 
      ;;<leader> f --- file
      "f" '(:ignore t :which-key "Files")
-     "fr" '(recentf-open-files :wk "Recent files")
+     "ff" '(counsel-find-file :wk "Find file")
+     "fr" '(counsel-recentf :wk "Recent files")
+     "fL" '(counsel-locate :wk "File Locate")
      "fR" '(projectile-recentf :wk "Recent project files")
      "fs" '(save-buffer :wk "Save buffer")
      "fS" '(save-some-buffer :wk "Save some buffers")
+
+     ;;; <leader> p --- project
+     "p" '(:ignore t :which-key "project")
+     "pp" '(counsel-projectile-switch-project :wk "Switch Project")
+     "pf" '(counsel-projectile-find-file :wk "Find file in project")
+     "pb" '(counsel-projectile-switch-to-buffer :wk "Switch buffer in project")
+     "p*" '((lambda () (interactive) (counsel-git-grep (current-word))) :wk "Git grep current word")
+     "p/" '(counsel-git-grep :wk "Git grep")
 
      ;;<leader> s --- search
      "s" '(:wk "Search")
@@ -92,33 +99,44 @@
      "qq" '(save-buffers-kill-terminal :wk "Quit Emacs")
 
      ;;<leader> g --- versioning
-     "g" '(:wk "Git/Versioning")
-     "gR" '(vc-revert :wk "Git revert file")
-     "g;" '(with-editor-finish :wk "With Editor Finish")
-     "gl" '(with-editor-cancel :wk "With Editor Cancel")
+     "g" '(:ignore t :wk "Git")
      "g/" '(magit-dispatch :wk "Magit dispatch")
+     "g'" '(forge-dispatch :wk "Forge dispatch")
+     "gb" '(magit-branch-checkout :wk "Magit switch branch")
      "gg" '(magit-status :wk "Magit status")
-     "gx" '(magit-file-delete :wk "Magit file delete")
+     "gR" '(vc-revert :wk "Git revert file")
+     "gD" '(magit-file-delete :wk "Magit file delete")
      "gB" '(magit-blame-addition :wk "Magit blame")
      "gC" '(magit-clone :wk "Magit clone")
      "gF" '(magit-fetch :wk "Magit fetch")
      "gL" '(magit-log :wk "Magit buffer log")
      "gS" '(magit-stage-file :wk "Git stage file")
      "gU" '(magit-unstage-file :wk "Git unstage file")
-     "gf" '(:wk "Find")
-     "gvff" '(magit-find-file :wk "Find file")
-     "gvfg" '(magit-find-git-config-file :wk "Find gitconfig file")
-     "gvfc" '(magit-show-commit :wk "Find commit")
-     "gl" '(:wk "List")
-     "gvlr" '(magit-list-repositories :wk "List repositories")
-     "gvls" '(magit-list-submodules :wk "List submodules")
-     "gc" '(:wk "Create")
+
+      ;;; <leader> gf --- git find
+     "gf" '(:ignore t :wk "Find")
+     "gff" '(magit-find-file :wk "Find file")
+     "gfg" '(magit-find-git-config-file :wk "Find gitconfig file")
+     "gfc" '(magit-show-commit :wk "Find commit")
+     
+     ;;; <leader> gl --- git list
+     "gl" '(:ignore t :wk "List")
+     "glr" '(magit-list-repositories :wk "List repositories")
+     "gls" '(magit-list-submodules :wk "List submodules")
+
+     ;;; <leader> gc --- git create
+     "gc" '(:ignore t :wk "Create")
      "gcr" '(magit-init :wk "Initialize repo")
      "gcR" '(magit-clone :wk "Clone repo")
      "gcc" '(magit-commit-create :wk "Commit")
      "gcf" '(magit-commit-fixup :wk "Fixup")
+     "gcb" '(magit-branch-and-checkout :wk "Branch")
+     "gci" '(forge-create-issue :wk "Issue")
+     "gcp" '(forge-create-pullreq :wk "Pull request")
 
-
+      ;;; <leader> i --- insert
+     "i" '(:ignore t :wk "Insert")
+     "iy" '(counsel-yank-pop :wk "From clipboard")
 
   ;;<leader> n --- open
   "o" '(:wk "Open/Toggle")
@@ -154,31 +172,40 @@
     ;;<leader> @ --- LSP-mode Keymap
     "y" '(:keymap lsp-command-map :package lsp-mode :wk "LSP")
      )
+
+
+;;; minibuffer keymap
+(defvar +default-minibuffer-maps
+  '(minibuffer-local-map
+    minibuffer-local-ns-map
+    minibuffer-local-completion-map
+    minibuffer-local-must-match-map
+    minibuffer-local-isearch-map
+    read-expression-map
+    ivy-minibuffer-map
+    ivy-switch-buffer-map)
+  "A list of all the keymaps used for the minibuffer.")
+
+(general-define-key :keymaps +default-minibuffer-maps
+  [escape] #'abort-recursive-edit
+  "C-a"    #'move-beginning-of-line
+  "C-b"    #'backward-word
+  "C-r"    #'evil-paste-from-register
+  "C-u"    #'evil-delete-back-to-indentation
+  "C-v"    #'yank
+  "C-w"    #'evil-delete-backward-word
+  "C-z"    (lambda (ignore-errors (call-interactively #'undo)))
+  ;; Scrolling lines
+  "C-j"    #'next-line
+  "C-k"    #'previous-line
+  "C-S-j"  #'scroll-up-command
+  "C-S-k"  #'scroll-down-command)
+
+  ;; (general-define-key :keymaps :keymaps '(read-expression-map)
+  ;;   "C-j" #'next-line-or-history-element
+  ;;   "C-k" #'previous-line-or-history-element)
+
 (evil-normalize-keymaps)
-    )
-
-;;
-;;; Packages
-(use-package which-key
-  :straight t
-  :defer 1
-  :init
-  (setq which-key-sort-order #'which-key-prefix-then-key-order
-        which-key-sort-uppercase-first nil
-        which-key-add-column-padding 1
-        which-key-max-display-columns nil
-        which-key-min-display-lines 6
-        which-key-side-window-slot -10)
-  :config
-  ;; general improvements to which-key readability
-  (set-face-attribute 'which-key-local-map-description-face nil :weight 'bold)
-  (which-key-setup-side-window-bottom)
-  (which-key-mode +1))
-
-(use-package hydra
-  :straight t
-  :init
-  (setq hydra-if-helpful t))
 
 (provide 'init-keybinds)
 ;;; init-keybinds.el ends here

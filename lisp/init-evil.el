@@ -95,7 +95,10 @@
 
 (use-package evil-magit
   :after (evil magit)
-  :straight t)
+  :straight t
+  :hook (prog-mode . evil-matchit-mode)
+  :config
+  (global-evil-matchit-mode 1))
 
 (use-package evil-commentary
   :commands (evil-commentary evil-commentary-yank evil-commentary-line)
@@ -103,8 +106,10 @@
   :after evil
   :config
   (evil-commentary-mode 1)
-  :bind (:map evil-normal-state-map
-              ("gc" . evil-commentary))
+  :general
+  ('normal override-global-map
+     "gc" 'evil-commentary
+     "gC" 'evil-commentary-line)
   )
 
 (use-package evil-search-highlight-persist
