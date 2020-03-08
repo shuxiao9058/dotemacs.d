@@ -69,13 +69,11 @@
 
 (use-package evil-magit
   :straight t
-  :after (evil magit)
-  ;; :hook (prog-mode . evil-matchit-mode)
+  :after magit
   :init
   (setq evil-magit-state 'normal
         evil-magit-use-z-for-folds t)
   :config
-  ;; (global-evil-matchit-mode 1)
   (general-unbind magit-mode-map
     ;; Replaced by z1, z2, z3, etc
     "M-1" "M-2" "M-3" "M-4"
@@ -116,7 +114,7 @@
 
 (eval-after-load 'magit
   ;; Temporary workaround for +magit/quit hang with lots of buffers
-  `(define-key magit-status-mode-map [remap magit-mode-bury-buffer] nil)
+  `(define-key magit-status-mode-map [remap magit-mode-bury-buffer] #'magit-kill-buffers)
   )
 
 ;; Close transient with ESC
