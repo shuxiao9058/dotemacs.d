@@ -5,6 +5,8 @@
 (defconst IS-LINUX   (eq system-type 'gnu/linux))
 (defconst IS-WINDOWS (memq system-type '(cygwin windows-nt ms-dos)))
 (defconst IS-BSD     (or IS-MAC (eq system-type 'berkeley-unix)))
+(defconst IS-GUI (display-graphic-p))
+(defconst IS-CONSOLE (not IS-GUI))
 
 ;; Symbol’s function definition is void: if-let
 (require 'subr-x)

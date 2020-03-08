@@ -32,8 +32,11 @@
 ;;; General + leader/localleader keys
 (use-package general
   :straight t
+  :after evil
   :config
-  (progn ;; let's go crazy
+  ;; Removing emacs state from non-normal list allow the use of SPC
+ ;; (delete 'emacs general-non-normal-states)
+
     ;; *** leader key
     (general-define-key
      :states '(normal visual insert emacs)
@@ -46,10 +49,13 @@
      "." '((lambda ()(interactive)(dired ".")) :which-key "current directory")
      "U" '(undo-tree-visualize :which-key "undo-tree")
 
-     "b" '(:ignore t :which-key "buffers")
-					;; "bb" '(helm-buffers-list :which-key "buffers list")
-     "bd" '(kill-buffer :which-key "kill buffer")
-     "bs" '((lambda ()(interactive)(switch-to-buffer "*scratch*")) :which-key "scratch buffer")
+      ;;<leader> j --- Buffer
+  "b" '(:ignore t :wk "buffers")
+  "bo" '(other-buffer :wk "Other Buffer")
+  "bk" '(kill-buffer :wk "Kill Buffer")
+  "bs" '(save-buffer :wk "Save Buffer")
+  "bl" '(list-buffers :wk "List Buffers")
+  "bx" '((lambda ()(interactive)(switch-to-buffer "*scratch*")) :wk "scratch buffer")
 
      ;;<leader> c --- code
      "c" '(:wk "Code")
@@ -114,9 +120,42 @@
 
 
 
+  ;;<leader> n --- open
+  "o" '(:wk "Open/Toggle")
+  "ob" '(browse-url-of-file :wk "Browser")
+  "of" '(make-frame :wk "New frame")
+  "o-" '(dired-jump :wk "Dired")
+  "oe" '(eshell :wk "Open eshell here")
+  "ot" '(treemacs :wk "Treemacs")
+
+   ;;<leader> w --- windows
+    "w" '(:wk "Windows")
+  "w'" '(windmove-right :wk "Move to Right Window")
+  "w;" '(windmove-down :wk "Move to Bottom Window")
+  "wl" '(windmove-up :wk "Move to Top Window")
+  "wk" '(windmove-left :wk "Move to Left Window")
+  "wo" '(other-window :wk "Move to Other Window")
+  "wj" '(kill-buffer-and-window :wk "Kill current Window")
+  "wJ" '(delete-other-windows :wk "Kill all other windows")
+  "w+" '(evil-window-increase-height :wk "Increase window height")
+  "w-" '(evil-window-decrease-height :wk "Decrease window height")
+  "w>" '(evil-window-increase-width :wk "Increase window width")
+  "w<" '(evil-window-decrease-width :wk "Decrease window width")
+  "w=" '(balance-windows :wk "Balance Windows")
+  "ws" '(evil-window-split :wk "Split Horizontally")
+  "wv" '(evil-window-vsplit :wk "Split Vertically")
+
+     ;;<leader> m --- multiple cursors
+    "m" '(:wk "Multiple Cursors")
+    ;;<leader> h --- help
+    "h" '(:keymap help-map :wk "Help")
+    ;;<leader> x --- C-x compatibility
+    "x" '(:keymap ctl-x-map :wk "C-x")
+    ;;<leader> @ --- LSP-mode Keymap
+    "y" '(:keymap lsp-command-map :package lsp-mode :wk "LSP")
      )
+(evil-normalize-keymaps)
     )
-  )
 
 ;;
 ;;; Packages

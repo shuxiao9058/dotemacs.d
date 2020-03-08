@@ -1,5 +1,7 @@
 ;;; custom.el -*- lexical-binding: t; -*-
 
+(setq debug-on-error t)
+
 (setq make-backup-files nil
       inhibit-startup-screen t
       whitespace-line-column 100

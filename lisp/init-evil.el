@@ -4,6 +4,7 @@
   :straight t
   :ensure t
   :after evil-leader
+  :commands evil-normalize-keymaps
   :init
   (setq ;; evil-want-keybinding nil ;; needed by evil-collection
         evil-want-C-u-scroll t

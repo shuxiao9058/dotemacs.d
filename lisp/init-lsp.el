@@ -3,19 +3,11 @@
 (use-package lsp-mode
   :straight t
   :commands (lsp lsp-deferred)
-
   :hook ((java-mode python-mode go-mode scala-mode
-          js-mode js2-mode typescript-mode web-mode
-          c-mode c++-mode objc-mode) . lsp)
-  ; :hook ((go-mode . lsp-deferred)
-  ;    (c++-mode . lsp-deferred)
-  ;    (js-mode . lsp-deferred)
-  ;    (js-jsx-mode . lsp-deferred)
-  ;    (haskell-mode . lsp-deferred)
-  ;    (rust-mode . lsp-deferred))
-   :custom
+		    js-mode js2-mode typescript-mode web-mode) . lsp)
+  :custom
   (lsp-auto-guess-root nil)
-  (lsp-prefer-flymake nil) ; Use flycheck instead of flymake
+  (lsp-prefer-flymake nil) ;; Use flycheck instead of flymake
   (lsp-file-watch-threshold 2000)
   :bind (:map lsp-mode-map ("C-c C-f" . lsp-format-buffer))
   :config
@@ -34,7 +26,7 @@
                      ("emmy/progressReport" 'ignore))
                     ))
 
-(setq lsp-eldoc-hook '(lsp-document-highlight))
+  (setq lsp-eldoc-hook '(lsp-document-highlight))
 
   ;; cancel warning
   (advice-add 'lsp-warn
@@ -59,9 +51,9 @@
               ([remap xref-find-references] . lsp-ui-peek-find-references)
               ("C-c u" . lsp-ui-imenu))
   :custom
-  (lsp-ui-doc-enable t)
-  (lsp-ui-doc-header t)
-  (lsp-ui-doc-include-signature t)
+  (lsp-ui-doc-enable nil)
+  (lsp-ui-doc-header nil)
+  (lsp-ui-doc-include-signature nil)
   (lsp-enable-snippet nil)
   (lsp-enable-file-watchers t)
   (lsp-file-watch-threshold 10000)
@@ -70,20 +62,19 @@
   (lsp-ui-sideline-enable nil)
   (lsp-ui-sideline-ignore-duplicate t)
   (lsp-ui-sideline-show-code-actions nil)
+  (lsp-ui-flycheck-live-reporting nil)
+  (lsp-ui-sideline-show-diagnostics nil)
+  (lsp-ui-doc-background (doom-color 'base4))
+  (lsp-ui-doc-border (doom-color 'fg))
   :config
   ;; Use lsp-ui-doc-webkit only in GUI
-  ; (if *sys/gui*
-  ;     (setq lsp-ui-doc-use-webkit t))
+  (if IS-GUI
+      (setq lsp-ui-doc-use-webkit t))
   ;; WORKAROUND Hide mode-line of the lsp-ui-imenu buffer
   ;; https://github.com/emacs-lsp/lsp-ui/issues/243
   (defadvice lsp-ui-imenu (after hide-lsp-ui-imenu-mode-line activate)
-    (setq mode-line-format nil)))
-
-; (use-package lsp-ui
-;   :straight t
-;   :init (setq lsp-prefer-flymake nil)
-;   :commands lsp-ui-mode
-;   :hook ((lsp-mode-hook . lisp-ui-mode)))
+    (setq mode-line-format nil))
+  )
 
 (use-package flycheck
   :straight t
@@ -98,12 +89,11 @@
   :straight t
   :commands company-mode
   :hook (((prog-mode latex-mode) . company-mode)
-    (after-init . global-company-mode))
-  ; :hook ((after-init . global-company-mode))
+	 (after-init . global-company-mode))
   :general
   (:states '(insert normal) "<backtab>" 'company-complete)
   :bind
-   (:map company-active-map
+  (:map company-active-map
         ([tab] . smarter-yas-expand-next-field-complete)
         ("TAB" . smarter-yas-expand-next-field-complete))
   :custom
@@ -118,7 +108,7 @@
   ;; Number the candidates (use M-1, M-2 etc to select completions).
   (company-show-numbers t)
   :config
-  ; (unless *clangd* (delete 'company-clang company-backends))
+					; (unless *clangd* (delete 'company-clang company-backends))
   (global-company-mode 1)
   (defun smarter-yas-expand-next-field-complete ()
     "Try to `yas-expand' and `yas-next-field' at current cursor position.
@@ -135,19 +125,19 @@ If failed try to complete the common part with `company-complete-common'"
                        (eq old-tick (buffer-chars-modified-tick)))
               (company-complete-common))))
       (company-complete-common)))
-  ; :config
-  ; (setq company-idle-delay 0 ; default 0.5
-  ;       company-show-numbers t
-  ;       company-minimum-prefix-length 2 ; default 4
-  ;       company-tooltip-limit 10
-  ;       company-auto-complete-chars nil
-  ;       company-tooltip-align-annotations t
-  ;       company-selection-wrap-around t
-  ;       company-quickhelp-delay nil
-  ;       company-require-match 'never
-  ;       company-dabbrev-downcase nil
-  ;       company-dabbrev-ignore-case nil
-  ;       company-dabbrev-other-buffers t)
+  ;; :config
+  ;; (setq company-idle-delay 0 ; default 0.5
+  ;;       company-show-numbers t
+  ;;       company-minimum-prefix-length 2 ; default 4
+  ;;       company-tooltip-limit 10
+  ;;       company-auto-complete-chars nil
+  ;;       company-tooltip-align-annotations t
+  ;;       company-selection-wrap-around t
+  ;;       company-quickhelp-delay nil
+  ;;       company-require-match 'never
+  ;;       company-dabbrev-downcase nil
+  ;;       company-dabbrev-ignore-case nil
+  ;;       company-dabbrev-other-buffers t)
   )
 
 
@@ -173,29 +163,20 @@ If failed try to complete the common part with `company-complete-common'"
   :custom (company-lsp-cache-candidates 'auto)
   :config
   (setq
-     syntax-checking-enable-by-default t
-     lsp-highlight-symbol-at-point nil
-     lsp-enable-codeaction nil
-     lsp-log-io nil
-     lsp-enable-xref t
-     lsp-auto-guess-root t
-     lsp-diagnostic-package :flymake
-     lsp-enable-indentation t
-     lsp-enable-completion-at-point t
-     lsp-ui-sideline-enable nil
-     lsp-ui-sideline-ignore-duplicate t
-     lsp-ui-doc-enable nil
-     lsp-ui-doc-include-signature t
-     lsp-ui-doc-header nil
-     lsp-enable-eldoc nil
-     lsp-response-timeout 1000
-     lsp-file-watch-threshold 150000
-     lsp-ui-flycheck-live-reporting nil
-     lsp-ui-sideline-show-diagnostics nil
-     lsp-ui-sideline-enable nil
-     lsp-ui-doc-background (doom-color 'base4)
-     lsp-ui-doc-border (doom-color 'fg)
-     )
+   syntax-checking-enable-by-default t
+   lsp-highlight-symbol-at-point nil
+   lsp-enable-codeaction nil
+   lsp-log-io nil
+   lsp-enable-xref t
+   lsp-auto-guess-root t
+   lsp-diagnostic-package :flymake
+   lsp-enable-indentation t
+   lsp-enable-completion-at-point t
+   lsp-enable-eldoc nil
+   lsp-response-timeout 1000
+   lsp-file-watch-threshold 150000
+   )
+
   (add-to-list 'lsp-file-watch-ignored "build")
 
 
@@ -217,12 +198,12 @@ If failed try to complete the common part with `company-complete-common'"
   :commands company-tabnine-start-process
   :ensure t
   :init
-   (setq company-tabnine-no-continue nil)
+  (setq company-tabnine-no-continue nil)
   ;; (setq company-tabnine-log-file-path "/tmp/TabNine.log")
   (setq company-tabnine-executable-args
         '("--client" "emacs" "--log-level" "Error" "--log-file-path" "/tmp/TabNine.log"))
   :config
-   ;; Enable TabNine on default
+  ;; Enable TabNine on default
   (add-to-list 'company-backends #'company-tabnine)
 
   ;; Integrate company-tabnine with lsp-mode
@@ -249,27 +230,27 @@ If failed try to complete the common part with `company-complete-common'"
               (setq company-tabnine-max-num-results 3)
               (add-to-list 'company-transformers 'company//sort-by-tabnine t)
               (add-to-list 'company-backends '(company-lsp :with company-tabnine :separate))))
-; ;; https://github.com/hlissner/doom-emacs/issues/1268
-;   ;; (cl-pushnew 'company-tabnine (default-value 'company-backends))
-;   ;; https://github.com/TommyX12/company-tabnine
-;   ;; workaround for company-flx-mode and other transformers
-;   ;; company-transformers or plugins that use it (such as company-flx-mode) can interfere with TabNine's sorting.
-;   (setq company-tabnine--disable-next-transform nil)
-;   (defun my-company--transform-candidates (func &rest args)
-;     (if (not company-tabnine--disable-next-transform)
-;         (apply func args)
-;       (setq company-tabnine--disable-next-transform nil)
-;       (car args)))
+  ;; ;; https://github.com/hlissner/doom-emacs/issues/1268
+  ;;   ;; (cl-pushnew 'company-tabnine (default-value 'company-backends))
+  ;;   ;; https://github.com/TommyX12/company-tabnine
+  ;;   ;; workaround for company-flx-mode and other transformers
+  ;;   ;; company-transformers or plugins that use it (such as company-flx-mode) can interfere with TabNine's sorting.
+  ;;   (setq company-tabnine--disable-next-transform nil)
+  ;;   (defun my-company--transform-candidates (func &rest args)
+  ;;     (if (not company-tabnine--disable-next-transform)
+  ;;         (apply func args)
+  ;;       (setq company-tabnine--disable-next-transform nil)
+  ;;       (car args)))
 
-;   (defun my-company-tabnine (func &rest args)
-;     (when (eq (car args) 'candidates)
-;       (setq company-tabnine--disable-next-transform t))
-;     (apply func args))
+  ;;   (defun my-company-tabnine (func &rest args)
+  ;;     (when (eq (car args) 'candidates)
+  ;;       (setq company-tabnine--disable-next-transform t))
+  ;;     (apply func args))
 
-;   (advice-add #'company--transform-candidates :around #'my-company--transform-candidates)
-;   (advice-add #'company-tabnine :around #'my-company-tabnine)
-;   ; (set-company-backend! 'prog-mode
-;   ;   'company-tabnine 'company-capf 'company-yasnippet)
+  ;;   (advice-add #'company--transform-candidates :around #'my-company--transform-candidates)
+  ;;   (advice-add #'company-tabnine :around #'my-company-tabnine)
+  ;;   ; (set-company-backend! 'prog-mode
+  ;;   ;   'company-tabnine 'company-capf 'company-yasnippet)
   )
 
 ;; ** vuejs
