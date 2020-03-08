@@ -93,13 +93,6 @@
 			    evil-jump-out-args)
   :straight t)
 
-(use-package evil-magit
-  :after (evil magit)
-  :straight t
-  :hook (prog-mode . evil-matchit-mode)
-  :config
-  (global-evil-matchit-mode 1))
-
 (use-package evil-commentary
   :commands (evil-commentary evil-commentary-yank evil-commentary-line)
   :straight t

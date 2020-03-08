@@ -4,9 +4,9 @@
 (use-package magit
   :straight t
   :commands (magit-status magit-checkout)
-  :bind (("C-x g" . magit-status)
-         ("C-c g b" . magit-checkout)
-         ("C-c g B" . magit-blame))
+  ;; :bind (("C-x g" . magit-status)
+  ;;        ("C-c g b" . magit-checkout)
+  ;;        ("C-c g B" . magit-blame))
   :init
    ;; Must be set early to prevent ~/.emacs.d/transient from being created
   (setq transient-levels-file  (concat poly-etc-dir "transient/levels")
@@ -24,6 +24,11 @@
    git-commit-finish-query-functions nil)
   ;; Use flyspell in the commit buffer
   (add-hook 'git-commit-setup-hook 'git-commit-turn-on-flyspell))
+
+
+(use-package magit-gitflow
+  :straight t
+  :hook (magit-mode . turn-on-magit-gitflow))
 
 ;; git-gutter-plus - View, stage and revert Git changes from the buffer (inspired by package of same name from vim)
 (use-package git-gutter+
@@ -61,6 +66,55 @@
 (use-package browse-at-remote
   :straight t
   :bind ("C-c g b" . browse-at-remote/browse))
+
+
+
+(use-package evil-magit
+  :straight t
+  :after (evil magit)
+  ;; :hook (prog-mode . evil-matchit-mode)
+  :init
+  (setq evil-magit-state 'normal
+        evil-magit-use-z-for-folds t)
+  :config
+  ;; (global-evil-matchit-mode 1)
+  (general-unbind magit-mode-map
+    ;; Replaced by z1, z2, z3, etc
+    "M-1" "M-2" "M-3" "M-4"
+    "1" "2" "3" "4"
+    "0") ; moved to g=
+  (evil-define-key* 'normal magit-status-mode-map [escape] nil) ; q is enough
+  (evil-define-key* '(normal visual) magit-mode-map
+    "%"  #'magit-gitflow-popup
+    "zz" #'evil-scroll-line-to-center
+    "g=" #'magit-diff-default-context)
+
+  (general-def 'normal
+    (magit-status-mode-map
+     magit-stash-mode-map
+     magit-revision-mode-map
+     magit-diff-mode-map)
+    [tab] #'magit-section-toggle)
+
+  (eval-after-load 'git-rebase
+     `(progn
+         (dolist (key '(("M-k" . "gk") ("M-j" . "gj")))
+      (when-let (desc (assoc (car key) evil-magit-rebase-commands-w-descriptions))
+        (setcar desc (cdr key))))
+    (evil-define-key* evil-magit-state git-rebase-mode-map
+      "gj" #'git-rebase-move-line-down
+      "gk" #'git-rebase-move-line-up)
+      )
+    )
+  )
+
+ ; ;; Clean up after magit by killing leftover magit buffers and reverting
+ ;  ;; affected buffers (or at least marking them as need-to-be-reverted).
+ ;  (define-key magit-status-mode-map [remap magit-mode-bury-buffer] #'+magit/quit)
+
+ ;  ;; Close transient with ESC
+ ;  (define-key transient-map [escape] #'transient-quit-one)
+
 
 
 (provide 'init-vc)

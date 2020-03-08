@@ -5,9 +5,10 @@
 *.eld
 *.log
 *.elc
+.lsp-session-v1
 tmp*
 recentf
-# dir 
+# dir
 elpa/
 eshell/
 transient/
