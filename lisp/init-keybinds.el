@@ -31,7 +31,7 @@
 ;;
 ;;; General + leader/localleader keys
   ;; Removing emacs state from non-normal list allow the use of SPC
- ;; (delete 'emacs general-non-normal-states)
+ (delete 'emacs general-non-normal-states)
 
     ;; *** leader key
     (general-define-key
@@ -118,7 +118,7 @@
      "gff" '(magit-find-file :wk "Find file")
      "gfg" '(magit-find-git-config-file :wk "Find gitconfig file")
      "gfc" '(magit-show-commit :wk "Find commit")
-     
+
      ;;; <leader> gl --- git list
      "gl" '(:ignore t :wk "List")
      "glr" '(magit-list-repositories :wk "List repositories")

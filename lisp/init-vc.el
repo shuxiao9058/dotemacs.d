@@ -89,6 +89,13 @@
     "M-1" "M-2" "M-3" "M-4"
     "1" "2" "3" "4"
     "0") ; moved to g=
+
+  ;; (general-unbind magit-mode-map
+  ;;   "gr")
+  ;; (general-def '(normal visual)
+  ;;   (magit-mode-map magit-status-mode-map)
+  ;;   "gr" #'magit-refresh-all)
+
   (evil-define-key* 'normal magit-status-mode-map [escape] nil) ; q is enough
   (evil-define-key* '(normal visual) magit-mode-map
 		    ;; "%"  'magit-gitflow-popup

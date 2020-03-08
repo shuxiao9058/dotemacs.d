@@ -118,11 +118,12 @@
   :config
   (evil-multiedit-default-keybinds))
 
-(use-package evil-mc
-  :after evil
-  :straight t
-  :config
-  (global-evil-mc-mode  1))
+;;; TODO
+;; (use-package evil-mc
+;;   :after evil
+;;   :straight t
+;;   :config
+;;   (global-evil-mc-mode  1))
 
 ;; ;; Evil, probably the best thing since Evil.
 ;; (use-package evil-collection
