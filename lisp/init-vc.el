@@ -90,15 +90,9 @@
     "1" "2" "3" "4"
     "0") ; moved to g=
 
-  ;; (general-unbind magit-mode-map
-  ;;   "gr")
-  ;; (general-def '(normal visual)
-  ;;   (magit-mode-map magit-status-mode-map)
-  ;;   "gr" #'magit-refresh-all)
-
   (evil-define-key* 'normal magit-status-mode-map [escape] nil) ; q is enough
   (evil-define-key* '(normal visual) magit-mode-map
-		    ;; "%"  'magit-gitflow-popup
+		    "%"  'magit-gitflow-popup
 		    "zz" 'evil-scroll-line-to-center
 		    "g=" 'magit-diff-default-context)
 
@@ -133,7 +127,6 @@
   `(progn
      ;; Temporary workaround for +magit/quit hang with lots of buffers
      (define-key magit-status-mode-map [remap magit-mode-bury-buffer] #'magit-kill-buffers)
-     (define-key magit-mode-map "%" 'magit-gitflow-popup)
      )
   )
 
