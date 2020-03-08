@@ -23,15 +23,16 @@
 (watcher:try-load 'core-lib)
 
 (defvar poly-initialize-core-p nil
-  "Is initialization core")
+  "whether initialization core")
 
 (defun poly-initialize-core ()
   "Load Poly's core files for an interactive session."
-  (unless poly-initialize-core-p 
+  (if  poly-initialize-core-p 
+    nil
+      (require 'core-straight)
+      (require 'core-packages)
+      (setq poly-initialize-core-p t)
       )
-  (require 'core-packages)
-  (require 'core-keybinds)
-  (setq poly-initialize-core-p t)
   )
 
 (poly-initialize-core)

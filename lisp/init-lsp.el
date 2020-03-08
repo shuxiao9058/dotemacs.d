@@ -293,7 +293,9 @@ If failed try to complete the common part with `company-complete-common'"
                                         ".+expected identifier on left side.+"
                                         "^LSP ::.+"
                                         ".+and \d{1,10} more errors.+"
-                                        "Wrote ")
+                                        "Wrote "
+                                        "Liberime: start with shared dir" ;;; liberime
+                                        )
   "filter formatted message string to remove noisy messages"
   :type '(list string)
   :group 'general)

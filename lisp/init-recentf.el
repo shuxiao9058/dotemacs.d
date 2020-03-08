@@ -1,42 +1,39 @@
 ;;; lisp/init-recentf.el -*- lexical-binding: t; -*-
 
 (use-package recentf
-    :straight t
-  ;; Keep track of recently opened files
-  ; :defer-incrementally easymenu tree-widget timer
-  :after after-find-file
-  :commands recentf-open-files
+  :straight t
+  :commands (recentf-mode
+             recentf-add-file
+             recentf-apply-filename-handlers
+             recentf-open-files)
   :config
-  (defun poly--recent-file-truename (file)
-    (if (or (file-remote-p file nil t)
-            (not (file-remote-p file)))
-        (file-truename file)
-      file))
-  (setq recentf-filename-handlers
-        '(substring-no-properties
-          poly--recent-file-truename
-          abbreviate-file-name)
-        recentf-save-file (concat poly-cache-dir "recentf")
-        recentf-auto-cleanup 'never
-        recentf-max-menu-items 0
-        recentf-max-saved-items 200)
+  (setq recentf-max-saved-items 1000
+	recentf-max-menu-items 60
+	;; disable recentf-cleanup on Emacs start, because it can cause
+	;; recentf-auto-cleanup 'never ;; problems with remote files
+	recentf-auto-cleanup 600
+        recentf-filename-handlers '(file-truename abbreviate-file-name)
+        recentf-save-file (expand-file-name "recentf" poly-cache-dir)
+        recentf-auto-save-timer (run-with-idle-timer 600 t 'recentf-save-list)
+        ;; exclude ** from recentfiles buffer
+	recentf-exclude '("\\.\\(?:gz\\|gif\\|svg\\|png\\|jpe?g\\)$"
+                          "^/tmp/" "^/ssh:" "\\.?ido\\.last$" "\\.revive$" "/TAGS$"
+                          "^/var/folders\\.*" "\\.git/config" "\\.git/COMMIT_EDITMSG"
+                          "COMMIT_MSG"
+                          "[0-9a-f]\\{32\\}-[0-9a-f]\\{32\\}\\.org"
+                          "github.*txt$"
+                          "COMMIT_EDITMSG\\'"
+                          ".*-autoloads\\.el\\'"
+                          "recentf"
+                          ".*pang$" ".*cache$"
+                          "[/\\]\\.elpa/")
+	)
 
-  (add-hook! '(poly-switch-window-hook write-file-functions)
-    (defun poly--recentf-touch-buffer-h ()
-      "Bump file in recent file list when it is switched or written to."
-      (when buffer-file-name
-        (recentf-add-file buffer-file-name))
-      ;; Return nil for `write-file-functions'
-      nil))
+  (recentf-mode +1)
+  (unless noninteractive
+    (add-hook 'kill-emacs-hook #'recentf-cleanup))
+  )
 
-  (add-hook! 'dired-mode-hook
-    (defun poly--recentf-add-dired-directory-h ()
-      "Add dired directory to recentf file list."
-      (recentf-add-file default-directory)))
-
-  (when poly-interactive-mode
-    (add-hook 'kill-emacs-hook #'recentf-cleanup)
-    (quiet! (recentf-mode +1))))
 
 (provide 'init-recentf)
 ;;; init-recentf.el ends here

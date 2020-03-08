@@ -41,35 +41,7 @@ dependencies or long-term shared data. Must end with a slash.")
 
 Use this for files that change often, like cache files. Must end with a slash.")
 
-(defconst poly-docs-dir (concat poly-emacs-dir "docs/")
-  "Where Doom's documentation files are stored. Must end with a slash.")
-
-(defconst poly-private-dir
-  (if-let (polydir (getenv "POLYDIR"))
-      (expand-file-name (file-name-as-directory polydir))
-    (or (let ((xdgdir
-               (expand-file-name "poly/"
-                                 (or (getenv "XDG_CONFIG_HOME")
-                                     "~/.config"))))
-          (if (file-directory-p xdgdir) xdgdir))
-        "~/.poly.d/"))
-  "Where your private configuration is placed.
-
-Defaults to ~/.config/poly, ~/.poly.d or the value of the DOOMDIR envvar;
-whichever is found first. Must end in a slash.")
-
-(defconst poly-autoload-file (concat poly-local-dir "autoloads.el")
-  "Where `poly-reload-core-autoloads' stores its core autoloads.
-
-This file is responsible for informing Emacs where to find all of Doom's
-autoloaded core functions (in core/autoload/*.el).")
-
-(defconst poly-package-autoload-file (concat poly-local-dir "autoloads.pkg.el")
-  "Where `poly-reload-package-autoloads' stores its package autoloads.
-
-This file is compiled from the autoloads files of all installed packages
-combined.")
+(defalias 'yes-or-no-p 'y-or-n-p)
 
 (provide 'core-variables)
-
 ;;; core-variables.el ends here

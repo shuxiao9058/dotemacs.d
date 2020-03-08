@@ -17,12 +17,15 @@
 (let (file-name-handler-alist)
   (setq user-emacs-directory (file-name-directory load-file-name)))
 
-;; Load the heart of Poly Emacs
+;;; Load the heart of Poly Emacs
 (load (concat user-emacs-directory "core/core")
       nil 'nomessage)
 
 ;; lisp
 (add-to-list 'load-path (concat user-emacs-directory "lisp"))
+
+;;; keybinds
+(require 'init-keybinds)
 
 ;;; core
 (require 'init-env)
@@ -36,12 +39,13 @@
 (require 'init-keyfreq)
 (require 'init-format)
 (require 'init-rime)
-(require 'init-keybinds)
+(require 'init-vterm)
 
 ;;; programming
 (require 'init-projectile)
 (require 'init-vc)
 (require 'init-lsp)
 (require 'init-go)
+
 
 ;;; init.el ends here
