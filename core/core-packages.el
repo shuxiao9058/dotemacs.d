@@ -32,6 +32,24 @@
     :straight t
     :commands (hide-mode-line-mode))
 
+(use-package xclip
+  :straight t
+  :if IS-LINUX
+  :ensure t
+  :custom
+  (xclip-method 'xclip)
+  :config
+      (xclip-mode +1)
+      (xterm-mouse-mode +1)
+  )
+
+;; pbcopy
+(use-package pbcopy
+  :straight t
+  :if (and IS-MAC (not (display-graphic-p)))
+  :init (turn-on-pbcopy)
+)
+
 ;;; evil
 (use-package evil
   :straight t
@@ -85,7 +103,7 @@
   :commands evil-exchange
   :straight t)
 
-;;; TODO  
+;;; TODO
 ;;; Press “%” to jump between matched tags in Emacs. For example, in HTML “<div>” and “</div>” are a pair of tags.
 ;; (use-package evil-matchit
 ;;   :straight t
@@ -156,7 +174,7 @@
 (use-package evil-mc
    :after evil
    :straight t
-   :init 
+   :init
   ;; The included keybindings are too imposing and are likely to cause
   ;; conflicts, so we'll set them ourselves.
   (defvar evil-mc-key-map (make-sparse-keymap))
@@ -166,7 +184,7 @@
 
   ;; REVIEW This is tremendously slow on macos and windows for some reason.
   (setq evil-mc-enable-bar-cursor (not (or IS-MAC IS-WINDOWS)))
-  
+
   (eval-after-load 'smartparens
   `(progn
     ;; Make evil-mc cooperate with smartparens better

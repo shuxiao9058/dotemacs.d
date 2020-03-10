@@ -208,6 +208,8 @@ If failed try to complete the common part with `company-complete-common'"
   :straight t
   :commands company-tabnine-start-process
   :ensure t
+  :custom
+  (company-tabnine-max-num-results 9)
   :init
   (setq company-tabnine-no-continue nil)
   ;; (setq company-tabnine-log-file-path "/tmp/TabNine.log")

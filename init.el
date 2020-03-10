@@ -37,6 +37,7 @@
 (require 'init-format)
 (require 'init-rime)
 (require 'init-vterm)
+;; (require 'init-dired)
 
 ;;; programming
 (require 'init-projectile)
