@@ -29,7 +29,7 @@
 (require 'init-ivy)
 (require 'init-ui)
 (require 'init-recentf)
-(require 'init-evil)
+;;; (require 'init-evil)
 
 ;;; tools
 (require 'init-wakatime)
