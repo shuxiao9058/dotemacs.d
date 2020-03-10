@@ -8,10 +8,16 @@
 (use-package counsel
   :straight t
   :after ivy
-  :demand t
-  :delight
+  :defer t
+  ;; :demand t
+  ;; :delight
   :config
-  (counsel-mode t))
+  ;;; (counsel-mode t)
+
+  ;; Don't use ^ as initial input. Set this here because `counsel' defines more
+  ;; of its own, on top of the defaults.
+  (setq ivy-initial-inputs-alist nil)
+  )
 
 (use-package projectile
   :straight t

@@ -33,6 +33,10 @@
   ;; Removing emacs state from non-normal list allow the use of SPC
  (delete 'emacs general-non-normal-states)
 
+;;; M-x
+(general-define-key
+   "M-x" #'counsel-M-x)
+
     ;; *** leader key
     (general-define-key
      :states '(normal visual insert emacs)
