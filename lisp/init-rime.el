@@ -1,36 +1,44 @@
 ;;; lisp/init-rime.el -*- lexical-binding: t; -*-
 
-(use-package liberime
+(use-package liberime-config
   :straight (
-           :local-repo "~/workspace/liberime"
-           ;; :host github
-           ;; ; :repo "DogLooksGood/liberime"
-           ;; :repo "merrickluo/liberime"
-           ;; ;; :repo "QiangF/liberime"
-           ;; ;; :repo "shuxiao9058/liberime"
-           ;; ;; :branch "feature/add_schema_config"
-           :files ("liberime.el" "src" "CMakeLists.txt" "Makefile")
-  )
+             :local-repo "~/workspace/liberime"
+             ;; :host github
+             ;; ; :repo "DogLooksGood/liberime"
+             ;; :repo "merrickluo/liberime"
+             ;; ;; :repo "QiangF/liberime"
+             ;; ;; :repo "shuxiao9058/liberime"
+             ;; ;; :branch "feature/add_schema_config"
+             :files ("liberime-config.el" "src" "CMakeLists.txt" "Makefile")
+	     )
 
   :defer 1
   :init
   (setq liberime-user-data-dir (expand-file-name "rime" poly-local-dir))
-  (add-hook 'liberime-after-start-hook
-            (lambda ()
-              (liberime-select-schema "guhuwubi")))
+  ;; (add-hook 'liberime-after-start-hook
+  ;;           (lambda ()
+  ;;             ;; ;; Select schema delay 5 second, make sure
+  ;;             ;; ;; `liberime-load' run finish.
+  ;;             ;; (run-with-timer
+  ;;             ;;    5 nil
+  ;;             (liberime-select-schema "guhuwubi")
+  ;;             ;; )
+  ;;             )
+  ;;           )
   :config
-  ;; build liberime-core.so
-  (unless (file-exists-p (liberime-get-module-file))
-    (liberime-build))
+  ;; ;; build liberime-core.so
+  ;; (unless (file-exists-p (liberime-get-module-file))
+  ;;   (liberime-build)
+  ;;   )
   )
 
 (use-package rime
   :straight (
-           ; :host github
-           ; :repo "DogLooksGood/emacs-rime"
-           :local-repo "~/workspace/emacs-rime"
-           ;; :repo "shuxiao9058/emacs-rime"
-           :files ("rime.el"))
+					; :host github
+					; :repo "DogLooksGood/emacs-rime"
+             :local-repo "~/workspace/emacs-rime"
+             ;; :repo "shuxiao9058/emacs-rime"
+             :files ("rime.el"))
   :defer 1
   :config
   (setq default-input-method "rime"
