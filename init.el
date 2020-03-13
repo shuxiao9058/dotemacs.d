@@ -44,6 +44,7 @@
 (require 'init-vc)
 (require 'init-lsp)
 (require 'init-go)
+(require 'init-lua)
 
 ;;; keybinds
 (require 'init-keybinds)

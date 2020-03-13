@@ -44,10 +44,15 @@
      :non-normal-prefix "M-m"
      "TAB" '(evil-prev-buffer :which-key "prev buffer")
      "`"   '(evil-next-buffer :which-key "next buffer")
-     "SPC" '(counsel-M-x :which-key "M-x")
-					;; "SPC" '(amb:find-file-dwim :which-key "find you a file")
-     "." '((lambda ()(interactive)(dired ".")) :which-key "current directory")
-     "U" '(undo-tree-visualize :which-key "undo-tree")
+     "SPC" '(projectile-find-file :wk "Find file in project")
+     "RET" '(bookmark-jump :wk "Jump to bookmark")
+
+     "." '(find-file :wk "Find file")
+     "," '(persp-switch-to-buffer :wk "Switch workspace buffer")
+     "<" '(switch-to-buffer :wk "Switch buffer")
+     "`" '(evil-switch-to-windows-last-buffer  :wk "Switch to last buffer")
+     "'" '(ivy-resume :wk "Resume last search")
+     ;; "U" '(undo-tree-visualize :which-key "undo-tree")
 
       ;;<leader> j --- Buffer
   "b" '(:ignore t :wk "buffers")
@@ -58,10 +63,10 @@
   "bl" '(list-buffers :wk "List Buffers")
   "bx" '((lambda ()(interactive)(switch-to-buffer "*scratch*")) :wk "scratch buffer")
 
-     ;;<leader> c --- code
-     "c" '(:wk "Code")
-     "cC" '(compile :wk "Compile")
-     "cc" '(recompile :wk "Recompile")
+     ;; ;;<leader> c --- code
+     ;; "c" '(:wk "Code")
+     ;; "cC" '(compile :wk "Compile")
+     ;; "cc" '(recompile :wk "Recompile")
 
      "e" '(:ignore t :which-key "emacs/init")
 					;; "ef" '(amb:edit-init-file :which-key "edit init.el")
@@ -204,6 +209,12 @@
   "C-k"    #'previous-line
   "C-S-j"  #'scroll-up-command
   "C-S-k"  #'scroll-down-command)
+
+
+;;; go-mode
+(general-define-key :keymaps 'go-mode-map :states 'normal
+          "gd" 'godef-jump
+          "SPC d" 'godoc-at-point)
 
   ;; (general-define-key :keymaps :keymaps '(read-expression-map)
   ;;   "C-j" #'next-line-or-history-element

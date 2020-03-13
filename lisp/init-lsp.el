@@ -34,8 +34,8 @@
                         (message (apply #'format-message r))))
   )
 
-(use-package lsp-haskell
-  :straight t)
+;;; (use-package lsp-haskell
+;;;   :straight t)
 
 (use-package lsp-ui
   :straight t
