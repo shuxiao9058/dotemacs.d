@@ -46,16 +46,16 @@
   (lsp-ui-doc-background ((t (:background nil))))
   (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
   :hook ((lsp-mode-hook . lisp-ui-mode))
-  ; :bind (:map lsp-ui-mode-map
-  ;             ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
-  ;             ([remap xref-find-references] . lsp-ui-peek-find-references)
-  ;             ("C-c u" . lsp-ui-imenu))
+					; :bind (:map lsp-ui-mode-map
+					;             ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+					;             ([remap xref-find-references] . lsp-ui-peek-find-references)
+					;             ("C-c u" . lsp-ui-imenu))
   :general
   (nmap
-    :keymaps 'lsp-ui-mode-map
-    [remap evil-goto-definition] #'lsp-ui-peek-find-definitions
-    "gD" #'lsp-ui-peek-find-references)
-(general-def
+   :keymaps 'lsp-ui-mode-map
+   [remap evil-goto-definition] #'lsp-ui-peek-find-definitions
+   "gD" #'lsp-ui-peek-find-references)
+  (general-def
     :keymaps 'lsp-ui-peek-mode-map
     "C-j" 'lsp-ui-peek--select-next
     "C-k" 'lsp-ui-peek--select-prev)
@@ -98,7 +98,7 @@
   :straight t
   :commands company-mode
   :hook (((prog-mode latex-mode) . company-mode)
-	        (after-init . global-company-mode))
+	 (after-init . global-company-mode))
   :bind (:map company-active-map
               ([return] . nil)
               ("RET" . nil)
