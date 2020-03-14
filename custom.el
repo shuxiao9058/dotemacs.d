@@ -1,6 +1,6 @@
 ;;; custom.el -*- lexical-binding: t; -*-
 
-;; (setq debug-on-error t)
+(setq debug-on-error t)
 
 (setq make-backup-files nil
       inhibit-startup-screen t
@@ -10,8 +10,15 @@
       ;; Wrapping
       truncate-lines t
       truncate-partial-width-windows 50
-      ; evil-want-C-u-scroll nil
- whitespace-style '(face trailing lines-tail))
+					; evil-want-C-u-scroll nil
+      whitespace-style '(face trailing lines-tail))
+
+
+
+;;; lisp
+(setq ;; lisp-body-indent   2
+ lisp-indent-function  'common-lisp-indent-function)
+
 
 ;; Delete trailing whitespace before save
 (add-hook 'before-save-hook 'delete-trailing-whitespace)

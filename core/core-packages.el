@@ -1,5 +1,16 @@
 ;;; core-packages.el -*- lexical-binding: t; -*-
 
+(use-package autorevert
+  :straight nil
+  ;; :blackout t
+  ;; :hook
+  :hook (dired-mode . auto-revert-mode)
+  :diminish auto-revert-mode
+  :config
+  (global-auto-revert-mode +1)
+  :custom
+  (auto-revert-verbose nil))
+
 (use-package general
   :straight t
   ;; :after evil

@@ -27,5 +27,5 @@
 ;; cursor color is concerned).
 (advice-add #'x-apply-session-resources :override #'ignore)
 
-; (setq warning-minimum-level :emergency)
+;; (setq warning-minimum-level :emergency)
 

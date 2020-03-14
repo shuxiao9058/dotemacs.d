@@ -45,6 +45,7 @@
 (require 'init-lsp)
 (require 'init-go)
 (require 'init-lua)
+(require 'init-lisp)
 
 ;;; keybinds
 (require 'init-keybinds)
