@@ -88,7 +88,7 @@
  "M-x" #'counsel-M-x)
 
 ;; *** leader key
-(general-define-key :states '(normal visual insert emacs)
+(general-define-key :states '(normal visual insert emacs) ;; '(normal visual insert emacs)
 		    :prefix "SPC"
 		    :non-normal-prefix "M-m"
 		    "TAB" '(evil-prev-buffer :which-key "prev buffer")

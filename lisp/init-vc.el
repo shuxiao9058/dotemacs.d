@@ -74,6 +74,7 @@
 (use-package evil-magit
     :straight t
     :after (magit evil)
+    :hook (magit-mode . evil-magit-init)
     :init
     (progn
       (evil-set-initial-state 'magit-log-edit-mode 'insert)
