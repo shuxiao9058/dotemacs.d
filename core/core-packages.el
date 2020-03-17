@@ -33,11 +33,6 @@
   (which-key-setup-side-window-bottom)
   (which-key-mode +1))
 
-(use-package hydra
-  :straight t
-  :init
-  (setq hydra-if-helpful t))
-
 ;;; magit
 (use-package hide-mode-line
     :straight t

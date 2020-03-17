@@ -33,6 +33,47 @@
   ;; Removing emacs state from non-normal list allow the use of SPC
  (delete 'emacs general-non-normal-states)
 
+
+;;; help-map
+  (general-define-key :keymaps 'help-map
+    ;; new keybinds
+    "'"    #'describe-char
+    "C-k"  #'describe-key-briefly
+  "C-l"  #'describe-language-environment
+  "C-m"  #'info-emacs-manual
+
+  ;; Unbind `help-for-help'. Conflicts with which-key's help command for the
+  ;; <leader> h prefix. It's already on ? and F1 anyway.
+  "C-h"  nil
+    ;; replacement keybinds
+  ;; replaces `info-emacs-manual' b/c it's on C-m now
+  "r"    nil
+  ;; make `describe-bindings' available under the b prefix which it previously
+  ;; occupied. Add more binding related commands under that prefix as well
+  "b"    nil
+  "bb"   #'describe-bindings
+  "bi"   #'which-key-show-minor-mode-keymap
+  "bm"   #'which-key-show-major-mode
+  "bt"   #'which-key-show-top-level
+  "bf"   #'which-key-show-full-keymap
+  "bk"   #'which-key-show-keymap
+    ;; replaces `apropos-documentation' b/c `apropos' covers this
+  "d"    nil
+  ;; replaces `apropos-command'
+  "a"    #'apropos
+  "A"    #'apropos-documentation
+  ;; replaces `describe-copying' b/c not useful
+  "C-c"  #'describe-coding-system
+  ;; replaces `Info-got-emacs-command-node' b/c redundant w/ `Info-goto-node'
+  "F"    #'describe-face
+  ;; replaces `view-hello-file' b/c annoying
+  "h"    nil
+  ;; replaces `describe-package' b/c redundant w/ `doom/help-packages'
+  "P"    #'find-library
+    )
+
+
+
 ;;; M-x
 (general-define-key
    "M-x" #'counsel-M-x)
@@ -176,6 +217,10 @@
     "m" '(:wk "Multiple Cursors")
     ;;<leader> h --- help
     "h" '(:keymap help-map :wk "Help")
+    ;; replaces `apropos-command'
+    ; "a"    #'apropos
+    ; "A"    #'apropos-documentation
+
     ;;<leader> x --- C-x compatibility
     "x" '(:keymap ctl-x-map :wk "C-x")
     ;;<leader> @ --- LSP-mode Keymap
@@ -216,9 +261,66 @@
           "gd" 'godef-jump
           "SPC d" 'godoc-at-point)
 
-  ;; (general-define-key :keymaps :keymaps '(read-expression-map)
-  ;;   "C-j" #'next-line-or-history-element
-  ;;   "C-k" #'previous-line-or-history-element)
+(general-define-key
+ :keymaps 'go-mode-map
+ :states '(normal motion visual)
+ :prefix "SPC"
+ :global-prefix "C-SPC"
+ "c" '(:ignore t :wk "code")
+ "cc" '(compile :wk "Compile")
+ "cC" '(recompile :wk "Recompile")
+ "cd" '(go-guru-definition :wk "Jump to definition")
+ "cD" '(go-guru-referrers :wk "Jump to references")
+ "ck" '(godoc-at-point :wk "Jump to documentation")
+ )
+
+(with-eval-after-load 'general
+  (general-define-key
+    "TAB" 'company-indent-or-complete-common))
+
+;;; company-active-map
+(general-define-key
+   :keymaps 'company-active-map
+    "C-w"     nil  ; don't interfere with `evil-delete-backward-word'
+    "C-n"     #'company-select-next
+    "C-p"     #'company-select-previous
+    "C-j"     #'company-select-next
+    "C-k"     #'company-select-previous
+    "C-h"     #'company-show-doc-buffer
+    "C-u"     #'company-previous-page
+    "C-d"     #'company-next-page
+    "C-s"     #'company-filter-candidates
+    "C-S-s"  #'counsel-company
+     "C-SPC"   #'company-complete-common
+            "TAB"     #'company-complete-common-or-cycle
+            [tab]     #'company-complete-common-or-cycle
+            [backtab] #'company-select-previous
+      [f1]      nil
+  )
+
+(general-define-key
+   :keymaps 'company-search-map 
+   "C-n"     #'company-select-next-or-abort
+            "C-p"     #'company-select-previous-or-abort
+            "C-j"     #'company-select-next-or-abort
+            "C-k"     #'company-select-previous-or-abort
+                ;; "p*" '((lambda () (interactive) (counsel-git-grep (current-word))) :wk "Git grep current word")
+
+            "C-s"     (lambda () (interactive) (company-search-abort) (company-filter-candidates))
+            [escape]  #'company-search-abort)
+
+(eval-after-load 'comint
+  `(progn
+(general-define-key 
+  :keymaps 'comint-mode-map
+  "TAB" #'company-complete
+          [tab] #'company-complete)
+    )
+  )
+
+  (general-define-key :keymaps 'read-expression-map
+    "C-j" #'next-line-or-history-element
+    "C-k" #'previous-line-or-history-element)
 
 (evil-normalize-keymaps)
 

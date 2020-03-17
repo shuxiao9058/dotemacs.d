@@ -12,6 +12,13 @@
         ivy-count-format "(%d/%d ")
   (ivy-mode t))
 
+
+(use-package ivy-prescient
+  :straight t
+  :ensure t
+  :after ivy
+  :config (ivy-prescient-mode))
+
 (use-package flyspell-correct-ivy
   :straight t
   :after ivy
