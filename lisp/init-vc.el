@@ -4,7 +4,7 @@
 (use-package magit
     :straight t
     :commands (magit-file-delete magit-status magit-checkout)
-    :after evil
+    :hook (magit-pop-mode . hide-mode-line-mode)
     :init
     ;; Must be set early to prevent ~/.emacs.d/transient from being created
     (setq transient-levels-file  (concat poly-etc-dir "transient/levels")
@@ -22,17 +22,7 @@
 	  git-commit-finish-query-functions nil)
     ;; ;; Use flyspell in the commit buffer
     ;; (add-hook 'git-commit-setup-hook 'git-commit-turn-on-flyspell)
-    (add-hook 'magit-popup-mode-hook #'hide-mode-line-mode)
-
-    ;;   ;; Add --tags switch
-    ;;  (transient-append-suffix 'magit-fetch "-p"
-    ;;   '("-t" "Fetch all tags" ("-t" "--tags")))
-    ;;  (transient-append-suffix 'magit-pull "-r"
-    ;;   '("-a" "Autostash" "--autostash"))
-    :config
-    ;; ;; initialize magit-status and magit-commit in same mode as everything else
-    ;; (evil-set-initial-state 'magit-status-mode evil-default-state)
-    ;; (evil-set-initial-state 'magit-commit-mode evil-default-state)
+    ;; (add-hook 'magit-popup-mode-hook #'hide-mode-line-mode)
     )
 
 (use-package magit-gitflow
@@ -41,6 +31,7 @@
     :commands magit-gitflow-popup
     :hook (magit-mode . turn-on-magit-gitflow)
     )
+
 ;; git-gutter-plus - View, stage and revert Git changes from the buffer (inspired by package of same name from vim)
 (use-package git-gutter+
     :straight t
@@ -51,7 +42,9 @@
     :config
     (progn
       (global-git-gutter+-mode)
-      (use-package git-gutter-fringe+ :straight t)))
+      ))
+
+(use-package git-gutter-fringe+ :straight t)
 
 ;; git-messenger - Provides a function popup commit message at current line (port of package of same name from vim)
 (use-package git-messenger
@@ -80,51 +73,20 @@
 
 (use-package evil-magit
     :straight t
-    :after magit
+    :after (magit evil)
     :init
-    ;; (setq evil-magit-state 'normal
-    ;;       evil-magit-use-z-for-folds t)
-    :config
     (progn
-      (general-unbind magit-mode-map
-	  ;; Replaced by z1, z2, z3, etc
-	  "M-1" "M-2" "M-3" "M-4"
-	  "1" "2" "3" "4"
-	  "0") ; moved to g=
-
-      (evil-define-key* 'normal magit-status-mode-map [escape] nil) ; q is enough
-      (evil-define-key* '(normal visual) magit-mode-map
-			"%"  'magit-gitflow-popup
-			"zz" 'evil-scroll-line-to-center
-			"g=" 'magit-diff-default-context)
-
-      (general-def 'normal
-	  (magit-status-mode-map
-	   magit-stash-mode-map
-	   magit-revision-mode-map
-	   magit-diff-mode-map)
-	[tab] #'magit-section-toggle)
-
-      (eval-after-load 'git-rebase
-	`(progn
-	   (dolist (key '(("M-k" . "gk") ("M-j" . "gj")))
-	     (when-let (desc (assoc (car key) evil-magit-rebase-commands-w-descriptions))
-               (setcar desc (cdr key))))
-	   (evil-define-key* evil-magit-state git-rebase-mode-map
-			     "gj" #'git-rebase-move-line-down
-			     "gk" #'git-rebase-move-line-up)
-	   )
-	)
       (evil-set-initial-state 'magit-log-edit-mode 'insert)
       (evil-set-initial-state 'git-commit-mode 'insert)
-      ;; (evil-set-initial-state 'magit-commit-mode 'insert)
-      (evil-set-initial-state 'magit-commit-mode 'motion)
+      (evil-set-initial-state 'magit-commit-mode 'insert)
+      ;; (evil-set-initial-state 'magit-commit-mode 'motion)
       (evil-set-initial-state 'magit-log-mode 'motion)
       (evil-set-initial-state 'magit-wassup-mode 'motion)
       (evil-set-initial-state 'magit-mode 'motion)
       (evil-set-initial-state 'git-rebase-mode 'motion)
       )
     )
+
 
 ;; based on http://manuel-uberti.github.io/emacs/2018/02/17/magit-bury-buffer/
 (defun magit-kill-buffers ()
@@ -134,25 +96,6 @@
     (magit-restore-window-configuration)
     (mapc #'kill-buffer buffers)))
 
-(eval-after-load 'magit
-  `(progn
-     ;; Temporary workaround for +magit/quit hang with lots of buffers
-     (general-define-key :keymaps 'magit-status-mode-map
-			 [remap magit-mode-bury-buffer] #'magit-kill-buffers)
-     )
-  )
-
-;; Close transient with ESC
-(define-key transient-map [escape] #'transient-quit-one)
-
-;; ;;; functions
-;; ;; key binding for magit status
-;; (defun magit-status-and-focus-unstaged ()
-;;   "Opens the magit-status view and focuses the cursor on the first unstaged file."
-;;   (interactive)
-;;   (call-interactively 'magit-status)
-;;   (magit-jump-to-unstaged)
-;;   (magit-goto-next-section))
 
 (provide 'init-vc)
 ;;; init-vc.el ends here

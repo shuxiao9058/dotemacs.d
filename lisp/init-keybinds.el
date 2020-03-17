@@ -310,6 +310,13 @@
 		    [f1]      nil
 		    )
 
+
+;; Close transient with esc/q
+(general-define-key :keymaps 'transient-map
+		    [escape] #'transient-quit-one
+		    "q" #'transient-quit-one
+		    )
+
 ;; (general-define-key
 ;;    :keymaps 'company-active-map
 ;;    "TAB" #'company-select-next
@@ -334,6 +341,46 @@
      (general-define-key :keymaps 'comint-mode-map
 			 "TAB" #'company-complete
 			 [tab] #'company-complete)
+     )
+  )
+
+
+;;; magit
+(eval-after-load 'magit
+  `(progn
+     ;; Temporary workaround for +magit/quit hang with lots of buffers
+     (general-define-key :keymaps 'magit-status-mode-map
+			 [remap magit-mode-bury-buffer] #'magit-kill-buffers)
+
+     (general-unbind magit-mode-map
+	 ;; Replaced by z1, z2, z3, etc
+	 "M-1" "M-2" "M-3" "M-4"
+	 "1" "2" "3" "4"
+	 "0") ; moved to g=
+
+     (general-def 'normal
+	 (magit-status-mode-map
+	  magit-stash-mode-map
+	  magit-revision-mode-map
+	  magit-diff-mode-map)
+       [tab] #'magit-section-toggle)
+     (evil-define-key* 'normal magit-status-mode-map [escape] nil) ; q is enough
+     (evil-define-key* '(normal visual) magit-mode-map
+		       "%"  'magit-gitflow-popup
+		       "zz" 'evil-scroll-line-to-center
+		       "g=" 'magit-diff-default-context)
+     )
+  )
+
+
+(eval-after-load 'git-rebase
+  `(progn
+     (dolist (key '(("M-k" . "gk") ("M-j" . "gj")))
+       (when-let (desc (assoc (car key) evil-magit-rebase-commands-w-descriptions))
+         (setcar desc (cdr key))))
+     (evil-define-key* evil-magit-state git-rebase-mode-map
+		       "gj" #'git-rebase-move-line-down
+		       "gk" #'git-rebase-move-line-up)
      )
   )
 
