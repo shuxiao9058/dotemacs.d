@@ -2,13 +2,15 @@
 
 (use-package lua-mode
     :straight t
+    :after company
     :custom
     (lua-indent-level tab-width)
     (lua-indent-string-contents t)
     :config
-    (add-hook 'lua-mode-hook #'lsp-deferred)
+    (setq-local company-backends
+                (let ((b #'company-tabnine))
+                  (cons b (remove b company-backends))))
     )
-
 
 ;; (use-package company-lua
 ;;     :straight t

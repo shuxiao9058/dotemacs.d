@@ -5,14 +5,13 @@
     :after company
     :ensure t
     :commands (godoc gofmt gofmt-before-save)
+    :hook (befor-save . gofmt-before-save)
     :config
     (setq gofmt-command "goimports")
-    (add-hook 'before-save-hook #'gofmt-before-save)
-
-    ;; (add-to-list (make-local-variable 'company-backends) #'company-tabnine)
-    (setq-local company-backends
-		(let ((b #'company-tabnine))
-		  (cons b (remove b company-backends))))
+    ;; (add-hook 'before-save-hook #'gofmt-before-save)
+    ;; (setq-local company-backends
+    ;; 		(let ((b #'company-tabnine))
+    ;; 		  (cons b (remove b company-backends))))
     )
 
 (use-package gorepl-mode

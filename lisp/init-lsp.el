@@ -2,56 +2,65 @@
 
 (use-package lsp-mode
     :straight t
-    :commands (lsp lsp-deferred)
-    :hook ((java-mode python-mode
-		      ;; go-mode
-		      scala-mode
-		      js-mode js2-mode typescript-mode web-mode) . lsp)
+    :commands lsp
+    :hook (((java-mode
+             python-mode
+	     lua-mode
+	     go-mode
+	     scala-mode
+	     js-mode
+             js2-mode
+             typescript-mode
+             web-mode) . lsp)
+	   ;; if you want which-key integration
+           (lsp-mode . lsp-enable-which-key-integration)
+	   )
     :custom
     (lsp-auto-guess-root nil)
     (lsp-prefer-flymake nil) ;; Use flycheck instead of flymake
     (lsp-file-watch-threshold 2000)
     :bind (:map lsp-mode-map ("C-c C-f" . lsp-format-buffer))
     :config
-    ;; 注册emmy-lua-lsp
-    (lsp-register-client
-     (make-lsp-client :new-connection (lsp-stdio-connection (list
-                                                             "/usr/bin/java"
-                                                             "-cp"
-                                                             (expand-file-name  "bin/EmmyLua-LS-all.jar" poly-local-dir)
-                                                             "com.tang.vscode.MainKt"))
-                      :major-modes '(lua-mode)
-                      :server-id 'emmy-lua
-                      :priority 2
-                      :notification-handlers
-                      (lsp-ht
-                       ("emmy/progressReport" 'ignore))
-                      ))
+    (progn
+      ;; 注册emmy-lua-lsp
+      (lsp-register-client
+       (make-lsp-client :new-connection (lsp-stdio-connection (list
+                                                               "/usr/bin/java"
+                                                               "-cp"
+                                                               (expand-file-name  "bin/EmmyLua-LS-all.jar" poly-local-dir)
+                                                               "com.tang.vscode.MainKt"))
+			:major-modes '(lua-mode)
+			:server-id 'emmy-lua
+			:priority 2
+			:notification-handlers
+			(lsp-ht
+			 ("emmy/progressReport" 'ignore))
+			))
 
-    (setq lsp-eldoc-hook '(lsp-document-highlight))
+      ;; (make-lsp-client :new-connection (lsp-stdio-connection
+      ;; 					(list (expand-file-name "workspace/lua-language-server/bin/macOS/lua-language-server" "~")
+      ;;                                         "-E"
+      ;;                                         (expand-file-name "workspace/lua-language-server/main.lua" "~")))
+      ;;                  :major-modes '(lua-mode)
+      ;; 		       :priority 2
+      ;;                  :server-id 'lua-language-server)
+      ;; (setq lsp-eldoc-hook '(lsp-document-highlight))
 
-    ;; cancel warning
-    (advice-add 'lsp-warn
-		:around (lambda (orig-func &rest r)
-                          (message (apply #'format-message r))))
-    )
-
-;;; (use-package lsp-haskell
-;;;   :straight t)
+      ;; cancel warning
+      (advice-add 'lsp-warn
+		  :around (lambda (orig-func &rest r)
+                            (message (apply #'format-message r))))
+      ))
 
 (use-package lsp-ui
     :straight t
     :after lsp-mode
     :diminish
     :commands lsp-ui-mode
-    :custom-face
-    (lsp-ui-doc-background ((t (:background nil))))
-    (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
-    :hook ((lsp-mode-hook . lisp-ui-mode))
-    ;; :bind (:map lsp-ui-mode-map
-    ;;             ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
-    ;;             ([remap xref-find-references] . lsp-ui-peek-find-references)
-    ;;             ("C-c u" . lsp-ui-imenu))
+    ;; :custom-face
+    ;; (lsp-ui-doc-background ((t (:background nil))))
+    ;; (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
+    :hook (lsp-mode-hook . lisp-ui-mode)
     :general
     (nmap
      :keymaps 'lsp-ui-mode-map
@@ -87,11 +96,6 @@
       (setq mode-line-format nil))
     )
 
-(use-package flycheck
-    :straight t
-    :config
-    (global-flycheck-mode))
-
 (use-package lsp-ivy
     :straight t
     :commands lsp-ivy-workspace-symbol)
@@ -125,12 +129,6 @@
                     ;; company-preview-frontend
                     company-echo-metadata-frontend))
     )
-
-
-(use-package zeal-at-point
-    :straight t
-    :when (and IS-LINUX (display-graphic-p))
-    :defer t)
 
 ;;;; disable annoying notifications
 (defcustom message-filter-regexp-list '("^Starting new Ispell process \\[.+\\] \\.\\.\\.$"

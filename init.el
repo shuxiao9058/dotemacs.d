@@ -50,7 +50,6 @@
 (require 'init-lisp)
 (require 'init-web)
 
-
 ;; hydra
 (require 'init-hydra)
 
