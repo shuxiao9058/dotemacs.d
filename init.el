@@ -22,8 +22,8 @@
       nil 'nomessage)
 
 ;; lisp
-(add-to-list 'load-path 
-    (concat user-emacs-directory "lisp"))
+(add-to-list 'load-path
+	     (concat user-emacs-directory "lisp"))
 
 ;;; core
 (require 'init-env)
@@ -42,7 +42,6 @@
 
 ;;; programming
 (require 'init-projectile)
-(require 'init-vc)
 (require 'init-company)
 (require 'init-lsp)
 (require 'init-go)
@@ -50,10 +49,14 @@
 (require 'init-lisp)
 (require 'init-web)
 
+;;; magit
+(require 'init-vc)
+
 ;; hydra
 (require 'init-hydra)
 
-;;; keybinds
-(require 'init-keybinds)
+;;; keybinds 
+;;; early load with general
+;;; (require 'init-keybinds)
 
 ;;; init.el ends here

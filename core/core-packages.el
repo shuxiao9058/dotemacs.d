@@ -14,7 +14,18 @@
 (use-package general
   :straight t
   ;; :after evil
+  ;; :ensure t
+  :commands (general-define-key general-override-mode general-evil-setup general--simulate-keys)
+  :config
+  (progn
+    (general-evil-setup)
+
+    ;;; load keybinds
+    (load-file 
+      (expand-file-name "lisp/init-keybinds.el" user-emacs-directory))
+    )
   )
+
 ;;
 ;;; Packages
 (use-package which-key
@@ -158,10 +169,6 @@
   :after evil
   :config
   (evil-commentary-mode 1)
-  :general
-  ('normal override-global-map
-     "gc" 'evil-commentary
-     "gC" 'evil-commentary-line)
   )
 
 (use-package evil-search-highlight-persist

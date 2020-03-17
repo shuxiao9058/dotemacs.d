@@ -31,17 +31,22 @@
 ;;
 ;;; General + leader/localleader keys
 ;; Removing emacs state from non-normal list allow the use of SPC
-(delete 'emacs general-non-normal-states)
+;; (delete 'emacs general-non-normal-states)
 
-					; disable C-z
+;; disable C-z
 ;; (global-set-key (kbd "C-z") nil)
 (general-define-key "C-z" nil)
 
-;; q quit, not evil-record-macro
-(general-define-key :keymaps 'evil-normal-state-map
-		    "q" nil
-		    "Q" #'evil-record-macro)
+(general-define-key :states 'normal
+		    "q" nil ;; q quit, not evil-record-macro
+		    "Q" #'evil-record-macro
+		    "gc" #'evil-commentary
+		    "gC" #'evil-commentary-line)
 
+(general-define-key :keymaps 'flyspell-mode-map
+		    :states '(normal visual)
+		    "zs" #'flyspell-correct-word-generic
+		    "z=" #'flyspell-buffer)
 
 ;;; help-map
 (general-define-key :keymaps 'help-map
@@ -344,7 +349,6 @@
      )
   )
 
-
 ;;; magit
 (eval-after-load 'magit
   `(progn
@@ -372,22 +376,19 @@
      )
   )
 
-
 (eval-after-load 'git-rebase
   `(progn
      (dolist (key '(("M-k" . "gk") ("M-j" . "gj")))
        (when-let (desc (assoc (car key) evil-magit-rebase-commands-w-descriptions))
-         (setcar desc (cdr key))))
+	 (setcar desc (cdr key))))
      (evil-define-key* evil-magit-state git-rebase-mode-map
 		       "gj" #'git-rebase-move-line-down
 		       "gk" #'git-rebase-move-line-up)
-     )
-  )
+     ))
 
 (general-define-key :keymaps 'read-expression-map
 		    "C-j" #'next-line-or-history-element
 		    "C-k" #'previous-line-or-history-element)
-
 
 (evil-normalize-keymaps)
 

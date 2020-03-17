@@ -26,11 +26,7 @@
   :hook
   (text-mode . flyspell-mode)
   (prog-mode . flyspell-prog-mode)
-  :general
-  (:keymaps '(flyspell-mode-map)
-        :states '(normal visual)
-        "zs" 'flyspell-correct-word-generic
-        "z=" 'flyspell-buffer))
+  )
 
 (provide 'init-ivy)
 ;;; init-ivy.el ends here
