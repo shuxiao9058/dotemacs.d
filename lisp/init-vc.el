@@ -87,7 +87,6 @@
       )
     )
 
-
 ;; based on http://manuel-uberti.github.io/emacs/2018/02/17/magit-bury-buffer/
 (defun magit-kill-buffers ()
   "Restore window configuration and kill all Magit buffers."
