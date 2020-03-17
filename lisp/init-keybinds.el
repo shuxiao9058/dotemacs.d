@@ -33,6 +33,15 @@
 ;; Removing emacs state from non-normal list allow the use of SPC
 (delete 'emacs general-non-normal-states)
 
+					; disable C-z
+;; (global-set-key (kbd "C-z") nil)
+(general-define-key "C-z" nil)
+
+;; q quit, not evil-record-macro
+(general-define-key :keymaps 'evil-normal-state-map
+		    "q" nil
+		    "Q" #'evil-record-macro)
+
 
 ;;; help-map
 (general-define-key :keymaps 'help-map
@@ -153,6 +162,12 @@
 		    "g'" '(forge-dispatch :wk "Forge dispatch")
 		    "gb" '(magit-branch-checkout :wk "Magit switch branch")
 		    "gg" '(magit-status :wk "Magit status")
+		    ;; "gg" '((lambda () (interactive)
+		    ;; 	     (when (and buffer-file-name (buffer-modified-p))
+		    ;; 	       (save-buffer))
+		    ;; 	     ;; (save-buffer-if-dirty)
+		    ;; 	     (magit-status-and-focus-unstaged)
+		    ;; 	     ) :wk "Magit status")
 		    "gR" '(vc-revert :wk "Git revert file")
 		    "gD" '(magit-file-delete :wk "Magit file delete")
 		    "gB" '(magit-blame-addition :wk "Magit blame")
@@ -325,6 +340,7 @@
 (general-define-key :keymaps 'read-expression-map
 		    "C-j" #'next-line-or-history-element
 		    "C-k" #'previous-line-or-history-element)
+
 
 (evil-normalize-keymaps)
 
