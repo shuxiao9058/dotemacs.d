@@ -390,7 +390,7 @@
 		    "C-j" #'next-line-or-history-element
 		    "C-k" #'previous-line-or-history-element)
 
-(evil-normalize-keymaps)
+;; (evil-normalize-keymaps)
 
 (provide 'init-keybinds)
 ;;; init-keybinds.el ends here

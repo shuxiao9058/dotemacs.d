@@ -55,8 +55,8 @@
 ;; hydra
 (require 'init-hydra)
 
-;;; keybinds 
-;;; early load with general
+;;; keybinds
+;;; early load with general in core
 ;;; (require 'init-keybinds)
 
 ;;; init.el ends here
