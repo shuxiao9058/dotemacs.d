@@ -1,48 +1,48 @@
 ;;; core-packages.el -*- lexical-binding: t; -*-
 
 (use-package autorevert
-  :straight nil
-  ;; :blackout t
-  ;; :hook
-  :hook (dired-mode . auto-revert-mode)
-  :diminish auto-revert-mode
-  :config
-  (global-auto-revert-mode +1)
-  :custom
-  (auto-revert-verbose nil))
+    :straight nil
+    ;; :blackout t
+    ;; :hook
+    :hook (dired-mode . auto-revert-mode)
+    :diminish auto-revert-mode
+    :config
+    (global-auto-revert-mode +1)
+    :custom
+    (auto-revert-verbose nil))
 
 (use-package general
-  :straight t
-  ;; :after evil
-  ;; :ensure t
-  :commands (general-define-key general-override-mode general-evil-setup general--simulate-keys)
-  :config
-  (progn
-    (general-evil-setup)
+    :straight t
+    ;; :after evil
+    ;; :ensure t
+    :commands (general-define-key general-override-mode general-evil-setup general--simulate-keys)
+    :config
+    (progn
+      (general-evil-setup)
 
     ;;; load keybinds
-    (load-file 
-      (expand-file-name "lisp/init-keybinds.el" user-emacs-directory))
+      (load
+       (expand-file-name "lisp/init-keybinds.el" user-emacs-directory) nil t)
+      )
     )
-  )
 
 ;;
 ;;; Packages
 (use-package which-key
-  :straight t
-  :defer 1
-  :init
-  (setq which-key-sort-order #'which-key-prefix-then-key-order
-        which-key-sort-uppercase-first nil
-        which-key-add-column-padding 1
-        which-key-max-display-columns nil
-        which-key-min-display-lines 4
-        which-key-side-window-slot -10)
-  :config
-  ;; general improvements to which-key readability
-  (set-face-attribute 'which-key-local-map-description-face nil :weight 'bold)
-  (which-key-setup-side-window-bottom)
-  (which-key-mode +1))
+    :straight t
+    :defer 1
+    :init
+    (setq which-key-sort-order #'which-key-prefix-then-key-order
+          which-key-sort-uppercase-first nil
+          which-key-add-column-padding 1
+          which-key-max-display-columns nil
+          which-key-min-display-lines 4
+          which-key-side-window-slot -10)
+    :config
+    ;; general improvements to which-key readability
+    (set-face-attribute 'which-key-local-map-description-face nil :weight 'bold)
+    (which-key-setup-side-window-bottom)
+    (which-key-mode +1))
 
 ;;; magit
 (use-package hide-mode-line
@@ -50,75 +50,77 @@
     :commands (hide-mode-line-mode))
 
 (use-package xclip
-  :straight t
-  :if IS-LINUX
-  :ensure t
-  :custom
-  (xclip-method 'xclip)
-  :config
-      (xclip-mode +1)
-      (xterm-mouse-mode +1)
-  )
+    :straight t
+    :if IS-LINUX
+    :ensure t
+    :custom
+    (xclip-method 'xclip)
+    :config
+    (xclip-mode +1)
+    (xterm-mouse-mode +1)
+    )
 
 ;; pbcopy
 (use-package pbcopy
-  :straight t
-  :if (and IS-MAC (not (display-graphic-p)))
-  :init (turn-on-pbcopy)
-)
+    :straight t
+    :if (and IS-MAC (not (display-graphic-p)))
+    :init (turn-on-pbcopy)
+    )
 
 ;;; evil
 (use-package evil
-  :straight t
-  :ensure t
-  :after evil-leader
-  :commands evil-normalize-keymaps
-  :init
-  (setq ;; evil-want-keybinding nil ;; needed by evil-collection
-        evil-want-C-u-scroll t
-        evil-search-module 'evil-search)
-  :config
-  (evil-mode +1)
-  (add-to-list 'evil-insert-state-modes 'shell-mode)
-  (add-to-list 'evil-insert-state-modes 'dashboard-mode)
-  (add-to-list 'evil-insert-state-modes 'git-timemachine-mode))
+    :straight t
+    :ensure t
+    ;; :after evil-leader
+    :commands evil-normalize-keymaps
+    :init
+    (setq ;; evil-want-keybinding nil ;; needed by evil-collection
+     evil-want-C-u-scroll t
+     evil-search-module 'evil-search)
+    :config
+    (evil-mode +1)
+    (add-to-list 'evil-insert-state-modes 'shell-mode)
+    (add-to-list 'evil-insert-state-modes 'dashboard-mode)
+    (add-to-list 'evil-insert-state-modes 'git-timemachine-mode)
+    )
 
 
-(use-package evil-leader
-  :straight t
-  :init
-  (setq evil-leader/in-all-states t)
-  (global-evil-leader-mode)
-  :config
-  (evil-leader/set-leader "<SPC>"))
-
-(use-package evil-escape
-  :after evil
-  :straight t
-  :init
-  (setq evil-escape-excluded-states '(normal visual multiedit emacs motion)
-        evil-escape-key-sequence "jk"
-        evil-escape-delay 0.25)
-  :config
-  (push #'minibufferp evil-escape-inhibit-functions)
-  ;; (map! :irvo "C-g" #'evil-escape)
-  (evil-escape-mode))
+;; (use-package evil-leader
+;;     :straight t
+;;     :init
+;;     (setq evil-leader/in-all-states t)
+;;     (global-evil-leader-mode)
+;;     ;; :config
+;;     ;; (evil-leader/set-leader "<SPC>")
+;;     )
 
 (use-package evil-escape
-  :after evil
-  :straight t
-  :init
-  (setq evil-escape-excluded-states '(normal visual multiedit emacs motion)
-        evil-escape-key-sequence "jk"
-        evil-escape-delay 0.25)
-  :config
-  (push #'minibufferp evil-escape-inhibit-functions)
-  ;; (map! :irvo "C-g" #'evil-escape)
-  (evil-escape-mode))
+    :after evil
+    :straight t
+    :init
+    (setq evil-escape-excluded-states '(normal visual multiedit emacs motion)
+          evil-escape-key-sequence "jk"
+          evil-escape-delay 0.25)
+    :config
+    (push #'minibufferp evil-escape-inhibit-functions)
+    ;; (map! :irvo "C-g" #'evil-escape)
+    (evil-escape-mode))
+
+(use-package evil-escape
+    :after evil
+    :straight t
+    :init
+    (setq evil-escape-excluded-states '(normal visual multiedit emacs motion)
+          evil-escape-key-sequence "jk"
+          evil-escape-delay 0.25)
+    :config
+    (push #'minibufferp evil-escape-inhibit-functions)
+    ;; (map! :irvo "C-g" #'evil-escape)
+    (evil-escape-mode))
 
 (use-package evil-exchange
-  :commands evil-exchange
-  :straight t)
+    :commands evil-exchange
+    :straight t)
 
 ;;; TODO
 ;;; Press “%” to jump between matched tags in Emacs. For example, in HTML “<div>” and “</div>” are a pair of tags.
@@ -131,82 +133,82 @@
 ;;   )
 
 (use-package evil-snipe
-  :commands (evil-snipe-mode evil-snipe-override-mode
-           evil-snipe-local-mode evil-snipe-override-local-mode)
-  :straight t
-  :init
-  (add-hook 'prog-mode-hook 'evil-snipe-mode)
-  (setq evil-snipe-smart-case t
-        evil-snipe-scope 'line
-        evil-snipe-repeat-scope 'visible
-        evil-snipe-char-fold t
-        evil-snipe-disabled-modes '(magit-mode elfeed-show-mode elfeed-search-mode)
-        evil-snipe-aliases '((?\[ "[[{(]")
-                             (?\] "[]})]")
-                             (?\; "[;:]")))
-  :config
-  (evil-snipe-mode +1)
-  (evil-snipe-override-mode +1))
+    :commands (evil-snipe-mode evil-snipe-override-mode
+			       evil-snipe-local-mode evil-snipe-override-local-mode)
+    :straight t
+    :init
+    (add-hook 'prog-mode-hook 'evil-snipe-mode)
+    (setq evil-snipe-smart-case t
+          evil-snipe-scope 'line
+          evil-snipe-repeat-scope 'visible
+          evil-snipe-char-fold t
+          evil-snipe-disabled-modes '(magit-mode elfeed-show-mode elfeed-search-mode)
+          evil-snipe-aliases '((?\[ "[[{(]")
+                               (?\] "[]})]")
+                               (?\; "[;:]")))
+    :config
+    (evil-snipe-mode +1)
+    (evil-snipe-override-mode +1))
 
 (use-package evil-surround
-  :commands (global-evil-surround-mode
-             evil-surround-edit
-             evil-Surround-edit
-             evil-surround-region)
-  :straight t
-  :config
-  (global-evil-surround-mode 1))
+    :commands (global-evil-surround-mode
+               evil-surround-edit
+               evil-Surround-edit
+               evil-surround-region)
+    :straight t
+    :config
+    (global-evil-surround-mode 1))
 
 (use-package evil-args
-  :commands (evil-inner-arg evil-outer-arg
-          evil-forward-arg evil-backward-arg
-          evil-jump-out-args)
-  :straight t)
+    :commands (evil-inner-arg evil-outer-arg
+			      evil-forward-arg evil-backward-arg
+			      evil-jump-out-args)
+    :straight t)
 
 (use-package evil-commentary
-  :commands (evil-commentary evil-commentary-yank evil-commentary-line)
-  :straight t
-  :after evil
-  :config
-  (evil-commentary-mode 1)
-  )
+    :commands (evil-commentary evil-commentary-yank evil-commentary-line)
+    :straight t
+    :after evil
+    :config
+    (evil-commentary-mode 1)
+    )
 
 (use-package evil-search-highlight-persist
-  :after evil
-  :straight t
-  :config
-  (global-evil-search-highlight-persist t))
+    :after evil
+    :straight t
+    :config
+    (global-evil-search-highlight-persist t))
 
 (use-package evil-multiedit
-  :after evil
-  :straight t
-  :config
-  (evil-multiedit-default-keybinds))
+    :after evil
+    :straight t
+    :config
+    (evil-multiedit-default-keybinds))
 
 ;;; TODO
 (use-package evil-mc
-   :after evil
-   :straight t
-   :init
-  ;; The included keybindings are too imposing and are likely to cause
-  ;; conflicts, so we'll set them ourselves.
-  (defvar evil-mc-key-map (make-sparse-keymap))
+    :after evil
+    :straight t
+    :init
+    ;; The included keybindings are too imposing and are likely to cause
+    ;; conflicts, so we'll set them ourselves.
+    (defvar evil-mc-key-map (make-sparse-keymap))
 
-   :config
-   (global-evil-mc-mode  +1)
+    :config
+    (global-evil-mc-mode  +1)
 
-  ;; REVIEW This is tremendously slow on macos and windows for some reason.
-  (setq evil-mc-enable-bar-cursor (not (or IS-MAC IS-WINDOWS)))
+    ;; REVIEW This is tremendously slow on macos and windows for some reason.
+    (setq evil-mc-enable-bar-cursor (not (or IS-MAC IS-WINDOWS)))
 
-  (eval-after-load 'smartparens
-  `(progn
-    ;; Make evil-mc cooperate with smartparens better
-    (let ((vars (cdr (assq :default evil-mc-cursor-variables))))
-      (unless (memq (car sp--mc/cursor-specific-vars) vars)
-        (setcdr (assq :default evil-mc-cursor-variables)
-                (append vars sp--mc/cursor-specific-vars))))))
+    (eval-after-load 'smartparens
+      `(progn
+	 ;; Make evil-mc cooperate with smartparens better
+	 (let ((vars (cdr (assq :default evil-mc-cursor-variables))))
+	   (unless (memq (car sp--mc/cursor-specific-vars) vars)
+             (setcdr (assq :default evil-mc-cursor-variables)
+                     (append vars sp--mc/cursor-specific-vars))))))
 
-   )
+    )
 
 ;; ;; Evil, probably the best thing since Evil.
 ;; (use-package evil-collection
@@ -239,7 +241,10 @@
                                    git-rebase-mode))
     (turn-off-evil-mode)
     (set-cursor-color "red")))
-(add-hook 'after-change-major-mode-hook #'my-major-mode-evil-state-adjust)
+
+(eval-after-load 'evil
+  `(progn
+  (add-hook 'after-change-major-mode-hook #'my-major-mode-evil-state-adjust)
 
 ;; Change cursor color depending on mode
 (setq evil-emacs-state-cursor `("red" hbar))     ; _
@@ -286,6 +291,10 @@
 
 (defadvice evil-ex-search-previous (after advice-for-evil-ex-search-previous activate)
   (recenter))
+
+    ))
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; end of evil
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

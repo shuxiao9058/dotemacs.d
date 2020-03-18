@@ -82,7 +82,7 @@
     (lsp-ui-sideline-enable nil)
     (lsp-ui-sideline-ignore-duplicate t)
     (lsp-ui-sideline-show-code-actions nil)
-    (lsp-ui-flycheck-live-reporting nil)
+    (lsp-flycheck-live-reporting nil)
     (lsp-ui-sideline-show-diagnostics nil)
     (lsp-ui-doc-background (doom-color 'base4))
     (lsp-ui-doc-border (doom-color 'fg))
@@ -129,34 +129,6 @@
                     ;; company-preview-frontend
                     company-echo-metadata-frontend))
     )
-
-;;;; disable annoying notifications
-(defcustom message-filter-regexp-list '("^Starting new Ispell process \\[.+\\] \\.\\.\\.$"
-                                        "^Ispell process killed$"
-                                        ".+expected selector or type assertion, found.+"
-                                        ".+expected identifier on left side.+"
-                                        "^LSP ::.+"
-                                        ".+and \d{1,10} more errors.+"
-                                        "Wrote "
-                                        "Liberime: start with shared dir" ;;; liberime
-                                        )
-  "filter formatted message string to remove noisy messages"
-  :type '(list string)
-  :group 'general)
-
-(defadvice message (around message-filter-by-regexp activate)
-  (if (not (ad-get-arg 0))
-      ad-do-it
-    (let ((formatted-string (apply 'format (ad-get-args 0))))
-      (if (and (stringp formatted-string)
-	       (cl-some (lambda (re) (string-match re formatted-string)) message-filter-regexp-list))
-	  (let ((inhibit-read-only t))
-	    (with-current-buffer "*Messages*"
-	      (goto-char (point-max))
-	      (insert formatted-string "\n")))
-	(progn
-	  (ad-set-args 0 `("%s" ,formatted-string))
-	  ad-do-it)))))
 
 (provide 'init-lsp)
 ;;; init-lsp ends here

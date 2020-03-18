@@ -37,6 +37,9 @@
 ;; (global-set-key (kbd "C-z") nil)
 (general-define-key "C-z" nil)
 
+;; switch input method
+(general-define-key "C-\\" #'toggle-input-method)
+
 (general-define-key :states 'normal
 		    "q" nil ;; q quit, not evil-record-macro
 		    "Q" #'evil-record-macro

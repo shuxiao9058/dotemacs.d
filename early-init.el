@@ -28,4 +28,3 @@
 (advice-add #'x-apply-session-resources :override #'ignore)
 
 ;; (setq warning-minimum-level :emergency)
-

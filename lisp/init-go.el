@@ -2,16 +2,12 @@
 
 (use-package go-mode
     :straight t
-    :after company
     :ensure t
     :commands (godoc gofmt gofmt-before-save)
     :hook (befor-save . gofmt-before-save)
     :config
     (setq gofmt-command "goimports")
-    ;; (add-hook 'before-save-hook #'gofmt-before-save)
-    ;; (setq-local company-backends
-    ;; 		(let ((b #'company-tabnine))
-    ;; 		  (cons b (remove b company-backends))))
+    (setenv "GO111MODULE" "on")
     )
 
 (use-package gorepl-mode
@@ -19,22 +15,16 @@
     :after go-mode
     :commands gorepl-run-load-current-file)
 
-;; (use-package flycheck-golangci-lint
-;;   :straight t
-;;   :after go-mode
-;;   :hook (go-mode . flycheck-golangci-lint-setup)
-;;   :config
-;;   (setenv "GO111MODULE" "on")
-;;   (setq flycheck-golangci-lint-enable-all t)
-;;   ;; (setq flycheck-golangci-lint-config (concat (expand-file-name "~") "/.config/golangci-lint/golangci.yml"))
-;;   (setq flycheck-golangci-lint-fast t)
-;;   (setq flycheck-golangci-lint-tests t))
-
-;; (use-package company-go
-;;     :straight t
-;;   :after go-mode
-;;   :config
-;;   (setq company-go-show-annotation t))
+(use-package flycheck-golangci-lint
+    :straight t
+    :after go-mode
+    :hook (go-mode . flycheck-golangci-lint-setup)
+    :custom
+    (flycheck-golangci-lint-enable-all t)
+    (flycheck-golangci-lint-fast t)
+    (flycheck-golangci-lint-config
+     (expand-file-name "golangci.yml" "~/.config/golangci-lint"))
+    (flycheck-golangci-lint-tests t))
 
 (use-package go-eldoc
     :straight t

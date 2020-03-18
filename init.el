@@ -21,6 +21,9 @@
 (load (concat user-emacs-directory "core/core")
       nil 'nomessage)
 
+;; (add-to-list 'dynamic-library-alist
+;;     '(erime（expand-file-name poly-local-dir "lib/liberime.so"))
+
 ;; lisp
 (add-to-list 'load-path
 	     (concat user-emacs-directory "lisp"))
