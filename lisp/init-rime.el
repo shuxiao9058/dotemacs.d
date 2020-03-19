@@ -1,27 +1,18 @@
 ;;; lisp/init-rime.el -*- lexical-binding: t; -*-
 
 (use-package rime
-    :straight (
+    :straight (rime
 	       :host github
 	       :repo "DogLooksGood/emacs-rime"
-	       :branch "lib"
-               :files ("*.el" "Makefile" "lib.c"))
-    :defer 1
-    :init
+               :files (:defaults "rime.el" "lib.c" "Makefile"))
+    :defer t
     :custom
+    (default-input-method "rime")
     ;; (rime-librime-root (concat user-emacs-directory "librime/dist"))
     (rime-librime-root "/usr/local")
-    ;; (rime-librime-path "/usr/local")
     (rime-show-candidate 'posframe)
     ;; (rime-share-data-dir "")
-    (rime-user-dir (expand-file-name "rime" poly-local-dir))
-    :config
-    (setq default-input-method "rime"
-          ;; rime-show-candidate 'overlay
-          ;; rime-show-candidate 'message
-          ;; rime-show-candidate 'minibuffer
-          )
-    )
+    (rime-user-data-dir (expand-file-name "rime" poly-local-dir)))
 
 (provide 'init-rime)
 ;;; init-rime.el ends here

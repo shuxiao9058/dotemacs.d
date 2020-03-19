@@ -43,6 +43,9 @@
 (require 'init-vterm)
 ;; (require 'init-dired)
 
+;;; editor
+(require 'init-markdown)
+
 ;;; programming
 (require 'init-projectile)
 (require 'init-company)
@@ -51,6 +54,9 @@
 (require 'init-lua)
 (require 'init-lisp)
 (require 'init-web)
+
+;;; functions
+(require 'init-utils)
 
 ;;; magit
 (require 'init-vc)

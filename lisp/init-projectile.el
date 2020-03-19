@@ -32,6 +32,9 @@
   :config
   (counsel-projectile-mode))
 
+
+
+
 (provide 'init-projectile)
 
 ;;; init-projectile.el ends here

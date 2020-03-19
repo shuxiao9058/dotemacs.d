@@ -153,6 +153,7 @@
 		    "si" '(imenu :wk "Jump to symbol")
 		    "sL" '(ffap-menu :wk "Jump to link")
 		    "sj" '(evil-show-jumps :wk "Jump list")
+        ;; "sp" '(+utils:search-project :wk "Search project")
 		    "sm" '(evil-show-marks :wk "Jump to mark")
 		    "ss" '(swiper-isearch :wk "Search Buffer")
 		    "sS" '(swiper-isearch-thing-at-point :wk "Search Buffer for thing at point")
@@ -299,25 +300,6 @@
   (general-define-key
    "TAB" 'company-indent-or-complete-common))
 
-;;; company-active-map
-(general-define-key :keymaps 'company-active-map
-		    "C-w"     nil  ; don't interfere with `evil-delete-backward-word'
-		    "C-n"     #'company-select-next
-		    "C-p"     #'company-select-previous
-		    "C-j"     #'company-select-next
-		    "C-k"     #'company-select-previous
-		    "C-h"     #'company-show-doc-buffer
-		    "C-u"     #'company-previous-page
-		    "C-d"     #'company-next-page
-		    "C-s"     #'company-filter-candidates
-		    "C-S-s"  #'counsel-company
-		    "C-SPC"   #'company-complete-common
-		    "TAB"     #'company-complete-common-or-cycle
-		    [tab]     #'company-complete-common-or-cycle
-		    [backtab] #'company-select-previous
-		    [f1]      nil
-		    )
-
 
 ;; Close transient with esc/q
 (general-define-key :keymaps 'transient-map
@@ -334,23 +316,67 @@
 ;;    "C-j" #'company-complete-selection
 ;;    )
 
+
+
+;;; start of company
+;;; company-active-map
+(general-define-key :keymaps 'company-active-map
+        "C-w"     nil  ; don't interfere with `evil-delete-backward-word'
+        "C-n"     #'company-select-next
+        "C-p"     #'company-select-previous
+        "C-j"     #'company-select-next
+        "C-k"     #'company-select-previous
+        "C-h"     #'company-show-doc-buffer
+        "C-u"     #'company-previous-page
+        "C-d"     #'company-next-page
+        "C-s"     #'company-filter-candidates
+        "C-S-s"  #'counsel-company
+        "C-SPC"   #'company-complete-common
+        "TAB"     #'company-complete-common-or-cycle
+        [tab]     #'company-complete-common-or-cycle
+        [backtab] #'company-select-previous
+        [f1]      nil
+        )
+
 (general-define-key :keymaps 'company-search-map
 		    "C-n"     #'company-select-next-or-abort
 		    "C-p"     #'company-select-previous-or-abort
 		    "C-j"     #'company-select-next-or-abort
 		    "C-k"     #'company-select-previous-or-abort
-		    ;; "p*" '((lambda () (interactive) (counsel-git-grep (current-word))) :wk "Git grep current word")
-
 		    "C-s"     (lambda () (interactive) (company-search-abort) (company-filter-candidates))
 		    [escape]  #'company-search-abort)
+
 
 (eval-after-load 'comint
   `(progn
      (general-define-key :keymaps 'comint-mode-map
-			 "TAB" #'company-complete
-			 [tab] #'company-complete)
+       "TAB" #'company-complete
+       [tab] #'company-complete)
      )
   )
+;;; ends of company
+
+
+;;; sart of ivy
+(eval-after-load 'ivy
+  `(progn
+    (general-define-key :keymaps 'ivy-minibuffer-map
+          "C-SPC" #'ivy-call-and-recenter  ; preview file
+          "C-l"   #'ivy-alt-done
+          "C-v"   #'yank
+      )
+    ))
+
+(eval-after-load 'counsel
+`(progn
+  (general-define-key :keymaps 'counsel-ag-map
+          "C-SPC"    #'ivy-call-and-recenter ; preview
+          "C-l"      #'ivy-done
+          ;;; [C-return] #'+ivy/git-grep-other-window-action
+    )
+  )
+  )
+;;; end of ivy
 
 ;;; magit
 (eval-after-load 'magit
