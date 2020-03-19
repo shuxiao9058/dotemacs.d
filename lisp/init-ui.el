@@ -69,33 +69,33 @@
 
 (use-package doom-modeline
     :straight t
-    :init
-    (doom-modeline-mode +1)
+    :custom
+    (doom-modeline-buffer-file-name-style 'truncate-with-project)
+    (doom-modeline-icon nil)
+    (doom-modeline-major-mode-icon nil)
+    (doom-modeline-minor-modes nil)
+    (doom-modeline-major-mode-color-icon nil)
+    (doom-modeline-persp-name nil)
+    (doom-modeline-lsp nil)
+    ;; Whether display github notifications or not. Requires `ghub+` package.
+    (doom-modeline-github nil)
+    ;; The interval of checking github.
+    (doom-modeline-github-interval (* 30 60))
+    (doom-modeline-height 25)
+    (doom-modeline-bar-width 3)
+    (doom-modeline-checker-simple-format t)
     :config
-    (setq doom-modeline-buffer-file-name-style 'truncate-with-project
-          doom-modeline-icon nil
-          doom-modeline-major-mode-icon nil
-          doom-modeline-minor-modes nil
-          doom-modeline-major-mode-color-icon nil
-          doom-modeline-persp-name nil
-          doom-modeline-lsp nil
-          doom-modeline-github nil ;; Whether display github notifications or not. Requires `ghub+` package.
-          ;; The interval of checking github.
-          doom-modeline-github-interval (* 30 60)
-          doom-modeline-height 25
-          doom-modeline-bar-width 3
-          doom-modeline-checker-simple-format t
-          )
+    (progn
+      ;; Define your custom doom-modeline
+      (doom-modeline-def-modeline 'my-simple-line
+	  '(bar input-method matches buffer-info remote-host buffer-position parrot selection-info)
+	  '(objed-state misc-info persp-name lsp minor-modes indent-info buffer-encoding major-mode process vcs checker))
 
-    ;; Define your custom doom-modeline
-    (doom-modeline-def-modeline 'my-simple-line
-	'(bar matches buffer-info remote-host buffer-position parrot selection-info)
-      '(misc-info minor-modes input-method buffer-encoding major-mode process vcs checker))
-
-    ;; Add to `doom-modeline-mode-hook` or other hooks
-    (defun setup-custom-doom-modeline ()
-      (doom-modeline-set-modeline 'my-simple-line 'default))
-    (add-hook 'doom-modeline-mode-hook 'setup-custom-doom-modeline)
+      ;; Add to `doom-modeline-mode-hook` or other hooks
+      (add-hook 'doom-modeline-mode-hook
+		(lambda() (doom-modeline-set-modeline 'my-simple-line 'default)))
+      )
+      (doom-modeline-mode +1)
     )
 
 (use-package awesome-tab
