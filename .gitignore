@@ -9,6 +9,7 @@
 tmp*
 recentf
 # dir
+rime/
 elpa/
 eshell/
 transient/
@@ -16,3 +17,4 @@ auto-save-list/
 history/
 .local/
 .local/rime/user.yaml
+.local/rime/installation.yaml
