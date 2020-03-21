@@ -42,6 +42,8 @@
 (require 'init-rime)
 (require 'init-vterm)
 ;; (require 'init-dired)
+(require 'init-search)
+(require 'init-telega)
 
 ;;; editor
 (require 'init-markdown)
@@ -66,6 +68,6 @@
 
 ;;; keybinds
 ;;; early load with general in core
-;;; (require 'init-keybinds)
+(require 'init-keybinds)
 
 ;;; init.el ends here

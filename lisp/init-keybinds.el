@@ -321,22 +321,22 @@
 ;;; start of company
 ;;; company-active-map
 (general-define-key :keymaps 'company-active-map
-        "C-w"     nil  ; don't interfere with `evil-delete-backward-word'
-        "C-n"     #'company-select-next
-        "C-p"     #'company-select-previous
-        "C-j"     #'company-select-next
-        "C-k"     #'company-select-previous
-        "C-h"     #'company-show-doc-buffer
-        "C-u"     #'company-previous-page
-        "C-d"     #'company-next-page
-        "C-s"     #'company-filter-candidates
-        "C-S-s"  #'counsel-company
-        "C-SPC"   #'company-complete-common
-        "TAB"     #'company-complete-common-or-cycle
-        [tab]     #'company-complete-common-or-cycle
-        [backtab] #'company-select-previous
-        [f1]      nil
-        )
+		    "C-w"     nil  ; don't interfere with `evil-delete-backward-word'
+		    "C-n"     #'company-select-next
+		    "C-p"     #'company-select-previous
+		    "C-j"     #'company-select-next
+		    "C-k"     #'company-select-previous
+		    "C-h"     #'company-show-doc-buffer
+		    "C-u"     #'company-previous-page
+		    "C-d"     #'company-next-page
+		    "C-s"     #'company-filter-candidates
+		    "C-S-s"  #'counsel-company
+		    "C-SPC"   #'company-complete-common
+		    "TAB"     #'company-complete-common-or-cycle
+		    [tab]     #'company-complete-common-or-cycle
+		    [backtab] #'company-select-previous
+		    [f1]      nil
+		    )
 
 (general-define-key :keymaps 'company-search-map
 		    "C-n"     #'company-select-next-or-abort
@@ -350,8 +350,8 @@
 (eval-after-load 'comint
   `(progn
      (general-define-key :keymaps 'comint-mode-map
-       "TAB" #'company-complete
-       [tab] #'company-complete)
+			 "TAB" #'company-complete
+			 [tab] #'company-complete)
      )
   )
 ;;; ends of company
@@ -360,21 +360,21 @@
 ;;; sart of ivy
 (eval-after-load 'ivy
   `(progn
-    (general-define-key :keymaps 'ivy-minibuffer-map
-          "C-SPC" #'ivy-call-and-recenter  ; preview file
-          "C-l"   #'ivy-alt-done
-          "C-v"   #'yank
-      )
-    ))
+     (general-define-key :keymaps 'ivy-minibuffer-map
+			 "C-SPC" #'ivy-call-and-recenter  ; preview file
+			 "C-l"   #'ivy-alt-done
+			 "C-v"   #'yank
+			 )
+     ))
 
 (eval-after-load 'counsel
-`(progn
-  (general-define-key :keymaps 'counsel-ag-map
-          "C-SPC"    #'ivy-call-and-recenter ; preview
-          "C-l"      #'ivy-done
+  `(progn
+     (general-define-key :keymaps 'counsel-ag-map
+			 "C-SPC"    #'ivy-call-and-recenter ; preview
+			 "C-l"      #'ivy-done
           ;;; [C-return] #'+ivy/git-grep-other-window-action
-    )
-  )
+			 )
+     )
   )
 ;;; end of ivy
 
@@ -414,6 +414,26 @@
 		       "gj" #'git-rebase-move-line-down
 		       "gk" #'git-rebase-move-line-up)
      ))
+
+
+(general-define-key :keymaps 'color-rg-mode-map
+		    ;; Lower keys for commands not operating on all the marked files
+		    "RET" #'color-rg-open-file
+		    "q" #'quit-window
+		    "e" #'color-rg-switch-to-edit-mode
+		    "p" #'color-rg-jump-prev-keyword
+		    "n" #'color-rg-jump-next-keyword
+		    "f" #'color-rg-jump-next-file
+		    "b" #'color-rg-jump-prev-file
+		    ;; "?" #'color-rg-hydra/body
+		    )
+
+(general-define-key :keymaps 'color-rg-mode-edit-map
+		    "C-c C-f" #'color-rg-jump-next-file
+		    "C-c C-n" #'color-rg-jump-next-keyword
+		    "C-c C-p" #'color-rg-jump-prev-keyword
+		    "C-c C-b" #'color-rg-jump-prev-file
+		    "C-c C-k" #'color-rg-switch-to-view-mode)
 
 (general-define-key :keymaps 'read-expression-map
 		    "C-j" #'next-line-or-history-element

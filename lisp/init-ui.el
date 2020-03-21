@@ -171,12 +171,12 @@
 ;;                (lambda (&rest _) (personal-file))))))
 ;;     (dashboard-setup-startup-hook))
 
-;; (use-package all-the-icons
-;;     :straight t
-;;     :if (or (display-graphic-p) (daemonp))
-;;     :init
-;;     (setq all-the-icons-scale-factor 0.8)
-;;     )
+(use-package all-the-icons
+    :straight t
+    :if (or (display-graphic-p) (daemonp))
+    ;; :init
+    ;; (setq all-the-icons-scale-factor 0.8)
+    )
 
 ;; (use-package all-the-icons-dired
 ;;     :straight t
