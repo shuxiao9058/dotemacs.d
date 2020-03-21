@@ -1,48 +1,11 @@
 ;;; lisp/init-ui.el -*- lexical-binding: t; -*-
 
-;; Clear Window clutter and set up the look and feel
-(when (and (fboundp 'menu-bar-mode) (not (eq menu-bar-mode -1)))
-  (menu-bar-mode -1))
-(when (and (fboundp 'tool-bar-mode) (not (eq tool-bar-mode -1)))
-  (tool-bar-mode -1))
-(when (and (fboundp 'scroll-bar-mode) (not (eq scroll-bar-mode -1)))
-  (scroll-bar-mode -1))
-(when (and (fboundp 'horizontal-scroll-bar-mode) (not (eq horizontal-scroll-bar-mode -1)))
-  (scroll-bar-mode -1))
+;; ;; tooltips in echo-aera
+;; (when (and (fboundp 'tooltip-mode) (not (eq tooltip-mode -1)))
+;;   (tooltip-mode -1))
 
-(when (and (fboundp 'use-file-dialog) (not (eq use-file-dialog -1)))
-  (use-file-dialog -1))
-(when (and (fboundp 'use-dialog-box) (not (eq use-dialog-box -1)))
-  (use-dialog-box -1))
-(when (and (fboundp 'blink-cursor-mode) (not (eq blink-cursor-mode -1)))
-  (blink-cursor-mode -1))
+;; ;; (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
-;; tooltips in echo-aera
-(when (and (fboundp 'tooltip-mode) (not (eq tooltip-mode -1)))
-  (tooltip-mode -1))
-
-;; (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
-
-;; auto maximized frame
-(when (and IS-MAC (display-graphic-p))
-  (add-to-list 'default-frame-alist '(fullscreen . maximized))
-  )
-
-(when IS-MAC
-  (setq-default ns-use-thin-smoothing t
-                ns-use-fullscreen-animation t
-                ns-use-native-fullscreen t
-                frame-resize-pixelwise t
-                ns-use-proxy-icon t
-                ns-use-mwheel-momentum t
-                ns-use-mwheel-acceleration t
-                mac-command-modifier 'super
-                mac-option-modifier  'meta
-                )
-  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-  (add-to-list 'default-frame-alist '(ns-appearance . dark))
-  ;; (add-hook 'window-setup-hook #'toggle-frame-maximized)
-  )
 
 (use-package doom-themes
     :straight t
@@ -63,7 +26,6 @@
     ;; or for treemacs users
     (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
     (doom-themes-treemacs-config)
-
     ;; Corrects (and improves) org-mode's native fontification.
     (doom-themes-org-config))
 
@@ -89,39 +51,36 @@
       ;; Define your custom doom-modeline
       (doom-modeline-def-modeline 'my-simple-line
 	  '(bar input-method matches buffer-info remote-host buffer-position parrot selection-info)
-	  '(objed-state misc-info persp-name lsp minor-modes indent-info buffer-encoding major-mode process vcs checker))
+	'(objed-state misc-info persp-name lsp minor-modes indent-info buffer-encoding major-mode process vcs checker))
 
       ;; Add to `doom-modeline-mode-hook` or other hooks
       (add-hook 'doom-modeline-mode-hook
 		(lambda() (doom-modeline-set-modeline 'my-simple-line 'default)))
       )
-      (doom-modeline-mode +1)
+    (doom-modeline-mode +1)
     )
 
 (use-package awesome-tab
-    :straight (:host github
-		     :repo "manateelazycat/awesome-tab"
-		     )
-    ;; :after-call after-find-file dired-initial-position-hook
-    :commands (awesome-tab-build-ivy-source awesome-tab-select-visible-tab awesome-tab-mode)
+    :straight (awesome-tab :type git
+			   :host github
+			   :repo "manateelazycat/awesome-tab"
+			   )
+    :commands (awesome-tab-mode)
+    :ensure t
     :init
-    (setq awesometab-hide-tabs-hooks
-          '(magit-status-mode-hook magit-popup-mode-hook reb-mode-hook helpful-mode-hook))
+    ;;(awesometab-hide-tabs-hooks
+    ;;      '(magit-status-mode-hook magit-popup-mode-hook reb-mode-hook helpful-mode-hook))
     (setq awesome-tab-style 'alternate)
-    ;; Make hydra compatible with awesome-tab
-    (with-eval-after-load 'hydra
-      (defun zenith/lv-window (fun)
-	(with-selected-window (funcall fun)
-          (setq-local header-line-format nil))
-	lv-wnd)
-
-      (advice-add 'lv-window :around 'zenith/lv-window))
-    (dotimes (i 10)
-      (general-define-key (concat "M-" (int-to-string i)) #'awesome-tab-select-visible-tab))
     :config
-    (awesome-tab-mode +1)
+    (awesome-tab-mode t)
+    ;; (awesome-tab-build-ivy-source)
     )
 
+(use-package rainbow-delimiters
+    :straight t
+    :ensure t
+    :init
+    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ;; Dashboard settings ;;
@@ -177,6 +136,7 @@
     ;; :init
     ;; (setq all-the-icons-scale-factor 0.8)
     )
+
 
 ;; (use-package all-the-icons-dired
 ;;     :straight t

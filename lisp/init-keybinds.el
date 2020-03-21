@@ -153,7 +153,8 @@
 		    "si" '(imenu :wk "Jump to symbol")
 		    "sL" '(ffap-menu :wk "Jump to link")
 		    "sj" '(evil-show-jumps :wk "Jump list")
-        ;; "sp" '(+utils:search-project :wk "Search project")
+		    "sp" '(color-rg-search-input-in-project :wk "Search project")
+		    ;; "sp" '(+utils:search-project :wk "Search project")
 		    "sm" '(evil-show-marks :wk "Jump to mark")
 		    "ss" '(swiper-isearch :wk "Search Buffer")
 		    "sS" '(swiper-isearch-thing-at-point :wk "Search Buffer for thing at point")
@@ -307,6 +308,15 @@
 		    "q" #'transient-quit-one
 		    )
 
+;; lsp
+(general-define-key :keymaps 'lsp-ui-mode-map
+		    [remap evil-goto-definition] #'lsp-ui-peek-find-definitions
+		    "gD" #'lsp-ui-peek-find-references
+		    )
+(general-define-key :keymaps 'lsp-ui-peek-mode-map
+ 		    "C-j" 'lsp-ui-peek--select-next
+		    "C-k" 'lsp-ui-peek--select-prev)
+
 ;; (general-define-key
 ;;    :keymaps 'company-active-map
 ;;    "TAB" #'company-select-next
@@ -435,9 +445,40 @@
 		    "C-c C-b" #'color-rg-jump-prev-file
 		    "C-c C-k" #'color-rg-switch-to-view-mode)
 
+;;; vterm
+(general-define-key :keymaps 'vterm-mode-map
+		    [escape] #'vterm--self-insert
+		    [return] #'vterm--self-insert
+		    "p" #'vterm-yank
+		    "u" #'vterm-undo
+		    "C-y" #'vterm-yank
+		    "M-n" #'vterm-send-down
+		    "M-p" #'vterm-send-up
+		    "M-y" #'vterm-yank-pop
+		    "M-/" #'vterm-send-tab
+		    )
+
+
 (general-define-key :keymaps 'read-expression-map
 		    "C-j" #'next-line-or-history-element
 		    "C-k" #'previous-line-or-history-element)
+
+;; Make hydra compatible with awesome-tab
+(with-eval-after-load 'hydra
+  (defun zenith/lv-window (fun)
+    (with-selected-window (funcall fun)
+      (setq-local header-line-format nil))
+    lv-wnd)
+  (advice-add 'lv-window :around 'zenith/lv-window))
+(dotimes (i 10)
+  (general-define-key (concat "M-" (int-to-string i)) #'awesome-tab-select-visible-tab))
+
+(general-define-key "<M-right>" #'awesome-tab-forward
+		    "<M-left>" #'awesome-tab-backward
+		    "<M-down>" #'awesome-tab-forward-group
+		    "<M-up>" #'awesome-tab-backward-group
+		    "M-z" #'awesome-tab-switch-group)
+
 
 ;; (evil-normalize-keymaps)
 

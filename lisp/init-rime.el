@@ -20,6 +20,11 @@
 				    :internal-border-width 6))
     (rime-code-face
      '((t (:inherit default :background "#ffffff" :foreground "#000000"))))
+    (rime-disable-predicates
+          '(evil-normal-state-p
+            rime--after-alphabet-char-p
+            rime--prog-in-code-p
+            ))
     ;; (rime-share-data-dir "")
     (rime-user-data-dir (expand-file-name "rime" poly-local-dir)))
 

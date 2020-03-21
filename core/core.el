@@ -14,6 +14,13 @@
 
 (require 'core-variables)
 
+;;;
+;; Delete trailing whitespace before save
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(add-hook 'before-save-hook 'whitespace-cleanup)
+
+(require 'core-ui)
+
 ;; *** watcher
 (add-to-list 'load-path
 	     (expand-file-name "watcher" (file-name-directory load-file-name)))

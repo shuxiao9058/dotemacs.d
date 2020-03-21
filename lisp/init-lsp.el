@@ -61,15 +61,6 @@
     ;; (lsp-ui-doc-background ((t (:background nil))))
     ;; (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
     :hook (lsp-mode-hook . lisp-ui-mode)
-    :general
-    (nmap
-     :keymaps 'lsp-ui-mode-map
-     [remap evil-goto-definition] #'lsp-ui-peek-find-definitions
-     "gD" #'lsp-ui-peek-find-references)
-    (general-def
-	:keymaps 'lsp-ui-peek-mode-map
-      "C-j" 'lsp-ui-peek--select-next
-      "C-k" 'lsp-ui-peek--select-prev)
     :custom
     (lsp-ui-doc-enable nil)
     (lsp-ui-doc-header nil)

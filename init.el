@@ -11,9 +11,6 @@
 ;; to skip the mtime checks on every *.elc file.
 (setq load-prefer-newer noninteractive)
 
-;; Load customization file now
-(load (expand-file-name "custom.el" user-emacs-directory) nil t)
-
 (let (file-name-handler-alist)
   (setq user-emacs-directory (file-name-directory load-file-name)))
 
@@ -31,7 +28,7 @@
 ;;; core
 (require 'init-env)
 (require 'init-ivy)
-(require 'init-ui)
+(require 'init-ui) ;; ui
 (require 'init-recentf)
 ;;; (require 'init-evil)
 
@@ -69,5 +66,10 @@
 ;;; keybinds
 ;;; early load with general in core
 (require 'init-keybinds)
+
+;; Load customization file now
+(let ((custom-file (expand-file-name "custom.el" user-emacs-directory)))
+  (when (file-exists-p custom-file)
+    (load custom-file nil t)))
 
 ;;; init.el ends here
