@@ -6,28 +6,30 @@
 
 ;; ;; (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
-
 (use-package doom-themes
     :straight t
-    :config
+    :ensure t
+    :custom
     ;; Global settings (defaults)
-    (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-          doom-themes-enable-italic t) ; if nil, italics is universally disabled
+    (doom-themes-enable-bold t)   ; if nil, bold is universally disabled
+    (doom-themes-enable-italic t) ; if nil, italics is universally disabled
+    :config
+    (progn
+      ;; (load-theme 'doom-one t)
+      (load-theme 'doom-dracula t)
+      ;; (load-theme 'doom-vibrant t)
 
-    ;; (load-theme 'doom-one t)
-    ;; (load-theme 'doom-dracula t)
-    (load-theme 'doom-vibrant t)
+      ;; Enable flashing mode-line on errors
+      (doom-themes-visual-bell-config)
 
-    ;; Enable flashing mode-line on errors
-    (doom-themes-visual-bell-config)
-
-    ;; Enable custom neotree theme (all-the-icons must be installed!)
-    (doom-themes-neotree-config)
-    ;; or for treemacs users
-    (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
-    (doom-themes-treemacs-config)
-    ;; Corrects (and improves) org-mode's native fontification.
-    (doom-themes-org-config))
+      ;; Enable custom neotree theme (all-the-icons must be installed!)
+      (doom-themes-neotree-config)
+      ;; or for treemacs users
+      (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
+      (doom-themes-treemacs-config)
+      ;; Corrects (and improves) org-mode's native fontification.
+      (doom-themes-org-config))
+    )
 
 (use-package doom-modeline
     :straight t
@@ -61,19 +63,54 @@
     )
 
 (use-package awesome-tab
-    :straight (awesome-tab :type git
-			   :host github
-			   :repo "manateelazycat/awesome-tab"
-			   )
+    :straight (awesome-tab
+	       :type git
+	       :host github
+	       :repo "manateelazycat/awesome-tab"
+	       )
     :commands (awesome-tab-mode)
     :ensure t
+    :custom
+    ;; (awesome-tab-style 'alternate)
+    (awesome-tab-show-tab-index t)
+    (awesometab-hide-tabs-hooks
+     '(magit-status-mode-hook magit-popup-mode-hook reb-mode-hook helpful-mode-hook))
+    (awesome-tab-hide-tab-function 'my-awesome-tab-hide-tab)
     :init
-    ;;(awesometab-hide-tabs-hooks
-    ;;      '(magit-status-mode-hook magit-popup-mode-hook reb-mode-hook helpful-mode-hook))
-    (setq awesome-tab-style 'alternate)
-    :config
+    (defun my-awesome-tab-hide-tab (x)
+      (let ((name (format "%s" x)))
+	(or
+	 (string-prefix-p "*NeoTree*" name)
+	 (string-prefix-p "*Ilist*" name)
+	 (string-prefix-p "*epc" name)
+	 (string-prefix-p "*helm" name)
+	 (string-prefix-p "*Compile-Log*" name)
+	 (string-prefix-p "*lsp" name)
+	 (and (string-prefix-p "magit" name)
+              (not (file-name-extensionname)))
+	 )))
+
+    ;; winum users can use `winum-select-window-by-number' directly.
+    (defun my-select-window-by-number (win-id)
+      "Use `ace-window' to select the window by using window index.
+WIN-ID : Window index."
+      (let ((wnd (nth (- win-id 1) (aw-window-list))))
+	(if wnd
+            (aw-switch-to-window wnd)
+	  (message "No such window."))))
+
+    (defun my-select-window ()
+      (interactive)
+      (let* ((event last-input-event)
+             (key (make-vector 1 event))
+             (key-desc (key-description key)))
+	(my-select-window-by-number
+	 (string-to-number (car (nreverse (split-string key-desc "-")))))))
+
+    (set-face-attribute
+     'header-line nil
+     :box nil)
     (awesome-tab-mode t)
-    ;; (awesome-tab-build-ivy-source)
     )
 
 (use-package rainbow-delimiters
@@ -81,6 +118,30 @@
     :ensure t
     :init
     (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+
+(use-package highlight-indent-guides
+    :straight t
+    :hook (prog-mode . highlight-indent-guides-mode)
+    :if IS-GUI
+    :config
+    ;; (setq highlight-indent-guides-method 'column)
+    (setq highlight-indent-guides-method 'character)
+    (setq highlight-indent-guides-responsive 'top)
+    (setq highlight-indent-guides-auto-enabled t)
+    )
+
+;; copied from +spacemacs/spacemacs-editing-visual
+(use-package highlight-parentheses
+    :straight t
+    :hook (prog-mode . highlight-parentheses-mode)
+    :init
+    (setq hl-paren-delay 0.2)
+    (setq hl-paren-colors
+	  '("SpringGreen3" "IndianRed1" "IndianRed3" "IndianRed4"))
+    :config
+    (set-face-attribute 'hl-paren-face nil :weight 'bold)
+    (custom-set-faces '(show-paren-match ((t (:foreground "SpringGreen1" :underline t)))))
+    )
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ;; Dashboard settings ;;
@@ -132,22 +193,21 @@
 
 (use-package all-the-icons
     :straight t
-    :if (or (display-graphic-p) (daemonp))
+    :if (or IS-GUI (daemonp))
     ;; :init
     ;; (setq all-the-icons-scale-factor 0.8)
     )
 
+(use-package all-the-icons-dired
+    :straight t
+    :after (all-the-icons dired)
+    :hook (dired-mode . all-the-icons-dired-mode))
 
-;; (use-package all-the-icons-dired
-;;     :straight t
-;;     :after (all-the-icons dired)
-;;     :hook (dired-mode . all-the-icons-dired-mode))
-
-;; (use-package all-the-icons-ibuffer
-;;     :straight t
-;;     :after (all-the-icons ibuffer)
-;;     :config
-;;     (all-the-icons-ibuffer-mode t))
+(use-package all-the-icons-ibuffer
+    :straight t
+    :after (all-the-icons ibuffer)
+    :config
+    (all-the-icons-ibuffer-mode t))
 
 ;; (use-package all-the-icons-ivy
 ;;     :straight t
@@ -165,6 +225,20 @@
 ;;       (add-to-list 'all-the-icons-ivy-file-commands #'counsel-projectile-find-dir)
 ;;       (all-the-icons-ivy-setup)))
 
-(provide 'init-ui)
+(use-package all-the-icons-ivy-rich
+    :straight t
+    :ensure t
+    :after (all-the-icons ivy)
+    :init (all-the-icons-ivy-rich-mode 1)
+    :custom
+    (all-the-icons-ivy-rich-icon-size 0.9)
+    )
 
+(use-package ivy-rich
+    :straight t
+    :ensure t
+    :after (counsel ivy)
+    :init (ivy-rich-mode 1))
+
+(provide 'init-ui)
 ;;; init-ui.el ends here

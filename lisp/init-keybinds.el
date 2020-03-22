@@ -219,6 +219,7 @@
 		    "o-" '(dired-jump :wk "Dired")
 		    "oe" '(eshell :wk "Open eshell here")
 		    "ot" '(treemacs :wk "Treemacs")
+		    "oT" '(telega :wk "Telega")
 
 		    ;;<leader> w --- windows
 		    "w" '(:wk "Windows")

@@ -1,32 +1,44 @@
 ;;; lisp/init-hydra.el -*- lexical-binding: t; -*-
 
 (use-package hydra
-  :straight t
-  :after outline
-  :init
-  (setq hydra-if-helpful t)
+    :straight t
+    :ensure t
+    :after outline
+    :init
+    (setq hydra-if-helpful t)
     :bind (
-         ("M-o" . hydra-base/body)
-   ))
+           ("M-o" . hydra-base/body)
+	   ))
 
+(use-package hydra-posframe
+  :straight (hydra-posframe
+         :host github
+          :repo "Ladicle/hydra-posframe"
+         )
+    :defer t
+    :after (hydra posframe)
+    :config
+    (hydra-posframe-enable))
 
 
 (defhydra hydra-base ()
   "
 _o_utline & outshine
 _s_traight
+awesome-_t_ab
 _w_indow
 "
   ("s" hydra-straight/body :exit t)
   ("w" hydra-window/body :exit t)
+  ("t" awesome-fast-switch/body :exit t)
   ("o" hydra-outline/body :exit t)
   )
 
 (use-package ace-window
-  :straight t
-  ;; :ensure t
-  :defer 5
-  )
+    :straight t
+    :ensure t
+    :defer 5
+    )
 
 ;; Activate winner mode for quickly changing window sizes, etc
 (when (fboundp 'winner-mode)
@@ -88,17 +100,17 @@ _SPC_ cancel  _o_nly this     _d_elete
          (ace-window 1)
          (add-hook 'ace-window-end-once-hook
                    'hydra-window/body))
-   )
+       )
   ("v" (lambda ()
          (interactive)
          (split-window-right)
          (windmove-right))
-   )
+       )
   ("x" (lambda ()
          (interactive)
          (split-window-below)
          (windmove-down))
-   )
+       )
   ("s" (lambda ()
          (interactive)
          (ace-window 4)
@@ -111,13 +123,13 @@ _SPC_ cancel  _o_nly this     _d_elete
          (ace-window 16)
          (add-hook 'ace-window-end-once-hook
                    'hydra-window/body))
-   )
+       )
   ("o" delete-other-windows)
   ("i" ace-maximize-window)
   ("z" (progn
          (winner-undo)
          (setq this-command 'winner-undo))
-   )
+       )
   ("Z" winner-redo)
   ("SPC" nil)
   )
@@ -188,6 +200,42 @@ _SPC_ cancel  _o_nly this     _d_elete
   ("z" nil "leave")
   )
 
+(defhydra awesome-fast-switch (:hint nil)
+  "
+ ^^^^Fast Move             ^^^^Tab                    ^^Search            ^^Misc
+-^^^^--------------------+-^^^^---------------------+-^^----------------+-^^---------------------------
+   ^_k_^   prev group    | _C-a_^^     select first | _b_ search buffer | _C-k_   kill buffer
+ _h_   _l_  switch tab   | _C-e_^^     select last  | _g_ search group  | _C-S-k_ kill others in group
+   ^_j_^   next group    | _C-j_^^     ace jump     | ^^                | ^^
+ ^^0 ~ 9^^ select window | _C-h_/_C-l_ move current | ^^                | ^^
+-^^^^--------------------+-^^^^---------------------+-^^----------------+-^^---------------------------
+"
+  ("h" awesome-tab-backward-tab)
+  ("j" awesome-tab-forward-group)
+  ("k" awesome-tab-backward-group)
+  ("l" awesome-tab-forward-tab)
+  ("0" my-select-window)
+  ("1" my-select-window)
+  ("2" my-select-window)
+  ("3" my-select-window)
+  ("4" my-select-window)
+  ("5" my-select-window)
+  ("6" my-select-window)
+  ("7" my-select-window)
+  ("8" my-select-window)
+  ("9" my-select-window)
+  ("C-a" awesome-tab-select-beg-tab)
+  ("C-e" awesome-tab-select-end-tab)
+  ("C-j" awesome-tab-ace-jump)
+  ("C-h" awesome-tab-move-current-tab-to-left)
+  ("C-l" awesome-tab-move-current-tab-to-right)
+  ("b" ivy-switch-buffer)
+  ("g" awesome-tab-counsel-switch-group)
+  ("C-k" kill-current-buffer)
+  ("C-S-k" awesome-tab-kill-other-buffers-in-current-group)
+  ("q" nil "quit"))
+
+
 ;; (defhydra hydra-clock (:color blue)
 ;;     "
 ;;     ^
@@ -213,34 +261,36 @@ _SPC_ cancel  _o_nly this     _d_elete
 ;;   )
 
 
-; (defhydra hydra-straight-helper (:hint nil)
-;   "
-; _c_heck all       |_f_etch all     |_m_erge all      |_n_ormalize all   |p_u_sh all
-; _C_heck package   |_F_etch package |_M_erge package  |_N_ormlize package|p_U_sh package
-; ----------------^^+--------------^^+---------------^^+----------------^^+------------||_q_uit||
-; _r_ebuild all     |_p_ull all      |_v_ersions freeze|_w_atcher start   |_g_et recipe
-; _R_ebuild package |_P_ull package  |_V_ersions thaw  |_W_atcher quit    |prun_e_ build"
-;   ("c" straight-check-all)
-;   ("C" straight-check-package)
-;   ("r" straight-rebuild-all)
-;   ("R" straight-rebuild-package)
-;   ("f" straight-fetch-all)
-;   ("F" straight-fetch-package)
-;   ("p" straight-pull-all)
-;   ("P" straight-pull-package)
-;   ("m" straight-merge-all)
-;   ("M" straight-merge-package)
-;   ("n" straight-normalize-all)
-;   ("N" straight-normalize-package)
-;   ("u" straight-push-all)
-;   ("U" straight-push-package)
-;   ("v" straight-freeze-versions)
-;   ("V" straight-thaw-versions)
-;   ("w" straight-watcher-start)
-;   ("W" straight-watcher-quit)
-;   ("g" straight-get-recipe)
-;   ("e" straight-prune-build)
-;   ("q" nil))
+					; (defhydra hydra-straight-helper (:hint nil)
+					;   "
+					; _c_heck all       |_f_etch all     |_m_erge all      |_n_ormalize all   |p_u_sh all
+					; _C_heck package   |_F_etch package |_M_erge package  |_N_ormlize package|p_U_sh package
+					; ----------------^^+--------------^^+---------------^^+----------------^^+------------||_q_uit||
+					; _r_ebuild all     |_p_ull all      |_v_ersions freeze|_w_atcher start   |_g_et recipe
+					; _R_ebuild package |_P_ull package  |_V_ersions thaw  |_W_atcher quit    |prun_e_ build"
+					;   ("c" straight-check-all)
+					;   ("C" straight-check-package)
+					;   ("r" straight-rebuild-all)
+					;   ("R" straight-rebuild-package)
+					;   ("f" straight-fetch-all)
+					;   ("F" straight-fetch-package)
+					;   ("p" straight-pull-all)
+					;   ("P" straight-pull-package)
+					;   ("m" straight-merge-all)
+					;   ("M" straight-merge-package)
+					;   ("n" straight-normalize-all)
+					;   ("N" straight-normalize-package)
+					;   ("u" straight-push-all)
+					;   ("U" straight-push-package)
+					;   ("v" straight-freeze-versions)
+					;   ("V" straight-thaw-versions)
+					;   ("w" straight-watcher-start)
+					;   ("W" straight-watcher-quit)
+					;   ("g" straight-get-recipe)
+					;   ("e" straight-prune-build)
+					;   ("q" nil))
+
+
 
 (provide 'init-hydra)
 ;;; init-hydra.el ends here

@@ -10,7 +10,7 @@
     :commands (telega)
     :defer t
     :init
-    (unless (display-graphic-p) (setq telega-use-images nil))
+    (unless IS-GUI (setq telega-use-images nil))
     :custom
     (telega-proxies
      (list

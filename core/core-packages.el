@@ -64,7 +64,7 @@
 ;; pbcopy
 (use-package pbcopy
     :straight t
-    :if (and IS-MAC (not (display-graphic-p)))
+    :if (and IS-MAC (not IS-GUI))
     :init (turn-on-pbcopy)
     )
 
