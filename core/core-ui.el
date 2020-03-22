@@ -23,7 +23,6 @@
 ;;; highlight current line
 (global-hl-line-mode)
 
-
 ;; auto maximized frame
 (when (and IS-MAC (display-graphic-p))
   (add-to-list 'default-frame-alist '(fullscreen . maximized)))

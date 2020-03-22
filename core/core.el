@@ -14,6 +14,11 @@
 
 (require 'core-variables)
 
+;;; cua-mode for colum-editing
+;; windows style keybind C-x, C-v, cut paste
+(cua-mode t) 
+(setq cua-auto-tabify-rectangles nil) ;; Don't tabify after rectangle commands
+
 ;;;
 ;; Delete trailing whitespace before save
 (add-hook 'before-save-hook 'delete-trailing-whitespace)

@@ -31,6 +31,8 @@
 (require 'init-ui) ;; ui
 (require 'init-recentf)
 ;;; (require 'init-evil)
+;; case show line numbers
+(require 'init-linum) 
 
 ;;; tools
 (require 'init-wakatime)

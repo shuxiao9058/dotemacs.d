@@ -480,6 +480,12 @@
 		    "M-z" #'awesome-tab-switch-group)
 
 
+(general-define-key :keymaps 'lua-mode-map
+	 	    :states '(normal motion visual)
+ 		    "TAB" #'lua-goto-forward
+	 	    "C-o" #'lua-goto-backward
+		    )
+
 ;; (evil-normalize-keymaps)
 
 (provide 'init-keybinds)
