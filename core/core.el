@@ -44,6 +44,7 @@
     (require 'core-straight)
     (require 'core-keybinds)
     (require 'core-packages)
+    (require 'core-evil)
     (setq poly-initialize-core-p t)
     )
   )
