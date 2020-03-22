@@ -33,6 +33,7 @@
 ;; Removing emacs state from non-normal list allow the use of SPC
 ;; (delete 'emacs general-non-normal-states)
 
+
 ;; disable C-z
 ;; (global-set-key (kbd "C-z") nil)
 (general-define-key "C-z" nil)
@@ -40,11 +41,10 @@
 ;; switch input method
 (general-define-key "C-\\" #'toggle-input-method)
 
-(general-define-key :states 'normal
-		    "q" nil ;; q quit, not evil-record-macro
-		    "Q" #'evil-record-macro
-		    "gc" #'evil-commentary
-		    "gC" #'evil-commentary-line)
+(nmap "q" nil ;; q quit, not evil-record-macro
+      "Q" #'evil-record-macro
+      "gc" #'evil-commentary
+      "gC" #'evil-commentary-line)
 
 (general-define-key :keymaps 'flyspell-mode-map
 		    :states '(normal visual)
@@ -96,162 +96,159 @@
  "M-x" #'counsel-M-x)
 
 ;; *** leader key
-(general-define-key :states '(normal visual insert emacs) ;; '(normal visual insert emacs)
-		    :prefix "SPC"
-		    :non-normal-prefix "M-m"
-		    "TAB" '(evil-prev-buffer :which-key "prev buffer")
-		    "`"   '(evil-next-buffer :which-key "next buffer")
-		    "SPC" '(projectile-find-file :wk "Find file in project")
-		    "RET" '(bookmark-jump :wk "Jump to bookmark")
+(leader-def
+    "TAB" '(evil-prev-buffer :which-key "prev buffer")
+  "`"   '(evil-next-buffer :which-key "next buffer")
+  "SPC" '(projectile-find-file :wk "Find file in project")
+  "RET" '(bookmark-jump :wk "Jump to bookmark")
 
-		    "." '(find-file :wk "Find file")
-		    "," '(persp-switch-to-buffer :wk "Switch workspace buffer")
-		    "<" '(switch-to-buffer :wk "Switch buffer")
-		    "`" '(evil-switch-to-windows-last-buffer  :wk "Switch to last buffer")
-		    "'" '(ivy-resume :wk "Resume last search")
-		    ;; "U" '(undo-tree-visualize :which-key "undo-tree")
+  "." '(find-file :wk "Find file")
+  "," '(persp-switch-to-buffer :wk "Switch workspace buffer")
+  "<" '(switch-to-buffer :wk "Switch buffer")
+  "`" '(evil-switch-to-windows-last-buffer  :wk "Switch to last buffer")
+  "'" '(ivy-resume :wk "Resume last search")
+  ;; "U" '(undo-tree-visualize :which-key "undo-tree")
 
-		    ;;<leader> j --- Buffer
-		    "b" '(:ignore t :wk "buffers")
-		    "bb" '(ivy-switch-buffer :wk "Switch Buffer")
-		    "bo" '(other-buffer :wk "Other Buffer")
-		    "bk" '(kill-buffer :wk "Kill Buffer")
-		    "bs" '(save-buffer :wk "Save Buffer")
-		    "bl" '(list-buffers :wk "List Buffers")
-		    "bx" '((lambda ()(interactive)(switch-to-buffer "*scratch*")) :wk "scratch buffer")
+  ;;<leader> j --- Buffer
+  "b" '(:ignore t :wk "buffers")
+  "bb" '(ivy-switch-buffer :wk "Switch Buffer")
+  "bo" '(other-buffer :wk "Other Buffer")
+  "bk" '(kill-buffer :wk "Kill Buffer")
+  "bs" '(save-buffer :wk "Save Buffer")
+  "bl" '(list-buffers :wk "List Buffers")
+  "bx" '((lambda ()(interactive)(switch-to-buffer "*scratch*")) :wk "scratch buffer")
 
-		    ;; ;;<leader> c --- code
-		    ;; "c" '(:wk "Code")
-		    ;; "cC" '(compile :wk "Compile")
-		    ;; "cc" '(recompile :wk "Recompile")
+  ;; ;;<leader> c --- code
+  ;; "c" '(:wk "Code")
+  ;; "cC" '(compile :wk "Compile")
+  ;; "cc" '(recompile :wk "Recompile")
 
-		    "e" '(:ignore t :which-key "emacs/init")
-		    ;; "ef" '(amb:edit-init-file :which-key "edit init.el")
-		    "eR" '((lambda ()(interactive)(load-file user-init-file)) :which-key "reload init.el")
+  "e" '(:ignore t :which-key "emacs/init")
+  ;; "ef" '(amb:edit-init-file :which-key "edit init.el")
+  "eR" '((lambda ()(interactive)(load-file user-init-file)) :which-key "reload init.el")
 
-		    ;;<leader> f --- file
-		    "f" '(:ignore t :which-key "Files")
-		    "ff" '(counsel-find-file :wk "Find file")
-		    "fr" '(counsel-recentf :wk "Recent files")
-		    "fL" '(counsel-locate :wk "File Locate")
-		    "fR" '(projectile-recentf :wk "Recent project files")
-		    "fs" '(save-buffer :wk "Save buffer")
-		    "fS" '(save-some-buffer :wk "Save some buffers")
+  ;;<leader> f --- file
+  "f" '(:ignore t :which-key "Files")
+  "ff" '(counsel-find-file :wk "Find file")
+  "fr" '(counsel-recentf :wk "Recent files")
+  "fL" '(counsel-locate :wk "File Locate")
+  "fR" '(projectile-recentf :wk "Recent project files")
+  "fs" '(save-buffer :wk "Save buffer")
+  "fS" '(save-some-buffer :wk "Save some buffers")
 
                     ;;; <leader> p --- project
-		    "p" '(:ignore t :which-key "project")
-		    "pp" '(counsel-projectile-switch-project :wk "Switch Project")
-		    "pf" '(counsel-projectile-find-file :wk "Find file in project")
-		    "pb" '(counsel-projectile-switch-to-buffer :wk "Switch buffer in project")
-		    "p*" '((lambda () (interactive) (counsel-git-grep (current-word))) :wk "Git grep current word")
-		    "p/" '(counsel-git-grep :wk "Git grep")
+  "p" '(:ignore t :which-key "project")
+  "pp" '(counsel-projectile-switch-project :wk "Switch Project")
+  "pf" '(counsel-projectile-find-file :wk "Find file in project")
+  "pb" '(counsel-projectile-switch-to-buffer :wk "Switch buffer in project")
+  "p*" '((lambda () (interactive) (counsel-git-grep (current-word))) :wk "Git grep current word")
+  "p/" '(counsel-git-grep :wk "Git grep")
 
-		    ;;<leader> s --- search
-		    "s" '(:wk "Search")
-		    "sb" '(swiper :wk "Search Buffer")
-		    "sf" '(locate :wk "Locate file")
-		    "si" '(imenu :wk "Jump to symbol")
-		    "sL" '(ffap-menu :wk "Jump to link")
-		    "sj" '(evil-show-jumps :wk "Jump list")
-		    "sp" '(color-rg-search-input-in-project :wk "Search project")
-		    ;; "sp" '(+utils:search-project :wk "Search project")
-		    "sm" '(evil-show-marks :wk "Jump to mark")
-		    "ss" '(swiper-isearch :wk "Search Buffer")
-		    "sS" '(swiper-isearch-thing-at-point :wk "Search Buffer for thing at point")
+  ;;<leader> s --- search
+  "s" '(:wk "Search")
+  "sb" '(swiper :wk "Search Buffer")
+  "sf" '(locate :wk "Locate file")
+  "si" '(imenu :wk "Jump to symbol")
+  "sL" '(ffap-menu :wk "Jump to link")
+  "sj" '(evil-show-jumps :wk "Jump list")
+  "sp" '(color-rg-search-input-in-project :wk "Search project")
+  ;; "sp" '(+utils:search-project :wk "Search project")
+  "sm" '(evil-show-marks :wk "Jump to mark")
+  "ss" '(swiper-isearch :wk "Search Buffer")
+  "sS" '(swiper-isearch-thing-at-point :wk "Search Buffer for thing at point")
 
                     ;;; <leader> q --- quit/session
-		    "q" '(:ignore t :which-key "quit/session")
-		    "qf" '(delete-frame :wk "Delete frame")
-		    "qK" '(save-buffers-kill-emacs :wk "Kill Emacs (and daemon)")
-		    "qQ" '(kill-emacs :wk "Quit Emacs")
-		    "qq" '(save-buffers-kill-terminal :wk "Quit Emacs")
+  "q" '(:ignore t :which-key "quit/session")
+  "qf" '(delete-frame :wk "Delete frame")
+  "qK" '(save-buffers-kill-emacs :wk "Kill Emacs (and daemon)")
+  "qQ" '(kill-emacs :wk "Quit Emacs")
+  "qq" '(save-buffers-kill-terminal :wk "Quit Emacs")
 
-		    ;;<leader> g --- versioning
-		    "g" '(:ignore t :wk "Git")
-		    "g/" '(magit-dispatch :wk "Magit dispatch")
-		    "g'" '(forge-dispatch :wk "Forge dispatch")
-		    "gb" '(magit-branch-checkout :wk "Magit switch branch")
-		    "gg" '(magit-status :wk "Magit status")
-		    ;; "gg" '((lambda () (interactive)
-		    ;; 	     (when (and buffer-file-name (buffer-modified-p))
-		    ;; 	       (save-buffer))
-		    ;; 	     ;; (save-buffer-if-dirty)
-		    ;; 	     (magit-status-and-focus-unstaged)
-		    ;; 	     ) :wk "Magit status")
-		    "gR" '(vc-revert :wk "Git revert file")
-		    "gD" '(magit-file-delete :wk "Magit file delete")
-		    "gB" '(magit-blame-addition :wk "Magit blame")
-		    "gC" '(magit-clone :wk "Magit clone")
-		    "gF" '(magit-fetch :wk "Magit fetch")
-		    "gL" '(magit-log :wk "Magit buffer log")
-		    "gS" '(magit-stage-file :wk "Git stage file")
-		    "gU" '(magit-unstage-file :wk "Git unstage file")
+  ;;<leader> g --- versioning
+  "g" '(:ignore t :wk "Git")
+  "g/" '(magit-dispatch :wk "Magit dispatch")
+  "g'" '(forge-dispatch :wk "Forge dispatch")
+  "gb" '(magit-branch-checkout :wk "Magit switch branch")
+  "gg" '(magit-status :wk "Magit status")
+  ;; "gg" '((lambda () (interactive)
+  ;; 	     (when (and buffer-file-name (buffer-modified-p))
+  ;; 	       (save-buffer))
+  ;; 	     ;; (save-buffer-if-dirty)
+  ;; 	     (magit-status-and-focus-unstaged)
+  ;; 	     ) :wk "Magit status")
+  "gR" '(vc-revert :wk "Git revert file")
+  "gD" '(magit-file-delete :wk "Magit file delete")
+  "gB" '(magit-blame-addition :wk "Magit blame")
+  "gC" '(magit-clone :wk "Magit clone")
+  "gF" '(magit-fetch :wk "Magit fetch")
+  "gL" '(magit-log :wk "Magit buffer log")
+  "gS" '(magit-stage-file :wk "Git stage file")
+  "gU" '(magit-unstage-file :wk "Git unstage file")
 
                     ;;; <leader> gf --- git find
-		    "gf" '(:ignore t :wk "Find")
-		    "gff" '(magit-find-file :wk "Find file")
-		    "gfg" '(magit-find-git-config-file :wk "Find gitconfig file")
-		    "gfc" '(magit-show-commit :wk "Find commit")
+  "gf" '(:ignore t :wk "Find")
+  "gff" '(magit-find-file :wk "Find file")
+  "gfg" '(magit-find-git-config-file :wk "Find gitconfig file")
+  "gfc" '(magit-show-commit :wk "Find commit")
 
                     ;;; <leader> gl --- git list
-		    "gl" '(:ignore t :wk "List")
-		    "glr" '(magit-list-repositories :wk "List repositories")
-		    "gls" '(magit-list-submodules :wk "List submodules")
+  "gl" '(:ignore t :wk "List")
+  "glr" '(magit-list-repositories :wk "List repositories")
+  "gls" '(magit-list-submodules :wk "List submodules")
 
                     ;;; <leader> gc --- git create
-		    "gc" '(:ignore t :wk "Create")
-		    "gcr" '(magit-init :wk "Initialize repo")
-		    "gcR" '(magit-clone :wk "Clone repo")
-		    "gcc" '(magit-commit-create :wk "Commit")
-		    "gcf" '(magit-commit-fixup :wk "Fixup")
-		    "gcb" '(magit-branch-and-checkout :wk "Branch")
-		    "gci" '(forge-create-issue :wk "Issue")
-		    "gcp" '(forge-create-pullreq :wk "Pull request")
+  "gc" '(:ignore t :wk "Create")
+  "gcr" '(magit-init :wk "Initialize repo")
+  "gcR" '(magit-clone :wk "Clone repo")
+  "gcc" '(magit-commit-create :wk "Commit")
+  "gcf" '(magit-commit-fixup :wk "Fixup")
+  "gcb" '(magit-branch-and-checkout :wk "Branch")
+  "gci" '(forge-create-issue :wk "Issue")
+  "gcp" '(forge-create-pullreq :wk "Pull request")
 
                     ;;; <leader> i --- insert
-		    "i" '(:ignore t :wk "Insert")
-		    "iy" '(counsel-yank-pop :wk "From clipboard")
+  "i" '(:ignore t :wk "Insert")
+  "iy" '(counsel-yank-pop :wk "From clipboard")
 
-		    ;;<leader> n --- open
-		    "o" '(:wk "Open/Toggle")
-		    "ob" '(browse-url-of-file :wk "Browser")
-		    "of" '(make-frame :wk "New frame")
-		    "o-" '(dired-jump :wk "Dired")
-		    "oe" '(eshell :wk "Open eshell here")
-		    "ot" '(treemacs :wk "Treemacs")
-		    "oT" '(telega :wk "Telega")
+  ;;<leader> n --- open
+  "o" '(:wk "Open/Toggle")
+  "ob" '(browse-url-of-file :wk "Browser")
+  "of" '(make-frame :wk "New frame")
+  "o-" '(dired-jump :wk "Dired")
+  "oe" '(eshell :wk "Open eshell here")
+  "ot" '(treemacs :wk "Treemacs")
+  "oT" '(telega :wk "Telega")
 
-		    ;;<leader> w --- windows
-		    "w" '(:wk "Windows")
-		    "w'" '(windmove-right :wk "Move to Right Window")
-		    "w;" '(windmove-down :wk "Move to Bottom Window")
-		    "wl" '(windmove-up :wk "Move to Top Window")
-		    "wk" '(windmove-left :wk "Move to Left Window")
-		    "wo" '(other-window :wk "Move to Other Window")
-		    "wj" '(kill-buffer-and-window :wk "Kill current Window")
-		    "wJ" '(delete-other-windows :wk "Kill all other windows")
-		    "w+" '(evil-window-increase-height :wk "Increase window height")
-		    "w-" '(evil-window-decrease-height :wk "Decrease window height")
-		    "w>" '(evil-window-increase-width :wk "Increase window width")
-		    "w<" '(evil-window-decrease-width :wk "Decrease window width")
-		    "w=" '(balance-windows :wk "Balance Windows")
-		    "ws" '(evil-window-split :wk "Split Horizontally")
-		    "wv" '(evil-window-vsplit :wk "Split Vertically")
+  ;;<leader> w --- windows
+  "w" '(:wk "Windows")
+  "w'" '(windmove-right :wk "Move to Right Window")
+  "w;" '(windmove-down :wk "Move to Bottom Window")
+  "wl" '(windmove-up :wk "Move to Top Window")
+  "wk" '(windmove-left :wk "Move to Left Window")
+  "wo" '(other-window :wk "Move to Other Window")
+  "wj" '(kill-buffer-and-window :wk "Kill current Window")
+  "wJ" '(delete-other-windows :wk "Kill all other windows")
+  "w+" '(evil-window-increase-height :wk "Increase window height")
+  "w-" '(evil-window-decrease-height :wk "Decrease window height")
+  "w>" '(evil-window-increase-width :wk "Increase window width")
+  "w<" '(evil-window-decrease-width :wk "Decrease window width")
+  "w=" '(balance-windows :wk "Balance Windows")
+  "ws" '(evil-window-split :wk "Split Horizontally")
+  "wv" '(evil-window-vsplit :wk "Split Vertically")
 
-		    ;;<leader> m --- multiple cursors
-		    "m" '(:wk "Multiple Cursors")
-		    ;;<leader> h --- help
-		    "h" '(:keymap help-map :wk "Help")
-		    ;; replaces `apropos-command'
+  ;;<leader> m --- multiple cursors
+  "m" '(:wk "Multiple Cursors")
+  ;;<leader> h --- help
+  "h" '(:keymap help-map :wk "Help")
+  ;; replaces `apropos-command'
 					; "a"    #'apropos
 					; "A"    #'apropos-documentation
 
-		    ;;<leader> x --- C-x compatibility
-		    "x" '(:keymap ctl-x-map :wk "C-x")
-		    ;;<leader> @ --- LSP-mode Keymap
-		    "y" '(:keymap lsp-command-map :package lsp-mode :wk "LSP")
-		    )
-
+  ;;<leader> x --- C-x compatibility
+  "x" '(:keymap ctl-x-map :wk "C-x")
+  ;;<leader> @ --- LSP-mode Keymap
+  "y" '(:keymap lsp-command-map :package lsp-mode :wk "LSP")
+  )
 
 ;;; minibuffer keymap
 (defvar +default-minibuffer-maps
@@ -282,21 +279,20 @@
 
 
 ;;; go-mode
-(general-define-key :keymaps 'go-mode-map :states 'normal
-		    "gd" 'godef-jump
-		    "SPC d" 'godoc-at-point)
+(nmap :keymaps 'go-mode-map
+      "gd" 'godef-jump
+      "SPC d" 'godoc-at-point)
 
-(general-define-key :keymaps 'go-mode-map
-		    :states '(normal motion visual)
-		    :prefix "SPC"
-		    :global-prefix "C-SPC"
-		    "c" '(:ignore t :wk "code")
-		    "cc" '(compile :wk "Compile")
-		    "cC" '(recompile :wk "Recompile")
-		    "cd" '(go-guru-definition :wk "Jump to definition")
-		    "cD" '(go-guru-referrers :wk "Jump to references")
-		    "ck" '(godoc-at-point :wk "Jump to documentation")
-		    )
+(nvmap :keymaps 'go-mode-map
+       :prefix "SPC"
+       :global-prefix "C-SPC"
+       "c" '(:ignore t :wk "code")
+       "cc" '(compile :wk "Compile")
+       "cC" '(recompile :wk "Recompile")
+       "cd" '(go-guru-definition :wk "Jump to definition")
+       "cD" '(go-guru-referrers :wk "Jump to references")
+       "ck" '(godoc-at-point :wk "Jump to documentation")
+       )
 
 (with-eval-after-load 'general
   (general-define-key
@@ -318,19 +314,7 @@
  		    "C-j" 'lsp-ui-peek--select-next
 		    "C-k" 'lsp-ui-peek--select-prev)
 
-;; (general-define-key
-;;    :keymaps 'company-active-map
-;;    "TAB" #'company-select-next
-;;    [tab] #'company-select-next
-;;    S-TAB #'company-select-previous
-;;    [backtab] #'company-select-previous
-;;    "C-j" #'company-complete-selection
-;;    )
-
-
-
-;;; start of company
-;;; company-active-map
+;; start of company
 (general-define-key :keymaps 'company-active-map
 		    "C-w"     nil  ; don't interfere with `evil-delete-backward-word'
 		    "C-n"     #'company-select-next
@@ -365,10 +349,9 @@
 			 [tab] #'company-complete)
      )
   )
-;;; ends of company
+;; ends of company
 
-
-;;; sart of ivy
+;; sart of ivy
 (eval-after-load 'ivy
   `(progn
      (general-define-key :keymaps 'ivy-minibuffer-map
@@ -387,9 +370,9 @@
 			 )
      )
   )
-;;; end of ivy
+;; end of ivy
 
-;;; magit
+;; magit
 (eval-after-load 'magit
   `(progn
      ;; Temporary workaround for +magit/quit hang with lots of buffers
@@ -408,24 +391,26 @@
 	  magit-revision-mode-map
 	  magit-diff-mode-map)
        [tab] #'magit-section-toggle)
-     (evil-define-key* 'normal magit-status-mode-map [escape] nil) ; q is enough
-     (evil-define-key* '(normal visual) magit-mode-map
-		       "%"  'magit-gitflow-popup
-		       "zz" 'evil-scroll-line-to-center
-		       "g=" 'magit-diff-default-context)
+     ;; q is enough
+     (nmap 'magit-status-mode-map
+	   [escape] nil)
+     (nvmap 'magit-mode-map
+	    "%"  'magit-gitflow-popup
+	    "zz" 'evil-scroll-line-to-center
+	    "g=" 'magit-diff-default-context)
      )
   )
 
-(eval-after-load 'git-rebase
-  `(progn
-     (dolist (key '(("M-k" . "gk") ("M-j" . "gj")))
-       (when-let (desc (assoc (car key) evil-magit-rebase-commands-w-descriptions))
-	 (setcar desc (cdr key))))
-     (evil-define-key* evil-magit-state git-rebase-mode-map
-		       "gj" #'git-rebase-move-line-down
-		       "gk" #'git-rebase-move-line-up)
-     ))
-
+(eval-after-load 'evil-magit
+  (eval-after-load 'git-rebase
+    `(progn
+       (dolist (key '(("M-k" . "gk") ("M-j" . "gj")))
+	 (when-let (desc (assoc (car key) evil-magit-rebase-commands-w-descriptions))
+	   (setcar desc (cdr key))))
+       (general-define-key :states 'evil-magit-state
+			   :keymaps 'git-rebase-mode-map
+			   "gj" #'git-rebase-move-line-down
+			   "gk" #'git-rebase-move-line-up))))
 
 (general-define-key :keymaps 'color-rg-mode-map
 		    ;; Lower keys for commands not operating on all the marked files
@@ -447,18 +432,19 @@
 		    "C-c C-k" #'color-rg-switch-to-view-mode)
 
 ;;; vterm
-(general-define-key :keymaps 'vterm-mode-map
-		    [escape] #'vterm--self-insert
-		    [return] #'vterm--self-insert
-		    "p" #'vterm-yank
-		    "u" #'vterm-undo
-		    "C-y" #'vterm-yank
-		    "M-n" #'vterm-send-down
-		    "M-p" #'vterm-send-up
-		    "M-y" #'vterm-yank-pop
-		    "M-/" #'vterm-send-tab
-		    )
-
+(eval-after-load 'vterm
+  (general-define-key :keymaps 'vterm-mode-map
+		      [escape] #'vterm--self-insert
+		      [return] #'vterm--self-insert
+		      "p" #'vterm-yank
+		      "u" #'vterm-undo
+		      "C-y" #'vterm-yank
+		      "M-n" #'vterm-send-down
+		      "M-p" #'vterm-send-up
+		      "M-y" #'vterm-yank-pop
+		      "M-/" #'vterm-send-tab
+		      )
+  )
 
 (general-define-key :keymaps 'read-expression-map
 		    "C-j" #'next-line-or-history-element
@@ -480,13 +466,26 @@
 		    "<M-up>" #'awesome-tab-backward-group
 		    "M-z" #'awesome-tab-switch-group)
 
-
 (general-define-key :keymaps 'lua-mode-map
 	 	    :states '(normal motion visual)
  		    "TAB" #'lua-goto-forward
 	 	    "C-o" #'lua-goto-backward
 		    )
 
+;; dired
+(general-define-key :states '(nomal global)
+		    :keymaps 'dired-mode-map
+		    ;; Kill all dired buffers on q
+		    ;; "q" 'flyspell-correct-word-generic
+		    ;; To be consistent with ivy/helm+wgrep integration
+		    "C-c C-e" #'wdired-change-to-wdired-mode)
+
+;; Restore these keybinds, since the blacklisted/overwritten gr/gR will
+;; undo them:
+(eval-after-load 'dired
+  (nmap :keymaps 'dired-mode-map
+        "gr" #'revert-buffer))
+;;
 ;; (evil-normalize-keymaps)
 
 (provide 'init-keybinds)

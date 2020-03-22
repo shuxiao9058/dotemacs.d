@@ -48,6 +48,7 @@
     (doom-modeline-height 25)
     (doom-modeline-bar-width 3)
     (doom-modeline-checker-simple-format t)
+    :hook (after-init . doom-modeline-init)
     :config
     (progn
       ;; Define your custom doom-modeline
@@ -59,7 +60,7 @@
       (add-hook 'doom-modeline-mode-hook
 		(lambda() (doom-modeline-set-modeline 'my-simple-line 'default)))
       )
-    (doom-modeline-mode +1)
+    ;; (doom-modeline-mode +1)
     )
 
 (use-package awesome-tab

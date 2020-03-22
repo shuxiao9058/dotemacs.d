@@ -32,7 +32,7 @@
 (require 'init-recentf)
 ;;; (require 'init-evil)
 ;; case show line numbers
-(require 'init-linum) 
+(require 'init-linum)
 
 ;;; tools
 (require 'init-wakatime)
@@ -40,7 +40,7 @@
 (require 'init-format)
 (require 'init-rime)
 (require 'init-vterm)
-;; (require 'init-dired)
+(require 'init-dired)
 (require 'init-search)
 (require 'init-telega)
 
@@ -67,11 +67,12 @@
 
 ;;; keybinds
 ;;; early load with general in core
-(require 'init-keybinds)
+(eval-after-load 'general
+  `(progn
+     (require 'init-keybinds)))
 
 ;; Load customization file now
 (let ((custom-file (expand-file-name "custom.el" user-emacs-directory)))
   (when (file-exists-p custom-file)
     (load custom-file nil t)))
-
 ;;; init.el ends here

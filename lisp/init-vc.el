@@ -23,6 +23,9 @@
     ;; ;; Use flyspell in the commit buffer
     ;; (add-hook 'git-commit-setup-hook 'git-commit-turn-on-flyspell)
     ;; (add-hook 'magit-popup-mode-hook #'hide-mode-line-mode)
+    :config
+    (when IS-MAC
+      (setq magit-git-executable "/usr/local/bin/git"))
     )
 
 (use-package magit-gitflow
@@ -73,7 +76,8 @@
 
 (use-package evil-magit
     :straight t
-    :after (magit evil)
+    :ensure t
+    :after magit evil
     :hook (magit-mode . evil-magit-init)
     :init
     (progn

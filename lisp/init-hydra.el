@@ -4,17 +4,18 @@
     :straight t
     :ensure t
     :after outline
-    :init
-    (setq hydra-if-helpful t)
+    :custom
+    (hydra-if-helpful t)
+    :commands (defhydra)
     :bind (
            ("M-o" . hydra-base/body)
 	   ))
 
 (use-package hydra-posframe
-  :straight (hydra-posframe
-         :host github
-          :repo "Ladicle/hydra-posframe"
-         )
+    :straight (hydra-posframe
+               :host github
+               :repo "Ladicle/hydra-posframe"
+               )
     :defer t
     :after (hydra posframe)
     :config

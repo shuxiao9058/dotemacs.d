@@ -1,5 +1,13 @@
 ;;; core-packages.el -*- lexical-binding: t; -*-
 
+(use-package server ; built-in
+    :straight nil
+    :if (display-graphic-p)
+    :defer 1
+    :config
+    (unless (server-running-p)
+      (server-start)))
+
 (use-package autorevert
     :straight nil
     ;; :blackout t
@@ -10,40 +18,6 @@
     (global-auto-revert-mode +1)
     :custom
     (auto-revert-verbose nil))
-
-(use-package general
-    :straight t
-    ;; :after evil
-    ;; :ensure t
-    :commands (general-define-key general-override-mode general-evil-setup general--simulate-keys)
-    :config
-    (progn
-      (general-evil-setup)
-
-      ;; ;;; load keybinds
-      ;;   (let ((init-keybinds-file (expand-file-name "lisp/init-keybinds.el" user-emacs-directory)))
-      ;; 	(when (file-exists-p init-keybinds-file)
-      ;; 	  (load init-keybinds-file)))
-      )
-    )
-
-;;
-;;; Packages
-(use-package which-key
-    :straight t
-    :defer 1
-    :init
-    (setq which-key-sort-order #'which-key-prefix-then-key-order
-          which-key-sort-uppercase-first nil
-          which-key-add-column-padding 1
-          which-key-max-display-columns nil
-          which-key-min-display-lines 4
-          which-key-side-window-slot -10)
-    :config
-    ;; general improvements to which-key readability
-    (set-face-attribute 'which-key-local-map-description-face nil :weight 'bold)
-    (which-key-setup-side-window-bottom)
-    (which-key-mode +1))
 
 ;;; magit
 (use-package hide-mode-line
@@ -308,11 +282,11 @@
                                         ".+and \d{1,10} more errors.+"
                                         "Wrote "
                                         "Liberime: start with shared dir" ;;; liberime
-                    ".+Starting new Ispell process.+" ;;; ispell
-                    "Package cl is deprecated"
-                    "Loading[\s\w\/\.-]+\(module\).+"
-                    ;; "Loading[\w\/\d\W]+\(module\).+" ;;; module load
-                    "For information about GNU Emacs and the GNU system.+"
+					".+Starting new Ispell process.+" ;;; ispell
+					"Package cl is deprecated"
+					"Loading[\s\w\/\.-]+\(module\).+"
+					;; "Loading[\w\/\d\W]+\(module\).+" ;;; module load
+					"For information about GNU Emacs and the GNU system.+"
                                         )
   "filter formatted message string to remove noisy messages"
   :type '(list string)
@@ -323,14 +297,14 @@
       ad-do-it
     (let ((formatted-string (apply 'format (ad-get-args 0))))
       (if (and (stringp formatted-string)
-           (cl-some (lambda (re) (string-match re formatted-string)) message-filter-regexp-list))
-      (let ((inhibit-read-only t))
-        (with-current-buffer "*Messages*"
-          (goto-char (point-max))
-          (insert formatted-string "\n")))
-    (progn
-      (ad-set-args 0 `("%s" ,formatted-string))
-      ad-do-it)))))
+               (cl-some (lambda (re) (string-match re formatted-string)) message-filter-regexp-list))
+	  (let ((inhibit-read-only t))
+            (with-current-buffer "*Messages*"
+              (goto-char (point-max))
+              (insert formatted-string "\n")))
+	(progn
+	  (ad-set-args 0 `("%s" ,formatted-string))
+	  ad-do-it)))))
 
 ;;; core packages here
 

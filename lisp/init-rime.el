@@ -20,11 +20,11 @@
 				    :internal-border-width 6))
     (rime-code-face
      '((t (:inherit default :background "#ffffff" :foreground "#000000"))))
-    (rime-disable-predicates
-     '(evil-normal-state-p
-       rime--after-alphabet-char-p
-       rime--prog-in-code-p
-       ))
+    ;; (rime-disable-predicates
+    ;;  '(evil-normal-state-p
+    ;;    rime--after-alphabet-char-p
+    ;;    rime--prog-in-code-p
+    ;;    ))
     ;; (rime-share-data-dir "")
     (rime-user-data-dir (expand-file-name "rime" poly-local-dir))
     :config
@@ -39,25 +39,26 @@
       (setq-default rime-inline-predicates
 		    '(+rime-predicate-current-input-uppercase-letter-p))
 
-      (defun ac-rime-set-text-mode-predicate()
-	  ;;; set text-mode
-	(setq-local rime-disable-predicates
-		    '(+rime-predicate-button-at-point-p
-		      rime-predicate-evil-mode-p
-		      rime-predicate-punctuation-line-begin-p
-		      +rime-predicate-puncutuation-after-space-cc-p
-		      +rime-predicate-puncutuation-after-ascii-p))
-	(setq-local rime-inline-predicates
-		    '(+rime-predicate-current-input-uppercase-letter-p
-		      rime-predicate-auto-english-p))
-	)
-
       (eval-after-load 'telega
 	(add-hook 'telega-chat-mode-hook #'ac-rime-set-text-mode-predicate)
 	)
       (add-hook 'text-mode-hook #'ac-rime-set-text-mode-predicate)
       )
     )
+
+
+(defun ac-rime-set-text-mode-predicate()
+  ;;; set text-mode
+  (setq-local rime-disable-predicates
+	      '(+rime-predicate-button-at-point-p
+		rime-predicate-evil-mode-p
+		rime-predicate-punctuation-line-begin-p
+		+rime-predicate-puncutuation-after-space-cc-p
+		+rime-predicate-puncutuation-after-ascii-p))
+  (setq-local rime-inline-predicates
+	      '(+rime-predicate-current-input-uppercase-letter-p
+		rime-predicate-auto-english-p))
+  )
 
 ;;;
 ;;; https://github.com/cnsunyour/.doom.d/blob/develop/modules/cnsunyour/chinese/%2Brime-probe-english.el

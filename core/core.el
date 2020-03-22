@@ -1,4 +1,4 @@
-;;; core.el --- the heart of the beast -*- lexical-binding: t; -*-
+;;; core/core.el --- the heart of the beast -*- lexical-binding: t; -*-
 
 (when (version< emacs-version "27")
   (error "Detected Emacs %s. only supports Emacs 27 and higher"
@@ -16,7 +16,7 @@
 
 ;;; cua-mode for colum-editing
 ;; windows style keybind C-x, C-v, cut paste
-(cua-mode t) 
+(cua-mode t)
 (setq cua-auto-tabify-rectangles nil) ;; Don't tabify after rectangle commands
 
 ;;;
@@ -39,9 +39,10 @@
 
 (defun poly-initialize-core ()
   "Load Poly's core files for an interactive session."
-  (if  poly-initialize-core-p
+  (if poly-initialize-core-p
       nil
     (require 'core-straight)
+    (require 'core-keybinds)
     (require 'core-packages)
     (setq poly-initialize-core-p t)
     )
@@ -50,3 +51,4 @@
 (poly-initialize-core)
 
 (provide 'core)
+;;; core.el ends here

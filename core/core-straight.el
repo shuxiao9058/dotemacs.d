@@ -44,6 +44,7 @@
   (load bootstrap-file nil 'nomessage))
 
 (straight-use-package 'use-package)
+(setq use-package-always-demand t)
 
 (provide 'core-straight)
 ;;; core/core-straight.el ends here
