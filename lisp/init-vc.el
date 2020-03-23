@@ -1,27 +1,28 @@
 ;;; lisp/init-vc.el -*- lexical-binding: t; -*-
 
-
 (use-package magit
     :straight t
     :commands (magit-file-delete magit-status magit-checkout)
-    ;; :hook (magit-pop-mode . hide-mode-line-mode)
+    :hook (magit-pop-mode . hide-mode-line-mode)
+    :custom
+    (magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
+    (magit-revert-buffers 'silent)
+    (magit-push-always-verify nil)
+    (git-commit-summary-max-length 70)
+    ;; use colored graph lines. Could be a performance issue.
+    (magit-log-arguments (quote ("-n256" "--graph" "--decorate" "--color" "--stat")))
+    (magit-diff-use-overlays nil)
+    (magit-use-overlays nil)
+    (magit-auto-revert-mode t)
+    (git-commit-finish-query-functions nil)
     :init
     ;; Must be set early to prevent ~/.emacs.d/transient from being created
     (setq transient-levels-file  (concat poly-etc-dir "transient/levels")
           transient-values-file  (concat poly-etc-dir "transient/values")
           transient-history-file (concat poly-etc-dir "transient/history"))
-    (setq magit-revert-buffers 'silent
-          magit-push-always-verify nil
-          git-commit-summary-max-length 70
-          ;; use colored graph lines. Could be a performance issue.
-	  magit-log-arguments (quote ("-n256" "--graph" "--decorate" "--color" "--stat"))
-	  magit-diff-use-overlays nil
-	  magit-use-overlays nil
-	  magit-auto-revert-mode t
-	  git-commit-finish-query-functions nil)
+    ;; (setq
     ;; ;; Use flyspell in the commit buffer
     ;; (add-hook 'git-commit-setup-hook 'git-commit-turn-on-flyspell)
-    ;; (add-hook 'magit-popup-mode-hook #'hide-mode-line-mode)
     :config
     (when IS-MAC
       (setq magit-git-executable "/usr/local/bin/git"))
