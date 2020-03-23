@@ -8,6 +8,18 @@
     :config
     (setq gofmt-command "goimports")
     (setenv "GO111MODULE" "on")
+    :general
+    (nmap :keymaps '(go-mode-map)
+	  "gd" 'godef-jump
+	  "SPC d" 'godoc-at-point)
+    (leader-def :keymaps '(go-mode-map)
+      "c" '(:ignore t :wk "code")
+      "cc" '(compile :wk "Compile")
+      "cC" '(recompile :wk "Recompile")
+      "cd" '(go-guru-definition :wk "Jump to definition")
+      "cD" '(go-guru-referrers :wk "Jump to references")
+      "ck" '(godoc-at-point :wk "Jump to documentation")
+      )
     )
 
 (use-package gorepl-mode

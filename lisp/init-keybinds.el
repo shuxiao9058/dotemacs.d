@@ -278,20 +278,7 @@
 		    "C-S-k"  #'scroll-down-command)
 
 ;;; go-mode
-(nmap :keymaps 'go-mode-map
-      "gd" 'godef-jump
-      "SPC d" 'godoc-at-point)
 
-(nvmap :keymaps 'go-mode-map
-       :prefix "SPC"
-       :global-prefix "C-SPC"
-       "c" '(:ignore t :wk "code")
-       "cc" '(compile :wk "Compile")
-       "cC" '(recompile :wk "Recompile")
-       "cd" '(go-guru-definition :wk "Jump to definition")
-       "cD" '(go-guru-referrers :wk "Jump to references")
-       "ck" '(godoc-at-point :wk "Jump to documentation")
-       )
 
 (with-eval-after-load 'general
   (general-define-key
