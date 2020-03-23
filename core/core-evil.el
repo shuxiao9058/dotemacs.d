@@ -133,13 +133,6 @@
     ;; REVIEW This is tremendously slow on macos and windows for some reason.
     (setq evil-mc-enable-bar-cursor (not (or IS-MAC IS-WINDOWS)))
 
-    (eval-after-load 'smartparens
-      `(progn
-	 ;; Make evil-mc cooperate with smartparens better
-	 (let ((vars (cdr (assq :default evil-mc-cursor-variables))))
-	   (unless (memq (car sp--mc/cursor-specific-vars) vars)
-             (setcdr (assq :default evil-mc-cursor-variables)
-                     (append vars sp--mc/cursor-specific-vars))))))
 
     )
 

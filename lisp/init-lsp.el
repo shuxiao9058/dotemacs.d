@@ -19,38 +19,14 @@
     (lsp-auto-guess-root nil)
     (lsp-prefer-flymake nil) ;; Use flycheck instead of flymake
     (lsp-file-watch-threshold 2000)
-    :bind (:map lsp-mode-map ("C-c C-f" . lsp-format-buffer))
+    (lsp-clients-emmy-lua-jar-path (expand-file-name  "bin/EmmyLua-LS-all.jar" poly-local-dir))
     :config
-    (progn
-      ;; 注册emmy-lua-lsp
-      (lsp-register-client
-       (make-lsp-client :new-connection (lsp-stdio-connection (list
-                                                               "/usr/bin/java"
-                                                               "-cp"
-                                                               (expand-file-name  "bin/EmmyLua-LS-all.jar" poly-local-dir)
-                                                               "com.tang.vscode.MainKt"))
-			:major-modes '(lua-mode)
-			:server-id 'emmy-lua
-			:priority 2
-			:notification-handlers
-			(lsp-ht
-			 ("emmy/progressReport" 'ignore))
-			))
-
-      ;; (make-lsp-client :new-connection (lsp-stdio-connection
-      ;; 					(list (expand-file-name "workspace/lua-language-server/bin/macOS/lua-language-server" "~")
-      ;;                                         "-E"
-      ;;                                         (expand-file-name "workspace/lua-language-server/main.lua" "~")))
-      ;;                  :major-modes '(lua-mode)
-      ;; 		       :priority 2
-      ;;                  :server-id 'lua-language-server)
-      ;; (setq lsp-eldoc-hook '(lsp-document-highlight))
-
-      ;; cancel warning
-      (advice-add 'lsp-warn
-		  :around (lambda (orig-func &rest r)
-                            (message (apply #'format-message r))))
-      ))
+    ;; cancel warning
+    (advice-add 'lsp-warn
+		:around (lambda (orig-func &rest r)
+                          (message (apply #'format-message r))))
+    :bind (:map lsp-mode-map ("C-c C-f" . lsp-format-buffer))
+    )
 
 (use-package lsp-ui
     :straight t
@@ -94,25 +70,25 @@
 (use-package company-lsp
     :straight t
     :after company
-    :custom (company-lsp-cache-candidates 'auto)
+    :custom
+    (company-lsp-cache-candidates 'auto)
+    (syntax-checking-enable-by-default t)
+    (lsp-highlight-symbol-at-point nil)
+    (lsp-enable-codeaction nil)
+    (lsp-log-io nil)
+    (lsp-enable-xref t)
+    (lsp-auto-guess-root t)
+    (lsp-diagnostic-package :flymake)
+    (lsp-enable-indentation t)
+    (lsp-enable-completion-at-point t)
+    (lsp-enable-eldoc nil)
+    (lsp-response-timeout 1000)
+    (lsp-file-watch-threshold 150000)
     :config
-    (setq
-     syntax-checking-enable-by-default t
-     lsp-highlight-symbol-at-point nil
-     lsp-enable-codeaction nil
-     lsp-log-io nil
-     lsp-enable-xref t
-     lsp-auto-guess-root t
-     lsp-diagnostic-package :flymake
-     lsp-enable-indentation t
-     lsp-enable-completion-at-point t
-     lsp-enable-eldoc nil
-     lsp-response-timeout 1000
-     lsp-file-watch-threshold 150000
-     )
-
     (add-to-list 'lsp-file-watch-ignored "build")
 
+    ;; enable emmy-lua
+    (add-to-list 'company-lsp-filter-candidates '(lsp-emmy-lua . t))
 
     (setq-default company-frontends
                   '(;; company-tng-frontend

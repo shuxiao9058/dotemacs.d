@@ -46,6 +46,7 @@
 
 ;;; editor
 (require 'init-markdown)
+(require 'init-pair)
 
 ;;; programming
 (require 'init-projectile)

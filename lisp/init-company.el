@@ -13,19 +13,25 @@
     (append (if (consp backend) backend (list backend))
             '(:with company-yasnippet))))
 
-;; Support yas in commpany
-;; Note: Must be the last to involve all backends
-
-(defun prepend-company-tabnine (&optional enable-yas)
-  (progn
-    (setq-default company-backends
-		  (let ((tabnine-without-yas #'company-tabnine)
-			(tabnine-with-yas #'(company-tabnine :with company-yasnippet)))
-		    (cons (if enable-yas tabnine-with-yas tabnine-without-yas)
-			  ( remove tabnine-with-yas (remove tabnine-without-yas company-backends)))))
-    (setq-default company-backends (mapcar #'company-mode/backend-with-yas company-backends))
-    )
-  )
+;; Integrate company-tabnine with lsp-mode
+(defun company//sort-by-tabnine (candidates)
+  (if (or (functionp company-backend)
+	  (not (and (listp company-backend) (memq 'company-tabnine company-backend))))
+      candidates
+    (let ((candidates-table (make-hash-table :test #'equal))
+	  candidates-lsp
+	  candidates-tabnine)
+      (dolist (candidate candidates)
+	(if (eq (get-text-property 0 'company-backend candidate)
+		'company-tabnine)
+	    (unless (gethash candidate candidates-table)
+	      (push candidate candidates-tabnine))
+	  (push candidate candidates-lsp)
+	  (puthash candidate t candidates-table)))
+      (setq candidates-lsp (nreverse candidates-lsp))
+      (setq candidates-tabnine (nreverse candidates-tabnine))
+      (nconc (seq-take candidates-tabnine 3)
+	     (seq-take candidates-lsp 6)))))
 
 (use-package company
     :straight t
@@ -43,9 +49,6 @@
     (company-show-numbers t)
     :hook (after-init . global-company-mode)
     :config
-    ;; (setq-default company-backends '((company-capf company-dabbrev-code) company-dabbrev)
-    ;;	  company-dabbrev-other-buffers 'all)
-
     ;; set default `company-backends'
     (setq-default company-backends
 		  '((company-capf  ;; completion-at-point-functions
@@ -55,16 +58,6 @@
 		     )
 		    (company-abbrev company-dabbrev)
 		    ))
-
-    ;; (setq-default company-backends (mapcar
-    ;; 				    #'company-mode/backend-with-yas
-    ;; 				    '((company-capf  ;; completion-at-point-functions
-    ;; 				       company-dabbrev-code)
-    ;; 				      (company-files          ; files & directory
-    ;; 				       company-keywords       ; keywords
-    ;; 				       )
-    ;; 				      (company-abbrev company-dabbrev)
-    ;; 				      )))
     )
 
 (use-package company-posframe
@@ -106,40 +99,16 @@
     ;; (setq company-tabnine-log-file-path "/tmp/TabNine.log")
     (setq company-tabnine-executable-args
           '("--client" "emacs" "--log-level" "Debug" "--log-file-path" "/tmp/TabNine.log"))
-    :config
-    (prepend-company-tabnine t)
-    ;; (setq-default company-backends
-    ;; 		  (let ((b #'company-tabnine))
-    ;; 		    (cons b (remove b company-backends))))
-
-    ;; ;; Enable TabNine on default
-    ;; (add-to-list 'company-backends #'company-tabnine)
-
-    ;; Integrate company-tabnine with lsp-mode
-    (defun company//sort-by-tabnine (candidates)
-      (if (or (functionp company-backend)
-	      (not (and (listp company-backend) (memq 'company-tabnine company-backend))))
-	  candidates
-	(let ((candidates-table (make-hash-table :test #'equal))
-	      candidates-lsp
-	      candidates-tabnine)
-	  (dolist (candidate candidates)
-	    (if (eq (get-text-property 0 'company-backend candidate)
-		    'company-tabnine)
-		(unless (gethash candidate candidates-table)
-		  (push candidate candidates-tabnine))
-	      (push candidate candidates-lsp)
-	      (puthash candidate t candidates-table)))
-	  (setq candidates-lsp (nreverse candidates-lsp))
-	  (setq candidates-tabnine (nreverse candidates-tabnine))
-	  (nconc (seq-take candidates-tabnine 3)
-		 (seq-take candidates-lsp 6)))))
-
-    (add-hook 'lsp-after-open-hook
-	      (lambda ()
-		(setq company-tabnine-max-num-results 3)
-		(add-to-list 'company-transformers 'company//sort-by-tabnine t)
-		(add-to-list 'company-backends '(company-lsp :with company-tabnine :separate))))
+    :hook (lsp-after-open . (lambda ()
+			      (setq company-tabnine-max-num-results 3)
+			      (add-to-list 'company-transformers 'company//sort-by-tabnine t)
+			      (add-to-list 'company-backends '(company-lsp :with company-tabnine :separate))
+			      ;; Support yas in commpany
+			      ;; Note: Must be the last to involve all backends
+			      (setq-local company-backends
+					  (mapcar #'company-mode/backend-with-yas company-backends))
+			      )
+			  )
     )
 
 (use-package yasnippet
@@ -149,7 +118,6 @@
     :commands yas-global-mode
     :hook (after-init . yas-global-mode)
     :config
-    ;; ;; (add-hook 'after-init-hook 'yas-global-mode)
     ;; (add-to-list 'yas-snippet-dirs
     ;; 		 (expand-file-name "snippets" poly-etc-dir))
     ;; make company break completion

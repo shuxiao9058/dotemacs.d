@@ -1,21 +1,5 @@
 ;;; lisp/init-lisp.el -*- lexical-binding: t; -*-
 
-(use-package paredit
-    :straight (
-	       :type git
-	       :host github
-	       :repo "emacsmirror/paredit")
-    :ensure t
-    :defer t
-    :hook ((scheme-mode
-	    emacs-lisp-mode lisp-mode ielm-mode
-	    clojure-mode cider-repl-mode
-	    cask-mode) . paredit-mode)
-    :commands paredit-mode enable-paredit-mode
-    :config
-    (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
-    )
-
 (use-package lisp-mode
     :straight nil
     :after paredit
