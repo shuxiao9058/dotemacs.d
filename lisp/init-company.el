@@ -13,6 +13,10 @@
     (append (if (consp backend) backend (list backend))
             '(:with company-yasnippet))))
 
+(defvar my-company-tabnine '(company-tabnine :with company-yasnippet)
+  "my company tabnine"
+  )
+
 ;; Integrate company-tabnine with lsp-mode
 (defun company//sort-by-tabnine (candidates)
   (if (or (functionp company-backend)
@@ -51,14 +55,13 @@
     :config
     ;; set default `company-backends'
     (setq-default company-backends
-		  '((company-capf  ;; completion-at-point-functions
-		     company-dabbrev-code)
-		    (company-files          ; files & directory
-		     company-keywords       ; keywords
-		     )
-		    (company-abbrev company-dabbrev)
-		    ))
-    (remove-company-backend company-backends 'company-tabnine)
+		  (cons my-company-tabnine
+			'((company-capf  ;; completion-at-point-functions
+			   company-dabbrev-code)
+			  (company-files          ; files & directory
+			   company-keywords       ; keywords
+			   )
+			  (company-abbrev company-dabbrev))))
     :general
     (:keymaps '(company-active-map)
               "C-w"     nil  ; don't interfere with `evil-delete-backward-word'
@@ -127,12 +130,25 @@
           '("--client" "emacs" "--log-level" "Debug" "--log-file-path" "/tmp/TabNine.log"))
     :hook (lsp-after-open . (lambda ()
 			      (setq company-tabnine-max-num-results 3)
+
+			      ;; ;; should remove my-company-tabnine first
+			      ;; (setq-local company-backends (remove my-company-tabnine company-backends))
 			      (add-to-list 'company-transformers 'company//sort-by-tabnine t)
-			      (add-to-list 'company-backends '(company-lsp :with company-tabnine :separate))
+			      ;; (add-to-list 'company-backends '(company-lsp :with company-tabnine :with company-yasnippet :separate))
+
 			      ;; Support yas in commpany
 			      ;; Note: Must be the last to involve all backends
-			      (setq-local company-backends
-					  (mapcar #'company-mode/backend-with-yas company-backends))
+			      ;; should remove my-company-tabnine first
+			      (let ((local-backends (remove my-company-tabnine company-backends)))
+				(setq-local company-backends
+					    (cons '(company-lsp :with company-tabnine :with company-yasnippet :separate) local-backends)))
+
+			      ;; ;; Support yas in commpany
+			      ;; ;; Note: Must be the last to involve all backends
+			      ;; (let ((local-backends (remove my-company-tabnine company-backends)))
+			      ;; 	(setq-local company-backends
+			      ;; 		    (mapcar #'company-mode/backend-with-yas local-backends))
+			      ;; 	)
 			      )
 			  )
     )
