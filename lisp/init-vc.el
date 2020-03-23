@@ -4,13 +4,12 @@
 (use-package magit
     :straight t
     :commands (magit-file-delete magit-status magit-checkout)
-    :hook (magit-pop-mode . hide-mode-line-mode)
+    ;; :hook (magit-pop-mode . hide-mode-line-mode)
     :init
     ;; Must be set early to prevent ~/.emacs.d/transient from being created
     (setq transient-levels-file  (concat poly-etc-dir "transient/levels")
           transient-values-file  (concat poly-etc-dir "transient/values")
           transient-history-file (concat poly-etc-dir "transient/history"))
-
     (setq magit-revert-buffers 'silent
           magit-push-always-verify nil
           git-commit-summary-max-length 70

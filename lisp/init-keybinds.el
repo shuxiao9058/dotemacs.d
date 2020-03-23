@@ -31,8 +31,7 @@
 ;;
 ;;; General + leader/localleader keys
 ;; Removing emacs state from non-normal list allow the use of SPC
-;; (delete 'emacs general-non-normal-states)
-
+(delete 'emacs general-non-normal-states)
 
 ;; disable C-z
 ;; (global-set-key (kbd "C-z") nil)
@@ -147,6 +146,7 @@
   ;;<leader> s --- search
   "s" '(:wk "Search")
   "sb" '(swiper :wk "Search Buffer")
+  "sd" '(color-rg-search-input :wk "Search current directory")
   "sf" '(locate :wk "Locate file")
   "si" '(imenu :wk "Jump to symbol")
   "sL" '(ffap-menu :wk "Jump to link")
@@ -276,7 +276,6 @@
 		    "C-k"    #'previous-line
 		    "C-S-j"  #'scroll-up-command
 		    "C-S-k"  #'scroll-down-command)
-
 
 ;;; go-mode
 (nmap :keymaps 'go-mode-map
@@ -412,80 +411,11 @@
 			   "gj" #'git-rebase-move-line-down
 			   "gk" #'git-rebase-move-line-up))))
 
-(general-define-key :keymaps 'color-rg-mode-map
-		    ;; Lower keys for commands not operating on all the marked files
-		    "RET" #'color-rg-open-file
-		    "q" #'quit-window
-		    "e" #'color-rg-switch-to-edit-mode
-		    "p" #'color-rg-jump-prev-keyword
-		    "n" #'color-rg-jump-next-keyword
-		    "f" #'color-rg-jump-next-file
-		    "b" #'color-rg-jump-prev-file
-		    ;; "?" #'color-rg-hydra/body
-		    )
-
-(general-define-key :keymaps 'color-rg-mode-edit-map
-		    "C-c C-f" #'color-rg-jump-next-file
-		    "C-c C-n" #'color-rg-jump-next-keyword
-		    "C-c C-p" #'color-rg-jump-prev-keyword
-		    "C-c C-b" #'color-rg-jump-prev-file
-		    "C-c C-k" #'color-rg-switch-to-view-mode)
-
-;;; vterm
-(eval-after-load 'vterm
-  (general-define-key :keymaps 'vterm-mode-map
-		      [escape] #'vterm--self-insert
-		      [return] #'vterm--self-insert
-		      "p" #'vterm-yank
-		      "u" #'vterm-undo
-		      "C-y" #'vterm-yank
-		      "M-n" #'vterm-send-down
-		      "M-p" #'vterm-send-up
-		      "M-y" #'vterm-yank-pop
-		      "M-/" #'vterm-send-tab
-		      )
-  )
-
 (general-define-key :keymaps 'read-expression-map
 		    "C-j" #'next-line-or-history-element
 		    "C-k" #'previous-line-or-history-element)
 
-;; Make hydra compatible with awesome-tab
-(with-eval-after-load 'hydra
-  (defun zenith/lv-window (fun)
-    (with-selected-window (funcall fun)
-      (setq-local header-line-format nil))
-    lv-wnd)
-  (advice-add 'lv-window :around 'zenith/lv-window))
-(dotimes (i 10)
-  (general-define-key (concat "M-" (int-to-string i)) #'awesome-tab-select-visible-tab))
 
-(general-define-key "<M-right>" #'awesome-tab-forward
-		    "<M-left>" #'awesome-tab-backward
-		    "<M-down>" #'awesome-tab-forward-group
-		    "<M-up>" #'awesome-tab-backward-group
-		    "M-z" #'awesome-tab-switch-group)
-
-(general-define-key :keymaps 'lua-mode-map
-	 	    :states '(normal motion visual)
- 		    "TAB" #'lua-goto-forward
-	 	    "C-o" #'lua-goto-backward
-		    )
-
-;; dired
-(general-define-key :states '(nomal global)
-		    :keymaps 'dired-mode-map
-		    ;; Kill all dired buffers on q
-		    ;; "q" 'flyspell-correct-word-generic
-		    ;; To be consistent with ivy/helm+wgrep integration
-		    "C-c C-e" #'wdired-change-to-wdired-mode)
-
-;; Restore these keybinds, since the blacklisted/overwritten gr/gR will
-;; undo them:
-(eval-after-load 'dired
-  (nmap :keymaps 'dired-mode-map
-        "gr" #'revert-buffer))
-;;
 ;; (evil-normalize-keymaps)
 
 (provide 'init-keybinds)

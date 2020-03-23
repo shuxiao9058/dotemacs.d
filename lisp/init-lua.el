@@ -17,6 +17,10 @@
     (setq-local company-backends
                 (let ((b #'company-tabnine))
                   (cons b (remove b company-backends))))
+    :general
+    (nvmap :keymaps 'lua-mode-map
+ 	   "TAB" #'lua-goto-forward
+	   "C-o" #'lua-goto-backward)
     )
 
 ;;; https://github.com/kostafey/kostafeys-emacs-confik/blob/master/custom/langs/lua-conf.el

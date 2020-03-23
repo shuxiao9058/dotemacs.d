@@ -27,7 +27,19 @@
   ;           (switch-to-buffer name)
   ;         (vterm name))
   ;     (vterm)))
-  )
+  :general
+   (:keymaps 'vterm-mode-map
+          [escape] #'vterm--self-insert
+          [return] #'vterm--self-insert
+          "p" #'vterm-yank
+          "u" #'vterm-undo
+          "C-y" #'vterm-yank
+          "M-n" #'vterm-send-down
+          "M-p" #'vterm-send-up
+          "M-y" #'vterm-yank-pop
+          "M-/" #'vterm-send-tab
+          )
+    )
 
 ; (use-package multi-libvterm
 ;   :straight (multi-libvterm :type git :host github :repo "suonlight/multi-libvterm")

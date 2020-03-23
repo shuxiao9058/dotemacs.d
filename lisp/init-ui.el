@@ -1,10 +1,21 @@
 ;;; lisp/init-ui.el -*- lexical-binding: t; -*-
 
-;; ;; tooltips in echo-aera
-;; (when (and (fboundp 'tooltip-mode) (not (eq tooltip-mode -1)))
-;;   (tooltip-mode -1))
+;; winum users can use `winum-select-window-by-number' directly.
+(defun my-select-window-by-number (win-id)
+  "Use `ace-window' to select the window by using window index.
+WIN-ID : Window index."
+  (let ((wnd (nth (- win-id 1) (aw-window-list))))
+    (if wnd
+        (aw-switch-to-window wnd)
+      (message "No such window."))))
 
-;; ;; (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
+(defun my-select-window ()
+  (interactive)
+  (let* ((event last-input-event)
+         (key (make-vector 1 event))
+         (key-desc (key-description key)))
+    (my-select-window-by-number
+     (string-to-number (car (nreverse (split-string key-desc "-")))))))
 
 (use-package doom-themes
     :straight t
@@ -72,46 +83,25 @@
     :commands (awesome-tab-mode)
     :ensure t
     :custom
-    ;; (awesome-tab-style 'alternate)
+    (awesome-tab-style 'alternate)
     (awesome-tab-show-tab-index t)
     (awesometab-hide-tabs-hooks
      '(magit-status-mode-hook magit-popup-mode-hook reb-mode-hook helpful-mode-hook))
-    (awesome-tab-hide-tab-function 'my-awesome-tab-hide-tab)
     :init
-    (defun my-awesome-tab-hide-tab (x)
-      (let ((name (format "%s" x)))
-	(or
-	 (string-prefix-p "*NeoTree*" name)
-	 (string-prefix-p "*Ilist*" name)
-	 (string-prefix-p "*epc" name)
-	 (string-prefix-p "*helm" name)
-	 (string-prefix-p "*Compile-Log*" name)
-	 (string-prefix-p "*lsp" name)
-	 (and (string-prefix-p "magit" name)
-              (not (file-name-extensionname)))
-	 )))
-
-    ;; winum users can use `winum-select-window-by-number' directly.
-    (defun my-select-window-by-number (win-id)
-      "Use `ace-window' to select the window by using window index.
-WIN-ID : Window index."
-      (let ((wnd (nth (- win-id 1) (aw-window-list))))
-	(if wnd
-            (aw-switch-to-window wnd)
-	  (message "No such window."))))
-
-    (defun my-select-window ()
-      (interactive)
-      (let* ((event last-input-event)
-             (key (make-vector 1 event))
-             (key-desc (key-description key)))
-	(my-select-window-by-number
-	 (string-to-number (car (nreverse (split-string key-desc "-")))))))
-
-    (set-face-attribute
-     'header-line nil
-     :box nil)
+    ;; (set-face-attribute
+    ;;  'header-line nil
+    ;;  :box nil)
     (awesome-tab-mode t)
+    :config
+    (dotimes (i 10)
+      (general-define-key (concat "M-" (int-to-string i))
+			  #'awesome-tab-select-visible-tab))
+    :general
+    ("<M-right>" #'awesome-tab-forward)
+    ("<M-left>" #'awesome-tab-backward)
+    ("<M-down>" #'awesome-tab-forward-group)
+    ("<M-up>" #'awesome-tab-backward-group)
+    ("M-z" #'awesome-tab-switch-group)
     )
 
 (use-package rainbow-delimiters

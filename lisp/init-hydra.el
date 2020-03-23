@@ -1,5 +1,11 @@
 ;;; lisp/init-hydra.el -*- lexical-binding: t; -*-
 
+
+;; (defun zenith/lv-window (fun)
+;;   (with-selected-window (funcall fun)
+;;     (setq-local header-line-format nil))
+;;   lv-wnd)
+
 (use-package hydra
     :straight t
     :ensure t
@@ -9,7 +15,11 @@
     :commands (defhydra)
     :bind (
            ("M-o" . hydra-base/body)
-	   ))
+	   )
+    ;; :config
+    ;; ;; Make hydra compatible with awesome-tab
+    ;; (advice-add 'lv-window :around 'zenith/lv-window)
+    )
 
 (use-package hydra-posframe
     :straight (hydra-posframe

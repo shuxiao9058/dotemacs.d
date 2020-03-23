@@ -32,6 +32,17 @@
 
     ;; Don't complain about this command being disabled when we use it
     (put 'dired-find-alternate-file 'disabled nil)
+    :general
+    ;; Restore these keybinds, since the blacklisted/overwritten gr/gR will
+    ;; undo them:
+    (nmap :keymaps 'dired-mode-map
+          "gr" #'revert-buffer)
+    (:states '(nomal global)
+	     :keymaps 'dired-mode-map
+	     ;; Kill all dired buffers on q
+	     ;; "q" 'flyspell-correct-word-generic
+	     ;; To be consistent with ivy/helm+wgrep integration
+	     "C-c C-e" #'wdired-change-to-wdired-mode)
     )
 
 (provide 'init-dired)

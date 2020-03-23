@@ -37,6 +37,10 @@
 (when (and (fboundp 'blink-cursor-mode) (not (eq blink-cursor-mode -1)))
   (blink-cursor-mode -1))
 
+;; ;; tooltips in echo-aera
+;; (when (and (fboundp 'tooltip-mode) (not (eq tooltip-mode -1)))
+;;   (tooltip-mode -1))
+
 ;;; very long line performence optimizy
 (global-so-long-mode t)
 
@@ -46,6 +50,8 @@
 ;; auto maximized frame
 (when (and IS-MAC IS-GUI)
   (add-to-list 'default-frame-alist '(fullscreen . maximized)))
+
+;; (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
 (when IS-MAC
   (setq-default ns-use-thin-smoothing t
