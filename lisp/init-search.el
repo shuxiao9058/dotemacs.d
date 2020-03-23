@@ -87,7 +87,7 @@
 	   "q" #'color-rg-quit
            "?" #'color-rg-hydra/body
            )
-    (nmap :keymaps 'color-rg-mode-edit-map
+    (nmap :keymaps '(color-rg-mode-edit-map)
           "j" #'evil-next-line
 	  "k" #'evil-previous-line
 	  "h" #'evil-backward-char
@@ -97,7 +97,7 @@
 	  "p" #'color-rg-jump-prev-keyword
 	  "N" #'color-rg-jump-next-file
 	  "P" #'color-rg-jump-prev-file)
-    (:keymaps 'color-rg-mode-edit-map
+    (:keymaps '(color-rg-mode-edit-map)
               [remap evil-write] #'color-rg-apply-changed
 	      [remap evil-quit] #'color-rg-quit)
     )

@@ -1,10 +1,37 @@
 ;;; lisp/init-company.el -*- lexical-binding: t; -*-
 
+;; https://github.com/makp/emacs-configs/blob/831d07582269fb63caec087fe71bee398a8b2af8/mk_company.el
+;; Add yasnippet support for all company backends
+;; https://github.com/syl20bnr/spacemacs/pull/179
+(defvar company-mode/enable-yas t
+  "Enable yasnippet for all backends.")
+
+(defun company-mode/backend-with-yas (backend)
+  (if (or (not company-mode/enable-yas)
+          (and (listp backend) (member 'company-yasnippet backend)))
+      backend
+    (append (if (consp backend) backend (list backend))
+            '(:with company-yasnippet))))
+
+;; Support yas in commpany
+;; Note: Must be the last to involve all backends
+
+(defun prepend-company-tabnine (&optional enable-yas)
+  (progn
+    (setq-default company-backends
+		  (let ((tabnine-without-yas #'company-tabnine)
+			(tabnine-with-yas #'(company-tabnine :with company-yasnippet)))
+		    (cons (if enable-yas tabnine-with-yas tabnine-without-yas)
+			  ( remove tabnine-with-yas (remove tabnine-without-yas company-backends)))))
+    (setq-default company-backends (mapcar #'company-mode/backend-with-yas company-backends))
+    )
+  )
+
 (use-package company
     :straight t
     :ensure t
     :custom
-    (company-minimum-prefix-length 1)
+    (company-minimum-prefix-length 3)
     (company-tooltip-align-annotations t)
     (company-begin-commands '(self-insert-command))
     (company-require-match 'never)
@@ -28,6 +55,16 @@
 		     )
 		    (company-abbrev company-dabbrev)
 		    ))
+
+    ;; (setq-default company-backends (mapcar
+    ;; 				    #'company-mode/backend-with-yas
+    ;; 				    '((company-capf  ;; completion-at-point-functions
+    ;; 				       company-dabbrev-code)
+    ;; 				      (company-files          ; files & directory
+    ;; 				       company-keywords       ; keywords
+    ;; 				       )
+    ;; 				      (company-abbrev company-dabbrev)
+    ;; 				      )))
     )
 
 (use-package company-posframe
@@ -70,9 +107,10 @@
     (setq company-tabnine-executable-args
           '("--client" "emacs" "--log-level" "Debug" "--log-file-path" "/tmp/TabNine.log"))
     :config
-    (setq-default company-backends
-		  (let ((b #'company-tabnine))
-		    (cons b (remove b company-backends))))
+    (prepend-company-tabnine t)
+    ;; (setq-default company-backends
+    ;; 		  (let ((b #'company-tabnine))
+    ;; 		    (cons b (remove b company-backends))))
 
     ;; ;; Enable TabNine on default
     ;; (add-to-list 'company-backends #'company-tabnine)
@@ -104,13 +142,24 @@
 		(add-to-list 'company-backends '(company-lsp :with company-tabnine :separate))))
     )
 
-;; (use-package yasnippet :ensure t
-;;   :straight t
-;;   :config
-;;   (add-hook 'after-init-hook 'yas-global-mode)
-;;   (add-to-list 'yas-snippet-dirs
-;;                (expand-file-name "snippets" poly-etc-dir))
-;;   (setq company-continue-commands (-snoc company-continue-commands 'yas-insert-snippet)) ; make company break completion
+(use-package yasnippet
+    :straight t
+    :ensure t
+    :diminish yas-global-mode
+    :commands yas-global-mode
+    :hook (after-init . yas-global-mode)
+    :config
+    ;; ;; (add-hook 'after-init-hook 'yas-global-mode)
+    ;; (add-to-list 'yas-snippet-dirs
+    ;; 		 (expand-file-name "snippets" poly-etc-dir))
+    ;; make company break completion
+    (setq company-continue-commands (-snoc company-continue-commands 'yas-insert-snippet))
+    )
+
+(use-package yasnippet-snippets
+    :straight t
+    :ensure t
+    :after yasnippet)
 
 (provide 'init-company)
 ;;; init-company.el ends here

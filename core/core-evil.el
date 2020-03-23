@@ -62,7 +62,7 @@
     (global-evil-matchit-mode t)
     :general
     ([remap evil-jump-item] #'evilmi-jump-items)
-    ("%" #'evilmi-text-object)
+    (nvmap "%" #'evilmi-text-object)
     )
 
 (use-package evil-snipe
