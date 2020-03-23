@@ -61,6 +61,13 @@
     ;; https://github.com/emacs-lsp/lsp-ui/issues/243
     (defadvice lsp-ui-imenu (after hide-lsp-ui-imenu-mode-line activate)
       (setq mode-line-format nil))
+    :general
+    (nvmap :keymaps '(lsp-ui-mode-map)
+	   [remap evil-goto-definition] #'lsp-ui-peek-find-definitions
+	   "gD" #'lsp-ui-peek-find-references)
+    (:keymaps '(lsp-ui-peek-mode-map)
+ 	      "C-j" 'lsp-ui-peek--select-next
+	      "C-k" 'lsp-ui-peek--select-prev)
     )
 
 (use-package lsp-ivy

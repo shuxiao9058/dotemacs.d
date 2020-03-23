@@ -304,43 +304,7 @@
 		    "q" #'transient-quit-one
 		    )
 
-;; lsp
-(general-define-key :keymaps 'lsp-ui-mode-map
-		    [remap evil-goto-definition] #'lsp-ui-peek-find-definitions
-		    "gD" #'lsp-ui-peek-find-references
-		    )
-(general-define-key :keymaps 'lsp-ui-peek-mode-map
- 		    "C-j" 'lsp-ui-peek--select-next
-		    "C-k" 'lsp-ui-peek--select-prev)
-
 ;; start of company
-(general-define-key :keymaps 'company-active-map
-		    "C-w"     nil  ; don't interfere with `evil-delete-backward-word'
-		    "C-n"     #'company-select-next
-		    "C-p"     #'company-select-previous
-		    "C-j"     #'company-select-next
-		    "C-k"     #'company-select-previous
-		    "C-h"     #'company-show-doc-buffer
-		    "C-u"     #'company-previous-page
-		    "C-d"     #'company-next-page
-		    "C-s"     #'company-filter-candidates
-		    "C-S-s"  #'counsel-company
-		    "C-SPC"   #'company-complete-common
-		    "TAB"     #'company-complete-common-or-cycle
-		    [tab]     #'company-complete-common-or-cycle
-		    [backtab] #'company-select-previous
-		    [f1]      nil
-		    )
-
-(general-define-key :keymaps 'company-search-map
-		    "C-n"     #'company-select-next-or-abort
-		    "C-p"     #'company-select-previous-or-abort
-		    "C-j"     #'company-select-next-or-abort
-		    "C-k"     #'company-select-previous-or-abort
-		    "C-s"     (lambda () (interactive) (company-search-abort) (company-filter-candidates))
-		    [escape]  #'company-search-abort)
-
-
 (eval-after-load 'comint
   `(progn
      (general-define-key :keymaps 'comint-mode-map
