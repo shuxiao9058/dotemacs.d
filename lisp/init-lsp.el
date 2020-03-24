@@ -21,8 +21,8 @@
     (lsp-file-watch-threshold 2000)
     (lsp-clients-emmy-lua-jar-path (expand-file-name  "bin/EmmyLua-LS-all.jar" poly-local-dir))
     :config
-    ;; lua-lsp
-    (require 'init-lua-lsp)
+    ;; lsp-lua
+    (require 'init-lsp-lua)
     ;; cancel warning
     (advice-add 'lsp-warn
 		:around (lambda (orig-func &rest r)

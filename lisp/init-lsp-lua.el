@@ -1,5 +1,6 @@
-;;; lisp/init-lua-lsp.el -*- lexical-binding: t; -*-
+;;; lisp/init-lsp-lua.el -*- lexical-binding: t; -*-
 
+;; https://github.com/rickysaurav/dotfiles/blob/master/emacs/.emacs.d/config.org
 (defcustom lsp-lua-awakened-cat nil nil :type (quote boolean))
 (defcustom lsp-lua-completion-call-snippet "Disable" nil :type (quote (choice (:tag "Disable" "Both" "Replace"))))
 (defcustom lsp-lua-completion-enable t nil :type (quote boolean))
@@ -49,5 +50,5 @@
                   :priority 0
                   :server-id 'lsp-lua))
 
-(provide 'init-lua-lsp)
-;;; init-lua-lsp.el ends here
+(provide 'init-lsp-lua)
+;;; init-lsp-lua.el ends here
