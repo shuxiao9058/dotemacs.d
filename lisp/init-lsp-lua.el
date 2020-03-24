@@ -21,8 +21,9 @@
 (defcustom lsp-lua-workspace-preload-file-size 100 nil :type (quote number))
 (defcustom lsp-lua-workspace-use-git-ignore t nil :type (quote boolean))
 (defcustom lsp-lua-server-root (expand-file-name "~/workspace/lua-language-server") nil :type (quote string))
-(defcustom lsp-lua-server-binary ( expand-file-name "bin/macOS/lua-language-server" lsp-lua-server-root) nil :type (quote string))
-(defcustom lsp-lua-server-main ( expand-file-name "main.lua" lsp-lua-server-root) nil :type (quote string))
+(defcustom lsp-lua-server-binary (expand-file-name "bin/macOS/lua-language-server" lsp-lua-server-root) nil :type (quote string))
+(defcustom lsp-lua-server-main (expand-file-name "main.lua" lsp-lua-server-root) nil :type (quote string))
+
 (lsp-register-custom-settings
  (quote (("Lua.workspace.useGitIgnore" lsp-lua-workspace-use-git-ignore t)
          ("Lua.workspace.preloadFileSize" lsp-lua-workspace-preload-file-size)
@@ -45,7 +46,7 @@
          ("Lua.awakened.cat" lsp-lua-awakened-cat t))))
 
 (lsp-register-client
- (make-lsp-client :new-connection (lsp-stdio-connection `(,lsp-lua-server-binary "-E" ,lsp-lua-server-main) (lambda() t))
+ (make-lsp-client :new-connection (lsp-stdio-connection `(,lsp-lua-server-binary "-e" "LANG=\"en\""  "-E", lsp-lua-server-main) (lambda() t))
                   :major-modes '(lua-mode)
                   :priority 0
                   :server-id 'lsp-lua))
