@@ -28,22 +28,16 @@
     ;; (rime-share-data-dir "")
     (rime-user-data-dir (expand-file-name "rime" poly-local-dir))
     :config
-    (progn
-      (setq-default rime-disable-predicates
-		    '(+rime-predicate-button-at-point-p
-                      rime-predicate-evil-mode-p
-                      rime-predicate-punctuation-line-begin-p
-                      rime-predicate-after-alphabet-char-p
-                      rime-predicate-prog-in-code-p
-                      +rime-predicate-beancount-p))
-      (setq-default rime-inline-predicates
-		    '(+rime-predicate-current-input-uppercase-letter-p))
+    (setq-default rime-disable-predicates
+		  '(+rime-predicate-button-at-point-p
+		    rime-predicate-evil-mode-p
+		    rime-predicate-punctuation-line-begin-p
+		    rime-predicate-after-alphabet-char-p
+		    rime-predicate-prog-in-code-p
+		    +rime-predicate-beancount-p))
+    (setq-default rime-inline-predicates
+		  '(+rime-predicate-current-input-uppercase-letter-p))
 
-      (eval-after-load 'telega
-	(add-hook 'telega-chat-mode-hook #'ac-rime-set-text-mode-predicate)
-	)
-      (add-hook 'text-mode-hook #'ac-rime-set-text-mode-predicate)
-      )
     )
 
 
@@ -113,6 +107,12 @@ Can be used in `rime-disable-predicates' and `rime-inline-predicates'."
   (when (derived-mode-p 'beancount-mode)
     (not (or (nth 3 (syntax-ppss))
              (nth 4 (syntax-ppss))))))
+
+
+(eval-after-load 'telega
+  (add-hook 'telega-chat-mode-hook #'ac-rime-set-text-mode-predicate)
+  )
+(add-hook 'text-mode-hook #'ac-rime-set-text-mode-predicate)
 
 (provide 'init-rime)
 ;;; init-rime.el ends here

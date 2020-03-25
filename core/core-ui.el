@@ -11,9 +11,13 @@
 (when IS-GUI
   (let ((monaco-font "-apple-Monaco-medium-normal-normal-*-12-*-*-*-m-0-iso10646-1")
 	(sourcode-font "-apple-Source Code Pro-*-normal-normal-*-13-*-*-*-m-0-iso10646-1")
-	(firacode-font "-*-Fira Code-*-*-*-*-13-*-*-*-*-*-*-*"))
+	(firacode-font "-*-Fira Code-*-*-*-*-13-*-*-*-*-*-*-*")
+	(sarasa-font "-*-Sarasa Mono SC-*-*-*-*-13-*-*-*-*-*-*-*")
+	)
     ;; (set-face-attribute 'default nil :font sourcode-font))
-    (set-face-attribute 'default nil :font monaco-font))
+    ;; (set-face-attribute 'default nil :font monaco-font)
+    (set-face-attribute 'default nil :font sarasa-font)
+    )
   )
 
 ;; 等宽: Source Code Pro 13 + STkaiti 16

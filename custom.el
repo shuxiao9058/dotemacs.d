@@ -1,6 +1,5 @@
 ;;; custom.el -*- lexical-binding: t; -*-
 
-(setq debug-on-error t)
 
 (setq select-enable-clipboard nil)
 

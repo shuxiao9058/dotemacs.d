@@ -89,11 +89,88 @@
 	      [escape]  #'company-search-abort)
     )
 
-(use-package company-posframe
+;; (use-package company-posframe
+;;     :straight t
+;;     :after company
+;;     :if  (and (not (package-installed-p 'company-box))
+;; 	      (>= emacs-major-version 26)
+;; 	      IS-GUI)
+;;     :hook (global-company-mode . company-posframe-mode)
+;;     )
+
+(use-package company-box
     :straight t
     :after company
+    :hook (company-mode . company-box-mode)
+    :if (and (>= emacs-major-version 26) IS-GUI)
+    :diminish
+    :custom
+    (company-box-enable-icon IS-GUI)
+    (company-box-doc-enable t)     ; eldoc performance issue
+    (company-box-max-candidates 50)
+    (company-box-show-single-candidate t)
+    (company-box-doc-delay 0.3)
     :config
-    (company-posframe-mode 1)
+    (add-to-list 'company-box-backends-colors '(company-tabnine . "gold4"))
+    (add-to-list 'company-box-backends-colors '(company-predictive . "darkred"))
+    (add-to-list 'company-box-backends-colors '(company-dabbrev-code . "maroon"))
+    (setq company-frontends (delq 'company-pseudo-tooltip-frontend company-frontends))
+
+    (with-eval-after-load 'all-the-icons
+      (defun +company-box-icons--elisp (candidate)
+	(when (derived-mode-p 'emacs-lisp-mode)
+	  (let ((sym (intern candidate)))
+	    (cond ((fboundp sym) 'ElispFunction)
+		  ((boundp sym) 'ElispVariable)
+		  ((featurep sym) 'ElispFeature)
+		  ((facep sym) 'ElispFace)))))
+
+      (defun my-company-box-icon (family icon face &rest args)
+	"Defines icons using `all-the-icons' for `company-box'."
+	(when icon
+	  (pcase family
+	    ('octicon (all-the-icons-octicon icon :height 0.8 :v-adjust -0.05 :face face args))
+	    ('faicon (all-the-icons-faicon icon :height 0.8 :v-adjust -0.0575 :face face))
+	    ('material (all-the-icons-material icon :height 0.8 :v-adjust -0.225 :face face args))
+	    ('alltheicon (all-the-icons-alltheicon icon :height 0.8 :face face args)))))
+
+      (setq company-box-icons-alist 'company-box-icons-all-the-icons
+	    company-box-backends-colors nil
+	    company-box-icons-functions
+	    '(company-box-icons--yasnippet company-box-icons--lsp +company-box-icons--elisp company-box-icons--acphp)
+	    company-box-icons-all-the-icons
+	    `((Unknown . ,(my-company-box-icon 'material "find_in_page" 'all-the-icons-purple))
+	      (Text . ,(my-company-box-icon 'material "text_fields" 'all-the-icons-green))
+	      (Method . ,(my-company-box-icon 'material "functions" 'all-the-icons-red-alt))
+	      (Function . ,(my-company-box-icon 'material "functions" 'all-the-icons-red-alt))
+	      (Constructor . ,(my-company-box-icon 'material "functions" 'all-the-icons-red-alt))
+	      (Field . ,(my-company-box-icon 'material "check_circle" 'all-the-icons-blue))
+	      (Variable . ,(my-company-box-icon 'material "check_circle" 'all-the-icons-blue))
+	      (Class . ,(my-company-box-icon 'faicon "cog" 'all-the-icons-orange))
+	      (Interface . ,(my-company-box-icon 'faicon "info" 'all-the-icons-orange))
+	      (Module . ,(my-company-box-icon 'faicon "cogs" 'all-the-icons-orange))
+	      (Property . ,(my-company-box-icon 'material "settings" 'all-the-icons-dyellow))
+	      (Unit . ,(my-company-box-icon 'faicon "tag" 'all-the-icons-orange))
+	      (Value . ,(my-company-box-icon 'material "filter_none" 'all-the-icons-blue))
+	      (Enum . ,(my-company-box-icon 'faicon "list-ul" 'all-the-icons-lcyan))
+	      (Keyword . ,(my-company-box-icon 'material "filter_center_focus" 'all-the-icons-red))
+	      (Snippet . ,(my-company-box-icon 'faicon "code" 'all-the-icons-green))
+	      (Color . ,(my-company-box-icon 'material "color_lens" 'all-the-icons-pink))
+	      (File . ,(my-company-box-icon 'material "insert_drive_file" 'all-the-icons-dsilver))
+	      (Reference . ,(my-company-box-icon 'material "collections_bookmark" 'all-the-icons-red))
+	      (Folder . ,(my-company-box-icon 'material "folder_open" 'all-the-icons-dsilver))
+	      (EnumMember . ,(my-company-box-icon 'material "people" 'all-the-icons-lcyan))
+	      (Constant . ,(my-company-box-icon 'material "pause_circle_filled" 'all-the-icons-blue))
+	      (Struct . ,(my-company-box-icon 'material "streetview" 'all-the-icons-red))
+	      (Event . ,(my-company-box-icon 'material "event" 'all-the-icons-red))
+	      (Operator . ,(my-company-box-icon 'material "control_point" 'all-the-icons-red))
+	      (TypeParameter . ,(my-company-box-icon 'material "class" 'all-the-icons-red))
+	      (Template   . ,(my-company-box-icon 'faicon "code" 'all-the-icons-green))
+	      (Yasnippet . ,(my-company-box-icon 'faicon "code" 'all-the-icons-green))
+	      (ElispFunction . ,(my-company-box-icon 'material "functions" 'all-the-icons-red))
+	      (ElispVariable . ,(my-company-box-icon 'material "check_circle" 'all-the-icons-blue))
+	      (ElispFeature . ,(my-company-box-icon 'material "stars" 'all-the-icons-orange))
+	      (ElispFace . ,(my-company-box-icon 'material "format_paint" 'all-the-icons-pink)))))
     )
 
 (use-package company-flx
@@ -127,7 +204,7 @@
     (setq company-tabnine-no-continue nil)
     ;; (setq company-tabnine-log-file-path "/tmp/TabNine.log")
     (setq company-tabnine-executable-args
-          '("--client" "emacs" "--log-level" "Debug" "--log-file-path" "/tmp/TabNine.log"))
+	  '("--client" "emacs" "--log-level" "Debug" "--log-file-path" "/tmp/TabNine.log"))
     :hook (lsp-after-open . (lambda ()
 			      (setq company-tabnine-max-num-results 3)
 

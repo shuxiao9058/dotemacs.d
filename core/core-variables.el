@@ -26,7 +26,7 @@
   (if-let (localdir (getenv "POLYLOCALDIR"))
       (expand-file-name (file-name-as-directory localdir))
     (concat poly-emacs-dir ".local/"))
- "Root directory for local storage.
+  "Root directory for local storage.
 
 Use this as a storage location for this system's installation of Doom Emacs.
 These files should not be shared across systems. By default, it is used by
