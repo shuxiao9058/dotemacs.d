@@ -9,7 +9,7 @@
             ;; clang-mode
             elisp-mode
             emacs-lisp-mode
-            ;;  markdown-mode
+	    markdown-mode
             ;;  objc-mode
             ;;  swift-mode
             ;;  typescript-mode
