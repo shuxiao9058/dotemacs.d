@@ -16,13 +16,16 @@
            (lsp-mode . lsp-enable-which-key-integration)
 	   )
     :custom
+    (lsp-log-io t)
+    ;; (lsp-print-performance t)
     (lsp-auto-guess-root nil)
     (lsp-prefer-flymake nil) ;; Use flycheck instead of flymake
     (lsp-file-watch-threshold 2000)
     (lsp-clients-emmy-lua-jar-path (expand-file-name  "bin/EmmyLua-LS-all.jar" poly-local-dir))
     :config
-    ;; lsp-lua
-    (require 'init-lsp-lua)
+    ;; ;; lsp-lua
+    ;; ;; 暂时还有点问题，先不用了
+    ;; (require 'init-lsp-lua)
     ;; cancel warning
     (advice-add 'lsp-warn
 		:around (lambda (orig-func &rest r)
