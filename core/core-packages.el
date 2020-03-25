@@ -38,7 +38,8 @@
 ;; pbcopy
 (use-package pbcopy
     :straight t
-    :if (and IS-MAC (not IS-GUI))
+    ;; :if (and IS-MAC (not IS-GUI))
+    :if IS-MAC
     :init (turn-on-pbcopy)
     )
 

@@ -2,6 +2,8 @@
 
 (setq debug-on-error t)
 
+(setq select-enable-clipboard nil)
+
 (setq make-backup-files nil
       inhibit-startup-screen t
       whitespace-line-column 100

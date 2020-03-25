@@ -4,7 +4,7 @@
     :straight (rime
 	       :host github
 	       :repo "DogLooksGood/emacs-rime"
-               :files (:defaults "rime.el" "lib.c" "Makefile"))
+               :files (:defaults "lib.c" "Makefile"))
     :defer t
     :hook
     ('kill-emacs . (lambda ()

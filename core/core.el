@@ -1,7 +1,7 @@
 ;;; core/core.el --- the heart of the beast -*- lexical-binding: t; -*-
 
-(when (version< emacs-version "27")
-  (error "Detected Emacs %s. only supports Emacs 27 and higher"
+(when (version< emacs-version "26")
+  (error "Detected Emacs %s. only supports Emacs 26 and higher"
          emacs-version))
 
 ;; Ensure `poly-core-dir' is in `load-path'

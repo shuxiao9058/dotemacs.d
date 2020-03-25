@@ -132,8 +132,17 @@
 
     ;; REVIEW This is tremendously slow on macos and windows for some reason.
     (setq evil-mc-enable-bar-cursor (not (or IS-MAC IS-WINDOWS)))
+    )
 
-
+(use-package evil-osx-clipboard
+    :straight t
+    :after pbcopy
+    :straight (evil-osx-clipboard
+	       :host github
+	       :repo "stroxler/evil-osx-clipboard.el"
+               :files (:defaults))
+    :config
+    (evil-osx-clipboard/set-osx-defaults)
     )
 
 ;; ;; Evil, probably the best thing since Evil.

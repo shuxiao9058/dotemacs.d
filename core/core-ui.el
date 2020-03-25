@@ -41,8 +41,9 @@
 ;; (when (and (fboundp 'tooltip-mode) (not (eq tooltip-mode -1)))
 ;;   (tooltip-mode -1))
 
-;;; very long line performence optimizy
-(global-so-long-mode t)
+(when EMACS27+
+  ;; very long line performence optimizy
+  (global-so-long-mode t))
 
 ;;; highlight current line
 (global-hl-line-mode)
