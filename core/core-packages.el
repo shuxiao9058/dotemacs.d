@@ -19,6 +19,20 @@
     :custom
     (auto-revert-verbose nil))
 
+(use-package undo-tree
+    :straight nil
+    :ensure t
+    :custom
+    (undo-tree-visualizer-timestamps t)
+    (undo-tree-visualizer-diff t)
+    ;; (undo-tree-history-directory-alist (quote ((".*" . "~/.emacs.d/.appdata/.undo-tree-history"))))
+    (undo-tree-history-directory-alist (list (cons ".*" (expand-file-name "undo-tree-history" poly-cache-dir))))
+    (undo-tree-auto-save-history t)
+    (undo-tree-visualizer-lazy-drawing 1000)
+    :config
+    (global-undo-tree-mode)
+    )
+
 ;;; magit
 (use-package hide-mode-line
     :straight t

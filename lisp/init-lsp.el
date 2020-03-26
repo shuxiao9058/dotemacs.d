@@ -30,7 +30,16 @@
     (advice-add 'lsp-warn
 		:around (lambda (orig-func &rest r)
                           (message (apply #'format-message r))))
-    :bind (:map lsp-mode-map ("C-c C-f" . lsp-format-buffer))
+    ;; :bind (:map lsp-mode-map ("C-c C-f" . lsp-format-buffer))
+    :general
+    (leader-def :keymaps '(lsp-mode-map)
+      "c" '(:ignore t :wk "code")
+      ;; "cc" '(compile :wk "Compile")
+      ;; "cC" '(recompile :wk "Recompile")
+      "cd" '(lsp-find-definition :wk "Jump to definition")
+      "cD" '(lsp-find-reference :wk "Jump to references")
+      "ck" '(lsp-find-document :wk "Jump to documentation")
+      )
     )
 
 (use-package lsp-ui
