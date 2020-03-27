@@ -26,6 +26,33 @@
     :config
     (when IS-MAC
       (setq magit-git-executable "/usr/local/bin/git"))
+    :general
+    (:keymaps '(magit-status-mode)
+	      "z" #'magit-stash
+	      )
+    ;; Temporary workaround for +magit/quit hang with lots of buffers
+    (:keymaps '(magit-status-mode-map)
+	      [remap magit-mode-bury-buffer] #'magit-kill-buffers)
+
+    (general-unbind '(magit-mode-map)
+	;; Replaced by z1, z2, z3, etc
+	"M-1" "M-2" "M-3" "M-4"
+	"1" "2" "3" "4"
+	"0") ; moved to g=
+
+    (nmap
+     (magit-status-mode-map
+      magit-stash-mode-map
+      magit-revision-mode-map
+      magit-diff-mode-map)
+     [tab] #'magit-section-toggle)
+    ;; q is enough
+    (nmap '(magit-status-mode-map)
+	  [escape] nil)
+    (nvmap '(magit-mode-map)
+	   "%"  'magit-gitflow-popup
+	   "zz" 'evil-scroll-line-to-center
+	   "g=" 'magit-diff-default-context)
     )
 
 (use-package magit-gitflow
@@ -80,16 +107,27 @@
     :after magit evil
     :hook (magit-mode . evil-magit-init)
     :init
-    (progn
-      (evil-set-initial-state 'magit-log-edit-mode 'insert)
-      (evil-set-initial-state 'git-commit-mode 'insert)
-      (evil-set-initial-state 'magit-commit-mode 'insert)
-      ;; (evil-set-initial-state 'magit-commit-mode 'motion)
-      (evil-set-initial-state 'magit-log-mode 'motion)
-      (evil-set-initial-state 'magit-wassup-mode 'motion)
-      (evil-set-initial-state 'magit-mode 'motion)
-      (evil-set-initial-state 'git-rebase-mode 'motion)
+    (evil-set-initial-state 'magit-log-edit-mode 'insert)
+    (evil-set-initial-state 'git-commit-mode 'insert)
+    (evil-set-initial-state 'magit-commit-mode 'insert)
+    ;; (evil-set-initial-state 'magit-commit-mode 'motion)
+    (evil-set-initial-state 'magit-log-mode 'motion)
+    (evil-set-initial-state 'magit-wassup-mode 'motion)
+    (evil-set-initial-state 'magit-mode 'motion)
+    (evil-set-initial-state 'git-rebase-mode 'motion)
+    :config
+    (eval-after-load 'git-rebase
+      `(progn
+	 (dolist (key '(("M-k" . "gk") ("M-j" . "gj")))
+	   (when-let (desc (assoc (car key) evil-magit-rebase-commands-w-descriptions))
+	     (setcar desc (cdr key))))
+	 )
       )
+    :general
+    (:states '(evil-magit-state)
+	     :keymaps '(git-rebase-mode-map)
+	     "gj" #'git-rebase-move-line-down
+	     "gk" #'git-rebase-move-line-up)
     )
 
 ;; based on http://manuel-uberti.github.io/emacs/2018/02/17/magit-bury-buffer/

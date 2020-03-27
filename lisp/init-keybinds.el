@@ -322,46 +322,6 @@
   )
 ;; end of ivy
 
-;; magit
-(eval-after-load 'magit
-  `(progn
-     ;; Temporary workaround for +magit/quit hang with lots of buffers
-     (general-define-key :keymaps 'magit-status-mode-map
-			 [remap magit-mode-bury-buffer] #'magit-kill-buffers)
-
-     (general-unbind magit-mode-map
-	 ;; Replaced by z1, z2, z3, etc
-	 "M-1" "M-2" "M-3" "M-4"
-	 "1" "2" "3" "4"
-	 "0") ; moved to g=
-
-     (general-def 'normal
-	 (magit-status-mode-map
-	  magit-stash-mode-map
-	  magit-revision-mode-map
-	  magit-diff-mode-map)
-       [tab] #'magit-section-toggle)
-     ;; q is enough
-     (nmap 'magit-status-mode-map
-	   [escape] nil)
-     (nvmap 'magit-mode-map
-	    "%"  'magit-gitflow-popup
-	    "zz" 'evil-scroll-line-to-center
-	    "g=" 'magit-diff-default-context)
-     )
-  )
-
-(eval-after-load 'evil-magit
-  (eval-after-load 'git-rebase
-    `(progn
-       (dolist (key '(("M-k" . "gk") ("M-j" . "gj")))
-	 (when-let (desc (assoc (car key) evil-magit-rebase-commands-w-descriptions))
-	   (setcar desc (cdr key))))
-       (general-define-key :states 'evil-magit-state
-			   :keymaps 'git-rebase-mode-map
-			   "gj" #'git-rebase-move-line-down
-			   "gk" #'git-rebase-move-line-up))))
-
 (general-define-key :keymaps 'read-expression-map
 		    "C-j" #'next-line-or-history-element
 		    "C-k" #'previous-line-or-history-element)

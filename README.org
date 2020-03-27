@@ -1,0 +1,8 @@
+
+* My personal Emacs configuration.
+
+** TODO
+
+*** org-mode
+*** Pretty Font
+*** Better with TabNine
