@@ -20,7 +20,10 @@
     (auto-revert-verbose nil))
 
 (use-package undo-tree
-    :straight nil
+    :straight (undo-tree :host github
+			 :repo "emacsmirror/undo-tree"
+			 :files ("undo-tree.el"))
+    ;; :straight nil
     :ensure t
     :custom
     (undo-tree-visualizer-timestamps t)
