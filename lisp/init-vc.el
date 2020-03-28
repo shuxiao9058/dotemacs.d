@@ -27,13 +27,6 @@
     (when IS-MAC
       (setq magit-git-executable "/usr/local/bin/git"))
     :general
-    (:keymaps '(magit-status-mode-map)
-	      "z" #'magit-stash
-	      )
-    ;; Temporary workaround for +magit/quit hang with lots of buffers
-    (:keymaps '(magit-status-mode-map)
-	      [remap magit-mode-bury-buffer] #'magit-kill-buffers)
-
     (general-unbind '(magit-mode-map)
 	;; Replaced by z1, z2, z3, etc
 	"M-1" "M-2" "M-3" "M-4"
@@ -47,12 +40,17 @@
       magit-diff-mode-map)
      [tab] #'magit-section-toggle)
     ;; q is enough
-    (nmap '(magit-status-mode-map)
-	  [escape] nil)
-    (nvmap '(magit-mode-map)
-	   "%"  'magit-gitflow-popup
-	   "zz" 'evil-scroll-line-to-center
-	   "g=" 'magit-diff-default-context)
+    (nmap :keymaps '(magit-status-mode-map)
+	  [escape] nil
+	  ;; Temporary workaround for +magit/quit hang with lots of buffers
+	  [remap magit-mode-bury-buffer] #'magit-kill-buffers
+	  "z" #'magit-stash
+	  )
+    (nvmap :keymaps '(magit-mode-map)
+	   "%"  #'magit-gitflow-popup
+	   "zz" #'evil-scroll-line-to-center
+	   "g=" #'magit-diff-default-context
+	   )
     )
 
 (use-package magit-gitflow

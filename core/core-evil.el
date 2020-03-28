@@ -63,6 +63,12 @@
     :commands evilmi-jump-items
     :custom
     (global-evil-matchit-mode t)
+    :config
+    (dolist (mode '(magit-status-mode-hook))
+      (add-hook mode (lambda()
+		       (evil-matchit-mode 0)
+		       ))
+      )
     :general
     ([remap evil-jump-item] #'evilmi-jump-items)
     (nvmap "%" #'evilmi-text-object)
