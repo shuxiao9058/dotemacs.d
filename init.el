@@ -44,11 +44,12 @@
 ;;; editor
 (require 'init-markdown)
 (require 'init-pair)
+(require 'init-org)
 
 ;;; programming
 (require 'init-projectile)
 (require 'init-company)
-(require 'init-lsp)
+;; (require 'init-lsp)
 (require 'init-go)
 (require 'init-lua)
 (require 'init-lisp)

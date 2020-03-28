@@ -27,16 +27,16 @@
     :after go-mode
     :commands gorepl-run-load-current-file)
 
-(use-package flycheck-golangci-lint
-    :straight t
-    :after go-mode
-    :hook (go-mode . flycheck-golangci-lint-setup)
-    :custom
-    (flycheck-golangci-lint-enable-all t)
-    (flycheck-golangci-lint-fast t)
-    (flycheck-golangci-lint-config
-     (expand-file-name "golangci.yml" "~/.config/golangci-lint"))
-    (flycheck-golangci-lint-tests t))
+;; (use-package flycheck-golangci-lint
+;;     :straight t
+;;     :after go-mode
+;;     :hook (go-mode . flycheck-golangci-lint-setup)
+;;     :custom
+;;     (flycheck-golangci-lint-enable-all t)
+;;     (flycheck-golangci-lint-fast t)
+;;     (flycheck-golangci-lint-config
+;;      (expand-file-name "golangci.yml" "~/.config/golangci-lint"))
+;;     (flycheck-golangci-lint-tests t))
 
 (use-package go-eldoc
     :straight t

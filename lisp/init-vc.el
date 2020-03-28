@@ -27,7 +27,7 @@
     (when IS-MAC
       (setq magit-git-executable "/usr/local/bin/git"))
     :general
-    (:keymaps '(magit-status-mode)
+    (:keymaps '(magit-status-mode-map)
 	      "z" #'magit-stash
 	      )
     ;; Temporary workaround for +magit/quit hang with lots of buffers

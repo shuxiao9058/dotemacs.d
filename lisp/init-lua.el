@@ -13,6 +13,7 @@
     :mode ("\\.lua$" . lua-mode)
     :config
     (autoload 'lua-mode "lua-mode" "Lua editing mode." t)
+    (setq-local company-backends '(company-tabnine))
     :general
     (nvmap :keymaps 'lua-mode-map
  	   "TAB" #'lua-goto-forward

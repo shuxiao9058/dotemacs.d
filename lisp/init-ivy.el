@@ -19,14 +19,14 @@
     :after ivy
     :config (ivy-prescient-mode))
 
-(use-package flyspell-correct-ivy
-    :straight t
-    :after ivy
-    :commands (flyspell-correct-word-generic)
-    :hook
-    (text-mode . flyspell-mode)
-    (prog-mode . flyspell-prog-mode)
-    )
+;; (use-package flyspell-correct-ivy
+;;     :straight t
+;;     :after ivy
+;;     :commands (flyspell-correct-word-generic)
+;;     :hook
+;;     (text-mode . flyspell-mode)
+;;     (prog-mode . flyspell-prog-mode)
+;;     )
 
 (use-package ivy-posframe
     ;; :if (and (window-system) (version<= "26.1" emacs-version))

@@ -20,6 +20,33 @@
     )
   )
 
+;; (when IS-GUI
+;;   (set-face-attribute
+;;    'default nil
+;;    :font (font-spec :name "-adobe-Source Code Pro-extralight-italic-normal-*-*-*-*-*-m-0-iso10646-1"
+;;                     :weight 'normal
+;;                     :slant 'normal
+;;                     :size 12))
+;;   (dolist (charset '(kana han symbol cjk-misc bopomofo))
+;;     (set-fontset-font
+;;      (frame-parameter nil 'font)
+;;      charset
+;;      (font-spec :name "-unknown-HYKaiTiJ-normal-normal-normal-*-*-*-*-*-*-0-iso10646-1"
+;; 		:weight 'normal
+;; 		:slant 'normal
+;; 		:size 12.0)))
+;;   )
+
+;; (when IS-GUI
+;;   ;; SF Mono: https://github.com/ZulwiyozaPutra/SF-Mono-Font
+;;   ;; Source Han Serief: https://github.com/adobe-fonts/source-han-serif
+;;   (set-frame-font "SF Mono-13.5:weight=semi-bold" nil t)
+;;   (dolist (charset '(kana han symbol cjk-misc bopomofo))
+;;     (set-fontset-font (frame-parameter nil 'font)
+;;                       charset (font-spec :family "Source Han Serif"))
+;;     (setq face-font-rescale-alist '(("Source Han Serif" . 1.24))))
+;;   )
+
 ;; 等宽: Source Code Pro 13 + STkaiti 16
 ;; (setq face-font-rescale-alist `(("STkaiti" . ,(/ 16.0 13))))
 ;; (set-fontset-font t 'han (font-spec :family "STkaiti"))
