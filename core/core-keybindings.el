@@ -1,4 +1,4 @@
-;;; core/core-keybinds.el -*- lexical-binding: t; -*-
+;;; core/core-keybindings.el -*- lexical-binding: t; -*-
 
 (defconst leader-key "SPC"
   "The leader prefix key for global commands.")
@@ -83,5 +83,5 @@
 
 ;;
 
-(provide 'core-keybinds)
-;;; core-keybinds.el ends here
+(provide 'core-keybindings)
+;;; core-keybindings.el ends here

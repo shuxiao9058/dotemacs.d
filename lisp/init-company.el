@@ -48,7 +48,7 @@
     ;; Don't use company in the following modes
     (company-global-modes '(not shell-mode eaf-mode))
     ;; Trigger completion immediately.
-    (company-idle-delay 0.2)
+    (company-idle-delay 0.1)
     ;; Number the candidates (use M-1, M-2 etc to select completions).
     (company-show-numbers t)
     :hook (after-init . global-company-mode)

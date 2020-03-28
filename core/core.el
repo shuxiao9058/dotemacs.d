@@ -42,7 +42,7 @@
   (if poly-initialize-core-p
       nil
     (require 'core-straight)
-    (require 'core-keybinds)
+    (require 'core-keybindings)
     (require 'core-packages)
     (require 'core-evil)
     (setq poly-initialize-core-p t)

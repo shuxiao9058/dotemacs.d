@@ -31,7 +31,7 @@
 ;; case show line numbers
 (require 'init-linum)
 
-;;; tools
+;; tools
 (require 'init-wakatime)
 (require 'init-keyfreq)
 (require 'init-format)
@@ -41,12 +41,12 @@
 (require 'init-search)
 (require 'init-telega)
 
-;;; editor
+;; editor
 (require 'init-markdown)
 (require 'init-pair)
 (require 'init-org)
 
-;;; programming
+;; programming
 (require 'init-projectile)
 (require 'init-company)
 ;; (require 'init-lsp)
@@ -55,20 +55,20 @@
 (require 'init-lisp)
 (require 'init-web)
 
-;;; functions
+;; functions
 (require 'init-utils)
 
-;;; magit
+;; magit
 (require 'init-vc)
 
 ;; hydra
 (require 'init-hydra)
 
-;;; keybinds
-;;; early load with general in core
+;; keybindings
+;; early load with general in core
 (eval-after-load 'general
   `(progn
-     (require 'init-keybinds)))
+     (require 'init-keybindings)))
 
 ;; Load customization file now
 (let ((custom-file (expand-file-name "custom.el" user-emacs-directory)))

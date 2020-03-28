@@ -36,7 +36,6 @@
     (global-undo-tree-mode)
     )
 
-;;; magit
 (use-package hide-mode-line
     :straight t
     :commands (hide-mode-line-mode))
@@ -52,12 +51,18 @@
     (xterm-mouse-mode +1)
     )
 
-;; pbcopy
 (use-package pbcopy
     :straight t
     ;; :if (and IS-MAC (not IS-GUI))
     :if IS-MAC
     :init (turn-on-pbcopy)
+    )
+
+(use-package posframe
+    :straight (posframe :host github
+			:repo "tumashu/posframe"
+			:files ("posframe.el"))
+    :ensure t
     )
 
 ;;;; disable annoying notifications

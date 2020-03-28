@@ -304,5 +304,5 @@
 		    "C-j" #'next-line-or-history-element
 		    "C-k" #'previous-line-or-history-element)
 
-(provide 'init-keybinds)
-;;; init-keybinds.el ends here
+(provide 'init-keybindings)
+;;; init-keybindings.el ends here
