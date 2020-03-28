@@ -28,22 +28,6 @@
 ;;   "C-j" #'next-line-or-history-element
 ;;   "C-k" #'previous-line-or-history-element)
 
-;;
-;;; General + leader/localleader keys
-;; Removing emacs state from non-normal list allow the use of SPC
-(delete 'emacs general-non-normal-states)
-
-;; disable C-z
-;; (global-set-key (kbd "C-z") nil)
-(general-define-key "C-z" nil)
-
-;; switch input method
-(general-define-key "C-\\" #'toggle-input-method)
-
-(nmap "q" nil ;; q quit, not evil-record-macro
-      "Q" #'evil-record-macro
-      "gc" #'evil-commentary
-      "gC" #'evil-commentary-line)
 
 ;; (general-define-key :keymaps 'flyspell-mode-map
 ;; 		    :states '(normal visual)
@@ -88,11 +72,8 @@
 		    "P"    #'find-library
 		    )
 
-
-
-;;; M-x
-(general-define-key
- "M-x" #'counsel-M-x)
+;; M-x
+(general-define-key "M-x" #'counsel-M-x)
 
 ;; *** leader key
 (leader-def
@@ -277,13 +258,10 @@
 		    "C-S-j"  #'scroll-up-command
 		    "C-S-k"  #'scroll-down-command)
 
-;;; go-mode
-
 
 (with-eval-after-load 'general
   (general-define-key
    "TAB" 'company-indent-or-complete-common))
-
 
 ;; Close transient with esc/q
 (general-define-key :keymaps 'transient-map
@@ -325,9 +303,6 @@
 (general-define-key :keymaps 'read-expression-map
 		    "C-j" #'next-line-or-history-element
 		    "C-k" #'previous-line-or-history-element)
-
-
-;; (evil-normalize-keymaps)
 
 (provide 'init-keybinds)
 ;;; init-keybinds.el ends here

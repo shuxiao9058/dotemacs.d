@@ -52,9 +52,9 @@
     ;; Number the candidates (use M-1, M-2 etc to select completions).
     (company-show-numbers t)
     :hook (after-init . global-company-mode)
-    :config
+    ;; :config
     ;; set default `company-backends'
-    (setq-default company-backends '(company-tabnine))
+    ;; (setq-default company-backends '(company-tabnine))
     ;; (setq-default company-backends
     ;; 		  '(my-company-tabnine
     ;; 		    ;; '((company-capf  ;; completion-at-point-functions

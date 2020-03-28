@@ -14,6 +14,9 @@
     (add-to-list 'evil-insert-state-modes 'shell-mode)
     (add-to-list 'evil-insert-state-modes 'dashboard-mode)
     (add-to-list 'evil-insert-state-modes 'git-timemachine-mode)
+    :general
+    (nmap "q" nil ;; q quit, not evil-record-macro
+	  "Q" #'evil-record-macro)
     )
 
 
@@ -104,6 +107,9 @@
     :after evil
     :config
     (evil-commentary-mode 1)
+    :general
+    (nvmap "gc" #'evil-commentary
+	   "gC" #'evil-commentary-line)
     )
 
 (use-package evil-search-highlight-persist
