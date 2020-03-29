@@ -261,6 +261,34 @@
     ;; (advice-add #'company-tabnine :around #'my-company-tabnine)
     )
 
+;; try nox
+(use-package nox
+    :straight (nox
+	       :host github
+	       :repo "manateelazycat/nox"
+	       :files ("nox.el"))
+    :config
+    ;; lua
+    (add-to-list 'nox-server-programs
+		 '(lua-mode . ("/usr/bin/java" "-cp" "/Users/jiya/workspace/EmmyLua-LanguageServer/EmmyLua-LS/build/libs/EmmyLua-LS-all.jar" "com.tang.vscode.MainKt")))
+
+    (dolist (hook (list
+		   'js-mode-hook
+		   'rust-mode-hook
+		   'python-mode-hook
+		   'ruby-mode-hook
+		   'java-mode-hook
+		   'sh-mode-hook
+		   'php-mode-hook
+		   'c-mode-common-hook
+		   'c-mode-hook
+		   'c++-mode-hook
+		   'haskell-mode-hook
+		   'lua-mode-hook
+		   ))
+      (add-hook hook '(lambda () (nox-ensure))))
+    )
+
 (use-package yasnippet
     :straight t
     :ensure t

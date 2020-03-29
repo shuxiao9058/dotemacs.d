@@ -64,14 +64,14 @@
     :custom
     (global-evil-matchit-mode t)
     :config
+    ;; disable evil-matchit
     (dolist (mode '(magit-status-mode-hook))
       (add-hook mode (lambda()
-		       (evil-matchit-mode 0)
-		       ))
-      )
+		       (evil-matchit-mode 0))))
     :general
     ([remap evil-jump-item] #'evilmi-jump-items)
-    (nvmap "%" #'evilmi-text-object)
+    (nvmap :keymaps '(evil-matchit-mode-map)
+	   "%" #'evilmi-text-object)
     )
 
 (use-package evil-snipe
