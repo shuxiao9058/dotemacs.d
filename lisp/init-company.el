@@ -200,15 +200,16 @@
     :ensure t
     :after company
     :custom
-    (company-tabnine-max-num-results 4)
     ;; (company-tabnine-max-num-results 9)
     (company-tabnine-no-continue t)
     :init
-    ;; (setq company-tabnine-log-file-path "/tmp/TabNine.log")
     (setq company-tabnine-executable-args
 	  '("--client" "emacs" "--log-level" "Error" "--log-file-path" "/tmp/TabNine.log"))
     :config
-    (add-to-list 'company-transformers 'company//sort-by-tabnine t)
+    (setq company-tabnine-max-num-results 9)
+    (when (> 9 company-tabnine-max-num-results)
+      (add-to-list 'company-transformers 'company//sort-by-tabnine t)
+      )
     ;; ;; workaround for company-flx-mode and other transformers
     ;; (setq company-tabnine--disable-next-transform nil)
     ;; (defun my-company--transform-candidates (func &rest args)
