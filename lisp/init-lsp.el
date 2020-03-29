@@ -18,21 +18,27 @@
     :custom
     (lsp-idle-delay 0.5)                 ;; lazy refresh
     (lsp-log-io nil)
+    (lsp-enable-xref t)
+    (lsp-enable-indentation t)
+    (lsp-enable-completion-at-point t)
+    (lsp-response-timeout 1000)
     (lsp-enable-folding nil)             ;; use `evil-matchit' instead
     (lsp-diagnostic-package :flycheck)   ;; prefer flycheck
     (lsp-flycheck-live-reporting nil)    ;; obey `flycheck-check-syntax-automatically'
     (lsp-prefer-capf t)                  ;; using `company-capf' by default
     (lsp-enable-snippet nil)             ;; no snippet
     (lsp-enable-file-watchers nil)       ;; turn off for better performance
+    ;; (lsp-file-watch-threshold 10000)
     (lsp-enable-text-document-color nil) ;; as above
     (lsp-enable-symbol-highlighting nil) ;; as above
     (lsp-enable-on-type-formatting nil)  ;; disable formatting on the fly
     (lsp-auto-guess-root t)              ;; auto guess root
     (lsp-keep-workspace-alive nil)       ;; auto kill lsp server
     (lsp-eldoc-enable-hover nil)         ;; disable eldoc displays in minibuffer
-    ;; (lsp-file-watch-threshold 2000)
+    (lsp-enable-imenu nil)
     (lsp-clients-emmy-lua-jar-path (expand-file-name  "bin/EmmyLua-LS-all.jar" poly-local-dir))
     :config
+    (setq lsp-eldoc-enable-hover nil)
     ;; ;; lsp-lua
     ;; ;; 暂时还有点问题，先不用了
     ;; (require 'init-lsp-lua)
@@ -40,7 +46,6 @@
     (advice-add 'lsp-warn
 		:around (lambda (orig-func &rest r)
                           (message (apply #'format-message r))))
-    ;; :bind (:map lsp-mode-map ("C-c C-f" . lsp-format-buffer))
     :general
     (leader-def :keymaps '(lsp-mode-map)
       "c" '(:ignore t :wk "code")
@@ -65,19 +70,16 @@
     (lsp-ui-doc-enable nil)
     (lsp-ui-doc-header nil)
     (lsp-ui-doc-include-signature nil)
-    (lsp-file-watch-threshold 10000)
-    (lsp-ui-doc-position 'top)
-    (lsp-ui-doc-border (face-foreground 'default))
+    ;; (lsp-ui-doc-position 'top)
+    ;; (lsp-ui-doc-border (face-foreground 'default))
     (lsp-ui-sideline-enable nil)
     (lsp-ui-sideline-ignore-duplicate t)
     (lsp-ui-sideline-show-code-actions nil)
     (lsp-ui-sideline-show-diagnostics nil)
-    (lsp-ui-doc-background (doom-color 'base4))
-    (lsp-ui-doc-border (doom-color 'fg))
     :config
-    ;; Use lsp-ui-doc-webkit only in GUI
-    (if IS-GUI
-	(setq lsp-ui-doc-use-webkit t))
+    ;; ;; Use lsp-ui-doc-webkit only in GUI
+    ;; (if IS-GUI
+    ;; 	(setq lsp-ui-doc-use-webkit t))
     ;; WORKAROUND Hide mode-line of the lsp-ui-imenu buffer
     ;; https://github.com/emacs-lsp/lsp-ui/issues/243
     (defadvice lsp-ui-imenu (after hide-lsp-ui-imenu-mode-line activate)
@@ -100,21 +102,8 @@
     :after company
     :custom
     (company-lsp-cache-candidates 'auto)
-    (syntax-checking-enable-by-default t)
-    (lsp-highlight-symbol-at-point nil)
-    (lsp-enable-codeaction nil)
-    (lsp-log-io nil)
-    (lsp-enable-xref t)
-    (lsp-auto-guess-root t)
-    (lsp-diagnostic-package :flymake)
-    (lsp-enable-indentation t)
-    (lsp-enable-completion-at-point t)
-    (lsp-enable-eldoc nil)
-    (lsp-response-timeout 1000)
-    (lsp-file-watch-threshold 150000)
     :config
     (add-to-list 'lsp-file-watch-ignored "build")
-
     ;; enable emmy-lua
     (add-to-list 'company-lsp-filter-candidates '(lsp-emmy-lua . t))
 

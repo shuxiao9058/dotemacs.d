@@ -98,10 +98,13 @@
   "bl" '(list-buffers :wk "List Buffers")
   "bx" '((lambda ()(interactive)(switch-to-buffer "*scratch*")) :wk "scratch buffer")
 
-  ;; ;;<leader> c --- code
-  ;; "c" '(:wk "Code")
-  ;; "cC" '(compile :wk "Compile")
-  ;; "cc" '(recompile :wk "Recompile")
+  ;;<leader> c --- code
+  "c" '(:wk "Code")
+  "cC" '(compile :wk "Compile")
+  "cc" '(recompile :wk "Recompile")
+  "cf" '(+format/region-or-buffer :wk "Format buffer/region")
+  "cF" '(+format/lsp-format-region-or-buffer :wk "LSP Format buffer/region")
+  "ci" '(lsp-organize-imports :wk "LSP Organize imports")
 
   "e" '(:ignore t :which-key "emacs/init")
   ;; "ef" '(amb:edit-init-file :which-key "edit init.el")

@@ -13,29 +13,25 @@
 ;;     (append (if (consp backend) backend (list backend))
 ;;             '(:with company-yasnippet))))
 
-;; (defvar my-company-tabnine '(company-tabnine)
-;;   "my company tabnine"
-;;   )
-
-;; ;; Integrate company-tabnine with lsp-mode
-;; (defun company//sort-by-tabnine (candidates)
-;;   (if (or (functionp company-backend)
-;; 	  (not (and (listp company-backend) (memq 'company-tabnine company-backend))))
-;;       candidates
-;;     (let ((candidates-table (make-hash-table :test #'equal))
-;; 	  candidates-lsp
-;; 	  candidates-tabnine)
-;;       (dolist (candidate candidates)
-;; 	(if (eq (get-text-property 0 'company-backend candidate)
-;; 		'company-tabnine)
-;; 	    (unless (gethash candidate candidates-table)
-;; 	      (push candidate candidates-tabnine))
-;; 	  (push candidate candidates-lsp)
-;; 	  (puthash candidate t candidates-table)))
-;;       (setq candidates-lsp (nreverse candidates-lsp))
-;;       (setq candidates-tabnine (nreverse candidates-tabnine))
-;;       (nconc (seq-take candidates-tabnine 3)
-;; 	     (seq-take candidates-lsp 6)))))
+;; Integrate company-tabnine with lsp-mode
+(defun company//sort-by-tabnine (candidates)
+  (if (or (functionp company-backend)
+	  (not (and (listp company-backend) (memq 'company-tabnine company-backend))))
+      candidates
+    (let ((candidates-table (make-hash-table :test #'equal))
+	  candidates-lsp
+	  candidates-tabnine)
+      (dolist (candidate candidates)
+	(if (eq (get-text-property 0 'company-backend candidate)
+		'company-tabnine)
+	    (unless (gethash candidate candidates-table)
+	      (push candidate candidates-tabnine))
+	  (push candidate candidates-lsp)
+	  (puthash candidate t candidates-table)))
+      (setq candidates-lsp (nreverse candidates-lsp))
+      (setq candidates-tabnine (nreverse candidates-tabnine))
+      (nconc (seq-take candidates-tabnine 3)
+	     (seq-take candidates-lsp 6)))))
 
 (use-package company
     :straight t
@@ -52,19 +48,18 @@
     ;; Number the candidates (use M-1, M-2 etc to select completions).
     (company-show-numbers t)
     :hook (after-init . global-company-mode)
-    ;; :config
+    :config
     ;; set default `company-backends'
     ;; (setq-default company-backends '(company-tabnine))
-    ;; (setq-default company-backends
-    ;; 		  '(my-company-tabnine
-    ;; 		    ;; '((company-capf  ;; completion-at-point-functions
-    ;; 		    ;;    company-dabbrev-code)
-    ;; 		    ;;   (company-files          ; files & directory
-    ;; 		    ;;    company-keywords       ; keywords
-    ;; 		    ;;    )
-    ;; 		    ;;   (company-abbrev company-dabbrev))
-    ;; 		    )
-    ;; )
+    (setq-default company-backends
+		  '(company-tabnine
+		    '(company-capf  ;; completion-at-point-functions
+		      company-dabbrev-code)
+		    (company-files          ; files & directory
+		     company-keywords       ; keywords
+		     )
+		    (company-abbrev company-dabbrev))
+		  )
     :general
     (:keymaps '(company-active-map)
               "C-w"     nil  ; don't interfere with `evil-delete-backward-word'
@@ -92,15 +87,15 @@
 	      [escape]  #'company-search-abort)
     )
 
-(use-package company-posframe
-    :straight t
-    :after company
-    :if IS-GUI
-    ;; :if  (and (not (package-installed-p 'company-box))
-    ;; 	      (>= emacs-major-version 26)
-    ;; 	      IS-GUI)
-    :hook (global-company-mode . company-posframe-mode)
-    )
+;; (use-package company-posframe
+;;     :straight t
+;;     :after company
+;;     :if IS-GUI
+;;     ;; :if  (and (not (package-installed-p 'company-box))
+;;     ;; 	      (>= emacs-major-version 26)
+;;     ;; 	      IS-GUI)
+;;     :hook (global-company-mode . company-posframe-mode)
+;;     )
 
 ;; (use-package company-box
 ;;     :straight t
@@ -211,36 +206,13 @@
     (setq company-tabnine-executable-args
 	  '("--client" "emacs" "--log-level" "Error" "--log-file-path" "/tmp/TabNine.log"))
     :hook (lsp-after-open . (lambda ()
-			      ;; (setq company-tabnine-max-num-results 3)
+			      (setq company-tabnine-max-num-results 3)
 
-			      ;; (add-to-list 'company-transformers 'company//sort-by-tabnine t)
+			      (add-to-list 'company-transformers 'company//sort-by-tabnine t)
 
-			      ;; (let ((local-backends (remove my-company-tabnine company-backends)))
-			      ;; 	(setq-local company-backends
-			      ;; 		    (cons '(;; company-lsp :with
-			      ;; 			    company-tabnine :with company-yasnippet) local-backends)))
-
-
-			      ;; ;; Support yas in commpany
-			      ;; ;; Note: Must be the last to involve all backends
-			      ;; ;; should remove my-company-tabnine first
-			      ;; (let ((local-backends (remove my-company-tabnine company-backends)))
-			      ;; 	(setq-local company-backends
-			      ;; 		    (cons '(company-tabnine) local-backends)))
-
-			      ;; ;; Support yas in commpany
-			      ;; ;; Note: Must be the last to involve all backends
-			      ;; ;; should remove my-company-tabnine first
-			      ;; (let ((local-backends (remove my-company-tabnine company-backends)))
-			      ;; 	(setq-local company-backends
-			      ;; 		    (cons '(company-lsp :with company-tabnine :with company-yasnippet :separate) local-backends)))
-
-			      ;; ;; Support yas in commpany
-			      ;; ;; Note: Must be the last to involve all backends
-			      ;; (let ((local-backends (remove my-company-tabnine company-backends)))
-			      ;; 	(setq-local company-backends
-			      ;; 		    (mapcar #'company-mode/backend-with-yas local-backends))
-			      ;; 	)
+			      (make-local-variable 'company-backends)
+			      (setq company-backends nil)
+			      (add-to-list 'company-backends '(company-lsp :with company-tabnine :separate))
 			      )
 			  )
     ;; :config
