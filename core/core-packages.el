@@ -69,6 +69,29 @@
     :straight t
     :ensure t)
 
+;; ;; Adopt a sneaky garbage collection strategy of waiting until idle time to
+;; ;; collect; staving off the collector while the user is working.
+;; (use-package gcmh
+;;     :straight t
+;;     :custom
+;;     (gcmh-verbose             nil)
+;;     ;; (gcmh-lows-cons-threshold #x800000)
+;;     (gcmh-high-cons-threshold most-positive-fixnum)
+;;     ;; (gc-cons-percentage 0.1)
+;;     (gcmh-idle-delay 10)
+;;     ;; :hook ((focus-out  . gcmh-idle-garbage-collect)
+;;     ;; 	   (pre-command . (lambda()(gcmh-mode +1)))
+;;     ;; 	   )
+;;     :config
+;;     (setq gc-cons-percentage 0.6)
+;;     (when (not noninteractive)
+;;       (gcmh-mode +1)
+;;       (add-function :after after-focus-change-function #'gcmh-idle-garbage-collect)
+;;       )
+;;     ;; (add-hook 'focus-out-hook #'gcmh-idle-garbage-collect)
+;;     ;; (add-hook 'pre-command-hook (lambda ()(gcmh-mode +1)))
+;;     )
+
 ;;;; disable annoying notifications
 (defcustom message-filter-regexp-list '("^Starting new Ispell process \\[.+\\] \\.\\.\\.$"
                                         "^Ispell process killed$"

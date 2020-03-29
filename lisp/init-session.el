@@ -1,4 +1,4 @@
-;;; lisp/init-session
+;;; lisp/init-session.el -*- lexical-binding: t; -*-
 
 (setq desktop-dirname (concat poly-etc-dir "desktop"))
 (setq desktop-base-file-name "autosave")
@@ -125,3 +125,4 @@
            (list "--restore"))))
 
 (provide 'init-session)
+;;; init-session.el ends here

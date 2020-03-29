@@ -19,19 +19,19 @@
 	  (not (and (listp company-backend) (memq 'company-tabnine company-backend))))
       candidates
     (let ((candidates-table (make-hash-table :test #'equal))
-	  candidates-lsp
+	  candidates-capf
 	  candidates-tabnine)
       (dolist (candidate candidates)
 	(if (eq (get-text-property 0 'company-backend candidate)
 		'company-tabnine)
 	    (unless (gethash candidate candidates-table)
 	      (push candidate candidates-tabnine))
-	  (push candidate candidates-lsp)
+	  (push candidate candidates-capf)
 	  (puthash candidate t candidates-table)))
-      (setq candidates-lsp (nreverse candidates-lsp))
+      (setq candidates-capf (nreverse candidates-capf))
       (setq candidates-tabnine (nreverse candidates-tabnine))
-      (nconc (seq-take candidates-tabnine 3)
-	     (seq-take candidates-lsp 6)))))
+      (nconc (seq-take candidates-tabnine company-tabnine-max-num-results)
+	     (seq-take candidates-capf (- 9 company-tabnine-max-num-results))))))
 
 (use-package company
     :straight t
@@ -50,33 +50,34 @@
     :hook (after-init . global-company-mode)
     :config
     ;; set default `company-backends'
-    ;; (setq-default company-backends '(company-tabnine))
+    ;; completion-at-point-functions
     (setq-default company-backends
-		  '(company-tabnine
-		    '(company-capf  ;; completion-at-point-functions
-		      company-dabbrev-code)
+		  '((company-tabnine :with company-capf :separate)
+		    company-dabbrev-code
 		    (company-files          ; files & directory
 		     company-keywords       ; keywords
 		     )
-		    (company-abbrev company-dabbrev))
+		    (company-abbrev company-dabbrev)
+		    )
 		  )
+    ;; )
     :general
     (:keymaps '(company-active-map)
-              "C-w"     nil  ; don't interfere with `evil-delete-backward-word'
-              "C-n"     #'company-select-next
-              "C-p"     #'company-select-previous
-              "C-j"     #'company-select-next
-              "C-k"     #'company-select-previous
-              "C-h"     #'company-show-doc-buffer
-              "C-u"     #'company-previous-page
-              "C-d"     #'company-next-page
-              "C-s"     #'company-filter-candidates
-              "C-S-s"  #'counsel-company
-              "C-SPC"   #'company-complete-common
-              "TAB"     #'company-complete-common-or-cycle
-              [tab]     #'company-complete-common-or-cycle
-              [backtab] #'company-select-previous
-              [f1]      nil
+	      "C-w"     nil  ; don't interfere with `evil-delete-backward-word'
+	      "C-n"     #'company-select-next
+	      "C-p"     #'company-select-previous
+	      "C-j"     #'company-select-next
+	      "C-k"     #'company-select-previous
+	      "C-h"     #'company-show-doc-buffer
+	      "C-u"     #'company-previous-page
+	      "C-d"     #'company-next-page
+	      "C-s"     #'company-filter-candidates
+	      "C-S-s"  #'counsel-company
+	      "C-SPC"   #'company-complete-common
+	      "TAB"     #'company-complete-common-or-cycle
+	      [tab]     #'company-complete-common-or-cycle
+	      [backtab] #'company-select-previous
+	      [f1]      nil
 	      )
     (:keymaps '(company-search-map)
 	      "C-n"     #'company-select-next-or-abort
@@ -199,23 +200,15 @@
     :ensure t
     :after company
     :custom
-    (company-tabnine-max-num-results 9)
+    (company-tabnine-max-num-results 4)
+    ;; (company-tabnine-max-num-results 9)
     (company-tabnine-no-continue t)
     :init
     ;; (setq company-tabnine-log-file-path "/tmp/TabNine.log")
     (setq company-tabnine-executable-args
 	  '("--client" "emacs" "--log-level" "Error" "--log-file-path" "/tmp/TabNine.log"))
-    :hook (lsp-after-open . (lambda ()
-			      (setq company-tabnine-max-num-results 3)
-
-			      (add-to-list 'company-transformers 'company//sort-by-tabnine t)
-
-			      (make-local-variable 'company-backends)
-			      (setq company-backends nil)
-			      (add-to-list 'company-backends '(company-lsp :with company-tabnine :separate))
-			      )
-			  )
-    ;; :config
+    :config
+    (add-to-list 'company-transformers 'company//sort-by-tabnine t)
     ;; ;; workaround for company-flx-mode and other transformers
     ;; (setq company-tabnine--disable-next-transform nil)
     ;; (defun my-company--transform-candidates (func &rest args)

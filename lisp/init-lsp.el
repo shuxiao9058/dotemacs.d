@@ -38,7 +38,6 @@
     (lsp-enable-imenu nil)
     (lsp-clients-emmy-lua-jar-path (expand-file-name  "bin/EmmyLua-LS-all.jar" poly-local-dir))
     :config
-    (setq lsp-eldoc-enable-hover nil)
     ;; ;; lsp-lua
     ;; ;; 暂时还有点问题，先不用了
     ;; (require 'init-lsp-lua)
@@ -46,6 +45,9 @@
     (advice-add 'lsp-warn
 		:around (lambda (orig-func &rest r)
                           (message (apply #'format-message r))))
+    (add-hook 'lsp-after-open-hook
+	      (lambda()
+		(setq company-backends (delete 'company-capf company-backends))))
     :general
     (leader-def :keymaps '(lsp-mode-map)
       "c" '(:ignore t :wk "code")

@@ -47,6 +47,7 @@
 (require 'init-org)
 
 ;; programming
+(require 'init-flycheck)
 (require 'init-projectile)
 (require 'init-company)
 (require 'init-lsp)

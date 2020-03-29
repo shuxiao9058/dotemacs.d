@@ -3,18 +3,18 @@
 (use-package format-all
     :straight t
     :ensure t
-    :hook ((
-            lua-mode
-            go-mode
-            ;; clang-mode
-            elisp-mode
-            emacs-lisp-mode
-	    markdown-mode
-            ;;  objc-mode
-            ;;  swift-mode
-            ;;  typescript-mode
-            ;;  web-mode
-            ) . format-all-mode)
+    ;; :hook ((
+    ;;         lua-mode
+    ;;         go-mode
+    ;;         ;; clang-mode
+    ;;         elisp-mode
+    ;;         emacs-lisp-mode
+    ;; 	    markdown-mode
+    ;;         ;;  objc-mode
+    ;;         ;;  swift-mode
+    ;;         ;;  typescript-mode
+    ;;         ;;  web-mode
+    ;;         ) . format-all-mode)
     :commands (
                format-all-mode
                format-all-buffer)
