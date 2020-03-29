@@ -102,18 +102,16 @@
 (use-package evil-magit
     :straight t
     :ensure t
-    :after magit evil
-    :hook (magit-mode . evil-magit-init)
-    :init
+    :after (magit evil)
+    :init (evil-magit-init)
+    :config
     (evil-set-initial-state 'magit-log-edit-mode 'insert)
     (evil-set-initial-state 'git-commit-mode 'insert)
-    (evil-set-initial-state 'magit-commit-mode 'insert)
-    ;; (evil-set-initial-state 'magit-commit-mode 'motion)
     (evil-set-initial-state 'magit-log-mode 'motion)
+    (evil-set-initial-state 'magit-diff-mode 'normal)
     (evil-set-initial-state 'magit-wassup-mode 'motion)
     (evil-set-initial-state 'magit-mode 'motion)
     (evil-set-initial-state 'git-rebase-mode 'motion)
-    :config
     (eval-after-load 'git-rebase
       `(progn
 	 (dolist (key '(("M-k" . "gk") ("M-j" . "gj")))

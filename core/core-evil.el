@@ -31,7 +31,6 @@
     (add-to-list 'evil-insert-state-modes 'shell-mode)
     (add-to-list 'evil-insert-state-modes 'dashboard-mode)
     (add-to-list 'evil-insert-state-modes 'git-timemachine-mode)
-    (add-to-list 'evil-insert-state-modes 'magit-commit-mode)
 
     ;; Change cursor color depending on mode
     (setq evil-emacs-state-cursor `("red" hbar))     ; _
