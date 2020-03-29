@@ -268,9 +268,11 @@
 	       :repo "manateelazycat/nox"
 	       :files ("nox.el"))
     :config
-    ;; lua
-    (add-to-list 'nox-server-programs
-		 '(lua-mode . ("/usr/bin/java" "-cp" "/Users/jiya/workspace/EmmyLua-LanguageServer/EmmyLua-LS/build/libs/EmmyLua-LS-all.jar" "com.tang.vscode.MainKt")))
+    ;; emmylua
+    (let ((emmylua-jar-path (expand-file-name "bin/EmmyLua-LS-all.jar" poly-local-dir)))
+      (add-to-list 'nox-server-programs
+		   `(lua-mode  . ("/usr/bin/java" "-cp" ,emmylua-jar-path "com.tang.vscode.MainKt")))
+      )
 
     (dolist (hook (list
 		   'js-mode-hook
