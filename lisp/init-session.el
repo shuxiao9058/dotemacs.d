@@ -1,7 +1,8 @@
 ;;; lisp/init-session
 
-(defvar desktop-base-file-name)
-(defvar desktop-dirname)
+(setq desktop-dirname (concat poly-etc-dir "desktop"))
+(setq desktop-base-file-name "autosave")
+(setq desktop-base-lock-name "autosave-lock")
 (defvar desktop-restore-eager)
 (defvar desktop-file-modtime)
 

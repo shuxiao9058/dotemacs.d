@@ -45,9 +45,6 @@ Use this for files that change often, like cache files. Must end with a slash.")
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-(setq  desktop-dirname              (concat poly-etc-dir "desktop")
-       desktop-base-file-name       "autosave"
-       desktop-base-lock-name       "autosave-lock")
 
 (provide 'core-variables)
 ;;; core-variables.el ends here

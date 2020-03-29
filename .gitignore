@@ -6,6 +6,7 @@
 *.log
 *.elc
 .lsp-session-v1
+.emacs.desktop
 tmp*
 recentf
 # dir
@@ -15,6 +16,7 @@ eshell/
 transient/
 auto-save-list/
 history/
+.cache/
 .local/
 .local/rime/user.yaml
 .local/rime/installation.yaml
