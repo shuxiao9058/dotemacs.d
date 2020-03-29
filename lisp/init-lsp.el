@@ -23,7 +23,7 @@
     (lsp-enable-completion-at-point t)
     (lsp-response-timeout 1000)
     (lsp-enable-folding nil)             ;; use `evil-matchit' instead
-    (lsp-diagnostic-package :flycheck)   ;; prefer flycheck
+    (lsp-diagnostic-package :none)   ;; prefer flycheck disable
     (lsp-flycheck-live-reporting nil)    ;; obey `flycheck-check-syntax-automatically'
     (lsp-prefer-capf t)                  ;; using `company-capf' by default
     (lsp-enable-snippet nil)             ;; no snippet

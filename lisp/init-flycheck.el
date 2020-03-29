@@ -1,5 +1,6 @@
 ;;; lisp/init-flycheck.el -*- lexical-binding: t; -*-
 
+;; non-complete statement
 (use-package flycheck
     :straight t
     ;; :config

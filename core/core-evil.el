@@ -229,7 +229,7 @@
 	 (set-face-background 'mode-line (car color))
 	 (set-face-foreground 'mode-line (cdr color))))
 
-     (lexical-let ((default-color (cons (face-background 'mode-line)
+     (let ((default-color (cons (face-background 'mode-line)
 					(face-foreground 'mode-line))))
        (add-hook 'post-command-hook (lambda () (my-evil-modeline-change default-color))))
 

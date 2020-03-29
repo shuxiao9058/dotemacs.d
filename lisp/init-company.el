@@ -174,12 +174,12 @@
 ;; 	      (ElispFace . ,(my-company-box-icon 'material "format_paint" 'all-the-icons-pink)))))
 ;;     )
 
-;; (use-package company-flx
-;;     :straight t
-;;     :after company
-;;     :config
-;;     (company-flx-mode 1)
-;;     (setq company-flx-limit 256))
+(use-package company-flx
+    :straight t
+    :after company
+    :config
+    (company-flx-mode 1)
+    (setq company-flx-limit 256))
 
 ;; (use-package company-prescient
 ;;     :straight t
@@ -210,21 +210,21 @@
     (when (> 9 company-tabnine-max-num-results)
       (add-to-list 'company-transformers 'company//sort-by-tabnine t)
       )
-    ;; ;; workaround for company-flx-mode and other transformers
-    ;; (setq company-tabnine--disable-next-transform nil)
-    ;; (defun my-company--transform-candidates (func &rest args)
-    ;;   (if (not company-tabnine--disable-next-transform)
-    ;;       (apply func args)
-    ;; 	(setq company-tabnine--disable-next-transform nil)
-    ;; 	(car args)))
+    ;; workaround for company-flx-mode and other transformers
+    (setq company-tabnine--disable-next-transform nil)
+    (defun my-company--transform-candidates (func &rest args)
+      (if (not company-tabnine--disable-next-transform)
+          (apply func args)
+	(setq company-tabnine--disable-next-transform nil)
+	(car args)))
 
-    ;; (defun my-company-tabnine (func &rest args)
-    ;;   (when (eq (car args) 'candidates)
-    ;; 	(setq company-tabnine--disable-next-transform t))
-    ;;   (apply func args))
+    (defun my-company-tabnine (func &rest args)
+      (when (eq (car args) 'candidates)
+	(setq company-tabnine--disable-next-transform t))
+      (apply func args))
 
-    ;; (advice-add #'company--transform-candidates :around #'my-company--transform-candidates)
-    ;; (advice-add #'company-tabnine :around #'my-company-tabnine)
+    (advice-add #'company--transform-candidates :around #'my-company--transform-candidates)
+    (advice-add #'company-tabnine :around #'my-company-tabnine)
     )
 
 ;; ;; try nox

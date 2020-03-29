@@ -1,8 +1,5 @@
 ;;; core/core-straight.el -*- lexical-binding: t; -*-
 
-;; void-function lexical-let
-(eval-when-compile (require 'cl))
-
 ;; Emacs wants to load `package.el' before the init file,
 ;; so we do the same with `straight.el'
 (setq straight-base-dir poly-local-dir
