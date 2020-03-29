@@ -261,35 +261,36 @@
     ;; (advice-add #'company-tabnine :around #'my-company-tabnine)
     )
 
-;; try nox
-(use-package nox
-    :straight (nox
-	       :host github
-	       :repo "manateelazycat/nox"
-	       :files ("nox.el"))
-    :config
-    ;; emmylua
-    (let ((emmylua-jar-path (expand-file-name "bin/EmmyLua-LS-all.jar" poly-local-dir)))
-      (add-to-list 'nox-server-programs
-		   `(lua-mode  . ("/usr/bin/java" "-cp" ,emmylua-jar-path "com.tang.vscode.MainKt")))
-      )
+;; ;; try nox
+;; (use-package nox
+;;     :straight (nox
+;; 	       :host github
+;; 	       :repo "manateelazycat/nox"
+;; 	       :files ("nox.el"))
+;;     ;; :after company
+;;     :config
+;;     ;; emmylua
+;;     (let ((emmylua-jar-path (expand-file-name "bin/EmmyLua-LS-all.jar" poly-local-dir)))
+;;       (add-to-list 'nox-server-programs
+;; 		   `(lua-mode  . ("/usr/bin/java" "-cp" ,emmylua-jar-path "com.tang.vscode.MainKt")))
+;;       )
 
-    (dolist (hook (list
-		   'js-mode-hook
-		   'rust-mode-hook
-		   'python-mode-hook
-		   'ruby-mode-hook
-		   'java-mode-hook
-		   'sh-mode-hook
-		   'php-mode-hook
-		   'c-mode-common-hook
-		   'c-mode-hook
-		   'c++-mode-hook
-		   'haskell-mode-hook
-		   'lua-mode-hook
-		   ))
-      (add-hook hook '(lambda () (nox-ensure))))
-    )
+;;     (dolist (hook (list
+;; 		   'js-mode-hook
+;; 		   'rust-mode-hook
+;; 		   'python-mode-hook
+;; 		   'ruby-mode-hook
+;; 		   'java-mode-hook
+;; 		   'sh-mode-hook
+;; 		   'php-mode-hook
+;; 		   'c-mode-common-hook
+;; 		   'c-mode-hook
+;; 		   'c++-mode-hook
+;; 		   'haskell-mode-hook
+;; 		   'lua-mode-hook
+;; 		   ))
+;;       (add-hook hook '(lambda () (nox-ensure))))
+;;     )
 
 (use-package yasnippet
     :straight t

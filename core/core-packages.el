@@ -65,6 +65,10 @@
     :ensure t
     )
 
+(use-package restart-emacs
+    :straight t
+    :ensure t)
+
 ;;;; disable annoying notifications
 (defcustom message-filter-regexp-list '("^Starting new Ispell process \\[.+\\] \\.\\.\\.$"
                                         "^Ispell process killed$"

@@ -55,12 +55,13 @@
     (general-unbind "C-x b"
 	"C-x C-f"
       "C-x C-w"
-      "C-x C-s")
+      "C-x C-s"
+      ;; disable C-z
+      "C-z")
 
-    ;; disable C-z
-    ("C-z" nil)
-    ;; switch input method
-    ("C-\\" #'toggle-input-method)
+    (general-define-key
+        ;; switch input method
+        "C-\\" #'toggle-input-method)
     )
 
 ;;

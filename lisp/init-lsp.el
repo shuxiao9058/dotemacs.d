@@ -16,11 +16,21 @@
            (lsp-mode . lsp-enable-which-key-integration)
 	   )
     :custom
-    (lsp-log-io t)
-    ;; (lsp-print-performance t)
-    (lsp-auto-guess-root nil)
-    ;; (lsp-prefer-flymake nil) ;; Use flycheck instead of flymake
-    (lsp-file-watch-threshold 2000)
+    (lsp-idle-delay 0.5)                 ;; lazy refresh
+    (lsp-log-io nil)
+    (lsp-enable-folding nil)             ;; use `evil-matchit' instead
+    (lsp-diagnostic-package :flycheck)   ;; prefer flycheck
+    (lsp-flycheck-live-reporting nil)    ;; obey `flycheck-check-syntax-automatically'
+    (lsp-prefer-capf t)                  ;; using `company-capf' by default
+    (lsp-enable-snippet nil)             ;; no snippet
+    (lsp-enable-file-watchers nil)       ;; turn off for better performance
+    (lsp-enable-text-document-color nil) ;; as above
+    (lsp-enable-symbol-highlighting nil) ;; as above
+    (lsp-enable-on-type-formatting nil)  ;; disable formatting on the fly
+    (lsp-auto-guess-root t)              ;; auto guess root
+    (lsp-keep-workspace-alive nil)       ;; auto kill lsp server
+    (lsp-eldoc-enable-hover nil)         ;; disable eldoc displays in minibuffer
+    ;; (lsp-file-watch-threshold 2000)
     (lsp-clients-emmy-lua-jar-path (expand-file-name  "bin/EmmyLua-LS-all.jar" poly-local-dir))
     :config
     ;; ;; lsp-lua
@@ -55,15 +65,12 @@
     (lsp-ui-doc-enable nil)
     (lsp-ui-doc-header nil)
     (lsp-ui-doc-include-signature nil)
-    (lsp-enable-snippet nil)
-    (lsp-enable-file-watchers t)
     (lsp-file-watch-threshold 10000)
     (lsp-ui-doc-position 'top)
     (lsp-ui-doc-border (face-foreground 'default))
     (lsp-ui-sideline-enable nil)
     (lsp-ui-sideline-ignore-duplicate t)
     (lsp-ui-sideline-show-code-actions nil)
-    ;; (lsp-flycheck-live-reporting nil)
     (lsp-ui-sideline-show-diagnostics nil)
     (lsp-ui-doc-background (doom-color 'base4))
     (lsp-ui-doc-border (doom-color 'fg))

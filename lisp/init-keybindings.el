@@ -142,8 +142,14 @@
   "q" '(:ignore t :which-key "quit/session")
   "qf" '(delete-frame :wk "Delete frame")
   "qK" '(save-buffers-kill-emacs :wk "Kill Emacs (and daemon)")
-  "qQ" '(kill-emacs :wk "Quit Emacs")
   "qq" '(save-buffers-kill-terminal :wk "Quit Emacs")
+  "qQ" '(evil-quit-all-with-error-code :wk "Quit Emacs without saving")
+  "qs" '(poly/quicksave-session :wk "Quick save current session")
+  "ql" '(poly/quickload-session :wk "Restore last session")
+  "qS" '(poly/save-session :wk "Save session to file")
+  "qL" '(poly/load-session :wk "Restore session from file")
+  "qr" '(poly/restart-and-restore :wk "Restart & restore Emacs")
+  "qR" '(restart-emacs :wk "Restart Emacs")
 
   ;;<leader> g --- versioning
   "g" '(:ignore t :wk "Git")

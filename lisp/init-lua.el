@@ -13,10 +13,10 @@
     :mode ("\\.lua$" . lua-mode)
     :config
     (autoload 'lua-mode "lua-mode" "Lua editing mode." t)
-    (add-hook 'lua-mode-hook (lambda()
-			       (make-local-variable 'company-backends)
-			       (setq company-backends nil)
-			       (add-to-list 'company-backends #'company-tabnine)))
+    ;; (add-hook 'lua-mode-hook (lambda()
+    ;; 			       (make-local-variable 'company-backends)
+    ;; 			       (setq company-backends nil)
+    ;; 			       (add-to-list 'company-backends #'company-tabnine)))
     ;; (setq-local company-backends '(company-tabnine))
     :general
     (nvmap :keymaps 'lua-mode-map
