@@ -206,7 +206,7 @@
     (setq company-tabnine-executable-args
 	  '("--client" "emacs" "--log-level" "Error" "--log-file-path" "/tmp/TabNine.log"))
     :config
-    (setq company-tabnine-max-num-results 9)
+    (setq company-tabnine-max-num-results 4)
     (when (> 9 company-tabnine-max-num-results)
       (add-to-list 'company-transformers 'company//sort-by-tabnine t)
       )
@@ -240,6 +240,30 @@
 ;;       (add-to-list 'nox-server-programs
 ;; 		   `(lua-mode  . ("/usr/bin/java" "-cp" ,emmylua-jar-path "com.tang.vscode.MainKt")))
 ;;       )
+
+(use-package eglot
+    :straight t
+    :hook
+    ((go-mode lua-mode) . eglot-ensure)
+    :custom
+    (eglot-stay-out-of '(flymake))
+    (eglot-ignored-server-capabilites '(:documentHighlightProvider))
+    :config
+    ;; emmylua
+    (let ((emmylua-jar-path (expand-file-name "bin/EmmyLua-LS-all.jar" poly-local-dir)))
+      (add-to-list 'eglot-server-programs
+		   `(lua-mode  . ("/usr/bin/java" "-cp" ,emmylua-jar-path "com.tang.vscode.MainKt"))))
+    (add-hook 'eglot-managed-mode-hook (lambda()
+					 (make-local-variable 'company-backends)
+					 (setq company-backends nil)
+					 (setq company-backends
+					       '((company-tabnine :with company-capf :separate)
+						 company-dabbrev-code
+						 (company-files          ; files & directory
+						  company-keywords       ; keywords
+						  )
+						 (company-abbrev company-dabbrev)))))
+    )
 
 ;;     (dolist (hook (list
 ;; 		   'js-mode-hook

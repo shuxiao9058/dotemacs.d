@@ -50,7 +50,7 @@
 ;; (require 'init-flycheck)
 (require 'init-projectile)
 (require 'init-company)
-(require 'init-lsp)
+;; (require 'init-lsp)
 (require 'init-go)
 (require 'init-lua)
 (require 'init-lisp)
