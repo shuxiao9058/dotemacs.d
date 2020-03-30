@@ -4,7 +4,7 @@
 ;; so we do the same with `straight.el'
 (setq straight-base-dir poly-local-dir
       straight-repository-branch "develop"
-      straight-use-package-by-default  t
+      straight-use-package-by-default t
       straight-cache-autoloads nil ; we already do this, and better.
       ;; Doom doesn't encourage you to modify packages in place. Disabling this
       ;; makes 'doom refresh' instant (once everything set up), which is much
@@ -24,7 +24,7 @@
       autoload-compute-prefixes nil
       straight-fix-org t
       straight-enable-use-package-integration t
-     ;; straight-check-for-modifications '(find-when-checking check-on-save)
+      ;; straight-check-for-modifications '(find-when-checking check-on-save)
       )
 
 (defvar bootstrap-version)
