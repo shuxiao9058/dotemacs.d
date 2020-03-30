@@ -233,5 +233,16 @@ WIN-ID : Window index."
     :after (counsel ivy)
     :init (ivy-rich-mode 1))
 
+;; growl notify
+(use-package alert
+    :straight (alert
+	       :host github
+	       :repo "jwiegley/alert")
+    :commands (alert)
+    :init
+    ;; (setq alert-default-style 'notifier)
+    (setq alert-default-style 'osx-notifier)
+    )
+
 (provide 'init-ui)
 ;;; init-ui.el ends here
