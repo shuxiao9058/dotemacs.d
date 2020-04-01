@@ -40,6 +40,7 @@
 (require 'init-dired)
 (require 'init-search)
 (require 'init-telega)
+(require 'init-screencast)
 
 ;; editor
 (require 'init-markdown)

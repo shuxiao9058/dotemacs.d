@@ -134,6 +134,16 @@
     (magit-restore-window-configuration)
     (mapc #'kill-buffer buffers)))
 
+(use-package forge
+    :straight t
+    :config
+    (setq forge-alist
+	  (append forge-alist
+		  '(("git.17usoft.com" "git.17usoft.com/api/v4" "git.17usoft.com" forge-gitlab-repository)
+		    ("git.alenshaw.com" "git.alenshaw.com/api/v1" "git.alenshaw.com" forge-gogs-repository)
+		    ("github.com" "api.github.com" "github.com" forge-github-repository))))
+    )
+
 
 (provide 'init-vc)
 ;;; init-vc.el ends here

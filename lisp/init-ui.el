@@ -76,6 +76,55 @@ WIN-ID : Window index."
     ;; (doom-modeline-mode +1)
     )
 
+(use-package treemacs
+    :straight t
+    :config
+    (setq treemacs-collapse-dirs                 (if (executable-find "python") 3 0)
+          treemacs-deferred-git-apply-delay      0.5
+          treemacs-display-in-side-window        nil
+          treemacs-eldoc-display                 nil
+          treemacs-file-event-delay              5000
+          treemacs-file-follow-delay             0.2
+          treemacs-follow-after-init             t
+          treemacs-git-command-pipe              ""
+          treemacs-goto-tag-strategy             'refetch-index
+          treemacs-indentation                   2
+          treemacs-indentation-string            " "
+          treemacs-is-never-other-window         t
+          treemacs-max-git-entries               5000
+          treemacs-no-png-images                 nil
+          treemacs-no-delete-other-windows       t
+          treemacs-project-follow-cleanup        t
+          treemacs-persist-file                  (expand-file-name "/treemacs-persist" poly-cache-dir)
+          treemacs-recenter-distance             0.1
+          treemacs-recenter-after-file-follow    nil
+          treemacs-recenter-after-tag-follow     nil
+          treemacs-recenter-after-project-jump   'always
+          treemacs-recenter-after-project-expand 'on-distance
+          treemacs--icon-size 12
+          treemacs-silent-refresh t
+          treemacs-follow-mode t
+          doom-treemacs-use-generic-icons nil
+          treemacs-show-cursor                   t
+          treemacs-show-hidden-files             t
+          treemacs-silent-filewatch              t
+          treemacs-sorting                       'alphabetic-desc
+          treemacs-space-between-root-nodes      t
+          treemacs-tag-follow-cleanup            t
+          treemacs-tag-follow-delay              1.5
+          treemacs-width                         28
+          )
+
+    (treemacs-follow-mode t)
+    (treemacs-filewatch-mode t)
+    (treemacs-fringe-indicator-mode t)
+    (pcase (cons (not (null (executable-find "git")))
+		 (not (null (executable-find "python3"))))
+      (`(t . t)
+	(treemacs-git-mode 'deferred))
+      (`(t . _)
+	(treemacs-git-mode 'simple))))
+
 (use-package awesome-tab
     :straight (awesome-tab
 	       :type git
@@ -136,53 +185,50 @@ WIN-ID : Window index."
     (custom-set-faces '(show-paren-match ((t (:foreground "SpringGreen1" :underline t)))))
     )
 
-;; ;;;;;;;;;;;;;;;;;;;;;;;;
-;; ;; Dashboard settings ;;
-;; ;;;;;;;;;;;;;;;;;;;;;;;;
-;; (use-package dashboard
-;;     :straight t
-;;     :ensure t
-;;     :functions (all-the-icons-faicon
-;; 		all-the-icons-material
-;; 		open-custom-file
-;; 		persp-get-buffer-or-nil
-;; 		persp-load-state-from-file
-;; 		persp-switch-to-buffer
-;; 		winner-undo
-;; 		widget-forward)
-;;     :init
-;;     (setq dahboard-banner-logo-title "")
-;;     ;;(setq dashboard-startup-banner "~/Imágenes/logo.png")
-;;     (setq dashboard-center-content t)
-;;     (setq dashboard-items '((recents . 5)
-;; 			    (projects . 5)
-;; 			    (agenda . 5)))
-;;     :hook
-;;     (dashboard-mode . (lambda () (linum-mode -1)))
-;;     :config
-;;     (setq dashboard-set-init-info t
-;; 	  dashboard-set-file-icons t
-;; 	  dashboard-set-heading-icons t
-;; 	  dashboard-heading-icons '((recents . "file-text")
-;; 				    (bookmarks . "bookmark")
-;; 				    (agenda . "calendar")
-;; 				    (projects . "file-directory")
-;; 				    (registers . "database"))
-;; 	  dashboard-set-navigator t
-;; 	  dashboard-navigator-buttons
-;; 	  `(((,(when (display-graphic-p)
-;; 		 (all-the-icons-octicon "tools" :height 1.0 :v-adjust 0.0))
-;;                "Settings" "Opens settings file"
-;;                (lambda (&rest _) (config-file)))
-;;              (,(when (display-graphic-p)
-;; 		 (all-the-icons-material "update" :height 1.35 :v-adjust -0.24))
-;;                "Update" "Update Emacs Configuration to the latest version"
-;;                (lambda (&rest _) (update-config)))
-;; 	     (,(when (display-graphic-p)
-;; 		 (all-the-icons-material "info" :height 1.35 :v-adjust -0.24))
-;;                "Personal File" "Opens the personal config file"
-;;                (lambda (&rest _) (personal-file))))))
-;;     (dashboard-setup-startup-hook))
+(use-package dashboard
+    :straight t
+    :ensure t
+    :functions (all-the-icons-faicon
+		all-the-icons-material
+		open-custom-file
+		persp-get-buffer-or-nil
+		persp-load-state-from-file
+		persp-switch-to-buffer
+		winner-undo
+		widget-forward)
+    :init
+    (setq dahboard-banner-logo-title "")
+    ;;(setq dashboard-startup-banner "~/Imágenes/logo.png")
+    (setq dashboard-center-content t)
+    (setq dashboard-items '((recents . 5)
+			    (projects . 5)
+			    (agenda . 5)))
+    :hook
+    (dashboard-mode . (lambda () (linum-mode -1)))
+    :config
+    (setq dashboard-set-init-info t
+	  dashboard-set-file-icons t
+	  dashboard-set-heading-icons t
+	  dashboard-heading-icons '((recents . "file-text")
+				    (bookmarks . "bookmark")
+				    (agenda . "calendar")
+				    (projects . "file-directory")
+				    (registers . "database"))
+	  dashboard-set-navigator t
+	  dashboard-navigator-buttons
+	  `(((,(when (display-graphic-p)
+		 (all-the-icons-octicon "tools" :height 1.0 :v-adjust 0.0))
+               "Settings" "Opens settings file"
+               (lambda (&rest _) (config-file)))
+             (,(when (display-graphic-p)
+		 (all-the-icons-material "update" :height 1.35 :v-adjust -0.24))
+               "Update" "Update Emacs Configuration to the latest version"
+               (lambda (&rest _) (update-config)))
+	     (,(when (display-graphic-p)
+		 (all-the-icons-material "info" :height 1.35 :v-adjust -0.24))
+               "Personal File" "Opens the personal config file"
+               (lambda (&rest _) (personal-file))))))
+    (dashboard-setup-startup-hook))
 
 (use-package all-the-icons
     :straight t
@@ -202,21 +248,21 @@ WIN-ID : Window index."
     :config
     (all-the-icons-ibuffer-mode t))
 
-;; (use-package all-the-icons-ivy
-;;     :straight t
-;;     :after (all-the-icons ivy)
-;;     :config
-;;     (add-to-list 'all-the-icons-ivy-file-commands #'counsel-buffer-or-recentf)
-;;     (add-to-list 'all-the-icons-ivy-file-commands #'counsel-ibuffer)
-;;     (add-to-list 'all-the-icons-ivy-file-commands #'counsel-fzf)
-;;     (all-the-icons-ivy-setup)
+(use-package all-the-icons-ivy
+    :straight t
+    :after (all-the-icons ivy)
+    :config
+    (add-to-list 'all-the-icons-ivy-file-commands #'counsel-buffer-or-recentf)
+    (add-to-list 'all-the-icons-ivy-file-commands #'counsel-ibuffer)
+    (add-to-list 'all-the-icons-ivy-file-commands #'counsel-fzf)
+    (all-the-icons-ivy-setup)
 
-;;     (with-eval-after-load 'counsel-projectile
-;;       (add-to-list 'all-the-icons-ivy-file-commands #'counsel-projectile)
-;;       (add-to-list 'all-the-icons-ivy-file-commands #'counsel-projectile-switch-project)
-;;       (add-to-list 'all-the-icons-ivy-file-commands #'counsel-projectile-find-file)
-;;       (add-to-list 'all-the-icons-ivy-file-commands #'counsel-projectile-find-dir)
-;;       (all-the-icons-ivy-setup)))
+    (with-eval-after-load 'counsel-projectile
+      (add-to-list 'all-the-icons-ivy-file-commands #'counsel-projectile)
+      (add-to-list 'all-the-icons-ivy-file-commands #'counsel-projectile-switch-project)
+      (add-to-list 'all-the-icons-ivy-file-commands #'counsel-projectile-find-file)
+      (add-to-list 'all-the-icons-ivy-file-commands #'counsel-projectile-find-dir)
+      (all-the-icons-ivy-setup)))
 
 (use-package all-the-icons-ivy-rich
     :straight t

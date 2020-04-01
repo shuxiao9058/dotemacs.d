@@ -14,3 +14,8 @@
 (setq ;; lisp-body-indent   2
  lisp-indent-function  'common-lisp-indent-function)
 ;;; custom.el ends here
+
+;; enable C-x C-u to upcase-region
+(put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
+(put 'set-goal-column 'disabled nil)

@@ -19,6 +19,29 @@
 (cua-mode t)
 (setq cua-auto-tabify-rectangles nil) ;; Don't tabify after rectangle commands
 
+;; ;; Disable splash screen
+;; (setq inhibit-startup-message t)
+;; (setq initial-scratch-message nil)
+
+;; Disable startup-screen and message
+(setq inhibit-startup-screen t)
+
+;; Makes *scratch* empty.
+(setq initial-scratch-message nil)
+
+;; Removes *scratch* from buffer after the mode has been set.
+(defun remove-scratch-buffer ()
+  (if (get-buffer "*scratch*")
+      (kill-buffer "*scratch*")))
+(add-hook 'after-change-major-mode-hook 'remove-scratch-buffer)
+
+;; ;; Removes *messages* from the buffer.
+;; (setq-default message-log-max nil)
+;; (kill-buffer "*Messages*")
+
+;; Don't show *Buffer list* when opening multiple files at the same time.
+(setq inhibit-startup-buffer-menu t)
+
 ;;;
 ;; Delete trailing whitespace before save
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -37,22 +60,22 @@
 (defvar poly-initialize-core-p nil
   "whether initialization core")
 
-  (defun poly-initialize-core ()
-    "Load Poly's core files for an interactive session."
-    (if poly-initialize-core-p
-	nil
-      (require 'core-straight)
-      (require 'core-keybindings)
-      (require 'core-packages)
-      (require 'core-evil)
-      (setq poly-initialize-core-p t)
-      (when (not noninteractive)
-	(add-to-list 'command-switch-alist (cons "--restore" #'poly-restore-session-handler))
-	)
+(defun poly-initialize-core ()
+  "Load Poly's core files for an interactive session."
+  (if poly-initialize-core-p
+      nil
+    (require 'core-straight)
+    (require 'core-keybindings)
+    (require 'core-packages)
+    (require 'core-evil)
+    (setq poly-initialize-core-p t)
+    (when (not noninteractive)
+      (add-to-list 'command-switch-alist (cons "--restore" #'poly-restore-session-handler))
       )
     )
+  )
 
-  (poly-initialize-core)
+(poly-initialize-core)
 
-  (provide 'core)
+(provide 'core)
 ;;; core.el ends here
