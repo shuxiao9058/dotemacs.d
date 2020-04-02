@@ -13,12 +13,32 @@
 	(sourcode-font "-apple-Source Code Pro-*-normal-normal-*-13-*-*-*-m-0-iso10646-1")
 	(firacode-font "-*-Fira Code-*-*-*-*-13-*-*-*-*-*-*-*")
 	(sarasa-font "-*-Sarasa Mono SC-*-*-*-*-14-*-*-*-*-*-*-*")
+	(wenquanyi-font "-*-WenQuanYi Micro Hei Mono-*-*-*-*-14-*-*-*-*-*-*-*")
 	)
-    ;; (set-face-attribute 'default nil :font sourcode-font)
+    (set-face-attribute 'default nil :font sourcode-font)
     ;; (set-face-attribute 'default nil :font monaco-font)
-    (set-face-attribute 'default nil :font sarasa-font)
+    ;; (set-face-attribute 'default nil :font sarasa-font)
+    ;; (set-face-attribute 'default nil :font wenquanyi-font)
+    )
+
+  ;; (let ((emacs-font-size 14)
+  ;; 	(emacs-font-name "WenQuanYi Micro Hei Mono"))
+  ;;   (set-frame-font (format "%s-%s" (eval emacs-font-name) (eval emacs-font-size)))
+  ;;   (set-fontset-font (frame-parameter nil 'font) 'unicode (eval emacs-font-name)))
+
+  (defun org-buffer-face-mode-variable ()
+    (interactive)
+    (make-face 'width-font-face)
+    (set-face-attribute 'width-font-face nil :font "Sarasa Mono SC 15")
+    (setq buffer-face-mode-face 'width-font-face)
+    (buffer-face-mode))
+
+  (dolist (hook '(org-mode-hook markdown-mode-hook))
+    (add-hook hook 'org-buffer-face-mode-variable)
     )
   )
+
+
 
 ;; (when IS-GUI
 ;;   (set-face-attribute

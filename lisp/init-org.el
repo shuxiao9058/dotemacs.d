@@ -325,7 +325,7 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
      org-latex-default-class "article"
      )
 
-    (setq org-modules (append org-modules '(org-drill)))
+    ;; (setq org-modules (append org-modules '(org-drill)))
     )
 
 
@@ -348,11 +348,11 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
            workinghours mon-fri 9:00-12:00,13:00-19:00
         }")
     (setq org-duration-units `(("min" . 1)
-                               ("h" . 60)
-                               ("d" . ,(* 60 8))
-                               ("w" . ,(* 60 8 5))
-                               ("m" . ,(* 60 8 5 4))
-                               ("y" . ,(* 60 8 5 4 10))))
+			       ("h" . 60)
+			       ("d" . ,(* 60 8))
+			       ("w" . ,(* 60 8 5))
+			       ("m" . ,(* 60 8 5 4))
+			       ("y" . ,(* 60 8 5 4 10))))
     (org-duration-set-regexps)
     :config
     ;; (require 'taskjuggler-mode)
@@ -363,14 +363,14 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
 	  org-export-taskjuggler-default-global-properties "rversion")
     ;; (setq org-taskjuggler-default-reports '("include \"/Users/chenlong/.emacs.d/lisp/reports.tji\""))
     (add-hook 'org-mode-hook (lambda()
-                               (require 'ox-taskjuggler)
-                               ))
+			       (require 'ox-taskjuggler)
+			       ))
     )
 
 (use-package org-bullets
     :straight t
-    :commands org-bullets-mode
-    :hook (org-mode org-bullets-mode)
+    :commands (org-bullets-mode org-bullets)
+    :hook (org-mode . org-bullets-mode)
     :custom
     (org-bullets-bullet-list '("⊢" "⋮" "⋱" "⋱" "⋱"))
     ;; (setq org-bullets-bullet-list '("🐳" "🐬" "🐠" "🐟" "🐤"))
