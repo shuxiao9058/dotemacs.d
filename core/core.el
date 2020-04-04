@@ -68,11 +68,12 @@
     (require 'core-keybindings)
     (require 'core-packages)
     (require 'core-evil)
-    (setq poly-initialize-core-p t)
+    (poly-load-autoload)
     (when (not noninteractive)
       (add-to-list 'command-switch-alist (cons "--restore" #'poly-restore-session-handler))
       )
     )
+    (setq poly-initialize-core-p t)
   )
 
 (poly-initialize-core)

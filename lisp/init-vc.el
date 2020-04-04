@@ -136,6 +136,9 @@
 
 (use-package forge
     :straight t
+    :commands forge-create-pullreq forge-create-issue
+    :custom
+    (forge-database-file (expand-file-name "forge/forge-database.sqlite" poly-etc-dir))
     :config
     (setq forge-alist
 	  (append forge-alist

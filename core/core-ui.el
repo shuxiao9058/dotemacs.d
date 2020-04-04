@@ -1,5 +1,7 @@
 ;;; core/core-ui.el -*- lexical-binding: t; -*-
 
+(defalias 'yes-or-no-p 'y-or-n-p)
+
 ;;; font
 
 ;; (when (member "Source Code Pro" (font-family-list))
@@ -26,7 +28,10 @@
   ;; (set-frame-font "SourceCodePro+Powerline+Awesome Regular 14" nil t)
 
   (let ((emacs-font-size 14)
-	(emacs-font-name "SourceCodePro+Powerline+Awesome Regular"))
+	;; (emacs-font-name "SourceCodePro+Powerline+Awesome Regular")
+	;; (emacs-font-name "Hack")
+	(emacs-font-name "Fira Mono")
+	)
     (set-frame-font (format "%s-%s" (eval emacs-font-name) (eval emacs-font-size)))
     (set-fontset-font (frame-parameter nil 'font) 'unicode (eval emacs-font-name)))
 

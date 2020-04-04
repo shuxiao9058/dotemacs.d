@@ -8,9 +8,6 @@
 (defconst IS-GUI (display-graphic-p))
 (defconst IS-CONSOLE (not IS-GUI))
 
-;; Symbol’s function definition is void: if-let
-(require 'subr-x)
-
 ;;; Directories/files
 (defconst poly-emacs-dir
   (eval-when-compile (file-truename user-emacs-directory))
@@ -19,32 +16,27 @@
 (defconst poly-core-dir (concat poly-emacs-dir "core/")
   "The root directory of Poly's core files. Must end with a slash.")
 
-(defconst poly-modules-dir (concat poly-emacs-dir "modules/")
-  "The root directory for Poly's modules. Must end with a slash.")
-
 (defconst poly-local-dir
-  (if-let (localdir (getenv "POLYLOCALDIR"))
+  (let ((localdir (getenv "POLYLOCALDIR")))
+    (if localdir
       (expand-file-name (file-name-as-directory localdir))
-    (concat poly-emacs-dir ".local/"))
+      (expand-file-name ".local/" poly-emacs-dir)))
   "Root directory for local storage.
-
 Use this as a storage location for this system's installation of Doom Emacs.
 These files should not be shared across systems. By default, it is used by
 `doom-etc-dir' and `doom-cache-dir'. Must end with a slash.")
 
 (defconst poly-etc-dir (concat poly-local-dir "etc/")
   "Directory for non-volatile local storage.
-
 Use this for files that don't change much, like server binaries, external
 dependencies or long-term shared data. Must end with a slash.")
 
 (defconst poly-cache-dir (concat poly-local-dir "cache/")
-  "Directory for volatile local storage.
-
+    "Directory for volatile local storage.
 Use this for files that change often, like cache files. Must end with a slash.")
 
-(defalias 'yes-or-no-p 'y-or-n-p)
-
+(defconst poly-autoload-dir (expand-file-name "autoload/" poly-emacs-dir)
+  "Directory for autoload files.")
 
 (provide 'core-variables)
 ;;; core-variables.el ends here
