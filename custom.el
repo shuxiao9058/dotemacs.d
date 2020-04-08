@@ -12,7 +12,7 @@
 
 ;;; lisp
 (setq ;; lisp-body-indent   2
- lisp-indent-function  'common-lisp-indent-function)
+ lisp-indent-function  'lisp-indent-function)
 ;;; custom.el ends here
 
 ;; enable C-x C-u to upcase-region
