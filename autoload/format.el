@@ -43,3 +43,5 @@ is selected)."
    (if (poly-region-active-p)
        #'lsp-format-region
      #'lsp-format-buffer)))
+
+;;; format.el ends here

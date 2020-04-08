@@ -8,6 +8,10 @@
     :config
     (setq gofmt-command "goimports")
     (setenv "GO111MODULE" "on")
+    ; (set-lookup-handlers! 'go-mode
+    ;     :definition #'go-guru-definition
+    ;     :references #'go-guru-referrers
+    ;     :documentation #'godoc-at-point)
     :general
     (nmap :keymaps '(go-mode-map)
 	  "gd" 'godef-jump

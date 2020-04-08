@@ -100,8 +100,10 @@
 
   ;;<leader> c --- code
   "c" '(:wk "Code")
-  "cC" '(compile :wk "Compile")
-  "cc" '(recompile :wk "Recompile")
+  "cc" '(compile :wk "Compile")
+  "cC" '(recompile :wk "Recompile")
+  ;; "cd" '(+lookup/definition :wk "Jump to definition")
+  ;; "cD" '(+lookup/references :wk "Jump to references")
   "cf" '(+format/region-or-buffer :wk "Format buffer/region")
   "cF" '(+format/lsp-format-region-or-buffer :wk "LSP Format buffer/region")
   "ci" '(lsp-organize-imports :wk "LSP Organize imports")

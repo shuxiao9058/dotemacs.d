@@ -65,6 +65,16 @@ of an error, just add the package to a list of missing packages."
         )))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;
+;;; Public library
+
+(defun poly-unquote (exp)
+  "Return EXP unquoted."
+  (declare (pure t) (side-effect-free t))
+  (while (memq (car-safe exp) '(quote function))
+    (setq exp (cadr exp)))
+  exp)
+
 (defun poly-region-active-p ()
   "Return non-nil if selection is active.
 Detects evil visual mode as well."
@@ -72,6 +82,30 @@ Detects evil visual mode as well."
   (or (use-region-p)
       (and (bound-and-true-p evil-local-mode)
            (evil-visual-state-p))))
+
+
+(defun poly-keyword-name (keyword)
+  "Returns the string name of KEYWORD (`keywordp') minus the leading colon."
+  (declare (pure t) (side-effect-free t))
+  (cl-check-type keyword keyword)
+  (substring (symbol-name keyword) 1))
+
+(defmacro poly-log (format-string &rest args)
+  "Log to *Messages* if `poly-debug-mode' is on.
+Does not interrupt the minibuffer if it is in use, but still logs to *Messages*.
+Accepts the same arguments as `message'."
+  `(when poly-debug-mode
+     (let ((inhibit-message (active-minibuffer-window)))
+       (message
+        ,(concat (propertize "POLY " 'face 'font-lock-comment-face)
+                 ;; (when (bound-and-true-p poly--current-module)
+                 ;;   (propertize
+                 ;;    (format "[%s/%s] "
+                 ;;            (poly-keyword-name (car poly--current-module))
+                 ;;            (cdr poly--current-module))
+                 ;;    'face 'warning))
+                 format-string)
+        ,@args))))
 
 (provide 'core-lib)
 ;;; core-lib.el ends here

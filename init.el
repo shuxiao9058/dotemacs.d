@@ -51,7 +51,7 @@
 ;; (require 'init-flycheck)
 (require 'init-projectile)
 (require 'init-company)
-;; (require 'init-lsp)
+(require 'init-lsp)
 (require 'init-go)
 (require 'init-lua)
 (require 'init-lisp)
@@ -70,8 +70,8 @@
 ;; keybindings
 ;; early load with general in core
 (eval-after-load 'general
-  `(progn
-     (require 'init-keybindings)))
+		 `(progn
+		    (require 'init-keybindings)))
 
 ;; Load customization file now
 (let ((custom-file (expand-file-name "custom.el" user-emacs-directory)))
