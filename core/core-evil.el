@@ -7,53 +7,54 @@
 
 (defun my-evil-terminal-cursor-change ()
   (when (string= (getenv "TERM_PROGRAM") "iTerm.app")
-    (add-hook 'evil-insert-state-entry-hook (lambda () (my-send-string-to-terminal "\e]50;CursorShape=1\x7")))
+    (add-hook 'evil-insert-state-entry-hook (lambda ()
+					      (message "enter insert mode")
+					      (my-send-string-to-terminal "\e]50;CursorShape=1\x7")))
     (add-hook 'evil-insert-state-exit-hook  (lambda () (my-send-string-to-terminal "\e]50;CursorShape=0\x7"))))
   (when (and (getenv "TMUX") (string= (getenv "TERM_PROGRAM") "iTerm.app"))
     (add-hook 'evil-insert-state-entry-hook (lambda () (my-send-string-to-terminal "\ePtmux;\e\e]50;CursorShape=1\x7\e\\")))
     (add-hook 'evil-insert-state-exit-hook  (lambda () (my-send-string-to-terminal "\ePtmux;\e\e]50;CursorShape=0\x7\e\\")))))
 
-(use-package evil
-    :straight t
-    :ensure t
-    ;; :after evil-leader
-    :commands evil-normalize-keymaps
-    :init
-    (setq ;; evil-want-keybinding nil ;; needed by evil-collection
-     evil-want-C-u-scroll t
-     evil-search-module 'evil-search)
-    :config
-    :general
-    (nmap "q" nil ;; q quit, not evil-record-macro
-	  "Q" #'evil-record-macro)
-    :config
-    (evil-mode +1)
-    (add-to-list 'evil-insert-state-modes 'shell-mode)
-    (add-to-list 'evil-insert-state-modes 'dashboard-mode)
-    (add-to-list 'evil-insert-state-modes 'git-timemachine-mode)
-
-    ;; Change cursor color depending on mode
-    (setq evil-emacs-state-cursor `("red" hbar))     ; _
-    (setq evil-normal-state-cursor `("green" box))   ; █
-    (setq evil-visual-state-cursor `("orange" box))  ; █
-    (setq evil-insert-state-cursor `("red" bar))     ; ⎸
-    (setq evil-replace-state-cursor `("red" bar))
-    (setq evil-operator-state-cursor `("red" hollow))
-    (setq evil-motion-state-cursor `("orange" box))  ; █
-
+(eval-after-load 'evil
+  (progn
     (add-hook 'after-make-frame-functions
 	      (lambda (frame) (my-evil-terminal-cursor-change)))
-    (my-evil-terminal-cursor-change)
+    (my-evil-terminal-cursor-change)))
 
-    ;; set bar cursor for evil-emacs mode
-    (setq evil-emacs-state-cursor '(bar))
+(use-package evil
+  :straight t
+  :ensure t
+  ;; :after evil-leader
+  :commands evil-normalize-keymaps
+  :init
+  :custom
+  ;; Change cursor color depending on mode
+  (evil-emacs-state-cursor `("red" hbar))     ; _
+  (evil-normal-state-cursor `("green" box))   ; █
+  (evil-visual-state-cursor `("orange" box))  ; █
+  (evil-insert-state-cursor `("red" bar))     ; ⎸
+  (evil-replace-state-cursor `("red" bar))
+  (evil-operator-state-cursor `("red" hollow))
+  (evil-motion-state-cursor `("orange" box))  ; █
+  ;; set bar cursor for evil-emacs mode
+  (evil-emacs-state-cursor '(bar))
+  (evil-want-C-u-scroll t)
+  (evil-search-module 'evil-search)
+  :general
+  (nmap "q" nil ;; q quit, not evil-record-macro
+    "Q" #'evil-record-macro)
+  :config
+  (evil-mode +1)
+  (add-to-list 'evil-insert-state-modes 'shell-mode)
+  (add-to-list 'evil-insert-state-modes 'dashboard-mode)
+  (add-to-list 'evil-insert-state-modes 'git-timemachine-mode)
 
-    (defadvice evil-ex-search-next (after advice-for-evil-ex-search-next activate)
-      (recenter))
+  (defadvice evil-ex-search-next (after advice-for-evil-ex-search-next activate)
+    (recenter))
 
-    (defadvice evil-ex-search-previous (after advice-for-evil-ex-search-previous activate)
-      (recenter))
-    )
+  (defadvice evil-ex-search-previous (after advice-for-evil-ex-search-previous activate)
+    (recenter))
+  )
 
 
 ;; (use-package evil-leader
@@ -66,132 +67,132 @@
 ;;     )
 
 (use-package evil-escape
-    :after evil
-    :straight t
-    :init
-    (setq evil-escape-excluded-states '(normal visual multiedit emacs motion)
-          evil-escape-key-sequence "jk"
-          evil-escape-delay 0.25)
-    :config
-    (push #'minibufferp evil-escape-inhibit-functions)
-    ;; (map! :irvo "C-g" #'evil-escape)
-    (evil-escape-mode))
+  :after evil
+  :straight t
+  :init
+  (setq evil-escape-excluded-states '(normal visual multiedit emacs motion)
+        evil-escape-key-sequence "jk"
+        evil-escape-delay 0.25)
+  :config
+  (push #'minibufferp evil-escape-inhibit-functions)
+  ;; (map! :irvo "C-g" #'evil-escape)
+  (evil-escape-mode))
 
 (use-package evil-escape
-    :after evil
-    :straight t
-    :init
-    (setq evil-escape-excluded-states '(normal visual multiedit emacs motion)
-          evil-escape-key-sequence "jk"
-          evil-escape-delay 0.25)
-    :config
-    (push #'minibufferp evil-escape-inhibit-functions)
-    ;; (map! :irvo "C-g" #'evil-escape)
-    (evil-escape-mode))
+  :after evil
+  :straight t
+  :init
+  (setq evil-escape-excluded-states '(normal visual multiedit emacs motion)
+        evil-escape-key-sequence "jk"
+        evil-escape-delay 0.25)
+  :config
+  (push #'minibufferp evil-escape-inhibit-functions)
+  ;; (map! :irvo "C-g" #'evil-escape)
+  (evil-escape-mode))
 
 (use-package evil-exchange
-    :commands evil-exchange
-    :straight t)
+  :commands evil-exchange
+  :straight t)
 
 ;;; Press “%” to jump between matched tags in Emacs. For example, in HTML “<div>” and “</div>” are a pair of tags.
 (use-package evil-matchit
-    :ensure t
-    :commands evilmi-jump-items
-    :custom
-    (global-evil-matchit-mode t)
-    :config
-    ;; disable evil-matchit
-    (dolist (mode '(magit-status-mode-hook))
-      (add-hook mode (lambda()
-		       (evil-matchit-mode 0))))
-    :general
-    ([remap evil-jump-item] #'evilmi-jump-items)
-    (nvmap :keymaps '(evil-matchit-mode-map)
-	   "%" #'evilmi-text-object)
-    )
+  :ensure t
+  :commands evilmi-jump-items
+  :custom
+  (global-evil-matchit-mode t)
+  :config
+  ;; disable evil-matchit
+  (dolist (mode '(magit-status-mode-hook))
+    (add-hook mode (lambda()
+		     (evil-matchit-mode 0))))
+  :general
+  ([remap evil-jump-item] #'evilmi-jump-items)
+  (nvmap :keymaps '(evil-matchit-mode-map)
+    "%" #'evilmi-text-object)
+  )
 
 (use-package evil-snipe
-    :commands (evil-snipe-mode evil-snipe-override-mode
-			       evil-snipe-local-mode evil-snipe-override-local-mode)
-    :straight t
-    :init
-    (add-hook 'prog-mode-hook 'evil-snipe-mode)
-    (setq evil-snipe-smart-case t
-          evil-snipe-scope 'line
-          evil-snipe-repeat-scope 'visible
-          evil-snipe-char-fold t
-          evil-snipe-disabled-modes '(magit-mode elfeed-show-mode elfeed-search-mode)
-          evil-snipe-aliases '((?\[ "[[{(]")
-                               (?\] "[]})]")
-                               (?\; "[;:]")))
-    :config
-    (evil-snipe-mode +1)
-    (evil-snipe-override-mode +1))
+  :commands (evil-snipe-mode evil-snipe-override-mode
+			     evil-snipe-local-mode evil-snipe-override-local-mode)
+  :straight t
+  :init
+  (add-hook 'prog-mode-hook 'evil-snipe-mode)
+  (setq evil-snipe-smart-case t
+        evil-snipe-scope 'line
+        evil-snipe-repeat-scope 'visible
+        evil-snipe-char-fold t
+        evil-snipe-disabled-modes '(magit-mode elfeed-show-mode elfeed-search-mode)
+        evil-snipe-aliases '((?\[ "[[{(]")
+                             (?\] "[]})]")
+                             (?\; "[;:]")))
+  :config
+  (evil-snipe-mode +1)
+  (evil-snipe-override-mode +1))
 
 (use-package evil-surround
-    :commands (global-evil-surround-mode
-               evil-surround-edit
-               evil-Surround-edit
-               evil-surround-region)
-    :straight t
-    :config
-    (global-evil-surround-mode 1))
+  :commands (global-evil-surround-mode
+             evil-surround-edit
+             evil-Surround-edit
+             evil-surround-region)
+  :straight t
+  :config
+  (global-evil-surround-mode 1))
 
 (use-package evil-args
-    :commands (evil-inner-arg evil-outer-arg
-			      evil-forward-arg evil-backward-arg
-			      evil-jump-out-args)
-    :straight t)
+  :commands (evil-inner-arg evil-outer-arg
+			    evil-forward-arg evil-backward-arg
+			    evil-jump-out-args)
+  :straight t)
 
 (use-package evil-commentary
-    :commands (evil-commentary evil-commentary-yank evil-commentary-line)
-    :straight t
-    :after evil
-    :config
-    (evil-commentary-mode 1)
-    :general
-    (nvmap "gc" #'evil-commentary
-	   "gC" #'evil-commentary-line)
-    )
+  :commands (evil-commentary evil-commentary-yank evil-commentary-line)
+  :straight t
+  :after evil
+  :config
+  (evil-commentary-mode 1)
+  :general
+  (nvmap "gc" #'evil-commentary
+    "gC" #'evil-commentary-line)
+  )
 
 (use-package evil-search-highlight-persist
-    :after evil
-    :straight t
-    :config
-    (global-evil-search-highlight-persist t))
+  :after evil
+  :straight t
+  :config
+  (global-evil-search-highlight-persist t))
 
 (use-package evil-multiedit
-    :after evil
-    :straight t
-    :config
-    (evil-multiedit-default-keybinds))
+  :after evil
+  :straight t
+  :config
+  (evil-multiedit-default-keybinds))
 
 ;;; TODO
 (use-package evil-mc
-    :after evil
-    :straight t
-    :init
-    ;; The included keybindings are too imposing and are likely to cause
-    ;; conflicts, so we'll set them ourselves.
-    (defvar evil-mc-key-map (make-sparse-keymap))
+  :after evil
+  :straight t
+  :init
+  ;; The included keybindings are too imposing and are likely to cause
+  ;; conflicts, so we'll set them ourselves.
+  (defvar evil-mc-key-map (make-sparse-keymap))
 
-    :config
-    (global-evil-mc-mode  +1)
+  :config
+  (global-evil-mc-mode  +1)
 
-    ;; REVIEW This is tremendously slow on macos and windows for some reason.
-    (setq evil-mc-enable-bar-cursor (not (or IS-MAC IS-WINDOWS)))
-    )
+  ;; REVIEW This is tremendously slow on macos and windows for some reason.
+  (setq evil-mc-enable-bar-cursor (not (or IS-MAC IS-WINDOWS)))
+  )
 
 (use-package evil-osx-clipboard
-    :straight t
-    :after pbcopy
-    :straight (evil-osx-clipboard
-	       :host github
-	       :repo "stroxler/evil-osx-clipboard.el"
-               :files (:defaults))
-    :config
-    (evil-osx-clipboard/set-osx-defaults)
-    )
+  :straight t
+  :after pbcopy
+  :straight (evil-osx-clipboard
+	     :host github
+	     :repo "stroxler/evil-osx-clipboard.el"
+             :files (:defaults))
+  :config
+  (evil-osx-clipboard/set-osx-defaults)
+  )
 
 ;; ;; Evil, probably the best thing since Evil.
 ;; (use-package evil-collection
