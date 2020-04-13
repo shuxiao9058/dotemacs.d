@@ -73,13 +73,13 @@
 		    )
 
 ;; M-x
-(general-define-key "M-x" #'counsel-M-x)
+;; (general-define-key "M-x" #'counsel-M-x)
 
 ;; *** leader key
 (leader-def
-    "TAB" '(evil-prev-buffer :which-key "prev buffer")
+  "TAB" '(evil-prev-buffer :which-key "prev buffer")
   "`"   '(evil-next-buffer :which-key "next buffer")
-  "SPC" '(projectile-find-file :wk "Find file in project")
+  "SPC" '(counsel-M-x :wk "counsel-M-x")
   "RET" '(bookmark-jump :wk "Jump to bookmark")
 
   "." '(find-file :wk "Find file")
@@ -121,11 +121,14 @@
   "fs" '(save-buffer :wk "Save buffer")
   "fS" '(save-some-buffer :wk "Save some buffers")
 
-                    ;;; <leader> p --- project
+  ;; <leader> p --- project
   "p" '(:ignore t :which-key "project")
   "pp" '(counsel-projectile-switch-project :wk "Switch Project")
   "pf" '(counsel-projectile-find-file :wk "Find file in project")
+  "pd" '(counsel-projectile-find-dir :wk "Find directory in project")
   "pb" '(counsel-projectile-switch-to-buffer :wk "Switch buffer in project")
+  "ps" '(counsel-projectile-rg :wk "Ag search in project")
+  "pr" '(projectile-recentf :wk "Recentf in project")
   "p*" '((lambda () (interactive) (counsel-git-grep (current-word))) :wk "Git grep current word")
   "p/" '(counsel-git-grep :wk "Git grep")
 
