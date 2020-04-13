@@ -2,8 +2,10 @@
 
 
 ;; load theme
-(load-file (expand-file-name "theme/dracula-theme.el" poly-core-dir))
-(load-theme 'dracula t)
+(let ((theme-file (expand-file-name "theme/dracula-theme.el" poly-core-dir)))
+  (when (file-exists-p theme-file)
+    (load theme-file nil t)
+    (load-theme 'dracula t)))
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
