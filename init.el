@@ -45,6 +45,7 @@
 (require 'init-search)
 (require 'init-telega)
 (require 'init-screencast)
+;; (require 'init-media)
 
 ;; editor
 (require 'init-markdown)
@@ -60,6 +61,7 @@
 (require 'init-lua)
 (require 'init-lisp)
 (require 'init-web)
+(require 'init-cc)
 
 ;; functions
 (require 'init-utils)
