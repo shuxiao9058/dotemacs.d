@@ -73,5 +73,12 @@
   ;;             )
   )
 
+(use-package cpp-auto-include
+  :straight   (cpp-auto-include
+               :host github
+               :repo "emacsorphanage/cpp-auto-include")
+  :commands (cpp-auto-include)
+  )
+
 (provide 'init-cc)
 ;;; init-cc.el ends here
