@@ -63,15 +63,16 @@
   ;; (add-hook 'lsp-after-open-hook
   ;; 	       (lambda()
   ;; 		 (setq company-backends (delete 'company-capf company-backends))))
-					; :general
-					; (leader-def :keymaps '(lsp-mode-map)
-					;   "c" '(:ignore t :wk "code")
-					;   ;; "cc" '(compile :wk "Compile")
-					;   ;; "cC" '(recompile :wk "Recompile")
-					;   "cd" '(lsp-find-definition :wk "Jump to definition")
-					;   "cD" '(lsp-find-reference :wk "Jump to references")
-					;   "ck" '(lsp-find-document :wk "Jump to documentation")
-					;   )
+  :general
+  (leader-def :keymaps '(lsp-mode-map)
+    "c" '(:ignore t :wk "code")
+    "cc" '(compile :wk "Compile")
+    "cC" '(recompile :wk "Recompile")
+    "cd" '(lsp-find-definition :wk "Jump to definition")
+    "cr" '(lsp-rename :wk "lsp rename")
+    "cD" '(lsp-find-reference :wk "Jump to references")
+    "ck" '(lsp-find-document :wk "Jump to documentation")
+    )
   )
 
 (use-package lsp-ui
