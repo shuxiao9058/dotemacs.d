@@ -87,6 +87,58 @@
   :after ivy
   :config (ivy-prescient-mode))
 
+;; flx is used as the fuzzy-matching indexer backend for ivy.
+(use-package flx
+  :straight t
+  :after ivy)
+
+;; swiper is a buffer search interface using ivy.
+(use-package swiper
+  :straight t
+  :commands swiper
+  :after ivy)
+
+;; counsel provides replacements for core Emacs commands using ivy.
+(use-package counsel
+  :straight t
+  :after ivy
+  :defer t
+  :custom
+  (counsel-yank-pop-separator (concat "\n" (make-vector 120 ?─) "\n"))
+  :config
+  (put 'counsel-find-symbol 'no-counsel-M-x t)
+  (setf (alist-get 'counsel-yank-pop ivy-height-alist) 20)
+  ;; Don't use ^ as initial input. Set this here because `counsel' defines more
+  ;; of its own, on top of the defaults.
+  (setq ivy-initial-inputs-alist nil)
+  (counsel-mode +1)
+  )
+
+;; historian remembers your choices in completion menus.
+(use-package historian
+  :straight t
+  :commands (historian-mode)
+  :after ivy
+  ;; :custom
+  :config
+  (setq historian-save-file (expand-file-name "historican" poly-cache-dir))
+  (historian-mode +1)
+  )
+
+;; ivy-historian uses Historian to sort Ivy candidates by frecency+flx.
+(use-package ivy-historian
+  :straight t
+  :commands (ivy-historian-mode)
+  :after (:and ivy historian)
+  :custom
+  ;; Tweak historian weighting settings. These values are chosen
+  ;; subjectively to produce good results.
+  (ivy-historian-freq-boost-factor 2000)
+  (ivy-historian-recent-boost 2000)
+  (ivy-historian-recent-decrement 1000)
+  :config
+  (ivy-historian-mode 1))
+
 ;; (use-package flyspell-correct-ivy
 ;;     :straight t
 ;;     :after ivy
