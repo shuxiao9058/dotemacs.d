@@ -6,8 +6,9 @@
   :hook ((
 	  lua-mode
 	  go-mode
-	  cc-mode
+	  ;; cc-mode
 	  c-mode
+	  c++-mode
 	  ;; clang-mode
 	  elisp-mode
 	  emacs-lisp-mode

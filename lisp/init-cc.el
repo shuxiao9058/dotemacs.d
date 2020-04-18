@@ -3,15 +3,15 @@
 ;;; C/C++
 (use-package cc-mode
   :straight nil
-  :ensure nil
+  :ensure t
   :defines (lsp-clients-clangd-args)
   ;; :ensure t
   :mode (
 	 ("\\.c\\'" . c-mode)
          ("\\.h\\'" . c-mode)
-	 ("\\.cxx\\'" . cc-mode)
-         ("\\.cpp\\'" . cc-mode)
-         ("\\.hpp\\'" . cc-mode)
+	 ("\\.cxx\\'" . c++-mode)
+         ("\\.cpp\\'" . c++-mode)
+         ("\\.hpp\\'" . c++-mode)
 
 	 ;; ("\\.c" . c-mode)
          ;; ("\\.h" . c-mode)
