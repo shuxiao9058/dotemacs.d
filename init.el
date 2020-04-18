@@ -32,8 +32,8 @@
 ;; case show line numbers
 (require 'init-linum)
 
-;; (unless window-system
-;;   (require 'init-iterm2))
+(unless window-system
+  (require 'init-iterm2))
 
 ;; tools
 (require 'init-wakatime)
