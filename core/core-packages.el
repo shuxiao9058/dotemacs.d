@@ -1,23 +1,47 @@
 ;;; core/core-packages.el -*- lexical-binding: t; -*-
 
 (use-package server ; built-in
-    :straight nil
-    :if (display-graphic-p)
-    :defer 1
-    :config
-    (unless (server-running-p)
-      (server-start)))
+  :straight nil
+  ;; :if (display-graphic-p)
+  :defer 1
+  :init
+  (if IS-WINDOWS
+      (progn
+	(setq server-use-tcp t)
+	(setq server-use-socket nil)
+	)
+    (setq server-use-tcp nil)
+    (setq server-use-socket t)
+    )
+
+  (setq server-auth-dir  (expand-file-name "emacs-server" poly-cache-dir))
+  (setq server-socket-dir (expand-file-name "emacs-server" poly-cache-dir))
+  (setq server-name (expand-file-name "emacs-server-file" server-socket-dir))
+
+  (unless (file-exists-p server-auth-dir)
+    (make-directory server-auth-dir))
+  (unless (or (not server-socket-dir) (file-exists-p server-socket-dir))
+    (make-directory server-socket-dir))
+
+  (defadvice server-ensure-safe-dir
+      (around my-around-server-ensure-safe-dir activate)
+    "Ignores any errors raised from server-ensure-safe-dir"
+    (ignore-errors ad-do-it))
+  :config
+  (unless (server-running-p)
+    (server-start))
+  )
 
 (use-package autorevert
-    :straight nil
-    ;; :blackout t
-    ;; :hook
-    :hook (dired-mode . auto-revert-mode)
-    :diminish auto-revert-mode
-    :config
-    (global-auto-revert-mode +1)
-    :custom
-    (auto-revert-verbose nil))
+  :straight nil
+  ;; :blackout t
+  ;; :hook
+  :hook (dired-mode . auto-revert-mode)
+  :diminish auto-revert-mode
+  :config
+  (global-auto-revert-mode +1)
+  :custom
+  (auto-revert-verbose nil))
 
 ;; (use-package undo-tree
 ;;     :straight (undo-tree :host github
@@ -37,37 +61,37 @@
 ;;     )
 
 (use-package hide-mode-line
-    :straight t
-    :commands (hide-mode-line-mode))
+  :straight t
+  :commands (hide-mode-line-mode))
 
 (use-package xclip
-    :straight t
-    :if IS-LINUX
-    :ensure t
-    :custom
-    (xclip-method 'xclip)
-    :config
-    (xclip-mode +1)
-    (xterm-mouse-mode +1)
-    )
+  :straight t
+  :if IS-LINUX
+  :ensure t
+  :custom
+  (xclip-method 'xclip)
+  :config
+  (xclip-mode +1)
+  (xterm-mouse-mode +1)
+  )
 
 (use-package pbcopy
-    :straight t
-    ;; :if (and IS-MAC (not IS-GUI))
-    :if IS-MAC
-    :init (turn-on-pbcopy)
-    )
+  :straight t
+  ;; :if (and IS-MAC (not IS-GUI))
+  :if IS-MAC
+  :init (turn-on-pbcopy)
+  )
 
 (use-package posframe
-    :straight (posframe :host github
-			:repo "tumashu/posframe"
-			:files ("posframe.el"))
-    :ensure t
-    )
+  :straight (posframe :host github
+		      :repo "tumashu/posframe"
+		      :files ("posframe.el"))
+  :ensure t
+  )
 
 (use-package restart-emacs
-    :straight t
-    :ensure t)
+  :straight t
+  :ensure t)
 
 ;; ;; Adopt a sneaky garbage collection strategy of waiting until idle time to
 ;; ;; collect; staving off the collector while the user is working.
