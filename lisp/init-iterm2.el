@@ -31,6 +31,13 @@
 (global-set-key (kbd "<vertical-scroll-bar> <mouse-1>")
 		'scroll-bar-toolkit-scroll)
 
+
+;; tmux-navigate
+(use-package navigate
+  :straight (navigate
+	     :host github
+	     :repo "keith/evil-tmux-navigator"))
+
 ;; https://github.com/choppsv1/dot.spacemacs.d/blob/master/local-lisp/iterm-;; xterm-extra.el
 ;; (define-key function-key-map "\e[27;5;39~" (kbd "C-'"))
 ;; (define-key function-key-map "\e[27;6;34~" (kbd "C-\""))
