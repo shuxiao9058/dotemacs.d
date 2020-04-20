@@ -38,6 +38,18 @@
 	     :host github
 	     :repo "keith/evil-tmux-navigator"))
 
+(use-package tmux-pane
+  :ensure t
+  :straight(tmux-pane
+	    :host github
+	    :repo "paulojean/emacs-tmux-pane")
+  :custom
+  (tmux-pane-terminal-folder-fn #'projectile-project-root)
+  (tmux-pane-horizontal-percent 25)
+  :config
+  (tmux-pane-mode +1)
+  )
+
 ;; https://github.com/choppsv1/dot.spacemacs.d/blob/master/local-lisp/iterm-;; xterm-extra.el
 ;; (define-key function-key-map "\e[27;5;39~" (kbd "C-'"))
 ;; (define-key function-key-map "\e[27;6;34~" (kbd "C-\""))

@@ -180,7 +180,7 @@
   "gS" '(magit-stage-file :wk "Git stage file")
   "gU" '(magit-unstage-file :wk "Git unstage file")
 
-                    ;;; <leader> gf --- git find
+  ;; <leader> gf --- git find
   "gf" '(:ignore t :wk "Find")
   "gff" '(magit-find-file :wk "Find file")
   "gfg" '(magit-find-git-config-file :wk "Find gitconfig file")
@@ -213,6 +213,19 @@
   "oe" '(eshell :wk "Open eshell here")
   "ot" '(treemacs :wk "Treemacs")
   "oT" '(telega :wk "Telega")
+
+  ;; ;;<leader> v --- vpane
+  ;; "v" '(:ignore t :wk "vpane")
+  ;; "vo" '(tmux-pane-open-vertical :wk "Open vpane")
+  ;; "vv" '(tmux-pane-toggle-vertical :wk "Toggle vpane")
+  ;; "vh" '(tmux-pane-open-horizontal :wk "Open hpane")
+  ;; "vs" '(tmux-pane-toggle-horizontal :wk "Toggle hpane")
+  ;; "vr" '(tmux-pane-rerun :wk "Rerun last command")
+
+  ;; ;; <leader> t --- toggle vpane
+  ;; "t" '(:ignore t :wk "toggle vpane")
+  ;; "tv" '(tmux-pane-toggle-vertical :wk "vpane")
+  ;; "th" '(tmux-pane-toggle-horizontal :wk "vpane")
 
   ;;<leader> w --- windows
   "w" '(:wk "Windows")
