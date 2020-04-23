@@ -307,7 +307,13 @@ WIN-ID : Window index."
   :straight t
   :ensure t
   :after (counsel ivy)
-  :init (ivy-rich-mode 1))
+  :custom
+  (ivy-rich-switch-buffer-align-virtual-buffer t)
+  (ivy-rich-path-style 'abbrev)
+  :init (ivy-rich-mode 1)
+  :config
+  (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
+  )
 
 ;; growl notify
 (use-package alert

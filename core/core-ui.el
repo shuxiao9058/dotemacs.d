@@ -2,8 +2,18 @@
 
 (use-package dracula-theme
   :straight t
-  ;; :defer t
   :ensure t
+  :custom-face
+  (company-tooltip ((t (:inherit default :foreground "white smoke" :background "#333"))))
+  (company-scrollbar-bg ((t (:background "#333"))))
+  (company-scrollbar-fg ((t (:background "deep sky blue"))))
+  (company-tooltip-annotation ((t (:foreground "white smoke"))))
+  (company-tooltip-annotation-selection ((t (:foreground "black"))))
+  (company-tooltip-selection ((t (:foreground "black" :background "deep sky blue"))))
+  (company-tooltip-common ((t (:foreground "orange"))))
+  (company-tooltip-common-selection ((t (:foreground "black"))))
+  (doom-modeline-inactive-bar ((t (:background "#373844"))))
+  ;; (nlinum-current-line ((t (:foreground "orange" :slant italic :weight bold))))
   :config
   (require 'dracula-theme)
   (load-theme 'dracula t))
