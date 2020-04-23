@@ -47,7 +47,6 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
-(require 'core-ui)
 
 ;; *** watcher
 (add-to-list 'load-path
@@ -65,6 +64,7 @@
   (if poly-initialize-core-p
       nil
     (require 'core-straight)
+    (require 'core-ui)
     (require 'core-keybindings)
     (require 'core-packages)
     (require 'core-evil)

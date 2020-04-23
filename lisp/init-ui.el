@@ -184,13 +184,25 @@ WIN-ID : Window index."
 (use-package highlight-indent-guides
   :straight t
   :hook (prog-mode . highlight-indent-guides-mode)
-  :if IS-GUI
+  :delight highlight-indent-guides-mode
+  :init
+  (setq highlight-indent-guides-method 'character
+	highlight-indent-guides-auto-enabled t
+        ;; default is \x2502 but it is very slow on Mac
+        highlight-indent-guides-character ?\xFFE8
+        highlight-indent-guides-responsive 'top)
+  (setq highlight-indent-guides-auto-enabled nil)
   :config
+  (set-face-background 'highlight-indent-guides-odd-face "darkgray")
+  (set-face-background 'highlight-indent-guides-even-face "dimgray")
+  (set-face-foreground 'highlight-indent-guides-character-face "dimgray")
   ;; (setq highlight-indent-guides-method 'column)
-  (setq highlight-indent-guides-method 'character)
-  (setq highlight-indent-guides-responsive 'top)
-  (setq highlight-indent-guides-auto-enabled t)
   )
+
+(use-package display-fill-column-indicator
+  :straight nil
+  :hook ((prog-mode . display-fill-column-indicator-mode)
+         (text-mode . display-fill-column-indicator-mode)))
 
 ;; copied from +spacemacs/spacemacs-editing-visual
 (use-package highlight-parentheses

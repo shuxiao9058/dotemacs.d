@@ -1,11 +1,19 @@
 ;;; core/core-ui.el -*- lexical-binding: t; -*-
 
+(use-package dracula-theme
+  :straight t
+  ;; :defer t
+  :ensure t
+  :config
+  (require 'dracula-theme)
+  (load-theme 'dracula t))
 
-;; load theme
-(let ((theme-file (expand-file-name "theme/dracula-theme.el" poly-core-dir)))
-  (when (file-exists-p theme-file)
-    (load theme-file nil t)
-    (load-theme 'dracula t)))
+;; (use-package )
+;; ;; load theme
+;; (let ((theme-file (expand-file-name "theme/dracula-theme.el" poly-core-dir)))
+;;   (when (file-exists-p theme-file)
+;;     (load theme-file nil t)
+;;     (load-theme 'dracula t)))
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
