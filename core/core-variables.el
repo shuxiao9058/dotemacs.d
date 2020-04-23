@@ -16,6 +16,8 @@
 (defconst poly-core-dir (concat poly-emacs-dir "core/")
   "The root directory of Poly's core files. Must end with a slash.")
 
+(defconst poly-site-lisp-dir (concat poly-emacs-dir "site-lisp/"))
+
 (defconst poly-local-dir
   (let ((localdir (getenv "POLYLOCALDIR")))
     (if localdir

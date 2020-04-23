@@ -1,0 +1,3 @@
+[submodule "site-lisp/undo-tree"]
+	path = site-lisp/undo-tree
+	url = http://www.dr-qubit.org/git/undo-tree.git

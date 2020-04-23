@@ -217,9 +217,9 @@
   ;; ;;<leader> v --- vpane
   ;; "v" '(:ignore t :wk "vpane")
   ;; "vo" '(tmux-pane-open-vertical :wk "Open vpane")
-  ;; "vv" '(tmux-pane-toggle-vertical :wk "Toggle vpane")
+  ;; "vv" '(tmux-pane-open-vertical :wk "Open vpane")
   ;; "vh" '(tmux-pane-open-horizontal :wk "Open hpane")
-  ;; "vs" '(tmux-pane-toggle-horizontal :wk "Toggle hpane")
+  ;; "vs" '(tmux-pane-open-horizontal :wk "Open hpane")
   ;; "vr" '(tmux-pane-rerun :wk "Rerun last command")
 
   ;; ;; <leader> t --- toggle vpane

@@ -27,6 +27,8 @@
   ;;    ))
   ;; (rime-share-data-dir "")
   (rime-user-data-dir (expand-file-name "rime" poly-local-dir))
+  ;; :config
+  ;; (global-set-key (kbd "H-<SPC>") 'toggle-input-method)
   )
 
 (provide 'init-rime)
