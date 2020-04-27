@@ -59,6 +59,7 @@
     ;; disable C-z
     "C-z"
     "M-x"
+    "M-:"
     )
 
   (general-define-key
