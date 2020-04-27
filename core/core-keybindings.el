@@ -60,11 +60,12 @@
     "C-z"
     "M-x"
     "M-:"
+    "C-\\"
     )
 
-  (general-define-key
-   ;; switch input method
-   "C-\\" #'toggle-input-method)
+  ;; (general-define-key
+  ;;  ;; switch input method
+  ;;  "C-\\" #'toggle-input-method)
   )
 
 ;;
