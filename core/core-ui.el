@@ -155,6 +155,8 @@
   ;; (add-hook 'window-setup-hook #'toggle-frame-maximized)
   )
 
+(setq inhibit-splash-screen t)
+
 ;; Symbol’s value as variable is void: mouse-wheel-down-event
 (when (require 'mwheel nil 'noerror)
   ;; scroll two lines at a time (less "jumpy" than defaults)

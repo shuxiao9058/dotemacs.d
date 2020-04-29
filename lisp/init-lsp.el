@@ -29,7 +29,7 @@
   (lsp-enable-folding nil)             ;; use `evil-matchit' instead
   (lsp-diagnostic-package :none)   ;; prefer flycheck disable
   (lsp-flycheck-live-reporting nil)    ;; obey `flycheck-check-syntax-automatically'
-  (lsp-prefer-capf t)                  ;; using `company-capf' by default
+  ;; (lsp-prefer-capf t)                  ;; using `company-capf' by default
   (lsp-enable-snippet nil)             ;; no snippet
   (lsp-enable-file-watchers nil)       ;; turn off for better performance
   ;; (lsp-file-watch-threshold 10000)
@@ -53,7 +53,7 @@
 				   (make-local-variable 'company-backends)
 				   (setq company-backends nil)
 				   (setq company-backends
-					 '((company-tabnine :with company-capf :separate)
+					 '((company-tabnine :with company-lsp :separate)
 					   company-dabbrev-code
 					   (company-files          ; files & directory
 					    company-keywords       ; keywords

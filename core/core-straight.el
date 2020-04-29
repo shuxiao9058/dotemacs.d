@@ -24,6 +24,9 @@
       autoload-compute-prefixes nil
       straight-fix-org t
       straight-enable-use-package-integration t
+      ;; ;; Set package.el variables just in case to avoid polluting
+      ;; ;; the root directory.
+      ;; package-enable-at-startup nil
       ;; straight-check-for-modifications '(find-when-checking check-on-save)
       )
 

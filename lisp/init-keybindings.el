@@ -331,5 +331,65 @@
 		    "C-j" #'next-line-or-history-element
 		    "C-k" #'previous-line-or-history-element)
 
+
+;; Modified directly from emacs-lsp/lsp-mode.el
+(with-eval-after-load "which-key"
+  (which-key-add-key-based-replacements
+    "SPC y s"   "Sessions"
+    "SPC Y S S" "Start Server"
+    "SPC Y S R" "Restart Server"
+    "SPC Y S Q" "Shutdown Server"
+    "SPC Y S D" "Describe Session"
+    "SPC Y S D" "Disconnect"
+
+    "SPC Y F"   "Folders"
+    "SPC Y F A" "Add Folder"
+    "SPC Y F R" "Remove Folder"
+    "SPC Y F B" "Un-Blacklist Folder"
+
+    "SPC Y ="   "Formatting"
+    "SPC Y = R" "Format Region"
+    "SPC Y = =" "Format Buffer"
+
+    "SPC Y T"   "Toggle"
+    "SPC Y T L" "Toggle Lenses"
+    "SPC Y T H" "Toggle Highlighting"
+    "SPC Y T L" "Toggle Log Io"
+    "SPC Y T S" "Toggle Signature"
+    "SPC Y T S" "Toggle Sideline"
+    "SPC Y T D" "Toggle Documentation Popup"
+    "SPC Y T P" "Toggle Signature Help"
+    "SPC Y T F" "Toggle On Type Formatting"
+    "SPC Y T T" "Toggle Treemacs Integration"
+
+    "SPC Y G"   "Goto"
+    "SPC Y G G" "Find Definitions"
+    "SPC Y G R" "Find References"
+    "SPC Y G I" "Find Implementations"
+    "SPC Y G D" "Find Declarations"
+    "SPC Y G T" "Find Type Definition"
+    "SPC Y G H" "Call Hierarchy"
+    "SPC Y G A" "Find Symbol In Workspace"
+    "SPC Y G A" "Find Symbol In All Workspaces"
+
+    "SPC Y H"   "Help"
+    "SPC Y H H" "Describe Symbol At Point"
+    "SPC Y H S" "Signature Help"
+
+    "SPC Y R"   "Refactor"
+    "SPC Y R R" "Rename"
+    "SPC Y R O" "Organize Imports"
+
+    "SPC Y A"   "Code Actions"
+    "SPC Y A A" "Code Actions"
+    "SPC Y A L" "Lens"
+    "SPC Y A H" "Highlight Symbol"
+
+    "SPC Y G"   "Peek"
+    "SPC Y G G" "Peek Definitions"
+    "SPC Y G R" "Peek References"
+    "SPC Y G I" "Peek Implementations"
+    "SPC Y G S" "Peek workspace symbol"))
+
 (provide 'init-keybindings)
 ;;; init-keybindings.el ends here
