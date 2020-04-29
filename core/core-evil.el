@@ -1,6 +1,5 @@
 ;;; core/core-evil.el -*- lexical-binding: t; -*-
 
-
 ;; Fix cursor for Evil mode
 (defun my-send-string-to-terminal (string)
   (unless (display-graphic-p) (send-string-to-terminal string)))

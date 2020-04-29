@@ -63,9 +63,6 @@
     "C-\\"
     )
 
-  ;; (general-define-key
-  ;;  ;; switch input method
-  ;;  "C-\\" #'toggle-input-method)
   )
 
 ;;
