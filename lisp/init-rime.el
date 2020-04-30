@@ -11,10 +11,10 @@
 	     :repo "DogLooksGood/emacs-rime"
              :files (:defaults "lib.c" "Makefile"))
   :defer t
-  :hook
-  ('kill-emacs . (lambda ()
-                   (when (fboundp 'rime-sync)
-                     (ignore-errors (rime-sync)))))
+  ;; :hook
+  ;; ('kill-emacs . (lambda ()
+  ;;                  (when (fboundp 'rime-sync)
+  ;;                    (ignore-errors (rime-sync)))))
   :custom
   (rime-disable-predicates '(rime-predicate-prog-in-code-p
                              rime-predicate-after-alphabet-char-p))
@@ -23,10 +23,11 @@
                             rime-predicate-current-uppercase-letter-p))
   (rime-translate-keybindings '("C-f" "C-b" "C-n" "C-p" "C-g"))
   (default-input-method "rime")
-  (rime-cursor "˰")
+  ;; (rime-cursor "˰")
   ;; (rime-librime-root (concat user-emacs-directory "librime/dist"))
   (rime-librime-root "/usr/local")
-  (rime-show-candidate 'posframe)
+  (rime-show-candidate 'minibuffer)
+  ;; (rime-show-candidate 'posframe)
   ;; (rime-posframe-properties (list :background-color "#202325"
   ;; 				  :foreground-color "#ddddde" ;; "#dedddd"
   ;; 				  :internal-border-width 6))
