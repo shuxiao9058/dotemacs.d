@@ -1,29 +1,29 @@
 ;;; core/core-ui.el -*- lexical-binding: t; -*-
 
-(use-package dracula-theme
-  :straight t
-  :ensure t
-  :custom-face
-  (company-tooltip ((t (:inherit default :foreground "white smoke" :background "#333"))))
-  (company-scrollbar-bg ((t (:background "#333"))))
-  (company-scrollbar-fg ((t (:background "deep sky blue"))))
-  (company-tooltip-annotation ((t (:foreground "white smoke"))))
-  (company-tooltip-annotation-selection ((t (:foreground "black"))))
-  (company-tooltip-selection ((t (:foreground "black" :background "deep sky blue"))))
-  (company-tooltip-common ((t (:foreground "orange"))))
-  (company-tooltip-common-selection ((t (:foreground "black"))))
-  (doom-modeline-inactive-bar ((t (:background "#373844"))))
-  ;; (nlinum-current-line ((t (:foreground "orange" :slant italic :weight bold))))
-  :config
-  (require 'dracula-theme)
-  (load-theme 'dracula t))
+;; (use-package dracula-pro-theme
+;;   :straight (:local-repo  "~/.emacs.d/site-lisp/dracula-theme")
+;;   ;; :straight t
+;;   :ensure t
+;;   ;; :custom-face
+;;   ;; (company-tooltip ((t (:inherit default :foreground "white smoke" :background "#333"))))
+;;   ;; (company-scrollbar-bg ((t (:background "#333"))))
+;;   ;; (company-scrollbar-fg ((t (:background "deep sky blue"))))
+;;   ;; (company-tooltip-annotation ((t (:foreground "white smoke"))))
+;;   ;; (company-tooltip-annotation-selection ((t (:foreground "black"))))
+;;   ;; (company-tooltip-selection ((t (:foreground "black" :background "deep sky blue"))))
+;;   ;; (company-tooltip-common ((t (:foreground "orange"))))
+;;   ;; (company-tooltip-common-selection ((t (:foreground "black"))))
+;;   ;; (doom-modeline-inactive-bar ((t (:background "#373844"))))
+;;   ;; ;; (nlinum-current-line ((t (:foreground "orange" :slant italic :weight bold))))
+;;   :config
+;;   (require 'dracula-pro-theme)
+;;   (load-theme 'dracula-pro t))
 
-;; (use-package )
-;; ;; load theme
-;; (let ((theme-file (expand-file-name "theme/dracula-theme.el" poly-core-dir)))
-;;   (when (file-exists-p theme-file)
-;;     (load theme-file nil t)
-;;     (load-theme 'dracula t)))
+;; load theme
+(let ((theme-file (expand-file-name "theme/dracula-pro-theme.el" poly-core-dir)))
+  (when (file-exists-p theme-file)
+    (load theme-file nil t)
+    (load-theme 'dracula-pro t)))
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 

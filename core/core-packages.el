@@ -50,7 +50,7 @@
 ;;   )
 
 (use-package undo-tree
-  :straight (:local-repo  "~/.emacs.d/undo-tree")
+  :straight (:local-repo  "~/.emacs.d/site-lisp/undo-tree")
   :ensure t
   :custom
   (undo-tree-visualizer-timestamps t)
