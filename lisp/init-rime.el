@@ -27,6 +27,7 @@
   ;; (rime-librime-root (concat user-emacs-directory "librime/dist"))
   (rime-librime-root "/usr/local")
   (rime-show-candidate 'minibuffer)
+  (rime-show-preedit t)
   ;; (rime-show-candidate 'posframe)
   ;; (rime-posframe-properties (list :background-color "#202325"
   ;; 				  :foreground-color "#ddddde" ;; "#dedddd"
