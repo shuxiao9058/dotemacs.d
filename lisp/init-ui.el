@@ -216,49 +216,49 @@ WIN-ID : Window index."
   )
 
 ;; (use-package dashboard
-;;     :straight t
-;;     :ensure t
-;;     :functions (all-the-icons-faicon
-;; 		all-the-icons-material
-;; 		open-custom-file
-;; 		persp-get-buffer-or-nil
-;; 		persp-load-state-from-file
-;; 		persp-switch-to-buffer
-;; 		winner-undo
-;; 		widget-forward)
-;;     :init
-;;     (setq dahboard-banner-logo-title "")
-;;     ;;(setq dashboard-startup-banner "~/Imágenes/logo.png")
-;;     (setq dashboard-center-content t)
-;;     (setq dashboard-items '((recents . 5)
-;; 			    (projects . 5)
-;; 			    (agenda . 5)))
-;;     :hook
-;;     (dashboard-mode . (lambda () (linum-mode -1)))
-;;     :config
-;;     (setq dashboard-set-init-info t
-;; 	  dashboard-set-file-icons t
-;; 	  dashboard-set-heading-icons t
-;; 	  dashboard-heading-icons '((recents . "file-text")
-;; 				    (bookmarks . "bookmark")
-;; 				    (agenda . "calendar")
-;; 				    (projects . "file-directory")
-;; 				    (registers . "database"))
-;; 	  dashboard-set-navigator t
-;; 	  dashboard-navigator-buttons
-;; 	  `(((,(when (display-graphic-p)
-;; 		 (all-the-icons-octicon "tools" :height 1.0 :v-adjust 0.0))
-;;                "Settings" "Opens settings file"
-;;                (lambda (&rest _) (config-file)))
-;;              (,(when (display-graphic-p)
-;; 		 (all-the-icons-material "update" :height 1.35 :v-adjust -0.24))
-;;                "Update" "Update Emacs Configuration to the latest version"
-;;                (lambda (&rest _) (update-config)))
-;; 	     (,(when (display-graphic-p)
-;; 		 (all-the-icons-material "info" :height 1.35 :v-adjust -0.24))
-;;                "Personal File" "Opens the personal config file"
-;;                (lambda (&rest _) (personal-file))))))
-;;     (dashboard-setup-startup-hook))
+;;   :straight t
+;;   :ensure t
+;;   :functions (all-the-icons-faicon
+;; 	      all-the-icons-material
+;; 	      open-custom-file
+;; 	      persp-get-buffer-or-nil
+;; 	      persp-load-state-from-file
+;; 	      persp-switch-to-buffer
+;; 	      winner-undo
+;; 	      widget-forward)
+;;   :init
+;;   ;; (setq dahboard-banner-logo-title "")
+;;   ;;(setq dashboard-startup-banner "~/Imágenes/logo.png")
+;;   (setq dashboard-center-content t)
+;;   (setq dashboard-items '((recents . 5)
+;; 			  (projects . 5)
+;; 			  (agenda . 5)))
+;;   :hook
+;;   (dashboard-mode . (lambda () (linum-mode -1)))
+;;   :config
+;;   (setq dashboard-set-init-info t
+;; 	dashboard-set-file-icons t
+;; 	dashboard-set-heading-icons t
+;; 	dashboard-heading-icons '((recents . "file-text")
+;; 				  (bookmarks . "bookmark")
+;; 				  (agenda . "calendar")
+;; 				  (projects . "file-directory")
+;; 				  (registers . "database"))
+;; 	dashboard-set-navigator t
+;; 	dashboard-navigator-buttons
+;; 	`(((,(when (display-graphic-p)
+;; 	       (all-the-icons-octicon "tools" :height 1.0 :v-adjust 0.0))
+;;             "Settings" "Opens settings file"
+;;             (lambda (&rest _) (config-file)))
+;;            (,(when (display-graphic-p)
+;; 	       (all-the-icons-material "update" :height 1.35 :v-adjust -0.24))
+;;             "Update" "Update Emacs Configuration to the latest version"
+;;             (lambda (&rest _) (update-config)))
+;; 	   (,(when (display-graphic-p)
+;; 	       (all-the-icons-material "info" :height 1.35 :v-adjust -0.24))
+;;             "Personal File" "Opens the personal config file"
+;;             (lambda (&rest _) (personal-file))))))
+;;   (dashboard-setup-startup-hook))
 
 ;; (use-package all-the-icons
 ;;     :straight t

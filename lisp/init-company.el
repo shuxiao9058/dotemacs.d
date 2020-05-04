@@ -42,9 +42,9 @@
   (company-begin-commands '(self-insert-command))
   ;; (company-require-match nil)
   ;; Don't use company in the following modes
-  (company-global-modes '(not shell-mode eaf-mode))
+  (company-global-modes '(not shell-mod))
   ;; Trigger completion immediately.
-  (company-idle-delay 0.1)
+  (company-idle-delay 0.3)
   ;; Number the candidates (use M-1, M-2 etc to select completions).
   (company-show-numbers t)
   :hook (after-init . global-company-mode)
@@ -174,12 +174,12 @@
 ;; 	      (ElispFace . ,(my-company-box-icon 'material "format_paint" 'all-the-icons-pink)))))
 ;;     )
 
-(use-package company-flx
-  :straight t
-  :after company
-  :config
-  (company-flx-mode 1)
-  (setq company-flx-limit 256))
+;; (use-package company-flx
+;;   :straight t
+;;   :after company
+;;   :config
+;;   (company-flx-mode 1)
+;;   (setq company-flx-limit 256))
 
 ;; (use-package company-prescient
 ;;     :straight t
