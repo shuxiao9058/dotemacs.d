@@ -90,8 +90,11 @@
   (evil-escape-mode))
 
 (use-package evil-exchange
+  :after evil
   :commands evil-exchange
-  :straight t)
+  :straight t
+  :config
+  (evil-exchange-cx-install))
 
 ;;; Press “%” to jump between matched tags in Emacs. For example, in HTML “<div>” and “</div>” are a pair of tags.
 (use-package evil-matchit
@@ -111,11 +114,11 @@
   )
 
 (use-package evil-snipe
+  :straight t
   :commands (evil-snipe-mode evil-snipe-override-mode
 			     evil-snipe-local-mode evil-snipe-override-local-mode)
-  :straight t
+  :hook (prog-mode evil-snipe-mode)
   :init
-  (add-hook 'prog-mode-hook 'evil-snipe-mode)
   (setq evil-snipe-smart-case t
         evil-snipe-scope 'line
         evil-snipe-repeat-scope 'visible
@@ -137,11 +140,36 @@
   :config
   (global-evil-surround-mode 1))
 
+(use-package evil-arglist
+  :straight (evil-arglist :host github
+			  :repo "dzop/evil-arglist")
+  )
+
 (use-package evil-args
+  :straight t
+  :after evil
   :commands (evil-inner-arg evil-outer-arg
 			    evil-forward-arg evil-backward-arg
 			    evil-jump-out-args)
-  :straight t)
+  :config
+  (add-hook 'emacs-lisp-mode-hook
+	    (lambda ()
+	      (set (make-local-variable 'evil-args-delimiters) '(" " "\t"))))
+  :general
+  (general-itomap "a" #'evil-inner-arg)
+  (general-otomap "a" #'evil-outer-arg))
+
+(use-package evil-visualstar
+  :straight t
+  :after evil
+  :config
+  (global-evil-visualstar-mode 1))
+
+(use-package evil-textobj-entire
+  :after evil
+  :general
+  (general-itomap "e" #'evil-entire-entire-buffer)
+  (general-otomap "e" #'evil-entire-entire-buffer))
 
 (use-package evil-commentary
   :commands (evil-commentary evil-commentary-yank evil-commentary-line)
