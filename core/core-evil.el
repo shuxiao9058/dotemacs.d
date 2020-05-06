@@ -117,7 +117,7 @@
   :straight t
   :commands (evil-snipe-mode evil-snipe-override-mode
 			     evil-snipe-local-mode evil-snipe-override-local-mode)
-  :hook (prog-mode evil-snipe-mode)
+  :hook (prog-mode . evil-snipe-mode)
   :init
   (setq evil-snipe-smart-case t
         evil-snipe-scope 'line
