@@ -1,31 +1,29 @@
 ;;; core/core-evil.el -*- lexical-binding: t; -*-
 
-;; Fix cursor for Evil mode
-(defun my-send-string-to-terminal (string)
-  (unless (display-graphic-p) (send-string-to-terminal string)))
+;; ;; Fix cursor for Evil mode
+;; (defun my-send-string-to-terminal (string)
+;;   (unless (display-graphic-p) (send-string-to-terminal string)))
 
-(defun my-evil-terminal-cursor-change ()
-  (when (string= (getenv "TERM_PROGRAM") "iTerm.app")
-    (add-hook 'evil-insert-state-entry-hook (lambda ()
-					      (message "enter insert mode")
-					      (my-send-string-to-terminal "\e]50;CursorShape=1\x7")))
-    (add-hook 'evil-insert-state-exit-hook  (lambda () (my-send-string-to-terminal "\e]50;CursorShape=0\x7"))))
-  (when (and (getenv "TMUX") (string= (getenv "TERM_PROGRAM") "iTerm.app"))
-    (add-hook 'evil-insert-state-entry-hook (lambda () (my-send-string-to-terminal "\ePtmux;\e\e]50;CursorShape=1\x7\e\\")))
-    (add-hook 'evil-insert-state-exit-hook  (lambda () (my-send-string-to-terminal "\ePtmux;\e\e]50;CursorShape=0\x7\e\\")))))
+;; (defun my-evil-terminal-cursor-change ()
+;;   (when (string= (getenv "TERM_PROGRAM") "iTerm.app")
+;;     (add-hook 'evil-insert-state-entry-hook (lambda ()
+;; 					      (message "enter insert mode")
+;; 					      (my-send-string-to-terminal "\e]50;CursorShape=1\x7")))
+;;     (add-hook 'evil-insert-state-exit-hook  (lambda () (my-send-string-to-terminal "\e]50;CursorShape=0\x7"))))
+;;   (when (and (getenv "TMUX") (string= (getenv "TERM_PROGRAM") "iTerm.app"))
+;;     (add-hook 'evil-insert-state-entry-hook (lambda () (my-send-string-to-terminal "\ePtmux;\e\e]50;CursorShape=1\x7\e\\")))
+;;     (add-hook 'evil-insert-state-exit-hook  (lambda () (my-send-string-to-terminal "\ePtmux;\e\e]50;CursorShape=0\x7\e\\")))))
 
-(eval-after-load 'evil
-  (progn
-    (add-hook 'after-make-frame-functions
-	      (lambda (frame) (my-evil-terminal-cursor-change)))
-    (my-evil-terminal-cursor-change)))
+;; (eval-after-load 'evil
+;;   (progn
+;;     (add-hook 'after-make-frame-functions
+;; 	      (lambda (frame) (my-evil-terminal-cursor-change)))
+;;     (my-evil-terminal-cursor-change)))
 
 (use-package evil
   :straight t
   :ensure t
-  ;; :after evil-leader
   :commands evil-normalize-keymaps
-  :init
   :custom
   ;; Change cursor color depending on mode
   (evil-emacs-state-cursor `("red" hbar))     ; _
@@ -55,15 +53,15 @@
     (recenter))
   )
 
-
-;; (use-package evil-leader
-;;     :straight t
-;;     :init
-;;     (setq evil-leader/in-all-states t)
-;;     (global-evil-leader-mode)
-;;     ;; :config
-;;     ;; (evil-leader/set-leader "<SPC>")
-;;     )
+(use-package evil-terminal-cursor-changer
+  :straight t
+  :unless IS-GUI
+  :ensure t
+  :after evil
+  ;; :custom
+  :config
+  (evil-terminal-cursor-changer-activate) ; or (etcc-on)
+  )
 
 (use-package evil-escape
   :after evil

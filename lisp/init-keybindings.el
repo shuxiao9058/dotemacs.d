@@ -34,7 +34,7 @@
 ;; 		    "zs" #'flyspell-correct-word-generic
 ;; 		    "z=" #'flyspell-buffer)
 
-;;; help-map
+;; help-map
 (general-define-key :keymaps 'help-map
 		    ;; new keybinds
 		    "'"    #'describe-char
@@ -146,7 +146,7 @@
   "ss" '(swiper-isearch :wk "Search Buffer")
   "sS" '(swiper-isearch-thing-at-point :wk "Search Buffer for thing at point")
 
-                    ;;; <leader> q --- quit/session
+  ;; <leader> q --- quit/session
   "q" '(:ignore t :which-key "quit/session")
   "qf" '(delete-frame :wk "Delete frame")
   "qK" '(save-buffers-kill-emacs :wk "Kill Emacs (and daemon)")
@@ -186,12 +186,12 @@
   "gfg" '(magit-find-git-config-file :wk "Find gitconfig file")
   "gfc" '(magit-show-commit :wk "Find commit")
 
-                    ;;; <leader> gl --- git list
+  ;; <leader> gl --- git list
   "gl" '(:ignore t :wk "List")
   "glr" '(magit-list-repositories :wk "List repositories")
   "gls" '(magit-list-submodules :wk "List submodules")
 
-                    ;;; <leader> gc --- git create
+  ;; <leader> gc --- git create
   "gc" '(:ignore t :wk "Create")
   "gcr" '(magit-init :wk "Initialize repo")
   "gcR" '(magit-clone :wk "Clone repo")
@@ -201,11 +201,26 @@
   "gci" '(forge-create-issue :wk "Issue")
   "gcp" '(forge-create-pullreq :wk "Pull request")
 
-                    ;;; <leader> i --- insert
+  ;; <leader> i --- insert
   "i" '(:ignore t :wk "Insert")
+  "ir" '(evil-ex-registers :wk "From evil register")
+  "is" '(yas-insert-snippet :wk "Snippet")
+  "iu" '(unicode-chars-list-chars :wk "Unicode")
   "iy" '(counsel-yank-pop :wk "From clipboard")
 
-  ;;<leader> n --- open
+  ;; <leader> n --- notes
+  "n" '(:ignore t :wk "notes")
+  "na" '(org-agenda :wk "Org agenda")
+  "nd" '(deft :wk "Open deft")
+  "nl" '(org-store-link :wk "Org store link")
+  "nm" '(org-tags-view :wk "Tags search")
+  "nn" '(org-capture :wk "Org capture")
+  "nN" '(org-capture-goto-target :wk "Goto capture")
+  "no" '(org-clock-goto :wk "Active org-clock")
+  "nt" '(org-todo-list :wk "Todo list")
+  "nv" '(org-search-view :wk "View search")
+
+  ;;<leader> o --- open
   "o" '(:wk "Open/Toggle")
   "ob" '(browse-url-of-file :wk "Browser")
   "of" '(make-frame :wk "New frame")
@@ -213,19 +228,6 @@
   "oe" '(eshell :wk "Open eshell here")
   "ot" '(treemacs :wk "Treemacs")
   "oT" '(telega :wk "Telega")
-
-  ;; ;;<leader> v --- vpane
-  ;; "v" '(:ignore t :wk "vpane")
-  ;; "vo" '(tmux-pane-open-vertical :wk "Open vpane")
-  ;; "vv" '(tmux-pane-open-vertical :wk "Open vpane")
-  ;; "vh" '(tmux-pane-open-horizontal :wk "Open hpane")
-  ;; "vs" '(tmux-pane-open-horizontal :wk "Open hpane")
-  ;; "vr" '(tmux-pane-rerun :wk "Rerun last command")
-
-  ;; ;; <leader> t --- toggle vpane
-  ;; "t" '(:ignore t :wk "toggle vpane")
-  ;; "tv" '(tmux-pane-toggle-vertical :wk "vpane")
-  ;; "th" '(tmux-pane-toggle-horizontal :wk "vpane")
 
   ;;<leader> w --- windows
   "w" '(:wk "Windows")
@@ -258,7 +260,7 @@
   "y" '(:keymap lsp-command-map :package lsp-mode :wk "LSP")
   )
 
-;;; minibuffer keymap
+;; minibuffer keymap
 (defvar +default-minibuffer-maps
   '(minibuffer-local-map
     minibuffer-local-ns-map
@@ -321,7 +323,7 @@
      (general-define-key :keymaps 'counsel-ag-map
 			 "C-SPC"    #'ivy-call-and-recenter ; preview
 			 "C-l"      #'ivy-done
-          ;;; [C-return] #'+ivy/git-grep-other-window-action
+			 ;; [C-return] #'+ivy/git-grep-other-window-action
 			 )
      )
   )

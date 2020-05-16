@@ -12,45 +12,45 @@
                   org-level-4 org-level-5
                   org-level-6 org-level-7
                   org-level-8))
-    (set-face-attribute face nil :weight 'normal)
+    (set-face-attribute face nil :weight 'normal))
 
-    (setq org-directory "~/Dropbox/org-mode")
+  (setq org-directory "~/Dropbox/org-mode")
 
-    (setq +org-capture-todo-file (expand-file-name  "todo-list.org" org-directory))
-    (setq +org-capture-notes-file (expand-file-name  "notes.org" org-directory))
+  (setq +org-capture-todo-file (expand-file-name  "todo-list.org" org-directory))
+  (setq +org-capture-notes-file (expand-file-name  "notes.org" org-directory))
 
-    (setq org-agenda-files (list ;; "~/org/anniversary.org"
-                            (expand-file-name "notes" org-directory)
-                            (expand-file-name "todo-list.org" org-directory)
-                            ))
+  (setq org-agenda-files (list ;; "~/org/anniversary.org"
+                          (expand-file-name "notes" org-directory)
+                          (expand-file-name "todo-list.org" org-directory)
+                          ))
 
-    (setq org-mobile-directory (expand-file-name "~/Dropbox/org-mode/org-mobile/"))
-    (setq org-mobile-files (list
-                            (expand-file-name "todo-list.org" org-mobile-directory)))
-    (setq org-mobile-inbox-for-pull (expand-file-name "refile-beorg.org" org-mobile-directory))
+  (setq org-mobile-directory (expand-file-name "~/Dropbox/org-mode/org-mobile/"))
+  (setq org-mobile-files (list
+                          (expand-file-name "todo-list.org" org-mobile-directory)))
+  (setq org-mobile-inbox-for-pull (expand-file-name "refile-beorg.org" org-mobile-directory))
 
-    (setq org-capture-templates
-          '(("t" "Personal todo" entry
-             (file+headline +org-capture-todo-file "Inbox")
-             "* [ ] %?\n%i\n%a" :prepend t :kill-buffer t)
-            ("n" "Personal notes" entry
-             (file+headline +org-capture-notes-file "Inbox")
-             "* %u %?\n%i\n%a" :prepend t :kill-buffer t)
-            ;;
-            ;;
-            ("p" "Templates for projects")
-            ("pt" "Project todo" entry ; {project-root}/todo.org
-             (file+headline +org-capture-project-todo-file "TODOs")
-             "* TODO %?\n%i\n%a" :prepend t :kill-buffer t)
-            ("pn" "Project notes" entry ; {project-root}/notes.org
-             (file+headline +org-capture-project-notes-file "Notes")
-             "* TODO %?\n%i\n%a" :prepend t :kill-buffer t)
-            ("pc" "Project changelog" entry ; {project-root}/changelog.org
-             (file+headline +org-capture-project-notes-file "Changelog")
-             "* TODO %?\n%i\n%a" :prepend t :kill-buffer t)
-            ("j" "Journal" entry
-             (file+olp+datetree "~/Dropbox/org-mode/journal.org")
-             "* %?\nEntered on %U\n %i\n" :empty-lines 1))))
+  (setq org-capture-templates
+        '(("t" "Personal todo" entry
+           (file+headline +org-capture-todo-file "Inbox")
+           "* [ ] %?\n%i\n%a" :prepend t :kill-buffer t)
+          ("n" "Personal notes" entry
+           (file+headline +org-capture-notes-file "Inbox")
+           "* %u %?\n%i\n%a" :prepend t :kill-buffer t)
+          ;;
+          ;;
+          ("p" "Templates for projects")
+          ("pt" "Project todo" entry ; {project-root}/todo.org
+           (file+headline +org-capture-project-todo-file "TODOs")
+           "* TODO %?\n%i\n%a" :prepend t :kill-buffer t)
+          ("pn" "Project notes" entry ; {project-root}/notes.org
+           (file+headline +org-capture-project-notes-file "Notes")
+           "* TODO %?\n%i\n%a" :prepend t :kill-buffer t)
+          ("pc" "Project changelog" entry ; {project-root}/changelog.org
+           (file+headline +org-capture-project-notes-file "Changelog")
+           "* TODO %?\n%i\n%a" :prepend t :kill-buffer t)
+          ("j" "Journal" entry
+           (file+olp+datetree "~/Dropbox/org-mode/journal.org")
+           "* %?\nEntered on %U\n %i\n" :empty-lines 1)))
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.8))
 
   ;; minted required:
@@ -107,6 +107,31 @@
   ;;         ;; ;; ("fontsize" "\\scriptsize")
   ;;         ))
 
+
+  ;; plantuml
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '(
+     (ditaa . t)
+     (dot . t)
+     (emacs-lisp . t)
+     (gnuplot . t)
+     (js . t)
+     (latex . t)
+     (lilypond . t)
+     (octave . t)
+     ;; (perl . t)
+     (plantuml . t)
+     ;; (python . t)
+     ;; (ruby . t)
+     (shell . t)
+     ;; (sqlite . t)
+     ;; (R . t)
+     ))
+  (setq plantuml-jar-path "/usr/local/bin/plantuml")
+
+  ;; (add-to-list 'auto-mode-alist '("\\.puml\\'" . plantuml-mode))
+  ;; (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
 
   ;; default article
   (setq org-latex-classes
@@ -419,7 +444,6 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
     "q" #'quit-window
     )
   )
-
 
 (provide 'init-org)
 ;;; init-org.el ends here
