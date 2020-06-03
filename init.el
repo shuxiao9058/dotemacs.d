@@ -54,6 +54,7 @@
 
 ;; programming
 ;; (require 'init-flycheck)
+(require 'init-proto)
 (require 'init-projectile)
 (require 'init-company)
 (require 'init-lsp)
