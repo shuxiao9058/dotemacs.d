@@ -321,9 +321,8 @@ WIN-ID : Window index."
 	     :host github
 	     :repo "jwiegley/alert")
   :commands (alert)
-  :init
-  ;; (setq alert-default-style 'notifier)
-  (setq alert-default-style 'osx-notifier)
+  :custom
+  (alert-default-style 'osx-notifier)
   )
 
 (provide 'init-ui)

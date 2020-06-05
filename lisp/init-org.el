@@ -14,6 +14,20 @@
                   org-level-8))
     (set-face-attribute face nil :weight 'normal))
 
+  (setq-default org-display-custom-times t)
+  (setq org-time-stamp-custom-formats '("<%A, %e. %B %Y>" . "<%A, %e. %B %Y %H:%M>"))
+  (setq org-agenda-start-on-weekday 1)
+  (setq calendar-week-start-day 1)
+
+  ;; (setq prettify-symbols-unprettify-at-point 'right-edge)
+  ;; (add-hook 'org-mode-hook
+  ;;           (lambda ()
+  ;;             "Beautify Org Checkbox Symbol"
+  ;;             (push '("[ ]" . "☐") prettify-symbols-alist)
+  ;;             (push '("[X]" . "☑") prettify-symbols-alist)
+  ;;             (push '("[-]" . "❍") prettify-symbols-alist)
+  ;;             (prettify-symbols-mode)))
+
   (setq org-directory "~/Dropbox/org-mode")
 
   (setq +org-capture-todo-file (expand-file-name  "todo-list.org" org-directory))

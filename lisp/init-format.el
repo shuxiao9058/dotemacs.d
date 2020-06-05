@@ -48,7 +48,7 @@
     (:executable "lua-format")
     (:install (macos ""))
     (:languages "Lua")
-    (:format (format-all--buffer-easy executable  "-c" (expand-file-name "~/.config/lua-format/lua-format.style") "-i" "--"))
+    (:format (format-all--buffer-easy executable "-i" "-c" (expand-file-name "~/.config/lua-format/config.yaml") "--"))
     )
 
   (define-format-all-formatter clang-format
