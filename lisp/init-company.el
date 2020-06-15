@@ -225,6 +225,7 @@
 
   (advice-add #'company--transform-candidates :around #'my-company--transform-candidates)
   (advice-add #'company-tabnine :around #'my-company-tabnine)
+
   )
 
 ;; ;; try nox

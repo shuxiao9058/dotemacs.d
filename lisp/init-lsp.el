@@ -18,6 +18,16 @@
 	   web-mode) . lsp)
 	 ;; if you want which-key integration
 	 (lsp-mode . lsp-enable-which-key-integration)
+	 (lsp-after-open . (lambda()
+			     (make-local-variable 'company-backends)
+			     (setq company-backends nil)
+			     (setq company-backends
+				   '((company-tabnine :with company-lsp :separate)
+				     company-dabbrev-code
+				     (company-files          ; files & directory
+				      company-keywords       ; keywords
+				      )
+				     (company-abbrev company-dabbrev)))))
 	 )
   :custom
   (lsp-idle-delay 0.5)                 ;; lazy refresh
@@ -49,16 +59,7 @@
   (advice-add 'lsp-warn
 	      :around (lambda (orig-func &rest r)
 			(message (apply #'format-message r))))
-  (add-hook 'lsp-after-open-hook (lambda()
-				   (make-local-variable 'company-backends)
-				   (setq company-backends nil)
-				   (setq company-backends
-					 '((company-tabnine :with company-lsp :separate)
-					   company-dabbrev-code
-					   (company-files          ; files & directory
-					    company-keywords       ; keywords
-					    )
-					   (company-abbrev company-dabbrev)))))
+
 
   ;; (add-hook 'lsp-after-open-hook
   ;; 	       (lambda()

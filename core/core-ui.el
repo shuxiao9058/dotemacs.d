@@ -23,7 +23,7 @@
 (let ((theme-file (expand-file-name "theme/draculapro-theme.el" poly-core-dir)))
   (when (file-exists-p theme-file)
     (load theme-file nil t)
-    (load-theme 'dracula-pro t)))
+    (load-theme 'draculapro t)))
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
