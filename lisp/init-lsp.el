@@ -50,11 +50,11 @@
   (lsp-keep-workspace-alive nil)       ;; auto kill lsp server
   (lsp-eldoc-enable-hover nil)         ;; disable eldoc displays in minibuffer
   (lsp-enable-imenu nil)
-  (lsp-clients-emmy-lua-jar-path (expand-file-name  "bin/EmmyLua-LS-all.jar" poly-local-dir))
+  ;; (lsp-clients-emmy-lua-jar-path (expand-file-name  "bin/EmmyLua-LS-all.jar" poly-local-dir))
   :config
   ;; ;; lsp-lua
   ;; ;; 暂时还有点问题，先不用了
-  ;; (require 'init-lsp-lua)
+  (require 'init-lsp-lua)
   ;; cancel warning
   (advice-add 'lsp-warn
 	      :around (lambda (orig-func &rest r)

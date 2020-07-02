@@ -46,7 +46,7 @@
          ("Lua.awakened.cat" lsp-lua-awakened-cat t))))
 
 (lsp-register-client
- (make-lsp-client :new-connection (lsp-stdio-connection `(,lsp-lua-server-binary "-E" "-e" "LANG=\"en\"", lsp-lua-server-main) (lambda() t))
+ (make-lsp-client :new-connection (lsp-stdio-connection `(,lsp-lua-server-binary "-E" , lsp-lua-server-main) (lambda() t))
                   :major-modes '(lua-mode)
                   :priority 0
                   :server-id 'lsp-lua))
