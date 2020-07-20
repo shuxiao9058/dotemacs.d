@@ -2,7 +2,6 @@
 
 (use-package wakatime-mode
   :straight t
-  ;; :after-call pre-command-hook
   :init (setq +wakatime-hide-filenames t)
   :hook ((org-mode . wakatime-mode)
          (prog-mode . wakatime-mode))
