@@ -5,7 +5,6 @@
   :straight nil
   :ensure t
   :defines (lsp-clients-clangd-args)
-  ;; :ensure t
   :mode (
 	 ("\\.c\\'" . c-mode)
          ("\\.h\\'" . c-mode)
