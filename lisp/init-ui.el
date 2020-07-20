@@ -198,7 +198,9 @@ WIN-ID : Window index."
   )
 
 (use-package display-fill-column-indicator
-  :straight nil
+  :straight (display-fill-column-indicator
+         :host github
+         :repo "alpaker/fill-column-indicator")
   :hook ((prog-mode . display-fill-column-indicator-mode)
          (text-mode . display-fill-column-indicator-mode)))
 

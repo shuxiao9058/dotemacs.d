@@ -50,6 +50,7 @@
 ;;   )
 
 (use-package undo-tree
+  :if IS-MAC
   :straight (:local-repo  "~/.emacs.d/site-lisp/undo-tree")
   :ensure t
   :custom

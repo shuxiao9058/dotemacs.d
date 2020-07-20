@@ -28,6 +28,7 @@
 	  . (lambda () (add-to-list
 			'company-backends
 			'(company-slime company-dabbrev-code)))))
+  :after display-fill-column-indicator
   :config
   (setq inferior-lisp-program "clisp")
   ;; (slime-setup '(slime-fancy slime-company))
