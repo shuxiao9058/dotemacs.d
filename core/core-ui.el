@@ -35,7 +35,7 @@
 
 ;; (set-face-attribute 'default nil :family "Source Code Pro" :height 120)
 
-(when IS-GUI
+(when (and IS-GUI IS-MAC)
   ;; (let ((monaco-font "-apple-Monaco-medium-normal-normal-*-12-*-*-*-m-0-iso10646-1")
   ;; 	;; (sourcode-font "-apple-Source Code Pro-*-normal-normal-*-13-*-*-*-m-0-iso10646-1")
   ;; 	(firacode-font "-*-Fira Code-*-*-*-*-13-*-*-*-*-*-*-*")

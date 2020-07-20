@@ -36,7 +36,8 @@
   (require 'init-iterm2))
 
 ;; tools
-(require 'init-wakatime)
+(when IS-MAC
+  (require 'init-wakatime))
 (require 'init-keyfreq)
 (require 'init-format)
 (require 'init-rime)
@@ -62,7 +63,8 @@
 (require 'init-lua)
 (require 'init-lisp)
 (require 'init-web)
-(require 'init-cc)
+;; (require 'init-cc)
+(require 'init-nix)
 
 ;; functions
 (require 'init-utils)
