@@ -198,9 +198,8 @@ WIN-ID : Window index."
   )
 
 (use-package display-fill-column-indicator
-  :straight (display-fill-column-indicator
-         :host github
-         :repo "alpaker/fill-column-indicator")
+  :if EMACS27+
+  :straight nil
   :hook ((prog-mode . display-fill-column-indicator-mode)
          (text-mode . display-fill-column-indicator-mode)))
 
