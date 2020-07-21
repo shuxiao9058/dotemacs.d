@@ -13,6 +13,7 @@
 	  elisp-mode
 	  emacs-lisp-mode
 	  markdown-mode
+	  nix-mode
 	  ;;  objc-mode
 	  ;;  swift-mode
 	  ;;  typescript-mode
