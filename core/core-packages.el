@@ -80,6 +80,11 @@
   (xterm-mouse-mode +1)
   )
 
+(use-package clipetty
+  :straight t
+  :ensure t
+  :hook (after-init . global-clipetty-mode))
+
 (use-package pbcopy
   :straight t
   ;; :if (and IS-MAC (not IS-GUI))
