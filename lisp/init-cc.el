@@ -32,7 +32,6 @@
                      (innamespace           . 0) ;; no indentation after namespace
                      (arglist-cont-nonempty . +)))
   :config
-  (c-toggle-hungry-state nil)
   (with-eval-after-load 'lsp-mode
     (setq lsp-clients-clangd-args
           '("-j=2"

@@ -62,7 +62,7 @@
 (require 'init-lua)
 (require 'init-lisp)
 (require 'init-web)
-;; (require 'init-cc)
+(require 'init-cc)
 (require 'init-nix)
 
 ;; functions
