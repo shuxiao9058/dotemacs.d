@@ -52,7 +52,7 @@
   ;; set default `company-backends'
   ;; completion-at-point-functions
   (setq-default company-backends
-		'((company-tabnine :with company-lsp :separate)
+		'((company-tabnine :with company-capf :separate)
 		  company-dabbrev-code
 		  (company-files          ; files & directory
 		   company-keywords       ; keywords
@@ -254,33 +254,38 @@
 ;; 							(company-abbrev company-dabbrev)))))
 ;; 	     )
 
-;; (use-package eglot
-;;     :straight t
-;;     :hook
-;;     ((go-mode lua-mode) . eglot-ensure)
-;;     :custom
-;;     (eglot-stay-out-of '(flymake))
-;;     (eglot-ignored-server-capabilites '(:documentHighlightProvider))
-;;     :config
-;;     ;; emmylua
-;;     (let ((emmylua-jar-path (expand-file-name "bin/EmmyLua-LS-all.jar" poly-local-dir)))
-;;       (add-to-list 'eglot-server-programs
-;; 		   `(lua-mode  . ("/usr/bin/java" "-cp" ,emmylua-jar-path "com.tang.vscode.MainKt"))))
-;;     (add-hook 'eglot-managed-mode-hook (lambda()
-;; 					 (make-local-variable 'company-backends)
-;; 					 (setq company-backends nil)
-;; 					 (setq company-backends
-;; 					       '((company-tabnine :with company-capf :separate)
-;; 						 company-dabbrev-code
-;; 						 (company-files          ; files & directory
-;; 						  company-keywords       ; keywords
-;; 						  )
-;; 						 (company-abbrev company-dabbrev)))))
-;;      ;; (set-lookup-handlers! 'eglot-mode :async t
-;;      ;;    :documentation #'eglot-help-at-point
-;;      ;;    :definition #'eglot-find-declaration
-;;      ;;    :references #'eglot-find-typeDefinition)
-;;     )
+(use-package eglot
+  :straight t
+  :hook
+  ((go-mode lua-mode python-mode c-mode c++-mode) . eglot-ensure)
+  :custom
+  (eglot-stay-out-of '(flymake))
+  (eglot-ignored-server-capabilites '(:documentHighlightProvider))
+  :config
+  ;; emmylua
+  (let ((emmylua-jar-path (expand-file-name "bin/EmmyLua-LS-all.jar" poly-local-dir)))
+    (add-to-list 'eglot-server-programs
+		 `(lua-mode  . ("/usr/bin/java" "-cp" ,emmylua-jar-path "com.tang.vscode.MainKt"))))
+
+  (when (executable-find "ccls")
+    (add-to-list 'eglot-server-programs '((c-mode c++-mode) "ccls"
+ 					  "-init={\"compilationDatabaseDirectory\":\"build\"}")))
+
+  (add-hook 'eglot-managed-mode-hook (lambda()
+				       (make-local-variable 'company-backends)
+				       (setq company-backends nil)
+				       (setq company-backends
+					     '((company-tabnine :with company-capf :separate)
+					       company-dabbrev-code
+					       (company-files          ; files & directory
+						company-keywords       ; keywords
+						)
+					       (company-abbrev company-dabbrev)))))
+  ;; (set-lookup-handlers! 'eglot-mode :async t
+  ;;    :documentation #'eglot-help-at-point
+  ;;    :definition #'eglot-find-declaration
+  ;;    :references #'eglot-find-typeDefinition)
+  )
 
 ;;     (dolist (hook (list
 ;; 		   'js-mode-hook

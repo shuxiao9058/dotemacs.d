@@ -4,7 +4,7 @@
 (use-package cc-mode
   :straight nil
   :ensure t
-  :defines (lsp-clients-clangd-args)
+  ;; :defines (lsp-clients-clangd-args)
   :mode (
 	 ("\\.c\\'" . c-mode)
          ("\\.h\\'" . c-mode)
@@ -31,15 +31,15 @@
                      (inlambda              . 0) ;; better indentation for lambda
                      (innamespace           . 0) ;; no indentation after namespace
                      (arglist-cont-nonempty . +)))
-  :config
-  (with-eval-after-load 'lsp-mode
-    (setq lsp-clients-clangd-args
-          '("-j=2"
-            "--background-index"
-            "--clang-tidy"
-            "--completion-style=bundled"
-            "--pch-storage=memory"
-            "--suggest-missing-includes")))
+  ;; :config
+  ;; (with-eval-after-load 'lsp-mode
+  ;;   (setq lsp-clients-clangd-args
+  ;;         '("-j=2"
+  ;;           "--background-index"
+  ;;           "--clang-tidy"
+  ;;           "--completion-style=bundled"
+  ;;           "--pch-storage=memory"
+  ;;           "--suggest-missing-includes")))
   )
 
 (use-package modern-cpp-font-lock
@@ -58,18 +58,18 @@
   (with-eval-after-load 'company-mode
     (add-to-list 'company-backends 'company-cmake)))
 
-(use-package clang-format
-  :straight t
-  :defer t
-  ;; :load-path "site-lisp"
-  :commands (clang-format-buffer)
-  ;; :config
-  ;; (setq clang-format-style-option "file")
-  ;; ;; (bind-key "C-c <down>" 'clang-format-buffer c-mode-base-map)
-  ;; :bind (:map c-mode-base-map
-  ;;             ("C-c <down>" . clang-format-buffer)
-  ;;             )
-  )
+;; (use-package clang-format
+;;   :straight t
+;;   :defer t
+;;   ;; :load-path "site-lisp"
+;;   :commands (clang-format-buffer)
+;;   ;; :config
+;;   ;; (setq clang-format-style-option "file")
+;;   ;; ;; (bind-key "C-c <down>" 'clang-format-buffer c-mode-base-map)
+;;   ;; :bind (:map c-mode-base-map
+;;   ;;             ("C-c <down>" . clang-format-buffer)
+;;   ;;             )
+;;   )
 
 (use-package cpp-auto-include
   :straight   (cpp-auto-include
