@@ -2,7 +2,7 @@
 
 ;;; C/C++
 (use-package cc-mode
-  :straight nil
+  :straight t
   :ensure t
   ;; :defines (lsp-clients-clangd-args)
   :mode (

@@ -56,6 +56,12 @@
 ;; Load the bare necessities
 (watcher:try-load 'core-lib)
 
+;; REVIEW Fixes 'void-variable tab-prefix-map' errors caused by packages that
+;;        prematurely use this variable before it was introduced. Remove this in
+;;        a year.
+(unless (boundp 'tab-prefix-map)
+  (defvar tab-prefix-map (make-sparse-keymap)))
+
 (defvar poly-initialize-core-p nil
   "whether initialization core")
 
