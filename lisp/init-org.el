@@ -28,7 +28,7 @@
   ;;             (push '("[-]" . "❍") prettify-symbols-alist)
   ;;             (prettify-symbols-mode)))
 
-  (setq org-directory "~/Dropbox/org-mode")
+  (setq org-directory "~/Dropbox/org")
 
   (setq +org-capture-todo-file (expand-file-name  "todo-list.org" org-directory))
   (setq +org-capture-notes-file (expand-file-name  "notes.org" org-directory))
@@ -38,7 +38,7 @@
                           (expand-file-name "todo-list.org" org-directory)
                           ))
 
-  (setq org-mobile-directory (expand-file-name "~/Dropbox/org-mode/org-mobile/"))
+  (setq org-mobile-directory (expand-file-name "~/Dropbox/org/mobile/"))
   (setq org-mobile-files (list
                           (expand-file-name "todo-list.org" org-mobile-directory)))
   (setq org-mobile-inbox-for-pull (expand-file-name "refile-beorg.org" org-mobile-directory))
@@ -63,7 +63,7 @@
            (file+headline +org-capture-project-notes-file "Changelog")
            "* TODO %?\n%i\n%a" :prepend t :kill-buffer t)
           ("j" "Journal" entry
-           (file+olp+datetree "~/Dropbox/org-mode/journal.org")
+           (file+olp+datetree "~/Dropbox/org/journal.org")
            "* %?\nEntered on %U\n %i\n" :empty-lines 1)))
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.8))
 

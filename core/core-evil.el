@@ -209,7 +209,6 @@
   )
 
 (use-package evil-osx-clipboard
-  :straight t
   :after pbcopy
   :straight (evil-osx-clipboard
 	     :host github
