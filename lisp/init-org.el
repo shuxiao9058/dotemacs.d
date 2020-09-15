@@ -30,27 +30,27 @@
 
   (setq org-directory "~/Dropbox/org")
 
-  (setq +org-capture-todo-file (expand-file-name  "todo-list.org" org-directory))
-  (setq +org-capture-notes-file (expand-file-name  "notes.org" org-directory))
 
-  (setq org-agenda-files (list ;; "~/org/anniversary.org"
-                          (expand-file-name "notes" org-directory)
-                          (expand-file-name "todo-list.org" org-directory)
-                          ))
 
-  (setq org-mobile-directory (expand-file-name "~/Dropbox/org/mobile/"))
-  (setq org-mobile-files (list
-                          (expand-file-name "todo-list.org" org-mobile-directory)))
-  (setq org-mobile-inbox-for-pull (expand-file-name "refile-beorg.org" org-mobile-directory))
+  (setq org-beorg-directory (expand-file-name "~/Dropbox/org/beorg/"))
+  (setq +org-capture-todo-file (expand-file-name  "todo-list.org" org-beorg-directory))
+  (setq +org-capture-notes-file (expand-file-name  "notes.org" org-beorg-directory))
+  (setq org-agenda-files (list
+                          (expand-file-name "notes.org" org-beorg-directory)
+                          (expand-file-name "todo-list.org" org-beorg-directory)))
+
+  ;; (setq org-mobile-directory (expand-file-name "~/Dropbox/org/beorg/"))
+  ;; (setq org-mobile-files (list
+  ;;                         (expand-file-name "todo-list.org" org-mobile-directory)))
+  ;; (setq org-mobile-inbox-for-pull (expand-file-name "refile-beorg.org" org-mobile-directory))
 
   (setq org-capture-templates
         '(("t" "Personal todo" entry
            (file+headline +org-capture-todo-file "Inbox")
-           "* [ ] %?\n%i\n%a" :prepend t :kill-buffer t)
+           "* TODO %?\n%i\n:LOGBOOK:\n\n:END:\n" :prepend t :kill-buffer t)
           ("n" "Personal notes" entry
            (file+headline +org-capture-notes-file "Inbox")
            "* %u %?\n%i\n%a" :prepend t :kill-buffer t)
-          ;;
           ;;
           ("p" "Templates for projects")
           ("pt" "Project todo" entry ; {project-root}/todo.org
@@ -63,7 +63,7 @@
            (file+headline +org-capture-project-notes-file "Changelog")
            "* TODO %?\n%i\n%a" :prepend t :kill-buffer t)
           ("j" "Journal" entry
-           (file+olp+datetree "~/Dropbox/org/journal.org")
+           (file+olp+datetree (expand-file-name "journal.org" org-beorg-directory))
            "* %?\nEntered on %U\n %i\n" :empty-lines 1)))
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.8))
 
@@ -149,7 +149,7 @@
 
   ;; default article
   (setq org-latex-classes
-        '("article" "
+        '(("article" "
 %!TEX TS-program = xelatex
 %!TEX encoding = UTF-8 Unicode
 
@@ -209,11 +209,11 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
                         [NO-DEFAULT-PACKAGES]
                       "
 
-          ("\\section{%s}" . "\\section*{%s}")
-          ("\\subsection{%s}" . "\\subsection*{%s}")
-          ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-          ("\\paragraph{%s}" . "\\paragraph*{%s}")
-          ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+           ("\\section{%s}" . "\\section*{%s}")
+           ("\\subsection{%s}" . "\\subsection*{%s}")
+           ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+           ("\\paragraph{%s}" . "\\paragraph*{%s}")
+           ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
   ;; (add-to-list 'org-latex-packages-alist '("" "minted"))
   ;; (add-to-list 'org-export-latex-packages-alist '("" "minted"))
@@ -366,6 +366,35 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
 
   ;; (setq org-modules (append org-modules '(org-drill)))
   )
+
+(use-package evil-org
+  :hook ((org-mode . evil-org-mode)
+         (org-trello-mode . evil-org-mode))
+  :delight
+  evil-org-mode
+  :straight t
+  :after org
+  ;; :hook (org-mode . evil-org-mode)
+  :general
+  (:states 'insert :keymaps 'evil-org-mode-map
+           "M-h"     #'org-metaleft
+           "M-l"     #'org-metaright)
+  (:states 'normal :keymaps 'evil-org-mode-map
+	   "H" #'org-shiftleft
+	   "L" #'org-shiftright
+	   "K" #'org-shiftup
+	   "J" (lambda ()
+		 (interactive)
+		 (if (current-line-starts-with "*")
+                     (call-interactively #'org-shiftdown)
+		   (call-interactively #'evil-join)))
+	   "D" #'org-cut-subtree))
+
+(use-package evil-org-agenda
+  :straight nil
+  :after evil-org
+  :config
+  (evil-org-agenda-set-keys))
 
 
 (use-package ox-hugo
