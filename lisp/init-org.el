@@ -447,7 +447,6 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
   (appt-message-warning-time 5) ;; set appt waring to 15 minutes prior to appointment)
   ;; (appt-display-duration 20) ;; 这里已经被notify-send接管了，所以此处持续时间无效)
   (appt-display-mode-line t) ;; show in the modeline
-
   ;; (org-agenda-files `(,org-directory))
   (org-agenda-insert-diary-extract-time t)
   (org-agenda-compact-blocks t)
@@ -465,7 +464,7 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
   (org-agenda-hide-tags-regexp ":\\w+:")
   (org-agenda-todo-ignore-with-date nil)
   (org-agenda-todo-ignore-deadlines 'far)
-  (org-agenda-todo-ignore-scheduled 'all)
+  ;; (org-agenda-todo-ignore-scheduled 'all)
   (org-agenda-todo-ignore-timestamp nil)
   (org-agenda-skip-deadline-if-done t)
   (org-agenda-skip-scheduled-if-done t)
