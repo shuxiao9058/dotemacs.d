@@ -191,10 +191,10 @@ WIN-ID : Window index."
         ;; default is \x2502 but it is very slow on Mac
         highlight-indent-guides-character ?\xFFE8
         highlight-indent-guides-responsive 'top)
-  :config
-  (set-face-background 'highlight-indent-guides-odd-face "darkgray")
-  (set-face-background 'highlight-indent-guides-even-face "dimgray")
-  (set-face-foreground 'highlight-indent-guides-character-face "dimgray")
+  ;; :config
+  ;; (set-face-background 'highlight-indent-guides-odd-face "darkgray")
+  ;; (set-face-background 'highlight-indent-guides-even-face "dimgray")
+  ;; (set-face-foreground 'highlight-indent-guides-character-face "dimgray")
   )
 
 (use-package display-fill-column-indicator
@@ -211,9 +211,9 @@ WIN-ID : Window index."
   (setq hl-paren-delay 0.2)
   (setq hl-paren-colors
 	'("SpringGreen3" "IndianRed1" "IndianRed3" "IndianRed4"))
-  :config
-  (set-face-attribute 'hl-paren-face nil :weight 'bold)
-  (custom-set-faces '(show-paren-match ((t (:foreground "SpringGreen1" :underline t)))))
+  ;; :config
+  ;; (set-face-attribute 'hl-paren-face nil :weight 'bold)
+  ;; (custom-set-faces '(show-paren-match ((t (:foreground "SpringGreen1" :underline t)))))
   )
 
 ;; (use-package dashboard

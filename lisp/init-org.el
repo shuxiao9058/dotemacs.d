@@ -3,16 +3,55 @@
 (use-package org
   :straight t
   :ensure t
+  :custom
+  (org-todo-keywords '((sequence "TODO(t)" "HOLD(h!)" "NEXT(n!)" "WAIT(w!)" "|" "DONE(d!)" "CANCELLED(c@/!)")
+                       (sequence "REPORT(r)" "BUG(b)" "KNOWNCAUSE(k)" "|" "FIXED(f!)")))
+  (org-todo-keyword-faces
+   '(("TODO"       :foreground "#7c7c75" :weight bold)
+     ("HOLD"       :foreground "#feb24c" :weight bold)
+     ("NEXT"       :foreground "#0098dd" :weight bold)
+     ("WAIT"       :foreground "#9f7efe" :weight bold)
+     ("DONE"       :foreground "#50a14f" :weight bold)
+     ("CANCELLED"  :foreground "#ff6480" :weight bold)
+     ("REPORT"     :foreground "magenta" :weight bold)
+     ("BUG"        :foreground "red"     :weight bold)
+     ("KNOWNCAUSE" :foreground "yellow"  :weight bold)
+     ("FIXED"      :foreground "green"   :weight bold)))
+  (org-use-fast-todo-selection 'expert)
+  (org-enforce-todo-dependencies t)
+  (org-enforce-todo-checkbox-dependencies t)
+  (org-priority-faces '((?A :foreground "red")
+                        (?B :foreground "orange")
+                        (?C :foreground "yellow")))
+  (org-global-properties '(("EFFORT_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00")
+			   ("STYLE_ALL" . "habit")))
+  (org-columns-default-format "%25ITEM %TODO %SCHEDULED %DEADLINE %3PRIORITY %TAGS %CLOCKSUM %EFFORT{:}")
+  ;; Remove CLOSED: [timestamp] after switching to non-DONE states
+  (org-closed-keep-when-no-todo t)
+  ;; log
+  (org-log-done 'time)
+  (org-log-repeat 'time)
+  (org-log-redeadline 'note)
+  (org-log-reschedule 'note)
+  (org-log-into-drawer t)
+  (org-log-state-notes-insert-after-drawers nil)
+
+
+  ;; tags
+  (org-tags-column 0)
+  (org-fast-tag-selection-single-key t)
+  (org-track-ordered-property-with-tag t)
   :config
   (add-hook 'org-mode-hook
             (lambda () (setq truncate-lines nil)))
 
-  (dolist (face '(org-level-1
-                  org-level-2 org-level-3
-                  org-level-4 org-level-5
-                  org-level-6 org-level-7
-                  org-level-8))
-    (set-face-attribute face nil :weight 'normal))
+
+  ;; (dolist (face '(org-level-1
+  ;;                 org-level-2 org-level-3
+  ;;                 org-level-4 org-level-5
+  ;;                 org-level-6 org-level-7
+  ;;                 org-level-8))
+  ;;   (set-face-attribute face nil :weight 'normal))
 
   (setq-default org-display-custom-times t)
   (setq org-time-stamp-custom-formats '("<%A, %e. %B %Y>" . "<%A, %e. %B %Y %H:%M>"))
@@ -30,14 +69,24 @@
 
   (setq org-directory "~/Dropbox/org")
 
-
-
-  (setq org-beorg-directory (expand-file-name "~/Dropbox/org/beorg/"))
+  (setq org-beorg-directory (expand-file-name "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/beorg/"))
   (setq +org-capture-todo-file (expand-file-name  "todo-list.org" org-beorg-directory))
   (setq +org-capture-notes-file (expand-file-name  "notes.org" org-beorg-directory))
   (setq org-agenda-files (list
-                          (expand-file-name "notes.org" org-beorg-directory)
                           (expand-file-name "todo-list.org" org-beorg-directory)))
+  ;; (expand-file-name "notes.org" org-beorg-directory)
+
+
+  (setq org-refile-targets
+        '((org-agenda-files :maxlevel . 2)))
+
+  (setq org-tag-alist
+	'(("ignore" . ?i)
+	  ("CAT" . ?c)
+	  ("PMP" . ?p)))
+
+  (setq org-todo-keywords '((sequence "TODO(t)" "DONE(d)")))
+
 
   ;; (setq org-mobile-directory (expand-file-name "~/Dropbox/org/beorg/"))
   ;; (setq org-mobile-files (list
@@ -46,25 +95,25 @@
 
   (setq org-capture-templates
         '(("t" "Personal todo" entry
-           (file+headline +org-capture-todo-file "Inbox")
-           "* TODO %?\n%i\n:LOGBOOK:\n\n:END:\n" :prepend t :kill-buffer t)
-          ("n" "Personal notes" entry
-           (file+headline +org-capture-notes-file "Inbox")
-           "* %u %?\n%i\n%a" :prepend t :kill-buffer t)
-          ;;
-          ("p" "Templates for projects")
-          ("pt" "Project todo" entry ; {project-root}/todo.org
-           (file+headline +org-capture-project-todo-file "TODOs")
-           "* TODO %?\n%i\n%a" :prepend t :kill-buffer t)
-          ("pn" "Project notes" entry ; {project-root}/notes.org
-           (file+headline +org-capture-project-notes-file "Notes")
-           "* TODO %?\n%i\n%a" :prepend t :kill-buffer t)
-          ("pc" "Project changelog" entry ; {project-root}/changelog.org
-           (file+headline +org-capture-project-notes-file "Changelog")
-           "* TODO %?\n%i\n%a" :prepend t :kill-buffer t)
-          ("j" "Journal" entry
-           (file+olp+datetree (expand-file-name "journal.org" org-beorg-directory))
-           "* %?\nEntered on %U\n %i\n" :empty-lines 1)))
+	   (file+headline +org-capture-todo-file "Inbox")
+	   "* TODO %?\n%i\n:LOGBOOK:\n\n:END:\n" :prepend t :kill-buffer t)
+	  ("n" "Personal notes" entry
+	   (file+headline +org-capture-notes-file "Inbox")
+	   "* %u %?\n%i\n%a" :prepend t :kill-buffer t)
+	  ;;
+	  ("p" "Templates for projects")
+	  ("pt" "Project todo" entry ; {project-root}/todo.org
+	   (file+headline +org-capture-project-todo-file "TODOs")
+	   "* TODO %?\n%i\n%a" :prepend t :kill-buffer t)
+	  ("pn" "Project notes" entry ; {project-root}/notes.org
+	   (file+headline +org-capture-project-notes-file "Notes")
+	   "* TODO %?\n%i\n%a" :prepend t :kill-buffer t)
+	  ("pc" "Project changelog" entry ; {project-root}/changelog.org
+	   (file+headline +org-capture-project-notes-file "Changelog")
+	   "* TODO %?\n%i\n%a" :prepend t :kill-buffer t)
+	  ("j" "Journal" entry
+	   (file+olp+datetree (expand-file-name "journal.org" org-beorg-directory))
+	   "* %?\nEntered on %U\n %i\n" :empty-lines 1)))
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.8))
 
   ;; minted required:
@@ -74,36 +123,36 @@
   (setq org-latex-listings 'minted)
 
   (setq org-latex-minted-langs  '((emacs-lisp "common-lisp")
-                                  (cc "c++")
-                                  (cperl "perl")
-                                  (shell-script "bash")
-                                  (caml "ocaml")
-                                  (emacs-lisp "common-lisp")
-                                  ;; (lisp "common-lisp")
-                                  ;; (clojure "Lisp")
-                                  ;; (c "C")
-                                  ;; (cc "c++")
-                                  ;; (fortran "fortran")
-                                  ;; (perl "Perl")
-                                  ;; (cperl "Perl")
-                                  ;; (python "Python")
-                                  ;; (ruby "Ruby")
-                                  ;; (html "HTML")
-                                  ;; (xml "XML")
-                                  ;; (tex "TeX")
-                                  ;; (latex "TeX")
-                                  ;; (shell-script "bash")
-                                  ;; (gnuplot "Gnuplot")
-                                  ;; (ocaml "Caml")
-                                  ;; (sql "SQL")
-                                  ;; (sqlite "sql")
-                                  ;; (R-mode "R")
-                                  (go "go")
-                                  (lua "lua")
-                                  (shell "shell")
-                                  (caml "ocaml")
-                                  (csp "text")
-                                  ))
+				  (cc "c++")
+				  (cperl "perl")
+				  (shell-script "bash")
+				  (caml "ocaml")
+				  (emacs-lisp "common-lisp")
+				  ;; (lisp "common-lisp")
+				  ;; (clojure "Lisp")
+				  ;; (c "C")
+				  ;; (cc "c++")
+				  ;; (fortran "fortran")
+				  ;; (perl "Perl")
+				  ;; (cperl "Perl")
+				  ;; (python "Python")
+				  ;; (ruby "Ruby")
+				  ;; (html "HTML")
+				  ;; (xml "XML")
+				  ;; (tex "TeX")
+				  ;; (latex "TeX")
+				  ;; (shell-script "bash")
+				  ;; (gnuplot "Gnuplot")
+				  ;; (ocaml "Caml")
+				  ;; (sql "SQL")
+				  ;; (sqlite "sql")
+				  ;; (R-mode "R")
+				  (go "go")
+				  (lua "lua")
+				  (shell "shell")
+				  (caml "ocaml")
+				  (csp "text")
+				  ))
   ;; (setq org-latex-minted-options
   ;;       '(;; ("obeytabs" "true")
   ;;         ;; ("mathescape" "true")
@@ -209,11 +258,11 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
                         [NO-DEFAULT-PACKAGES]
                       "
 
-           ("\\section{%s}" . "\\section*{%s}")
-           ("\\subsection{%s}" . "\\subsection*{%s}")
-           ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-           ("\\paragraph{%s}" . "\\paragraph*{%s}")
-           ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+	   ("\\section{%s}" . "\\section*{%s}")
+	   ("\\subsection{%s}" . "\\subsection*{%s}")
+	   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+	   ("\\paragraph{%s}" . "\\paragraph*{%s}")
+	   ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
   ;; (add-to-list 'org-latex-packages-alist '("" "minted"))
   ;; (add-to-list 'org-export-latex-packages-alist '("" "minted"))
@@ -389,6 +438,127 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
                      (call-interactively #'org-shiftdown)
 		   (call-interactively #'evil-join)))
 	   "D" #'org-cut-subtree))
+
+(use-package org-agenda
+  :ensure nil
+  :straight nil
+  :after org
+  :hook (org-agenda-finalize . org-agenda-to-appt)
+  :config
+  ;; update appt list per 10 minutes
+  (run-at-time nil 600 'org-agenda-to-appt)
+  :custom
+  ;; (org-agenda-files `(,org-directory))
+  (org-agenda-insert-diary-extract-time t)
+  (org-agenda-compact-blocks t)
+  (org-agenda-block-separator nil)
+  (org-agenda-sticky t)
+  ;; holidays
+  (org-agenda-include-diary t)
+  (org-agenda-include-deadlines t)
+  (org-agenda-follow-indirect t)
+  (org-agenda-inhibit-startup t)
+  (org-agenda-show-all-dates t)
+  (org-agenda-time-leading-zero t)
+  (org-agenda-start-with-log-mode t)
+  (org-agenda-start-with-clockreport-mode t)
+  (org-agenda-hide-tags-regexp ":\\w+:")
+  (org-agenda-todo-ignore-with-date nil)
+  (org-agenda-todo-ignore-deadlines 'far)
+  (org-agenda-todo-ignore-scheduled 'all)
+  (org-agenda-todo-ignore-timestamp nil)
+  (org-agenda-skip-deadline-if-done t)
+  (org-agenda-skip-scheduled-if-done t)
+  (org-agenda-skip-timestamp-if-done t)
+  (org-agenda-skip-unavailable-files t)
+  (org-agenda-skip-scheduled-delay-if-deadline t)
+  (org-agenda-skip-scheduled-if-deadline-is-shown t)
+  (org-agenda-skip-additional-timestamps-same-entry t)
+  (org-agenda-text-search-extra-files '(agenda-archives))
+  (org-agenda-clockreport-parameter-plist
+   '(:link t :maxlevel 5 :fileskip0 t :compact nil :narrow 80))
+  (org-agenda-columns-add-appointments-to-effort-sum t)
+  (org-agenda-restore-windows-after-quit t)
+  (org-agenda-window-setup 'current-window)
+  ;; starts from Monday
+  (org-agenda-start-on-weekday 1)
+  (org-agenda-use-time-grid t)
+  (org-agenda-timegrid-use-ampm nil)
+  (org-agenda-search-headline-for-time nil)
+  )
+
+;; Record the time
+(use-package org-clock
+  :straight nil
+  :ensure nil
+  :after org
+  :functions notify-send
+  :custom
+  (org-clock-in-resume t)
+  (org-clock-idle-time 15)
+  (org-clock-into-drawer t)
+  (org-clock-out-when-done t)
+  (org-clock-persist 'history)
+  (org-clock-history-length 20)
+  (org-clock-mode-line-total 'today)
+  (org-clock-display-default-range 'thisweek)
+  (org-clock-in-switch-to-state "NEXT")
+  (org-clock-out-switch-to-state "WAIT")
+  (org-clock-out-remove-zero-time-clocks t)
+  (org-clock-report-include-clocking-task t)
+  (org-show-notification-handler (lambda (msg)
+                                   (notify-send :title "Org Clock"
+                                                :body msg
+                                                :timeout 5000
+                                                :urgency 'critical)))
+  :config
+  (org-clock-persistence-insinuate))
+
+
+;; Write codes in org-mode
+(use-package org-src
+  :straight nil
+  :ensure nil
+  :after org
+  :hook (org-babel-after-execute . org-redisplay-inline-images)
+  :bind (:map org-src-mode-map
+	      ;; consistent with separedit/magit
+	      ("C-c C-c" . org-edit-src-exit))
+  :custom
+  (org-src-fontify-natively t)
+  (org-src-tab-acts-natively t)
+  (org-src-preserve-indentation t)
+  (org-src-window-setup 'current-window)
+  (org-confirm-babel-evaluate nil)
+  (org-edit-src-content-indentation 0)
+  (org-src-lang-modes '(("C"      . c)
+                        ("C++"    . c++)
+                        ("bash"   . sh)
+                        ("cpp"    . c++)
+                        ("dot"    . graphviz-dot)
+                        ("elisp"  . emacs-lisp)
+                        ("ocaml"  . tuareg)
+                        ("shell"  . sh)
+                        ("sqlite" . sql)))
+  (org-babel-load-languages '((awk        . t)
+			      (C          . t)
+			      (calc       . t)
+			      (dot        . t)
+			      (emacs-lisp . t)
+			      (eshell     . t)
+			      (gnuplot    . t)
+			      (ocaml      . t)
+			      (python     . t)
+			      (shell      . t)
+			      (sql        . t))))
+
+(use-package org-habit
+  :straight nil
+  :ensure nil
+  :after org
+  :custom
+  (org-habit-show-habits t)
+  (org-habit-show-all-today t))
 
 (use-package evil-org-agenda
   :straight nil
