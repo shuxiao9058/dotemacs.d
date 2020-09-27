@@ -35,9 +35,7 @@ of an error, just add the package to a list of missing packages."
   "*Try to require FEATURE, but don't signal an error if 'require' fails."
   `(require ,feature ,file 'noerror))
 
-
-
-;{Ensure Executables};
+;;{Ensure Executables};
 ;; Add any executables that must be found
 (defun ensure-executable (exec)
   (unless (executable-find exec)
@@ -57,11 +55,11 @@ of an error, just add the package to a list of missing packages."
   (if (not (string-equal (ad-get-arg 0) "%s%s"))
       (let ((deactivate-mark nil)
             (inhibit-read-only t))
-      (with-current-buffer "*Messages*"
-        (goto-char (point-max))
-                  (if (not (bolp))
-                      (newline))
-                  (insert (current-time-microseconds)))
+	(with-current-buffer "*Messages*"
+          (goto-char (point-max))
+          (if (not (bolp))
+              (newline))
+          (insert (current-time-microseconds)))
         )))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -106,6 +104,20 @@ Accepts the same arguments as `message'."
                  ;;    'face 'warning))
                  format-string)
         ,@args))))
+
+;;
+;; Growl (Mac OS X only)
+;;
+(defun growl-notify (message &optional title)
+  "Display a Growl MESSAGE. The optional TITLE's default value is \"Emacs\"."
+  (interactive "Message: ")
+  (let ((g-title (if (and title (not (eq title ""))) title "Emacs")))
+    (shell-command
+     (concat
+      "growlnotify"
+      " --image /Applications/Emacs.app/Contents/Resources/Emacs.icns"
+      " --title " (shell-quote-argument g-title)
+      " --message " (shell-quote-argument message)))))
 
 (provide 'core-lib)
 ;;; core-lib.el ends here

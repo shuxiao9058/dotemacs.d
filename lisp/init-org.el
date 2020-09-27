@@ -28,6 +28,7 @@
   (org-columns-default-format "%25ITEM %TODO %SCHEDULED %DEADLINE %3PRIORITY %TAGS %CLOCKSUM %EFFORT{:}")
   ;; Remove CLOSED: [timestamp] after switching to non-DONE states
   (org-closed-keep-when-no-todo t)
+
   ;; log
   (org-log-done 'time)
   (org-log-repeat 'time)
@@ -36,36 +37,34 @@
   (org-log-into-drawer t)
   (org-log-state-notes-insert-after-drawers nil)
 
-
   ;; tags
   (org-tags-column 0)
   (org-fast-tag-selection-single-key t)
   (org-track-ordered-property-with-tag t)
+
+  ;; calendar
+  (org-time-stamp-custom-formats '("<%A, %e. %B %Y>" . "<%A, %e. %B %Y %H:%M>"))
+  (org-agenda-start-on-weekday 1)
+  (calendar-week-start-day 1)
+  (org-display-custom-times t)
   :config
   (add-hook 'org-mode-hook
             (lambda () (setq truncate-lines nil)))
+  (dolist (face '(org-level-1
+                  org-level-2 org-level-3
+                  org-level-4 org-level-5
+                  org-level-6 org-level-7
+                  org-level-8))
+    (set-face-attribute face nil :weight 'normal))
 
-
-  ;; (dolist (face '(org-level-1
-  ;;                 org-level-2 org-level-3
-  ;;                 org-level-4 org-level-5
-  ;;                 org-level-6 org-level-7
-  ;;                 org-level-8))
-  ;;   (set-face-attribute face nil :weight 'normal))
-
-  (setq-default org-display-custom-times t)
-  (setq org-time-stamp-custom-formats '("<%A, %e. %B %Y>" . "<%A, %e. %B %Y %H:%M>"))
-  (setq org-agenda-start-on-weekday 1)
-  (setq calendar-week-start-day 1)
-
-  ;; (setq prettify-symbols-unprettify-at-point 'right-edge)
-  ;; (add-hook 'org-mode-hook
-  ;;           (lambda ()
-  ;;             "Beautify Org Checkbox Symbol"
-  ;;             (push '("[ ]" . "☐") prettify-symbols-alist)
-  ;;             (push '("[X]" . "☑") prettify-symbols-alist)
-  ;;             (push '("[-]" . "❍") prettify-symbols-alist)
-  ;;             (prettify-symbols-mode)))
+  (setq prettify-symbols-unprettify-at-point 'right-edge)
+  (add-hook 'org-mode-hook
+            (lambda ()
+              "Beautify Org Checkbox Symbol"
+              (push '("[ ]" . "☐") prettify-symbols-alist)
+              (push '("[X]" . "☑") prettify-symbols-alist)
+              (push '("[-]" . "❍") prettify-symbols-alist)
+              (prettify-symbols-mode)))
 
   (setq org-directory "~/Dropbox/org")
 
@@ -74,7 +73,6 @@
   (setq +org-capture-notes-file (expand-file-name  "notes.org" org-beorg-directory))
   (setq org-agenda-files (list
                           (expand-file-name "todo-list.org" org-beorg-directory)))
-  ;; (expand-file-name "notes.org" org-beorg-directory)
 
 
   (setq org-refile-targets
@@ -85,13 +83,6 @@
 	  ("CAT" . ?c)
 	  ("PMP" . ?p)))
 
-  (setq org-todo-keywords '((sequence "TODO(t)" "DONE(d)")))
-
-
-  ;; (setq org-mobile-directory (expand-file-name "~/Dropbox/org/beorg/"))
-  ;; (setq org-mobile-files (list
-  ;;                         (expand-file-name "todo-list.org" org-mobile-directory)))
-  ;; (setq org-mobile-inbox-for-pull (expand-file-name "refile-beorg.org" org-mobile-directory))
 
   (setq org-capture-templates
         '(("t" "Personal todo" entry
@@ -448,6 +439,15 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
   ;; update appt list per 10 minutes
   (run-at-time nil 600 'org-agenda-to-appt)
   :custom
+  ;; appt
+  (appt-display-format 'window)
+  (appt-disp-window-function
+   (lambda(min-to-app new-time msg)(growl-notify "Reminder" (format "%s" msg))))
+  (appt-display-interval 1) ;; 每过1分钟提醒一次
+  (appt-message-warning-time 5) ;; set appt waring to 15 minutes prior to appointment)
+  ;; (appt-display-duration 20) ;; 这里已经被notify-send接管了，所以此处持续时间无效)
+  (appt-display-mode-line t) ;; show in the modeline
+
   ;; (org-agenda-files `(,org-directory))
   (org-agenda-insert-diary-extract-time t)
   (org-agenda-compact-blocks t)
@@ -485,15 +485,27 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
   (org-agenda-use-time-grid t)
   (org-agenda-timegrid-use-ampm nil)
   (org-agenda-search-headline-for-time nil)
+  :config
+  (appt-activate 1)
+  (org-agenda-to-appt)
+  )
+
+;; overwrite built-in function (proviError running timer appt-delete-window': (error "No buffer named *appt-buf*")de 'init-org)
+(defun appt-delete-window ()
+  "Nothing.Overwrite built-in function."
   )
 
 ;; Record the time
 (use-package org-clock
   :straight nil
-  :ensure nil
-  :after org
-  :functions notify-send
+  ;; ensure we always run org-clock-persistence-insinuate below
+  :demand t
+  ;; :ensure nil
+  :after (org alert)
   :custom
+  (org-clock-persist 'history)
+  (org-clock-persist-file (expand-file-name "org-clock-save.el" poly-cache-dir))
+  (org-clock-sound t)
   (org-clock-in-resume t)
   (org-clock-idle-time 15)
   (org-clock-into-drawer t)
@@ -506,14 +518,13 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
   (org-clock-out-switch-to-state "WAIT")
   (org-clock-out-remove-zero-time-clocks t)
   (org-clock-report-include-clocking-task t)
-  (org-show-notification-handler (lambda (msg)
-                                   (notify-send :title "Org Clock"
-                                                :body msg
-                                                :timeout 5000
-                                                :urgency 'critical)))
   :config
-  (org-clock-persistence-insinuate))
-
+  (org-clock-persistence-insinuate)
+  (setq org-show-notification-handler
+	'(lambda (m)
+	   (let ((ring-bell-function nil))
+	     (org-clock-play-sound org-clock-sound)
+	     (alert m :timeout 1200 :title "Org Clock Notify" :severity 'high)))))
 
 ;; Write codes in org-mode
 (use-package org-src
