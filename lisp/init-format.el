@@ -6,6 +6,7 @@
   :hook ((
 	  lua-mode
 	  go-mode
+	  python-mode
 	  ;; cc-mode
 	  c-mode
 	  c++-mode
