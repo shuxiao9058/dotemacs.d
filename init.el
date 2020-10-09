@@ -59,6 +59,7 @@
 (require 'init-company)
 ;; (require 'init-lsp)
 (require 'init-go)
+(require 'init-python)
 (require 'init-lua)
 (require 'init-lisp)
 (require 'init-web)

@@ -326,5 +326,10 @@ WIN-ID : Window index."
   (alert-default-style 'osx-notifier)
   )
 
+;; ;; github style emoji input
+;; (use-package company-emoji
+;;   :config
+;;   (add-to-list 'company-backends 'company-emoji))
+
 (provide 'init-ui)
 ;;; init-ui.el ends here

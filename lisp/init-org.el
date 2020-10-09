@@ -25,7 +25,8 @@
                         (?C :foreground "yellow")))
   (org-global-properties '(("EFFORT_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00")
 			   ("STYLE_ALL" . "habit")))
-  (org-columns-default-format "%25ITEM %TODO %SCHEDULED %DEADLINE %3PRIORITY %TAGS %CLOCKSUM %EFFORT{:}")
+  ;; (org-columns-default-format "%25ITEM %TODO %SCHEDULED %DEADLINE %3PRIORITY %TAGS %CLOCKSUM %EFFORT{:}")
+  ;; (org-columns-default-format "%40ITEM(Task) %Effort(EE){:} %CLOCKSUM(Time Spent) %SCHEDULED(Scheduled) %DEADLINE(Deadline)")
   ;; Remove CLOSED: [timestamp] after switching to non-DONE states
   (org-closed-keep-when-no-todo t)
 
@@ -48,6 +49,17 @@
   (calendar-week-start-day 1)
   (org-display-custom-times t)
   :config
+  (add-to-list 'org-modules 'org-capture)
+  (add-to-list 'org-modules 'org-habit)
+  (add-to-list 'org-modules 'org-timer)
+  (add-to-list 'org-modules 'org-protocol)
+  (add-to-list 'org-modules 'org-cliplink)
+  (add-to-list 'org-modules 'org-dashboard)
+  (add-to-list 'org-modules 'org-journal)
+  (add-to-list 'org-modules 'org-agenda)
+  (add-to-list 'org-modules 'org-pdfview)
+  (add-to-list 'org-modules 'org-download)
+
   (add-hook 'org-mode-hook
             (lambda () (setq truncate-lines nil)))
   (dolist (face '(org-level-1
@@ -57,14 +69,14 @@
                   org-level-8))
     (set-face-attribute face nil :weight 'normal))
 
-  (setq prettify-symbols-unprettify-at-point 'right-edge)
-  (add-hook 'org-mode-hook
-            (lambda ()
-              "Beautify Org Checkbox Symbol"
-              (push '("[ ]" . "☐") prettify-symbols-alist)
-              (push '("[X]" . "☑") prettify-symbols-alist)
-              (push '("[-]" . "❍") prettify-symbols-alist)
-              (prettify-symbols-mode)))
+  ;; (setq prettify-symbols-unprettify-at-point 'right-edge)
+  ;; (add-hook 'org-mode-hook
+  ;;           (lambda ()
+  ;;             "Beautify Org Checkbox Symbol"
+  ;;             (push '("[ ]" . "☐") prettify-symbols-alist)
+  ;;             (push '("[X]" . "☑") prettify-symbols-alist)
+  ;;             (push '("[-]" . "❍") prettify-symbols-alist)
+  ;;             (prettify-symbols-mode)))
 
   (setq org-directory "~/Dropbox/org")
 
@@ -74,6 +86,8 @@
   (setq org-agenda-files (list
                           (expand-file-name "todo-list.org" org-beorg-directory)))
 
+  ;; archived location
+  (setq org-archive-location (concat org-directory "archive/%s_archive::"))
 
   (setq org-refile-targets
         '((org-agenda-files :maxlevel . 2)))
@@ -452,6 +466,11 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
   (org-agenda-compact-blocks t)
   (org-agenda-block-separator nil)
   (org-agenda-sticky t)
+
+  ;; Do not dim blocked tasks
+  (org-agenda-dim-blocked-tasks nil)
+  ;; Compact the block agenda view
+  (org-agenda-compact-blocks t)
   ;; holidays
   (org-agenda-include-diary t)
   (org-agenda-include-deadlines t)
@@ -484,6 +503,14 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
   (org-agenda-use-time-grid t)
   (org-agenda-timegrid-use-ampm nil)
   (org-agenda-search-headline-for-time nil)
+  (org-agenda-prefix-format
+   '((agenda . " %i %-12:c%?-12t% s%b")
+     (todo . " %i %b")
+     ;; (todo . "[%-4e] % t % s %?-17b")
+     ;;(tags . "[%-4e] %-17(org-format-outline-path (org-get-outline-path))")
+     ;; (search . "[%-4e] %?-17b")
+     )
+   )
   :config
   (appt-activate 1)
   (org-agenda-to-appt)
@@ -499,14 +526,13 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
   :straight nil
   ;; ensure we always run org-clock-persistence-insinuate below
   :demand t
-  ;; :ensure nil
   :after (org alert)
   :custom
   (org-clock-persist 'history)
   (org-clock-persist-file (expand-file-name "org-clock-save.el" poly-cache-dir))
   (org-clock-sound t)
   (org-clock-in-resume t)
-  (org-clock-idle-time 15)
+  (org-clock-idle-time 10)
   (org-clock-into-drawer t)
   (org-clock-out-when-done t)
   (org-clock-persist 'history)

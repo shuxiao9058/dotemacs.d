@@ -257,7 +257,7 @@
 (use-package eglot
   :straight t
   :hook
-  ((go-mode lua-mode python-mode c-mode c++-mode) . eglot-ensure)
+  ((go-mode lua-mode python-mode c-mode c++-mode python-mode) . eglot-ensure)
   :custom
   (eglot-stay-out-of '(flymake))
   (eglot-ignored-server-capabilites '(:documentHighlightProvider))

@@ -28,7 +28,6 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;;; font
-
 ;; (when (member "Source Code Pro" (font-family-list))
 ;;   (add-to-list 'initial-frame-alist '(font . "Source Code Pro"))
 ;;   (add-to-list 'default-frame-alist '(font . "Source Code Pro")))
@@ -189,6 +188,14 @@
       `((:eval (if (buffer-file-name)
                    (abbreviate-file-name (buffer-file-name))
                  "%b"))))
+
+;; emoji
+(when IS-MAC
+  (if (version< "27.0" emacs-version)
+      (set-fontset-font
+       "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
+    (set-fontset-font
+     t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend)))
 
 (provide 'core-ui)
 ;;; core-ui.el ends here
