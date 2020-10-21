@@ -645,8 +645,8 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
   :straight t
   :commands (org-bullets-mode org-bullets)
   :hook (org-mode . org-bullets-mode)
-  :custom
-  (org-bullets-bullet-list '("⊢" "⋮" "⋱" "⋱" "⋱"))
+  ;; :custom
+  ;; (org-bullets-bullet-list '("⊢" "⋮" "⋱" "⋱" "⋱"))
   ;; (setq org-bullets-bullet-list '("🐳" "🐬" "🐠" "🐟" "🐤"))
   ;; (setq )
   ;; (setq org-bullets-bullet-list '("①" "②" "③" "④" "⑤" "⑥" "⑦" "⑧" "⑨"))
