@@ -202,9 +202,9 @@
   :custom
   ;; (company-tabnine-max-num-results 9)
   (company-tabnine-no-continue t)
-  :init
-  (setq company-tabnine-executable-args
-	'("--client" "emacs" "--log-level" "Error" "--log-file-path" "/tmp/TabNine.log"))
+  ;; :init
+  ;; (setq company-tabnine-executable-args
+  ;; 	'("--client" "emacs" "--log-level" "Error" "--log-file-path" "/tmp/TabNine.log"))
   :config
   (setq company-tabnine-max-num-results 4)
   (when (> 9 company-tabnine-max-num-results)
@@ -225,7 +225,6 @@
 
   (advice-add #'company--transform-candidates :around #'my-company--transform-candidates)
   (advice-add #'company-tabnine :around #'my-company-tabnine)
-
   )
 
 ;; ;; try nox
@@ -254,38 +253,38 @@
 ;; 							(company-abbrev company-dabbrev)))))
 ;; 	     )
 
-(use-package eglot
-  :straight t
-  :hook
-  ((go-mode lua-mode python-mode c-mode c++-mode python-mode) . eglot-ensure)
-  :custom
-  (eglot-stay-out-of '(flymake))
-  (eglot-ignored-server-capabilites '(:documentHighlightProvider))
-  :config
-  ;; emmylua
-  (let ((emmylua-jar-path (expand-file-name "bin/EmmyLua-LS-all.jar" poly-local-dir)))
-    (add-to-list 'eglot-server-programs
-		 `(lua-mode  . ("/usr/bin/java" "-cp" ,emmylua-jar-path "com.tang.vscode.MainKt"))))
+;; (use-package eglot
+;;   :straight t
+;;   :hook
+;;   ((go-mode lua-mode python-mode c-mode c++-mode python-mode) . eglot-ensure)
+;;   :custom
+;;   (eglot-stay-out-of '(flymake))
+;;   (eglot-ignored-server-capabilites '(:documentHighlightProvider))
+;;   :config
+;;   ;; emmylua
+;;   (let ((emmylua-jar-path (expand-file-name "bin/EmmyLua-LS-all.jar" poly-local-dir)))
+;;     (add-to-list 'eglot-server-programs
+;; 		 `(lua-mode  . ("/usr/bin/java" "-cp" ,emmylua-jar-path "com.tang.vscode.MainKt"))))
 
-  (when (executable-find "ccls")
-    (add-to-list 'eglot-server-programs '((c-mode c++-mode) "ccls"
- 					  "-init={\"compilationDatabaseDirectory\":\"build\"}")))
+;;   (when (executable-find "ccls")
+;;     (add-to-list 'eglot-server-programs '((c-mode c++-mode) "ccls"
+;;  					  "-init={\"compilationDatabaseDirectory\":\"build\"}")))
 
-  (add-hook 'eglot-managed-mode-hook (lambda()
-				       (make-local-variable 'company-backends)
-				       (setq company-backends nil)
-				       (setq company-backends
-					     '((company-tabnine :with company-capf :separate)
-					       company-dabbrev-code
-					       (company-files          ; files & directory
-						company-keywords       ; keywords
-						)
-					       (company-abbrev company-dabbrev)))))
-  ;; (set-lookup-handlers! 'eglot-mode :async t
-  ;;    :documentation #'eglot-help-at-point
-  ;;    :definition #'eglot-find-declaration
-  ;;    :references #'eglot-find-typeDefinition)
-  )
+;;   (add-hook 'eglot-managed-mode-hook (lambda()
+;; 				       (make-local-variable 'company-backends)
+;; 				       (setq company-backends nil)
+;; 				       (setq company-backends
+;; 					     '((company-tabnine :with company-capf :separate)
+;; 					       company-dabbrev-code
+;; 					       (company-files          ; files & directory
+;; 						company-keywords       ; keywords
+;; 						)
+;; 					       (company-abbrev company-dabbrev)))))
+;;   ;; (set-lookup-handlers! 'eglot-mode :async t
+;;   ;;    :documentation #'eglot-help-at-point
+;;   ;;    :definition #'eglot-find-declaration
+;;   ;;    :references #'eglot-find-typeDefinition)
+;;   )
 
 ;;     (dolist (hook (list
 ;; 		   'js-mode-hook

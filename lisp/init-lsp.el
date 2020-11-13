@@ -22,7 +22,7 @@
 			     (make-local-variable 'company-backends)
 			     (setq company-backends nil)
 			     (setq company-backends
-				   '((company-tabnine :with company-lsp :separate)
+				   '((company-tabnine :with company-capf :separate)
 				     company-dabbrev-code
 				     (company-files          ; files & directory
 				      company-keywords       ; keywords
@@ -39,7 +39,7 @@
   (lsp-enable-folding nil)             ;; use `evil-matchit' instead
   (lsp-diagnostic-package :none)   ;; prefer flycheck disable
   (lsp-flycheck-live-reporting nil)    ;; obey `flycheck-check-syntax-automatically'
-  ;; (lsp-prefer-capf t)                  ;; using `company-capf' by default
+  (lsp-prefer-capf t)                  ;; using `company-capf' by default
   (lsp-enable-snippet nil)             ;; no snippet
   (lsp-enable-file-watchers nil)       ;; turn off for better performance
   ;; (lsp-file-watch-threshold 10000)
@@ -115,23 +115,6 @@
 (use-package lsp-ivy
   :straight t
   :commands lsp-ivy-workspace-symbol)
-
-(use-package company-lsp
-  :straight t
-  :after company
-  :custom
-  (company-lsp-cache-candidates 'auto)
-  :config
-  (add-to-list 'lsp-file-watch-ignored "build")
-  ;; enable emmy-lua
-  (add-to-list 'company-lsp-filter-candidates '(lsp-emmy-lua . t))
-
-  (setq-default company-frontends
-		'(;; company-tng-frontend
-		  company-pseudo-tooltip-frontend
-		  ;; company-preview-frontend
-		  company-echo-metadata-frontend))
-  )
 
 (provide 'init-lsp)
 ;;; init-lsp ends here
