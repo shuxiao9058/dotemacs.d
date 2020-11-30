@@ -19,19 +19,19 @@
 	  (not (and (listp company-backend) (memq 'company-tabnine company-backend))))
       candidates
     (let ((candidates-table (make-hash-table :test #'equal))
-	  candidates-lsp
+	  candidates-capf
 	  candidates-tabnine)
       (dolist (candidate candidates)
 	(if (eq (get-text-property 0 'company-backend candidate)
 		'company-tabnine)
 	    (unless (gethash candidate candidates-table)
 	      (push candidate candidates-tabnine))
-	  (push candidate candidates-lsp)
+	  (push candidate candidates-capf)
 	  (puthash candidate t candidates-table)))
-      (setq candidates-lsp (nreverse candidates-lsp))
+      (setq candidates-capf (nreverse candidates-capf))
       (setq candidates-tabnine (nreverse candidates-tabnine))
       (nconc (seq-take candidates-tabnine company-tabnine-max-num-results)
-	     (seq-take candidates-lsp (- 9 company-tabnine-max-num-results))))))
+	     (seq-take candidates-capf (- 9 company-tabnine-max-num-results))))))
 
 (use-package company
   :straight t
@@ -253,38 +253,48 @@
 ;; 							(company-abbrev company-dabbrev)))))
 ;; 	     )
 
-;; (use-package eglot
-;;   :straight t
-;;   :hook
-;;   ((go-mode lua-mode python-mode c-mode c++-mode python-mode) . eglot-ensure)
-;;   :custom
-;;   (eglot-stay-out-of '(flymake))
-;;   (eglot-ignored-server-capabilites '(:documentHighlightProvider))
-;;   :config
-;;   ;; emmylua
-;;   (let ((emmylua-jar-path (expand-file-name "bin/EmmyLua-LS-all.jar" poly-local-dir)))
-;;     (add-to-list 'eglot-server-programs
-;; 		 `(lua-mode  . ("/usr/bin/java" "-cp" ,emmylua-jar-path "com.tang.vscode.MainKt"))))
+(use-package eglot
+  :straight t
+  :hook
+  ((go-mode lua-mode python-mode c-mode c++-mode python-mode) . eglot-ensure)
+  :custom
+  (eglot-stay-out-of '(flymake))
+  (eglot-ignored-server-capabilites '(:documentHighlightProvider))
+  :config
+  (setq eglot-workspace-configuration
+        '((:gopls . (:usePlaceholders t :completeUnimported  t
+				      :staticcheck nil
+				      :tests nil
+				      :analyses (:cgocall nil )
+                                      ))))
+  ;; emmylua
+  (let ((emmylua-jar-path (expand-file-name "bin/EmmyLua-LS-all.jar" poly-local-dir)))
+    (add-to-list 'eglot-server-programs
+		 `(lua-mode  . ("/usr/bin/java" "-cp" ,emmylua-jar-path "com.tang.vscode.MainKt"))))
 
-;;   (when (executable-find "ccls")
-;;     (add-to-list 'eglot-server-programs '((c-mode c++-mode) "ccls"
-;;  					  "-init={\"compilationDatabaseDirectory\":\"build\"}")))
+  (when (executable-find "ccls")
+    (add-to-list 'eglot-server-programs '((c-mode c++-mode) "ccls"
+ 					  "-init={\"compilationDatabaseDirectory\":\"build\"}")))
 
-;;   (add-hook 'eglot-managed-mode-hook (lambda()
-;; 				       (make-local-variable 'company-backends)
-;; 				       (setq company-backends nil)
-;; 				       (setq company-backends
-;; 					     '((company-tabnine :with company-capf :separate)
-;; 					       company-dabbrev-code
-;; 					       (company-files          ; files & directory
-;; 						company-keywords       ; keywords
-;; 						)
-;; 					       (company-abbrev company-dabbrev)))))
-;;   ;; (set-lookup-handlers! 'eglot-mode :async t
-;;   ;;    :documentation #'eglot-help-at-point
-;;   ;;    :definition #'eglot-find-declaration
-;;   ;;    :references #'eglot-find-typeDefinition)
-;;   )
+  (add-hook 'eglot-managed-mode-hook (lambda()
+				       (make-local-variable 'company-backends)
+				       (setq company-backends nil)
+				       (setq company-backends
+					     '((company-tabnine :with company-capf :separate)
+					       company-dabbrev-code
+					       (company-files          ; files & directory
+						company-keywords       ; keywords
+						)
+					       (company-abbrev company-dabbrev)))))
+  ;; (set-lookup-handlers! 'eglot-mode :async t
+  ;;    :documentation #'eglot-help-at-point
+  ;;    :definition #'eglot-find-declaration
+  ;;    :references #'eglot-find-typeDefinition)
+  )
+
+;; fix (void-function project-root)
+(defun project-root (project)
+  (car (project-roots project)))
 
 ;;     (dolist (hook (list
 ;; 		   'js-mode-hook

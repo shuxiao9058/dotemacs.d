@@ -56,13 +56,13 @@
   :ensure t
   :commands go-rename)
 
-(use-package go-guru
-  :straight t
-  :after go-mode
-  :ensure t
-  :commands go-guru-hl-identifier-mode
-  :init
-  (add-hook 'go-mode-hook #'go-guru-hl-identifier-mode))
+;; (use-package go-guru
+;;   :straight t
+;;   :after go-mode
+;;   :ensure t
+;;   :commands go-guru-hl-identifier-mode
+;;   :init
+;;   (add-hook 'go-mode-hook #'go-guru-hl-identifier-mode))
 
 (provide 'init-go)
 ;;; init-go.el ends here

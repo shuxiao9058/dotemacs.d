@@ -30,5 +30,24 @@
 
 (setq python-indent-offset 4)
 
+(use-package ein
+  :ensure t
+  :defer t
+  :commands (ein:notebooklist-open ein:notebooklist-login)
+  :custom
+  (ein:use-smartrep t)
+  :config
+  (cond
+   ((eq system-type 'darwin) (setq ein:console-args '("--gui=osx" "--matplotlib=osx" "--colors=Linux")))
+   ((eq system-type 'gnu/linux) (setq ein:console-args '("--gui=gtk3" "--matplotlib=gtk3" "--colors=Linux"))))
+
+  (setq ein:query-timeout 1000)
+
+  (defun load-ein ()
+    (ein:notebooklist-load)
+    (interactive)
+    (ein:notebooklist-open))
+  )
+
 (provide 'init-python)
 ;;; init-python.el ends here

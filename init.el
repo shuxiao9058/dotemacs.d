@@ -57,7 +57,7 @@
 (require 'init-proto)
 (require 'init-projectile)
 (require 'init-company)
-(require 'init-lsp)
+;; (require 'init-lsp)
 (require 'init-go)
 (require 'init-python)
 (require 'init-lua)
@@ -87,3 +87,4 @@
   (when (file-exists-p custom-file)
     (load custom-file nil t)))
 ;;; init.el ends here
+(put 'scroll-left 'disabled nil)

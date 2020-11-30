@@ -1,7 +1,9 @@
 ;;; lisp/init-format.el -*- lexical-binding: t; -*-
 
 (use-package format-all
-  :straight t
+  :straight (format-all
+             :host github
+             :repo "lassik/emacs-format-all-the-code")
   :ensure t
   :hook ((
 	  lua-mode

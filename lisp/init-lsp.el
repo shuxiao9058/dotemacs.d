@@ -60,7 +60,6 @@
 	      :around (lambda (orig-func &rest r)
 			(message (apply #'format-message r))))
 
-
   ;; (add-hook 'lsp-after-open-hook
   ;; 	       (lambda()
   ;; 		 (setq company-backends (delete 'company-capf company-backends))))

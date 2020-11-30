@@ -5,7 +5,7 @@
   :ensure t
   :custom
   (org-todo-keywords '((sequence "TODO(t)" "HOLD(h!)" "NEXT(n!)" "WAIT(w!)" "|" "DONE(d!)" "CANCELLED(c@/!)")
-                       (sequence "REPORT(r)" "BUG(b)" "KNOWNCAUSE(k)" "|" "FIXED(f!)")))
+		       (sequence "REPORT(r)" "BUG(b)" "KNOWNCAUSE(k)" "|" "FIXED(f!)")))
   (org-todo-keyword-faces
    '(("TODO"       :foreground "#7c7c75" :weight bold)
      ("HOLD"       :foreground "#feb24c" :weight bold)
@@ -21,8 +21,8 @@
   (org-enforce-todo-dependencies t)
   (org-enforce-todo-checkbox-dependencies t)
   (org-priority-faces '((?A :foreground "red")
-                        (?B :foreground "orange")
-                        (?C :foreground "yellow")))
+			(?B :foreground "orange")
+			(?C :foreground "yellow")))
   (org-global-properties '(("EFFORT_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00")
 			   ("STYLE_ALL" . "habit")))
   ;; (org-columns-default-format "%25ITEM %TODO %SCHEDULED %DEADLINE %3PRIORITY %TAGS %CLOCKSUM %EFFORT{:}")
@@ -61,12 +61,12 @@
   (add-to-list 'org-modules 'org-download)
 
   (add-hook 'org-mode-hook
-            (lambda () (setq truncate-lines nil)))
+	    (lambda () (setq truncate-lines nil)))
   (dolist (face '(org-level-1
-                  org-level-2 org-level-3
-                  org-level-4 org-level-5
-                  org-level-6 org-level-7
-                  org-level-8))
+		  org-level-2 org-level-3
+		  org-level-4 org-level-5
+		  org-level-6 org-level-7
+		  org-level-8))
     (set-face-attribute face nil :weight 'normal))
 
   ;; (setq prettify-symbols-unprettify-at-point 'right-edge)
@@ -84,13 +84,13 @@
   (setq +org-capture-todo-file (expand-file-name  "todo-list.org" org-beorg-directory))
   (setq +org-capture-notes-file (expand-file-name  "notes.org" org-beorg-directory))
   (setq org-agenda-files (list
-                          (expand-file-name "todo-list.org" org-beorg-directory)))
+			  (expand-file-name "todo-list.org" org-beorg-directory)))
 
   ;; archived location
   (setq org-archive-location (concat org-directory "archive/%s_archive::"))
 
   (setq org-refile-targets
-        '((org-agenda-files :maxlevel . 2)))
+	'((org-agenda-files :maxlevel . 2)))
 
   (setq org-tag-alist
 	'(("ignore" . ?i)
@@ -99,7 +99,7 @@
 
 
   (setq org-capture-templates
-        '(("t" "Personal todo" entry
+	'(("t" "Personal todo" entry
 	   (file+headline +org-capture-todo-file "Inbox")
 	   "* TODO %?\n%i\n:LOGBOOK:\n\n:END:\n" :prepend t :kill-buffer t)
 	  ("n" "Personal notes" entry
@@ -203,7 +203,7 @@
 
   ;; default article
   (setq org-latex-classes
-        '(("article" "
+	'(("article" "
 %!TEX TS-program = xelatex
 %!TEX encoding = UTF-8 Unicode
 
@@ -466,7 +466,6 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
   (org-agenda-compact-blocks t)
   (org-agenda-block-separator nil)
   (org-agenda-sticky t)
-
   ;; Do not dim blocked tasks
   (org-agenda-dim-blocked-tasks nil)
   ;; Compact the block agenda view

@@ -7,29 +7,29 @@
 ;;   lv-wnd)
 
 (use-package hydra
-    :straight t
-    :ensure t
-    :after outline
-    :custom
-    (hydra-if-helpful t)
-    :commands (defhydra)
-    :bind (
-           ("M-o" . hydra-base/body)
-	   )
-    ;; :config
-    ;; ;; Make hydra compatible with awesome-tab
-    ;; (advice-add 'lv-window :around 'zenith/lv-window)
-    )
+  :straight t
+  :ensure t
+  :after outline
+  :custom
+  (hydra-if-helpful t)
+  :commands (defhydra)
+  :bind (
+         ("M-o" . hydra-base/body)
+	 )
+  ;; :config
+  ;; ;; Make hydra compatible with awesome-tab
+  ;; (advice-add 'lv-window :around 'zenith/lv-window)
+  )
 
 (use-package hydra-posframe
-    :straight (hydra-posframe
-               :host github
-               :repo "Ladicle/hydra-posframe"
-               )
-    :defer t
-    :after (hydra posframe)
-    :config
-    (hydra-posframe-enable))
+  :straight (hydra-posframe
+             :host github
+             :repo "Ladicle/hydra-posframe"
+             )
+  :defer t
+  :after (hydra posframe)
+  :config
+  (hydra-posframe-enable))
 
 
 (defhydra hydra-base ()
@@ -38,18 +38,20 @@ _o_utline & outshine
 _s_traight
 awesome-_t_ab
 _w_indow
+_e_in
 "
   ("s" hydra-straight/body :exit t)
   ("w" hydra-window/body :exit t)
   ("t" awesome-fast-switch/body :exit t)
   ("o" hydra-outline/body :exit t)
+  ("e" hydra-ein/body :exit t)
   )
 
 (use-package ace-window
-    :straight t
-    :ensure t
-    :defer 5
-    )
+  :straight t
+  :ensure t
+  :defer 5
+  )
 
 ;; Activate winner mode for quickly changing window sizes, etc
 (when (fboundp 'winner-mode)
@@ -111,17 +113,17 @@ _SPC_ cancel  _o_nly this     _d_elete
          (ace-window 1)
          (add-hook 'ace-window-end-once-hook
                    'hydra-window/body))
-       )
+   )
   ("v" (lambda ()
          (interactive)
          (split-window-right)
          (windmove-right))
-       )
+   )
   ("x" (lambda ()
          (interactive)
          (split-window-below)
          (windmove-down))
-       )
+   )
   ("s" (lambda ()
          (interactive)
          (ace-window 4)
@@ -134,13 +136,13 @@ _SPC_ cancel  _o_nly this     _d_elete
          (ace-window 16)
          (add-hook 'ace-window-end-once-hook
                    'hydra-window/body))
-       )
+   )
   ("o" delete-other-windows)
   ("i" ace-maximize-window)
   ("z" (progn
          (winner-undo)
          (setq this-command 'winner-undo))
-       )
+   )
   ("Z" winner-redo)
   ("SPC" nil)
   )
@@ -246,6 +248,64 @@ _SPC_ cancel  _o_nly this     _d_elete
   ("C-S-k" awesome-tab-kill-other-buffers-in-current-group)
   ("q" nil "quit"))
 
+(defhydra hydra-ein (:hint nil)
+  "
+ Operations on Cells^^^^^^            On Worksheets^^^^              Other
+ ----------------------------^^^^^^   ------------------------^^^^   ----------------------------------^^^^
+ [_k_/_j_]^^     select prev/next     [_h_/_l_]   select prev/next   [_t_]^^         toggle output
+ [_K_/_J_]^^     move up/down         [_H_/_L_]   move left/right    [_C-l_/_C-S-l_] clear/clear all output
+ [_C-k_/_C-j_]^^ merge above/below    [_1_.._9_]  open [1st..last]   [_C-o_]^^       open console
+ [_O_/_o_]^^     insert above/below   [_+_/_-_]   create/delete      [_C-s_/_C-r_]   save/rename notebook
+ [_y_/_p_/_d_]   copy/paste           ^^^^                           [_x_]^^         close notebook
+ [_u_]^^^^       change type          ^^^^                           [_q_]^^         quit transient-state
+ [_RET_]^^^^     execute"
+
+  ("q" nil :exit t)
+  ;; ("?" spacemacs//ipython-notebook-ms-toggle-doc)
+  ("h" ein:notebook-worksheet-open-prev-or-last)
+  ("j" ein:worksheet-goto-next-input)
+  ("k" ein:worksheet-goto-prev-input)
+  ("l" ein:notebook-worksheet-open-next-or-first)
+  ("H" ein:notebook-worksheet-move-prev)
+  ("J" ein:worksheet-move-cell-down)
+  ("K" ein:worksheet-move-cell-up)
+  ("L" ein:notebook-worksheet-move-next)
+  ("t" ein:worksheet-toggle-output)
+  ("d" ein:worksheet-kill-cell)
+  ("R" ein:worksheet-rename-sheet)
+  ("y" ein:worksheet-copy-cell)
+  ("p" ein:worksheet-yank-cell)
+  ("o" ein:worksheet-insert-cell-below)
+  ("O" ein:worksheet-insert-cell-above)
+  ("u" ein:worksheet-change-cell-type)
+  ("RET" ein:worksheet-execute-cell-and-goto-next)
+  ;; Output
+  ("C-l" ein:worksheet-clear-output)
+  ("C-S-l" ein:worksheet-clear-all-output)
+  ;;Console
+  ("C-o" ein:console-open)
+  ;; Merge and split cells
+  ("C-k" ein:worksheet-merge-cell)
+  ("C-j"
+   (lambda ()
+     (interactive)
+     (ein:worksheet-merge-cell (ein:worksheet--get-ws-or-error) (ein:worksheet-get-current-cell) t t)))
+  ("s" ein:worksheet-split-cell-at-point)
+  ;; Notebook
+  ("C-s" ein:notebook-save-notebook-command)
+  ("C-r" ein:notebook-rename-command)
+  ("1" ein:notebook-worksheet-open-1th)
+  ("2" ein:notebook-worksheet-open-2th)
+  ("3" ein:notebook-worksheet-open-3th)
+  ("4" ein:notebook-worksheet-open-4th)
+  ("5" ein:notebook-worksheet-open-5th)
+  ("6" ein:notebook-worksheet-open-6th)
+  ("7" ein:notebook-worksheet-open-7th)
+  ("8" ein:notebook-worksheet-open-8th)
+  ("9" ein:notebook-worksheet-open-last)
+  ("+" ein:notebook-worksheet-insert-next)
+  ("-" ein:notebook-worksheet-delete)
+  ("x" ein:notebook-close))
 
 ;; (defhydra hydra-clock (:color blue)
 ;;     "
@@ -271,35 +331,34 @@ _SPC_ cancel  _o_nly this     _d_elete
 ;;     ("r" org-clock-report)
 ;;   )
 
-
-					; (defhydra hydra-straight-helper (:hint nil)
-					;   "
-					; _c_heck all       |_f_etch all     |_m_erge all      |_n_ormalize all   |p_u_sh all
-					; _C_heck package   |_F_etch package |_M_erge package  |_N_ormlize package|p_U_sh package
-					; ----------------^^+--------------^^+---------------^^+----------------^^+------------||_q_uit||
-					; _r_ebuild all     |_p_ull all      |_v_ersions freeze|_w_atcher start   |_g_et recipe
-					; _R_ebuild package |_P_ull package  |_V_ersions thaw  |_W_atcher quit    |prun_e_ build"
-					;   ("c" straight-check-all)
-					;   ("C" straight-check-package)
-					;   ("r" straight-rebuild-all)
-					;   ("R" straight-rebuild-package)
-					;   ("f" straight-fetch-all)
-					;   ("F" straight-fetch-package)
-					;   ("p" straight-pull-all)
-					;   ("P" straight-pull-package)
-					;   ("m" straight-merge-all)
-					;   ("M" straight-merge-package)
-					;   ("n" straight-normalize-all)
-					;   ("N" straight-normalize-package)
-					;   ("u" straight-push-all)
-					;   ("U" straight-push-package)
-					;   ("v" straight-freeze-versions)
-					;   ("V" straight-thaw-versions)
-					;   ("w" straight-watcher-start)
-					;   ("W" straight-watcher-quit)
-					;   ("g" straight-get-recipe)
-					;   ("e" straight-prune-build)
-					;   ("q" nil))
+;; (defhydra hydra-straight-helper (:hint nil)
+;;   "
+;; _c_heck all       |_f_etch all     |_m_erge all      |_n_ormalize all   |p_u_sh all
+;; _C_heck package   |_F_etch package |_M_erge package  |_N_ormlize package|p_U_sh package
+;; ----------------^^+--------------^^+---------------^^+----------------^^+------------||_q_uit||
+;; _r_ebuild all     |_p_ull all      |_v_ersions freeze|_w_atcher start   |_g_et recipe
+;; _R_ebuild package |_P_ull package  |_V_ersions thaw  |_W_atcher quit    |prun_e_ build"
+;;   ("c" straight-check-all)
+;;   ("C" straight-check-package)
+;;   ("r" straight-rebuild-all)
+;;   ("R" straight-rebuild-package)
+;;   ("f" straight-fetch-all)
+;;   ("F" straight-fetch-package)
+;;   ("p" straight-pull-all)
+;;   ("P" straight-pull-package)
+;;   ("m" straight-merge-all)
+;;   ("M" straight-merge-package)
+;;   ("n" straight-normalize-all)
+;;   ("N" straight-normalize-package)
+;;   ("u" straight-push-all)
+;;   ("U" straight-push-package)
+;;   ("v" straight-freeze-versions)
+;;   ("V" straight-thaw-versions)
+;;   ("w" straight-watcher-start)
+;;   ("W" straight-watcher-quit)
+;;   ("g" straight-get-recipe)
+;;   ("e" straight-prune-build)
+;;   ("q" nil))
 
 
 

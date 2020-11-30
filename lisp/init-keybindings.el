@@ -296,7 +296,6 @@
 		    "C-S-j"  #'scroll-up-command
 		    "C-S-k"  #'scroll-down-command)
 
-
 (with-eval-after-load 'general
   (general-define-key
    "TAB" 'company-indent-or-complete-common))
@@ -342,6 +341,73 @@
 		    "C-j" #'next-line-or-history-element
 		    "C-k" #'previous-line-or-history-element)
 
+(general-define-key :keymaps 'ein:notebook-multilang-mode
+		    "y" #'ein:worksheet-copy-cell
+		    "p" #'ein:worksheet-yank-cell
+		    "d" #'ein:worksheet-kill-cell
+		    "h" #'ein:notebook-worksheet-open-prev-or-last
+		    "i" #'ein:worksheet-insert-cell-below
+		    "I" #'ein:worksheet-insert-cell-above
+		    "j" #'ein:worksheet-goto-next-input
+		    "k" #'ein:worksheet-goto-prev-input
+		    "l" #'ein:notebook-worksheet-open-next-or-first
+		    "H" 'ein:notebook-worksheet-move-prev
+		    "J" #'ein:worksheet-move-cell-down
+		    "K" #'ein:worksheet-move-cell-up
+		    "L" #'ein:notebook-worksheet-move-next
+		    "t" #'ein:worksheet-toggle-output
+		    "R" #'ein:worksheet-rename-sheet
+		    "RET" #'ein:worksheet-execute-cell-and-goto-next
+	            ;; Output
+		    "C-l" #'ein:worksheet-clear-output
+		    "C-S-l" #'ein:worksheet-clear-all-output
+		    ;;Console
+		    "C-o" #'ein:console-open
+		    ;; Merge cells
+		    "C-k" #'ein:worksheet-merge-cell
+		    "C-j" #'spacemacs/ein:worksheet-merge-cell-next
+		    "s" #'ein:worksheet-split-cell-at-point
+		    ;; Notebook
+		    "C-s" #'ein:notebook-save-notebook-command
+		    "C-r" #'ein:notebook-rename-command
+		    "1" #'ein:notebook-worksheet-open-1th
+		    "2" #'ein:notebook-worksheet-open-2th
+		    "3" #'ein:notebook-worksheet-open-3th
+		    "4" #'ein:notebook-worksheet-open-4th
+		    "5" #'ein:notebook-worksheet-open-5th
+		    "6" #'ein:notebook-worksheet-open-6th
+		    "7" #'ein:notebook-worksheet-open-7th
+		    "8" #'ein:notebook-worksheet-open-8th
+		    "9" #'ein:notebook-worksheet-open-last
+		    "+" #'ein:notebook-worksheet-insert-next
+		    "-" #'ein:notebook-worksheet-delete
+		    "x" #'ein:notebook-close
+		    "u" #'ein:worksheet-change-cell-type
+		    "fs" #'ein:notebook-save-notebook-command)
+
+;; keybindings for ipython notebook traceback mode
+(general-define-key :keymaps 'ein:traceback-mode
+		    "RET" #'ein:tb-jump-to-source-at-point-command
+		    "n" #'ein:tb-next-item
+		    "p" #'ein:tb-prev-item
+		    "q" #'bury-buffer)
+
+;; keybindings mirror ipython web interface behavior
+(evil-define-key 'insert ein:notebook-multilang-mode-map
+  (kbd "<C-return>") 'ein:worksheet-execute-cell
+  (kbd "<S-return>") 'ein:worksheet-execute-cell-and-goto-next)
+
+					; keybindings mirror ipython web interface behavior
+(evil-define-key 'hybrid ein:notebook-multilang-mode-map
+  (kbd "<C-return>") 'ein:worksheet-execute-cell
+  (kbd "<S-return>") 'ein:worksheet-execute-cell-and-goto-next)
+
+(evil-define-key 'normal ein:notebook-multilang-mode-map
+  ;; keybindings mirror ipython web interface behavior
+  (kbd "<C-return>") 'ein:worksheet-execute-cell
+  (kbd "<S-return>") 'ein:worksheet-execute-cell-and-goto-next
+  "gj" 'ein:worksheet-goto-next-input
+  "gk" 'ein:worksheet-goto-prev-input)
 
 ;; ;; Modified directly from emacs-lsp/lsp-mode.el
 ;; (with-eval-after-load "which-key"
