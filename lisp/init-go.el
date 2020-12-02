@@ -3,15 +3,11 @@
 (use-package go-mode
   :straight t
   :ensure t
-  :commands (godoc gofmt gofmt-before-save)
-  :hook (befor-save . gofmt-before-save)
-  :config
-  (setq gofmt-command "goimports")
-  (setenv "GO111MODULE" "on")
-					; (set-lookup-handlers! 'go-mode
-					;     :definition #'go-guru-definition
-					;     :references #'go-guru-referrers
-					;     :documentation #'godoc-at-point)
+  ;; :commands (godoc gofmt gofmt-before-save)
+  ;; :hook (befor-save . gofmt-before-save)
+  ;; :config
+  ;; ;; (setq gofmt-command "goimports")
+  ;; (setenv "GO111MODULE" "on")
   ;; :general
   ;; (nmap :keymaps '(go-mode-map)
   ;;   "gd" 'godef-jump

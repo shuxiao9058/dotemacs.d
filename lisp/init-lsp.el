@@ -18,18 +18,30 @@
 	   web-mode) . lsp)
 	 ;; if you want which-key integration
 	 (lsp-mode . lsp-enable-which-key-integration)
+
 	 (lsp-after-open . (lambda()
 			     (make-local-variable 'company-backends)
 			     (setq company-backends nil)
 			     (setq company-backends
-				   '((company-tabnine :with company-capf :separate)
+				   '(company-capf
 				     company-dabbrev-code
 				     (company-files          ; files & directory
 				      company-keywords       ; keywords
 				      )
 				     (company-abbrev company-dabbrev)))))
+	 ;; (lsp-after-open . (lambda()
+	 ;; 		     (make-local-variable 'company-backends)
+	 ;; 		     (setq company-backends nil)
+	 ;; 		     (setq company-backends
+	 ;; 			   '((company-tabnine :with company-capf :separate)
+	 ;; 			     company-dabbrev-code
+	 ;; 			     (company-files          ; files & directory
+	 ;; 			      company-keywords       ; keywords
+	 ;; 			      )
+	 ;; 			     (company-abbrev company-dabbrev)))))
 	 )
   :custom
+  (lsp--throw-on-input nil)
   (lsp-idle-delay 0.5)                 ;; lazy refresh
   (lsp-log-io nil)
   (lsp-enable-xref t)
@@ -51,7 +63,29 @@
   (lsp-eldoc-enable-hover nil)         ;; disable eldoc displays in minibuffer
   (lsp-enable-imenu nil)
   ;; (lsp-clients-emmy-lua-jar-path (expand-file-name  "bin/EmmyLua-LS-all.jar" poly-local-dir))
+  :init
+  (setq lsp-auto-guess-root t       ; Detect project root
+                 lsp-prefer-flymake nil      ; Use lsp-ui and flycheck
+                 flymake-fringe-indicator-position 'right-fringe)
   :config
+  (lsp-register-custom-settings
+   '(("gopls.gofumpt" t t)
+     ("gopls.codelenses.commandgenerate.name" t t)
+     ("gopls.codelenses.commandregeneratecgo.name" t t)
+     ("gopls.codelenses.commandtidy.name" t t)
+     ("gopls.codelenses.commandtoggledetails.name" nil nil)
+     ("gopls.codelenses.commandupgradedependency.name" t t)
+     ("gopls.codelenses.commandvendor.name" t t)
+     ("gopls.codelens" nil nil)
+     )
+ ;; '(("gopls.usePlaceholders" lsp-go-use-placeholders t)
+ ;;   ("gopls.hoverKind" lsp-go-hover-kind)
+ ;;   ("gopls.buildFlags" lsp-go-build-flags)
+ ;;   ("gopls.env" lsp-go-env)
+ ;;   ("gopls.linkTarget" lsp-go-link-target)
+ ;;   ("gopls.codelens" lsp-go-codelens))
+ )
+
   ;; ;; lsp-lua
   ;; ;; 暂时还有点问题，先不用了
   (require 'init-lsp-lua)

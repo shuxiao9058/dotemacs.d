@@ -38,7 +38,6 @@
 ;; tools
 (require 'init-wakatime)
 (require 'init-keyfreq)
-(require 'init-format)
 (require 'init-rime)
 ;; (require 'init-vterm)
 (require 'init-dired)
@@ -65,6 +64,7 @@
 (require 'init-web)
 (require 'init-cc)
 (require 'init-nix)
+(require 'init-format)
 
 ;; functions
 (require 'init-utils)

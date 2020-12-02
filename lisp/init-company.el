@@ -13,44 +13,72 @@
 ;;     (append (if (consp backend) backend (list backend))
 ;;             '(:with company-yasnippet))))
 
-;; Integrate company-tabnine with lsp-mode
+;; Integrate company-tabnine with eglot
 (defun company//sort-by-tabnine (candidates)
   (if (or (functionp company-backend)
-	  (not (and (listp company-backend) (memq 'company-tabnine company-backend))))
+          (not (and (listp company-backend) (memq 'company-tabnine company-backend))))
       candidates
     (let ((candidates-table (make-hash-table :test #'equal))
-	  candidates-capf
-	  candidates-tabnine)
+          candidates-1
+          candidates-2)
       (dolist (candidate candidates)
-	(if (eq (get-text-property 0 'company-backend candidate)
-		'company-tabnine)
-	    (unless (gethash candidate candidates-table)
-	      (push candidate candidates-tabnine))
-	  (push candidate candidates-capf)
-	  (puthash candidate t candidates-table)))
-      (setq candidates-capf (nreverse candidates-capf))
-      (setq candidates-tabnine (nreverse candidates-tabnine))
-      (nconc (seq-take candidates-tabnine company-tabnine-max-num-results)
-	     (seq-take candidates-capf (- 9 company-tabnine-max-num-results))))))
+        (if (eq (get-text-property 0 'company-backend candidate)
+                'company-tabnine)
+            (unless (gethash candidate candidates-table)
+              (push candidate candidates-2))
+          (push candidate candidates-1)
+          (puthash candidate t candidates-table)))
+      (setq candidates-1 (nreverse candidates-1))
+      (setq candidates-2 (nreverse candidates-2))
+      (nconc (seq-take candidates-1 2)
+             (seq-take candidates-2 2)
+             (seq-drop candidates-1 2)
+             (seq-drop candidates-2 2)))))
+
+;; (defun company//sort-by-tabnine (candidates)
+;;   (if (or (functionp company-backend)
+;; 	  (not (and (listp company-backend) (memq 'company-tabnine company-backend))))
+;;       candidates
+;;     (let ((candidates-table (make-hash-table :test #'equal))
+;; 	  candidates-capf
+;; 	  candidates-tabnine)
+;;       (dolist (candidate candidates)
+;; 	(if (eq (get-text-property 0 'company-backend candidate)
+;; 		'company-tabnine)
+;; 	    (unless (gethash candidate candidates-table)
+;; 	      (push candidate candidates-tabnine))
+;; 	  (push candidate candidates-capf)
+;; 	  (puthash candidate t candidates-table)))
+;;       (setq candidates-capf (nreverse candidates-capf))
+;;       (setq candidates-tabnine (nreverse candidates-tabnine))
+;;       (nconc (seq-take candidates-tabnine company-tabnine-max-num-results)
+;; 	     (seq-take candidates-capf (- 9 company-tabnine-max-num-results))))))
 
 (use-package company
   :straight t
   :ensure t
   :custom
   (company-minimum-prefix-length 2)
-  (company-tooltip-align-annotations t)
+  ;; (company-frontends nil)
+  (company-frontends '(company-pseudo-tooltip-frontend
+                          company-echo-metadata-frontend))
+  (ompany-echo-delay 0)
+  ;; (company-require-match nil)
+  ;; (company-tooltip-limit           20)
+  (company-tooltip-align-annotations t) ;; Align annotation to the right side.
+  ;; (company-auto-complete nil)
   (company-begin-commands '(self-insert-command))
   ;; (company-require-match nil)
   ;; Don't use company in the following modes
-  (company-global-modes '(not shell-mod))
+  (company-global-modes '(not shell-mode eshell-mode shell-mode comint-mode erc-mode gud-mode rcirc-mode
+	minibuffer-inactive-mode))
   ;; Trigger completion immediately.
-  (company-idle-delay 0)
+  (company-idle-delay 0.15)
   ;; Number the candidates (use M-1, M-2 etc to select completions).
   (company-show-numbers t)
   :hook (after-init . global-company-mode)
   :config
   ;; set default `company-backends'
-  ;; completion-at-point-functions
   (setq-default company-backends
 		'((company-tabnine :with company-capf :separate)
 		  company-dabbrev-code
@@ -58,9 +86,7 @@
 		   company-keywords       ; keywords
 		   )
 		  (company-abbrev company-dabbrev)
-		  )
-		)
-  ;; )
+		  ))
   :general
   (:keymaps '(company-active-map)
 	    "C-w"     nil  ; don't interfere with `evil-delete-backward-word'
@@ -174,19 +200,19 @@
 ;; 	      (ElispFace . ,(my-company-box-icon 'material "format_paint" 'all-the-icons-pink)))))
 ;;     )
 
-;; (use-package company-flx
-;;   :straight t
-;;   :after company
-;;   :config
-;;   (company-flx-mode 1)
-;;   (setq company-flx-limit 256))
+(use-package company-flx
+  :straight t
+  :after company
+  :config
+  (company-flx-mode 1)
+  (setq company-flx-limit 256))
 
-;; (use-package company-prescient
-;;     :straight t
-;;     :disabled
-;;     :ensure t
-;;     :after company
-;;     :config (company-prescient-mode))
+(use-package company-prescient
+    :straight t
+    :disabled
+    :ensure t
+    :after company
+    :config (company-prescient-mode))
 
 ;; (use-package company-quickhelp
 ;;     :straight t
@@ -199,12 +225,9 @@
   :commands company-tabnine-start-process
   :ensure t
   :after company
-  :custom
+  ;; :custom
   ;; (company-tabnine-max-num-results 9)
-  (company-tabnine-no-continue t)
-  ;; :init
-  ;; (setq company-tabnine-executable-args
-  ;; 	'("--client" "emacs" "--log-level" "Error" "--log-file-path" "/tmp/TabNine.log"))
+  ;; (company-tabnine-no-continue t)
   :config
   (setq company-tabnine-max-num-results 4)
   (when (> 9 company-tabnine-max-num-results)
@@ -259,14 +282,27 @@
   ((go-mode lua-mode python-mode c-mode c++-mode python-mode) . eglot-ensure)
   :custom
   (eglot-stay-out-of '(flymake))
-  (eglot-ignored-server-capabilites '(:documentHighlightProvider))
+  (eglot-autoshutdown t)
+  (eglot-sync-connect 1)
+  (eglot-connect-timeout 40)
+  (eglot-send-changes-idle-time 0.5)
+  ;; (eglot-events-buffer-size 500000)
+  (eglot-events-buffer-size 0)
+  ;; disable symbol highlighting and documentation on hover
+  (eglot-ignored-server-capabilites
+   '(:documentHighlightProvider
+     :signatureHelpProvider
+     :hoverProvider))
+  ;; NOTE We disable eglot-auto-display-help-buffer because :select t in
+  ;; its popup rule causes eglot to steal focus too often.
+  (eglot-auto-display-help-buffer nil)
   :config
   (setq eglot-workspace-configuration
-        '((:gopls . (:usePlaceholders t :completeUnimported  t
-				      :staticcheck nil
-				      :tests nil
-				      :analyses (:cgocall nil )
-                                      ))))
+        '((:gopls . (:usePlaceholders t
+				      :completeUnimported  t
+				      :experimentalWorkspaceModule t
+				      ;; :experimentalDiagnosticsDelay "800ms"
+				      ))))
   ;; emmylua
   (let ((emmylua-jar-path (expand-file-name "bin/EmmyLua-LS-all.jar" poly-local-dir)))
     (add-to-list 'eglot-server-programs
@@ -275,21 +311,30 @@
   (when (executable-find "ccls")
     (add-to-list 'eglot-server-programs '((c-mode c++-mode) "ccls"
  					  "-init={\"compilationDatabaseDirectory\":\"build\"}")))
+  (when (executable-find "gopls")
+    (add-to-list 'eglot-server-programs `(go-mode . ("gopls" "-logfile=/tmp/gopls.log" "-rpc.trace" "-vv" "--debug=localhost:6060"))))
 
   (add-hook 'eglot-managed-mode-hook (lambda()
 				       (make-local-variable 'company-backends)
 				       (setq company-backends nil)
+				       ;; (setq company-backends
+				       ;; 	     '(company-capf
+				       ;; 	       ;; company-dabbrev-code
+				       ;; 	       (company-files          ; files & directory
+				       ;; 		company-keywords       ; keywords
+				       ;; 		)
+				       ;; 	       (company-abbrev company-dabbrev)))
 				       (setq company-backends
 					     '((company-tabnine :with company-capf :separate)
 					       company-dabbrev-code
 					       (company-files          ; files & directory
 						company-keywords       ; keywords
 						)
-					       (company-abbrev company-dabbrev)))))
-  ;; (set-lookup-handlers! 'eglot-mode :async t
-  ;;    :documentation #'eglot-help-at-point
-  ;;    :definition #'eglot-find-declaration
-  ;;    :references #'eglot-find-typeDefinition)
+					       (company-abbrev company-dabbrev)))
+				       ))
+
+  (dolist (hook '(go-mode-hook))
+    (add-hook 'before-save-hook 'eglot-format-buffer))
   )
 
 ;; fix (void-function project-root)
