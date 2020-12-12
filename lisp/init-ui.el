@@ -131,49 +131,49 @@ WIN-ID : Window index."
   :config
   (setq treemacs-header-function #'treemacs-projectile-create-header))
 
-(use-package awesome-tab
-  :straight (awesome-tab
-	     :type git
-	     :host github
-	     :repo "manateelazycat/awesome-tab"
-	     )
-  :commands (awesome-tab-mode)
-  :ensure t
-  :custom
-  (awesome-tab-style 'bar)
-  (awesome-tab-show-tab-index t)
-  (awesome-tab-display-icon nil)
-  (awesometab-hide-tabs-hooks
-   '(magit-status-mode-hook magit-popup-mode-hook reb-mode-hook helpful-mode-hook))
-  :init
-  (awesome-tab-mode t)
-  :config
-  (defun awesome-tab-hide-tab-function (x)
-    "Awesome tab hide tab function (X)."
-    (let ((name (format "%s" x)))
-      (and
-       (not (string-prefix-p "*epc" name))
-       (not (string-prefix-p "*helm" name))
-       (not (string-prefix-p "*Compile-Log*" name))
-       (not (string-prefix-p "*lsp" name))
-       (not (and (string-prefix-p "magit" name)
-		 (not (file-name-extension name))))
-       )))
-  ;;set shortcut for buffer switch
-  (dotimes (tabnum 10)
-    (global-set-key
-     (kbd (concat "M-" (number-to-string tabnum)))
-     'awesome-tab-select-visible-tab))
-  :general
-  ("M-j" #'awesome-tab-ace-jump)
-  ("M-h" #'awesome-tab-backward)
-  ("M-l" #'awesome-tab-forward)
-  ("<M-right>" #'awesome-tab-forward)
-  ("<M-left>" #'awesome-tab-backward)
-  ("<M-down>" #'awesome-tab-forward-group)
-  ("<M-up>" #'awesome-tab-backward-group)
-  ("M-z" #'awesome-tab-switch-group)
-  )
+;; (use-package awesome-tab
+;;   :straight (awesome-tab
+;; 	     :type git
+;; 	     :host github
+;; 	     :repo "manateelazycat/awesome-tab"
+;; 	     )
+;;   :commands (awesome-tab-mode)
+;;   :ensure t
+;;   :custom
+;;   (awesome-tab-style 'bar)
+;;   (awesome-tab-show-tab-index t)
+;;   (awesome-tab-display-icon nil)
+;;   (awesometab-hide-tabs-hooks
+;;    '(magit-status-mode-hook magit-popup-mode-hook reb-mode-hook helpful-mode-hook))
+;;   :init
+;;   (awesome-tab-mode t)
+;;   :config
+;;   (defun awesome-tab-hide-tab-function (x)
+;;     "Awesome tab hide tab function (X)."
+;;     (let ((name (format "%s" x)))
+;;       (and
+;;        (not (string-prefix-p "*epc" name))
+;;        (not (string-prefix-p "*helm" name))
+;;        (not (string-prefix-p "*Compile-Log*" name))
+;;        (not (string-prefix-p "*lsp" name))
+;;        (not (and (string-prefix-p "magit" name)
+;; 		 (not (file-name-extension name))))
+;;        )))
+;;   ;;set shortcut for buffer switch
+;;   (dotimes (tabnum 10)
+;;     (global-set-key
+;;      (kbd (concat "M-" (number-to-string tabnum)))
+;;      'awesome-tab-select-visible-tab))
+;;   :general
+;;   ("M-j" #'awesome-tab-ace-jump)
+;;   ("M-h" #'awesome-tab-backward)
+;;   ("M-l" #'awesome-tab-forward)
+;;   ("<M-right>" #'awesome-tab-forward)
+;;   ("<M-left>" #'awesome-tab-backward)
+;;   ("<M-down>" #'awesome-tab-forward-group)
+;;   ("<M-up>" #'awesome-tab-backward-group)
+;;   ("M-z" #'awesome-tab-switch-group)
+;;   )
 
 (use-package rainbow-delimiters
   :straight t

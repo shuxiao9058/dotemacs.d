@@ -45,5 +45,15 @@
   ;; (advice-add 'slime-space :around #'slime-space\\skk-insert)
   (advice-add 'slime-autodoc-space :around #'slime-space\\skk-insert))
 
+(use-package profiler
+  :straight t
+  :defer t
+  :config
+  :general
+  (nmap :keymaps '(profiler-report-mode-map)
+    (kbd "<tab>") 'profiler-report-toggle-entry
+    (kbd "<backtab>")  'profiler-report-toggle-entry)
+  )
+
 (provide 'init-lisp)
 ;;; init-lisp.el ends here

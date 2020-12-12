@@ -60,10 +60,17 @@
   :custom
   (company-minimum-prefix-length 2)
   ;; (company-frontends nil)
-  (company-frontends '(company-pseudo-tooltip-frontend
-                          company-echo-metadata-frontend))
-  (ompany-echo-delay 0)
-  ;; (company-require-match nil)
+  ;; (company-frontends '(company-pseudo-tooltip-frontend
+  ;; 		       ;; company-echo-frontend
+  ;;                      company-echo-metadata-frontend
+  ;; 		       ))
+  (company-frontends '(
+		       company-pseudo-tooltip-frontend
+		       ;; company-pseudo-tooltip-unless-just-one-frontend
+	               company-preview-frontend
+	               company-echo-metadata-frontend))
+  (company-echo-delay 0)
+  (company-require-match nil)
   ;; (company-tooltip-limit           20)
   (company-tooltip-align-annotations t) ;; Align annotation to the right side.
   ;; (company-auto-complete nil)
@@ -71,9 +78,9 @@
   ;; (company-require-match nil)
   ;; Don't use company in the following modes
   (company-global-modes '(not shell-mode eshell-mode shell-mode comint-mode erc-mode gud-mode rcirc-mode
-	minibuffer-inactive-mode))
+			      minibuffer-inactive-mode))
   ;; Trigger completion immediately.
-  (company-idle-delay 0.15)
+  (company-idle-delay 0.2)
   ;; Number the candidates (use M-1, M-2 etc to select completions).
   (company-show-numbers t)
   :hook (after-init . global-company-mode)
@@ -208,11 +215,11 @@
   (setq company-flx-limit 256))
 
 (use-package company-prescient
-    :straight t
-    :disabled
-    :ensure t
-    :after company
-    :config (company-prescient-mode))
+  :straight t
+  :disabled
+  :ensure t
+  :after company
+  :config (company-prescient-mode))
 
 ;; (use-package company-quickhelp
 ;;     :straight t
@@ -225,7 +232,8 @@
   :commands company-tabnine-start-process
   :ensure t
   :after company
-  ;; :custom
+  :custom
+  (company-tabnine-wait 0.1)
   ;; (company-tabnine-max-num-results 9)
   ;; (company-tabnine-no-continue t)
   :config
