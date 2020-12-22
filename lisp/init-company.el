@@ -13,46 +13,46 @@
 ;;     (append (if (consp backend) backend (list backend))
 ;;             '(:with company-yasnippet))))
 
-;; Integrate company-tabnine with eglot
-(defun company//sort-by-tabnine (candidates)
-  (if (or (functionp company-backend)
-          (not (and (listp company-backend) (memq 'company-tabnine company-backend))))
-      candidates
-    (let ((candidates-table (make-hash-table :test #'equal))
-          candidates-1
-          candidates-2)
-      (dolist (candidate candidates)
-        (if (eq (get-text-property 0 'company-backend candidate)
-                'company-tabnine)
-            (unless (gethash candidate candidates-table)
-              (push candidate candidates-2))
-          (push candidate candidates-1)
-          (puthash candidate t candidates-table)))
-      (setq candidates-1 (nreverse candidates-1))
-      (setq candidates-2 (nreverse candidates-2))
-      (nconc (seq-take candidates-1 2)
-             (seq-take candidates-2 2)
-             (seq-drop candidates-1 2)
-             (seq-drop candidates-2 2)))))
-
+;; ;; Integrate company-tabnine with eglot
 ;; (defun company//sort-by-tabnine (candidates)
 ;;   (if (or (functionp company-backend)
-;; 	  (not (and (listp company-backend) (memq 'company-tabnine company-backend))))
+;;           (not (and (listp company-backend) (memq 'company-tabnine company-backend))))
 ;;       candidates
 ;;     (let ((candidates-table (make-hash-table :test #'equal))
-;; 	  candidates-capf
-;; 	  candidates-tabnine)
+;;           candidates-1
+;;           candidates-2)
 ;;       (dolist (candidate candidates)
-;; 	(if (eq (get-text-property 0 'company-backend candidate)
-;; 		'company-tabnine)
-;; 	    (unless (gethash candidate candidates-table)
-;; 	      (push candidate candidates-tabnine))
-;; 	  (push candidate candidates-capf)
-;; 	  (puthash candidate t candidates-table)))
-;;       (setq candidates-capf (nreverse candidates-capf))
-;;       (setq candidates-tabnine (nreverse candidates-tabnine))
-;;       (nconc (seq-take candidates-tabnine company-tabnine-max-num-results)
-;; 	     (seq-take candidates-capf (- 9 company-tabnine-max-num-results))))))
+;;         (if (eq (get-text-property 0 'company-backend candidate)
+;;                 'company-tabnine)
+;;             (unless (gethash candidate candidates-table)
+;;               (push candidate candidates-2))
+;;           (push candidate candidates-1)
+;;           (puthash candidate t candidates-table)))
+;;       (setq candidates-1 (nreverse candidates-1))
+;;       (setq candidates-2 (nreverse candidates-2))
+;;       (nconc (seq-take candidates-1 2)
+;;              (seq-take candidates-2 2)
+;;              (seq-drop candidates-1 2)
+;;              (seq-drop candidates-2 2)))))
+
+(defun company//sort-by-tabnine (candidates)
+  (if (or (functionp company-backend)
+	  (not (and (listp company-backend) (memq 'company-tabnine company-backend))))
+      candidates
+    (let ((candidates-table (make-hash-table :test #'equal))
+	  candidates-capf
+	  candidates-tabnine)
+      (dolist (candidate candidates)
+	(if (eq (get-text-property 0 'company-backend candidate)
+		'company-tabnine)
+	    (unless (gethash candidate candidates-table)
+	      (push candidate candidates-tabnine))
+	  (push candidate candidates-capf)
+	  (puthash candidate t candidates-table)))
+      (setq candidates-capf (nreverse candidates-capf))
+      (setq candidates-tabnine (nreverse candidates-tabnine))
+      (nconc (seq-take candidates-tabnine company-tabnine-max-num-results)
+	     (seq-take candidates-capf (- 9 company-tabnine-max-num-results))))))
 
 (use-package company
   :straight t
@@ -69,25 +69,28 @@
 		       ;; company-pseudo-tooltip-unless-just-one-frontend
 	               company-preview-frontend
 	               company-echo-metadata-frontend))
-  (company-echo-delay 0)
   (company-require-match nil)
   ;; (company-tooltip-limit           20)
   (company-tooltip-align-annotations t) ;; Align annotation to the right side.
-  ;; (company-auto-complete nil)
-  (company-begin-commands '(self-insert-command))
+  ;; ;; (company-auto-complete nil)
+  ;; (company-begin-commands '(self-insert-command))
   ;; (company-require-match nil)
   ;; Don't use company in the following modes
   (company-global-modes '(not shell-mode eshell-mode shell-mode comint-mode erc-mode gud-mode rcirc-mode
 			      minibuffer-inactive-mode))
+  ;; (company-echo-delay 0)
   ;; Trigger completion immediately.
-  (company-idle-delay 0.2)
+  ;; (company-idle-delay nil)
+  (company-idle-delay 0.1)
   ;; Number the candidates (use M-1, M-2 etc to select completions).
   (company-show-numbers t)
   :hook (after-init . global-company-mode)
   :config
   ;; set default `company-backends'
   (setq-default company-backends
-		'((company-tabnine :with company-capf :separate)
+		'((
+		   ;; company-tabnine :with
+				   company-capf :separate)
 		  company-dabbrev-code
 		  (company-files          ; files & directory
 		   company-keywords       ; keywords
@@ -207,19 +210,16 @@
 ;; 	      (ElispFace . ,(my-company-box-icon 'material "format_paint" 'all-the-icons-pink)))))
 ;;     )
 
-(use-package company-flx
-  :straight t
-  :after company
-  :config
-  (company-flx-mode 1)
-  (setq company-flx-limit 256))
+;; (use-package company-flx
+;;   :straight t
+;;   :after company
+;;   :config
+;;   (company-flx-mode 1)
+;;   (setq company-flx-limit 256))
 
 (use-package company-prescient
   :straight t
-  :disabled
-  :ensure t
-  :after company
-  :config (company-prescient-mode))
+  :config (company-prescient-mode 1))
 
 ;; (use-package company-quickhelp
 ;;     :straight t
@@ -233,9 +233,11 @@
   :ensure t
   :after company
   :custom
+  (company-tabnine-log-file-path "/tmp/TabNine.log")
+  (company-tabnine-executable-args (list "--log-level" "Trace"))
   (company-tabnine-wait 0.1)
   ;; (company-tabnine-max-num-results 9)
-  ;; (company-tabnine-no-continue t)
+  (company-tabnine-no-continue t)
   :config
   (setq company-tabnine-max-num-results 4)
   (when (> 9 company-tabnine-max-num-results)
@@ -258,92 +260,105 @@
   (advice-add #'company-tabnine :around #'my-company-tabnine)
   )
 
-;; ;; try nox
-;; (use-package nox
-;; 	     :straight (nox
-;; 			:host github
-;; 			:repo "manateelazycat/nox"
-;; 			:files ("nox.el"))
+;; try nox
+(use-package nox
+  :straight (nox
+	     :host github
+	     :repo "manateelazycat/nox"
+	     :files ("nox.el"))
 
-;; 	     :hook ((go-mode lua-mode) . nox-ensure)
-;; 	     :config
-;; 	     ;; emmylua
-;; 	     (let ((emmylua-jar-path (expand-file-name "bin/EmmyLua-LS-all.jar" poly-local-dir)))
-;; 	       (add-to-list 'nox-server-programs
-;; 			    `(lua-mode  . ("/usr/bin/java" "-cp" ,emmylua-jar-path "com.tang.vscode.MainKt"))))
-
-;; 	     (add-hook 'nox-managed-mode-hook (lambda()
-;; 						(make-local-variable 'company-backends)
-;; 						(setq company-backends nil)
-;; 						(setq company-backends
-;; 						      '((company-tabnine :with company-capf :separate)
-;; 							company-dabbrev-code
-;; 							(company-files          ; files & directory
-;; 							 company-keywords       ; keywords
-;; 							 )
-;; 							(company-abbrev company-dabbrev)))))
-;; 	     )
-
-(use-package eglot
-  :straight t
-  :hook
-  ((go-mode lua-mode python-mode c-mode c++-mode python-mode) . eglot-ensure)
-  :custom
-  (eglot-stay-out-of '(flymake))
-  (eglot-autoshutdown t)
-  (eglot-sync-connect 1)
-  (eglot-connect-timeout 40)
-  (eglot-send-changes-idle-time 0.5)
-  ;; (eglot-events-buffer-size 500000)
-  (eglot-events-buffer-size 0)
-  ;; disable symbol highlighting and documentation on hover
-  (eglot-ignored-server-capabilites
-   '(:documentHighlightProvider
-     :signatureHelpProvider
-     :hoverProvider))
-  ;; NOTE We disable eglot-auto-display-help-buffer because :select t in
-  ;; its popup rule causes eglot to steal focus too often.
-  (eglot-auto-display-help-buffer nil)
+  :hook ((go-mode lua-mode c-mode-common c-mode c++-mode) . nox-ensure)
   :config
-  (setq eglot-workspace-configuration
-        '((:gopls . (:usePlaceholders t
-				      :completeUnimported  t
-				      :experimentalWorkspaceModule t
-				      ;; :experimentalDiagnosticsDelay "800ms"
-				      ))))
   ;; emmylua
   (let ((emmylua-jar-path (expand-file-name "bin/EmmyLua-LS-all.jar" poly-local-dir)))
-    (add-to-list 'eglot-server-programs
+    (add-to-list 'nox-server-programs
 		 `(lua-mode  . ("/usr/bin/java" "-cp" ,emmylua-jar-path "com.tang.vscode.MainKt"))))
 
-  (when (executable-find "ccls")
-    (add-to-list 'eglot-server-programs '((c-mode c++-mode) "ccls"
- 					  "-init={\"compilationDatabaseDirectory\":\"build\"}")))
+  (setq nox-workspace-configuration
+        '((:gopls . (:usePlaceholders t
+				      :completeUnimported  t
+				      :experimentalWorkspaceModule t))))
   (when (executable-find "gopls")
-    (add-to-list 'eglot-server-programs `(go-mode . ("gopls" "-logfile=/tmp/gopls.log" "-rpc.trace" "-vv" "--debug=localhost:6060"))))
+    (add-to-list 'nox-server-programs `(go-mode . ("gopls" "-logfile=/tmp/gopls.log" "-rpc.trace" "-vv" "--debug=localhost:6060"))))
 
-  (add-hook 'eglot-managed-mode-hook (lambda()
-				       (make-local-variable 'company-backends)
-				       (setq company-backends nil)
-				       ;; (setq company-backends
-				       ;; 	     '(company-capf
-				       ;; 	       ;; company-dabbrev-code
-				       ;; 	       (company-files          ; files & directory
-				       ;; 		company-keywords       ; keywords
-				       ;; 		)
-				       ;; 	       (company-abbrev company-dabbrev)))
-				       (setq company-backends
-					     '((company-tabnine :with company-capf :separate)
-					       company-dabbrev-code
-					       (company-files          ; files & directory
-						company-keywords       ; keywords
-						)
-					       (company-abbrev company-dabbrev)))
-				       ))
+  (when (executable-find "ccls")
+    (add-to-list 'nox-server-programs '((c-mode c++-mode) "ccls"
+ 					"-init={\"compilationDatabaseDirectory\":\"build\"}")))
 
-  (dolist (hook '(go-mode-hook))
-    (add-hook 'before-save-hook 'eglot-format-buffer))
+  (add-hook 'nox-managed-mode-hook (lambda()
+				     (make-local-variable 'company-backends)
+				     (setq company-backends nil)
+				     (setq company-backends
+					   '((company-tabnine :with company-capf :separate)
+					     company-dabbrev-code
+					     (company-files          ; files & directory
+					      company-keywords       ; keywords
+					      )
+					     (company-abbrev company-dabbrev)))))
+  ;; (dolist (hook '(go-mode-hook))
+  ;;   (add-hook 'before-save-hook 'nox-format-buffer))
   )
+
+;; (use-package eglot
+;;   :straight t
+;;   :hook
+;;   ((go-mode lua-mode python-mode c-mode c++-mode python-mode) . eglot-ensure)
+;;   :custom
+;;   (eglot-stay-out-of '(flymake))
+;;   (eglot-autoshutdown t)
+;;   (eglot-sync-connect 1)
+;;   (eglot-connect-timeout 40)
+;;   (eglot-send-changes-idle-time 0.5)
+;;   ;; (eglot-events-buffer-size 500000)
+;;   (eglot-events-buffer-size 0)
+;;   ;; disable symbol highlighting and documentation on hover
+;;   (eglot-ignored-server-capabilites
+;;    '(:documentHighlightProvider
+;;      :signatureHelpProvider
+;;      :hoverProvider))
+;;   ;; NOTE We disable eglot-auto-display-help-buffer because :select t in
+;;   ;; its popup rule causes eglot to steal focus too often.
+;;   (eglot-auto-display-help-buffer nil)
+;;   :config
+;;   (setq eglot-workspace-configuration
+;;         '((:gopls . (:usePlaceholders t
+;; 				      :completeUnimported  t
+;; 				      :experimentalWorkspaceModule t
+;; 				      ;; :experimentalDiagnosticsDelay "800ms"
+;; 				      ))))
+;;   ;; emmylua
+;;   (let ((emmylua-jar-path (expand-file-name "bin/EmmyLua-LS-all.jar" poly-local-dir)))
+;;     (add-to-list 'eglot-server-programs
+;; 		 `(lua-mode  . ("/usr/bin/java" "-cp" ,emmylua-jar-path "com.tang.vscode.MainKt"))))
+
+;;   (when (executable-find "ccls")
+;;     (add-to-list 'eglot-server-programs '((c-mode c++-mode) "ccls"
+;;  					  "-init={\"compilationDatabaseDirectory\":\"build\"}")))
+;;   (when (executable-find "gopls")
+;;     (add-to-list 'eglot-server-programs `(go-mode . ("gopls" "-logfile=/tmp/gopls.log" "-rpc.trace" "-vv" "--debug=localhost:6060"))))
+
+;;   (add-hook 'eglot-managed-mode-hook (lambda()
+;; 				       (make-local-variable 'company-backends)
+;; 				       (setq company-backends nil)
+;; 				       ;; (setq company-backends
+;; 				       ;; 	     '(company-capf
+;; 				       ;; 	       ;; company-dabbrev-code
+;; 				       ;; 	       (company-files          ; files & directory
+;; 				       ;; 		company-keywords       ; keywords
+;; 				       ;; 		)
+;; 				       ;; 	       (company-abbrev company-dabbrev)))
+;; 				       (setq company-backends
+;; 					     '((company-tabnine :with company-capf :separate)
+;; 					       company-dabbrev-code
+;; 					       (company-files          ; files & directory
+;; 						company-keywords       ; keywords
+;; 						)
+;; 					       (company-abbrev company-dabbrev)))
+;; 				       ))
+
+;;   ;; (dolist (hook '(go-mode-hook))
+;;   ;;   (add-hook 'before-save-hook 'eglot-format-buffer))
+;;   )
 
 ;; fix (void-function project-root)
 (defun project-root (project)

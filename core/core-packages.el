@@ -5,23 +5,22 @@
   ;; :if (display-graphic-p)
   :defer 1
   :init
-  (if IS-WINDOWS
-      (progn
-	(setq server-use-tcp t)
-	(setq server-use-socket nil)
-	)
-    (setq server-use-tcp nil)
-    (setq server-use-socket t)
-    )
+  ;; (if IS-WINDOWS
+  ;;     (progn
+  ;; 	(setq server-use-tcp t)
+  ;; 	(setq server-use-socket nil)
+  ;; 	)
+  ;;   (setq server-use-tcp nil)
+  ;;   (setq server-use-socket t))
 
-  (setq server-auth-dir  (expand-file-name "emacs-server" poly-cache-dir))
-  (setq server-socket-dir (expand-file-name "emacs-server" poly-cache-dir))
-  (setq server-name (expand-file-name "emacs-server-file" server-socket-dir))
+  ;; (setq server-auth-dir  (expand-file-name "emacs-server" poly-cache-dir))
+  ;; (setq server-socket-dir (expand-file-name "emacs-server" poly-cache-dir))
+  ;; (setq server-name (expand-file-name "emacs-server-file" server-socket-dir))
 
-  (unless (file-exists-p server-auth-dir)
-    (make-directory server-auth-dir))
-  (unless (or (not server-socket-dir) (file-exists-p server-socket-dir))
-    (make-directory server-socket-dir))
+  ;; (unless (file-exists-p server-auth-dir)
+  ;;   (make-directory server-auth-dir))
+  ;; (unless (or (not server-socket-dir) (file-exists-p server-socket-dir))
+  ;;   (make-directory server-socket-dir))
 
   (defadvice server-ensure-safe-dir
       (around my-around-server-ensure-safe-dir activate)
@@ -49,21 +48,21 @@
 ;; 		     :files ("undo-fu.el"))
 ;;   )
 
-(use-package undo-tree
-  :if IS-MAC
-  :straight (:local-repo  "~/.emacs.d/site-lisp/undo-tree")
-  :ensure t
-  :custom
-  (undo-tree-visualizer-timestamps t)
-  (undo-tree-visualizer-diff t)
-  ;; (undo-tree-history-directory-alist (quote ((".*" . "~/.emacs.d/.appdata/.undo-tree-history"))))
-  (undo-tree-history-directory-alist (list (cons ".*" (expand-file-name "undo-tree-history" poly-cache-dir))))
-  (undo-tree-auto-save-history t)
-  (undo-tree-visualizer-lazy-drawing 1000)
-  :config
-  (global-undo-tree-mode)
-  :delight
-  )
+;; (use-package undo-tree
+;;   :if IS-MAC
+;;   :straight (:local-repo  "~/.emacs.d/site-lisp/undo-tree")
+;;   :ensure t
+;;   :custom
+;;   (undo-tree-visualizer-timestamps t)
+;;   (undo-tree-visualizer-diff t)
+;;   ;; (undo-tree-history-directory-alist (quote ((".*" . "~/.emacs.d/.appdata/.undo-tree-history"))))
+;;   (undo-tree-history-directory-alist (list (cons ".*" (expand-file-name "undo-tree-history" poly-cache-dir))))
+;;   (undo-tree-auto-save-history t)
+;;   (undo-tree-visualizer-lazy-drawing 1000)
+;;   :config
+;;   (global-undo-tree-mode)
+;;   ;; :delight
+;;   )
 
 (use-package hide-mode-line
   :straight t
@@ -102,6 +101,11 @@
 (use-package restart-emacs
   :straight t
   :ensure t)
+
+;; Sorting and filtering
+(use-package prescient
+  :straight t)
+
 
 ;; ;; Adopt a sneaky garbage collection strategy of waiting until idle time to
 ;; ;; collect; staving off the collector while the user is working.

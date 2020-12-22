@@ -80,17 +80,14 @@
   (ivy-mode)
   )
 
-
-(use-package ivy-prescient
-  :straight t
-  :ensure t
-  :after ivy
-  :config (ivy-prescient-mode))
-
 ;; flx is used as the fuzzy-matching indexer backend for ivy.
 (use-package flx
   :straight t
   :after ivy)
+
+(use-package ivy-prescient
+  :straight t
+  :config (ivy-prescient-mode 1))
 
 ;; swiper is a buffer search interface using ivy.
 (use-package swiper

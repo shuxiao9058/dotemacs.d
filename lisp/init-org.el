@@ -105,7 +105,15 @@
 	  ("n" "Personal notes" entry
 	   (file+headline +org-capture-notes-file "Inbox")
 	   "* %u %?\n%i\n%a" :prepend t :kill-buffer t)
-	  ;;
+
+	  ("w" "Templates for work")
+	  ("wt" "Work todo" entry
+	   (file+headline  +org-capture-todo-file "Work")
+	   "* TODO %?\n%i\n:LOGBOOK:\n\n:END:\n" :prepend t :kill-buffer t)
+	  ("wn" "Work notes" entry
+	   (file+headline +org-capture-notes-file "Work")
+	   "* %u %?\n%i\n%a" :prepend t :kill-buffer t)
+
 	  ("p" "Templates for projects")
 	  ("pt" "Project todo" entry ; {project-root}/todo.org
 	   (file+headline +org-capture-project-todo-file "TODOs")
@@ -447,7 +455,7 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
 (use-package org-agenda
   :ensure nil
   :straight nil
-  :after org
+  :after (org hydra)
   :hook (org-agenda-finalize . org-agenda-to-appt)
   :config
   ;; update appt list per 10 minutes
@@ -513,6 +521,23 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
   :config
   (appt-activate 1)
   (org-agenda-to-appt)
+  ;; keymap https://github.com/Timidger/dotfiles/blob/master/.emacs.d/layers/+emacs/org/packages.el
+  :general
+  (general-unbind '(org-agenda-mode-map)
+    "M-m")
+  (:keymaps  'org-agenda-mode-map
+	     "j" #'org-agenda-next-line
+	     "k" #'org-agenda-previous-line
+	     "M-j" #'org-agenda-next-item
+	     "M-k" #'org-agenda-previous-item
+	     "M-h" #'org-agenda-earlier
+	     "M-l" #'org-agenda-later
+	     "gd" #'org-agenda-toggle-time-grid
+	     "gr" #'org-agenda-redo
+	     "M-RET" #'org-agenda-show-and-scroll-up
+	     local-leader-key-non-normal #'hydra-agenda-view/body
+	     ;; (kbd "s-M-SPC") 'spacemacs/org-agenda-transient-state/body
+	     )
   )
 
 ;; overwrite built-in function (proviError running timer appt-delete-window': (error "No buffer named *appt-buf*")de 'init-org)

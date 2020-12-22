@@ -6,7 +6,7 @@
   ;; :commands (godoc gofmt gofmt-before-save)
   ;; :hook (befor-save . gofmt-before-save)
   ;; :config
-  ;; ;; (setq gofmt-command "goimports")
+  ;; (setq gofmt-command "goimports")
   ;; (setenv "GO111MODULE" "on")
   ;; :general
   ;; (nmap :keymaps '(go-mode-map)
