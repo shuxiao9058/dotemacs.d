@@ -89,7 +89,7 @@
   ;; set default `company-backends'
   (setq-default company-backends
 		'((
-		   ;; company-tabnine :with
+		   company-tabnine :with
 				   company-capf :separate)
 		  company-dabbrev-code
 		  (company-files          ; files & directory
@@ -260,44 +260,42 @@
   (advice-add #'company-tabnine :around #'my-company-tabnine)
   )
 
-;; try nox
-(use-package nox
-  :straight (nox
-	     :host github
-	     :repo "manateelazycat/nox"
-	     :files ("nox.el"))
+;; ;; try nox
+;; (use-package nox
+;;   :straight (nox
+;; 	     :host github
+;; 	     :repo "manateelazycat/nox"
+;; 	     :files ("nox.el"))
 
-  :hook ((go-mode lua-mode c-mode-common c-mode c++-mode) . nox-ensure)
-  :config
-  ;; emmylua
-  (let ((emmylua-jar-path (expand-file-name "bin/EmmyLua-LS-all.jar" poly-local-dir)))
-    (add-to-list 'nox-server-programs
-		 `(lua-mode  . ("/usr/bin/java" "-cp" ,emmylua-jar-path "com.tang.vscode.MainKt"))))
+;;   :hook ((go-mode lua-mode c-mode-common c-mode c++-mode) . nox-ensure)
+;;   :config
+;;   ;; emmylua
+;;   (let ((emmylua-jar-path (expand-file-name "bin/EmmyLua-LS-all.jar" poly-local-dir)))
+;;     (add-to-list 'nox-server-programs
+;; 		 `(lua-mode  . ("/usr/bin/java" "-cp" ,emmylua-jar-path "com.tang.vscode.MainKt"))))
 
-  (setq nox-workspace-configuration
-        '((:gopls . (:usePlaceholders t
-				      :completeUnimported  t
-				      :experimentalWorkspaceModule t))))
-  (when (executable-find "gopls")
-    (add-to-list 'nox-server-programs `(go-mode . ("gopls" "-logfile=/tmp/gopls.log" "-rpc.trace" "-vv" "--debug=localhost:6060"))))
+;;   (setq nox-workspace-configuration
+;;         '((:gopls . (:usePlaceholders t
+;; 				      :completeUnimported  t
+;; 				      :experimentalWorkspaceModule t))))
+;;   (when (executable-find "gopls")
+;;     (add-to-list 'nox-server-programs `(go-mode . ("gopls" "-logfile=/tmp/gopls.log" "-rpc.trace" "-vv" "--debug=localhost:6060"))))
 
-  (when (executable-find "ccls")
-    (add-to-list 'nox-server-programs '((c-mode c++-mode) "ccls"
- 					"-init={\"compilationDatabaseDirectory\":\"build\"}")))
+;;   (when (executable-find "ccls")
+;;     (add-to-list 'nox-server-programs '((c-mode c++-mode) "ccls"
+;;  					"-init={\"compilationDatabaseDirectory\":\"build\"}")))
 
-  (add-hook 'nox-managed-mode-hook (lambda()
-				     (make-local-variable 'company-backends)
-				     (setq company-backends nil)
-				     (setq company-backends
-					   '((company-tabnine :with company-capf :separate)
-					     company-dabbrev-code
-					     (company-files          ; files & directory
-					      company-keywords       ; keywords
-					      )
-					     (company-abbrev company-dabbrev)))))
-  ;; (dolist (hook '(go-mode-hook))
-  ;;   (add-hook 'before-save-hook 'nox-format-buffer))
-  )
+;;   (add-hook 'nox-managed-mode-hook (lambda()
+;; 				     (make-local-variable 'company-backends)
+;; 				     (setq company-backends nil)
+;; 				     (setq company-backends
+;; 					   '((company-tabnine :with company-capf :separate)
+;; 					     company-dabbrev-code
+;; 					     (company-files          ; files & directory
+;; 					      company-keywords       ; keywords
+;; 					      )
+;; 					     (company-abbrev company-dabbrev)))))
+;;   )
 
 ;; (use-package eglot
 ;;   :straight t

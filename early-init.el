@@ -3,8 +3,27 @@
 ;; Emacs HEAD (27+) introduces early-init.el, which is run before init.el,
 ;; before package and UI initialization happens.
 
-;; Defer garbage collection further back in the startup process
-(setq gc-cons-threshold most-positive-fixnum)
+;; ;; Defer garbage collection further back in the startup process
+;; (setq gc-cons-threshold most-positive-fixnum)
+
+
+;;; Automatic Optimization
+(setq gc-cons-threshold-original gc-cons-threshold)
+(setq gc-cons-threshold (* 1024 1024 100))
+(setq file-name-handler-alist-original file-name-handler-alist)
+(setq inhibit-compacting-font-caches nil)
+(setq file-name-handler-alist nil)
+(run-with-idle-timer 5 nil (lambda ()
+                             (setq gc-cons-threshold gc-cons-threshold-original)
+                             (setq file-name-handler-alist file-name-handler-alist-original)
+                             (makunbound 'gc-cons-threshold-original)
+                             (makunbound 'file-name-handler-alist-original)))
+
+
+;; In noninteractive sessions, prioritize non-byte-compiled source files to
+;; prevent the use of stale byte-code. Otherwise, it saves us a little IO time
+;; to skip the mtime checks on every *.elc file.
+(setq load-prefer-newer noninteractive)
 
 ;; In Emacs 27+, package initialization occurs before `user-init-file' is
 ;; loaded, but after `early-init-file'. Doom handles package initialization, so
@@ -29,4 +48,6 @@
 
 ;; (setq warning-minimum-level :emergency)
 
-;; (setq debug-on-error t)
+(setq warning-minimum-level :debug)
+
+(setq debug-on-error t)
