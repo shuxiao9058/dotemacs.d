@@ -105,41 +105,41 @@
     )
   )
 
-					; (use-package lsp-ui
-					;   :straight t
-					;   ; :after lsp-mode
-					;   :diminish
-					;   ; :commands lsp-ui-mode
-					;   ;; :custom-face
-					;   ;; (lsp-ui-doc-background ((t (:background nil))))
-					;   ;; (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
-					;   :hook (lsp-mode-hook . lisp-ui-mode)
-					;   :custom
-					;   (lsp-ui-doc-enable nil)
-					;   (lsp-ui-doc-header nil)
-					;   (lsp-ui-doc-include-signature nil)
-					;   ;; (lsp-ui-doc-position 'top)
-					;   ;; (lsp-ui-doc-border (face-foreground 'default))
-					;   (lsp-ui-sideline-enable nil)
-					;   (lsp-ui-sideline-ignore-duplicate t)
-					;   (lsp-ui-sideline-show-code-actions nil)
-					;   (lsp-ui-sideline-show-diagnostics nil)
-					;   :config
-					;   ;; ;; Use lsp-ui-doc-webkit only in GUI
-					;   ;; (if IS-GUI
-					;   ;; 	(setq lsp-ui-doc-use-webkit t))
-					;   ;; WORKAROUND Hide mode-line of the lsp-ui-imenu buffer
-					;   ;; https://github.com/emacs-lsp/lsp-ui/issues/243
-					;   (defadvice lsp-ui-imenu (after hide-lsp-ui-imenu-mode-line activate)
-					;     (setq mode-line-format nil))
-					;   :general
-					;   (nvmap :keymaps '(lsp-ui-mode-map)
-					;     [remap evil-goto-definition] #'lsp-ui-peek-find-definitions
-					;     "gD" #'lsp-ui-peek-find-references)
-					;   (:keymaps '(lsp-ui-peek-mode-map)
-					;  	    "C-j" 'lsp-ui-peek--select-next
-					; 	    "C-k" 'lsp-ui-peek--select-prev)
-					;   )
+;; (use-package lsp-ui
+;;   :straight t
+;; 					; :after lsp-mode
+;;   :diminish
+;; 					; :commands lsp-ui-mode
+;;   ;; :custom-face
+;;   ;; (lsp-ui-doc-background ((t (:background nil))))
+;;   ;; (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
+;;   :hook (lsp-mode-hook . lisp-ui-mode)
+;;   :custom
+;;   (lsp-ui-doc-enable nil)
+;;   (lsp-ui-doc-header nil)
+;;   (lsp-ui-doc-include-signature nil)
+;;   ;; (lsp-ui-doc-position 'top)
+;;   ;; (lsp-ui-doc-border (face-foreground 'default))
+;;   (lsp-ui-sideline-enable nil)
+;;   (lsp-ui-sideline-ignore-duplicate t)
+;;   (lsp-ui-sideline-show-code-actions nil)
+;;   (lsp-ui-sideline-show-diagnostics nil)
+;;   :config
+;;   ;; ;; Use lsp-ui-doc-webkit only in GUI
+;;   ;; (if IS-GUI
+;;   ;; 	(setq lsp-ui-doc-use-webkit t))
+;;   ;; WORKAROUND Hide mode-line of the lsp-ui-imenu buffer
+;;   ;; https://github.com/emacs-lsp/lsp-ui/issues/243
+;;   (defadvice lsp-ui-imenu (after hide-lsp-ui-imenu-mode-line activate)
+;;     (setq mode-line-format nil))
+;;   :general
+;;   (nvmap :keymaps '(lsp-ui-mode-map)
+;;     [remap evil-goto-definition] #'lsp-ui-peek-find-definitions
+;;     "gD" #'lsp-ui-peek-find-references)
+;;   (:keymaps '(lsp-ui-peek-mode-map)
+;; 	    "C-j" 'lsp-ui-peek--select-next
+;; 	    "C-k" 'lsp-ui-peek--select-prev)
+;;   )
 
 (use-package lsp-ivy
   :straight t
