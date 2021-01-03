@@ -39,11 +39,33 @@
   :custom
   (auto-revert-verbose nil))
 
-;; (use-package undo-fu
-;;   :straight (undo-fu :host gitlab
-;; 		     :repo "ideasman42/emacs-undo-fu"
-;; 		     :files ("undo-fu.el"))
-;;   )
+;;; Undo-Fu
+;; trying another undo package
+;; https://gitlab.com/ideasman42/emacs-undo-fu
+(use-package undo-fu
+  :straight (undo-fu
+	     :host gitlab
+	     :repo "ideasman42/emacs-undo-fu"
+	     :files ("undo-fu.el"))
+  :after evil
+  :disabled
+  :demand t
+  :init
+  ;; `evil' activates undo-tree, so we must pre-emptively disable it.
+  (eval-after-load 'undo-tree
+    (global-undo-tree-mode -1))
+  :general
+  (:states '(normal)
+	   "u" 'undo-only
+	   "\C-r" 'undo-fu-only-redo)
+  (:states '(normal insert motion emacs)
+	   "s-z" 'undo-fu-only-undo
+	   "s-Z" 'undo-fu-only-redo)
+  :config
+  ;; Store more undo history to prevent loss of data
+  (setq undo-limit 400000
+        undo-strong-limit 3000000
+        undo-outer-limit 3000000))
 
 (use-package undo-tree
   :straight (:type git :host nil :repo "http://www.dr-qubit.org/git/undo-tree.git")
