@@ -1,39 +1,38 @@
 ;;; core/core-packages.el -*- lexical-binding: t; -*-
 
-;; (use-package server ; built-in
-;;   :straight nil
-;;   ;; :if (display-graphic-p)
-;;   :defer 1
-;;   :init
-;;   ;; (if IS-WINDOWS
-;;   ;;     (progn
-;;   ;; 	(setq server-use-tcp t)
-;;   ;; 	(setq server-use-socket nil)
-;;   ;; 	)
-;;   ;;   (setq server-use-tcp nil)
-;;   ;;   (setq server-use-socket t))
+(use-package server ; built-in
+  :straight nil
+  ;; :if (display-graphic-p)
+  :defer 1
+  :init
+  (if IS-WINDOWS
+      (progn
+	(setq server-use-tcp t)
+	(setq server-use-socket nil)
+	)
+    (setq server-use-tcp nil)
+    (setq server-use-socket t))
 
-;;   ;; (setq server-auth-dir  (expand-file-name "emacs-server" poly-cache-dir))
-;;   ;; (setq server-socket-dir (expand-file-name "emacs-server" poly-cache-dir))
-;;   ;; (setq server-name (expand-file-name "emacs-server-file" server-socket-dir))
+  (setq server-auth-dir  (expand-file-name "emacs-server" poly-cache-dir))
+  (setq server-socket-dir (expand-file-name "emacs-server" poly-cache-dir))
+  (setq server-name (expand-file-name "emacs-server-file" server-socket-dir))
 
-;;   ;; (unless (file-exists-p server-auth-dir)
-;;   ;;   (make-directory server-auth-dir))
-;;   ;; (unless (or (not server-socket-dir) (file-exists-p server-socket-dir))
-;;   ;;   (make-directory server-socket-dir))
+  (unless (file-exists-p server-auth-dir)
+    (make-directory server-auth-dir))
+  (unless (or (not server-socket-dir) (file-exists-p server-socket-dir))
+    (make-directory server-socket-dir))
 
-;;   (defadvice server-ensure-safe-dir
-;;       (around my-around-server-ensure-safe-dir activate)
-;;     "Ignores any errors raised from server-ensure-safe-dir"
-;;     (ignore-errors ad-do-it))
-;;   :config
-;;   (unless (server-running-p)
-;;     (server-start))
-;;   )
+  (defadvice server-ensure-safe-dir
+      (around my-around-server-ensure-safe-dir activate)
+    "Ignores any errors raised from server-ensure-safe-dir"
+    (ignore-errors ad-do-it))
+  :config
+  (unless (server-running-p)
+    (server-start))
+  )
 
 (use-package autorevert
   :straight nil
-  ;; :hook (dired-mode . auto-revert-mode)
   :diminish auto-revert-mode
   :config
   (global-auto-revert-mode +1)
@@ -47,17 +46,44 @@
 ;;   )
 
 (use-package undo-tree
-  :if IS-MAC
-  :straight (:local-repo  "~/.emacs.d/site-lisp/undo-tree")
+  :straight (:type git :host nil :repo "http://www.dr-qubit.org/git/undo-tree.git")
+  ;; :disabled
+  ;; :if IS-MAC
+  :commands global-undo-tree-mode
+  ;; Pull package directly from maintainer, the elpa package is behind.
+  ;; :straight (:local-repo  "~/.emacs.d/site-lisp/undo-tree")
+  :demand
+  :delight
   :ensure t
   :custom
+  ;; supposedly causes errors in undo read
+  ;; see https://emacs.stackexchange.com/a/34214/11934
+  (undo-tree-enable-undo-in-region nil)
   (undo-tree-visualizer-timestamps t)
   (undo-tree-visualizer-diff t)
-  (undo-tree-history-directory-alist (list (cons ".*" (expand-file-name "undo-tree-history" poly-cache-dir))))
+  ;; (undo-tree-history-directory-alist (list (cons ".*" (expand-file-name "undo-tree-history" poly-cache-dir))))
   (undo-tree-auto-save-history t)
   (undo-tree-visualizer-lazy-drawing 1000)
+  :init
+  ;; stop littering - set undo directory
+  (let ((undo-dir (expand-file-name "undo-tree-history" poly-cache-dir)))
+    (setq undo-tree-history-directory-alist `(("." . ,undo-dir)))
+    (unless (file-directory-p undo-dir)
+      (make-directory undo-dir t)))
   :config
   (global-undo-tree-mode)
+  :general
+  (nmap "u" 'undo-tree-undo)
+  (:states '(normal insert motion emacs)
+           "s-z" #'undo-tree-undo
+           "s-Z" #'undo-tree-redo)
+  (:keymaps 'undo-tree-visualizer-mode-map
+            ;; Make return accept currently selected revision and q
+            ;; (and C-g) abort. The defaults are weird.
+            "<return>" #'undo-tree-visualizer-quit
+            "C-g" #'undo-tree-visualizer-abort
+            "q" #'undo-tree-visualizer-abort
+	    )
   )
 
 (use-package hide-mode-line
@@ -87,12 +113,12 @@
   :init (turn-on-pbcopy)
   )
 
-;; (use-package posframe
-;;   :straight (posframe
-;;     :host github
-;; 		      :repo "tumashu/posframe"
-;; 		      :files ("posframe.el"))
-;;   :ensure t)
+(use-package posframe
+  :straight (posframe
+	     :host github
+	     :repo "tumashu/posframe"
+	     :files ("posframe.el"))
+  :ensure t)
 
 (use-package restart-emacs
   :straight t
@@ -149,11 +175,11 @@
       ad-do-it
     (let ((formatted-string (apply 'format (ad-get-args 0))))
       (if (and (stringp formatted-string)
-               (cl-some (lambda (re) (string-match re formatted-string)) message-filter-regexp-list))
+	       (cl-some (lambda (re) (string-match re formatted-string)) message-filter-regexp-list))
 	  (let ((inhibit-read-only t))
             (with-current-buffer "*Messages*"
-              (goto-char (point-max))
-              (insert formatted-string "\n")))
+	      (goto-char (point-max))
+	      (insert formatted-string "\n")))
 	(progn
 	  (ad-set-args 0 `("%s" ,formatted-string))
 	  ad-do-it)))))

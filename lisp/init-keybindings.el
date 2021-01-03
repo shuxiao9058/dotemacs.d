@@ -102,8 +102,8 @@
   "c" '(:wk "Code")
   "cc" '(compile :wk "Compile")
   "cC" '(recompile :wk "Recompile")
-  "cd" '(xref-find-definitions :wk "Jump to definition")
-  "cD" '(xref-find-references :wk "Jump to references")'
+  ;; "cd" '(xref-find-definitions :wk "Jump to definition")
+  ;; "cD" '(xref-find-references :wk "Jump to references")'
   ;; "cd" '(+lookup/definition :wk "Jump to definition")
   ;; "cD" '(+lookup/references :wk "Jump to references")
   "cf" '(+format/region-or-buffer :wk "Format buffer/region")

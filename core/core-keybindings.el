@@ -61,9 +61,7 @@
     "M-x"
     "M-:"
     "C-\\"
-    )
-
-  )
+    ))
 
 ;;
 ;;; Packages
@@ -82,8 +80,6 @@
   (set-face-attribute 'which-key-local-map-description-face nil :weight 'bold)
   (which-key-setup-side-window-bottom)
   (which-key-mode +1))
-
-;;
 
 (provide 'core-keybindings)
 ;;; core-keybindings.el ends here
