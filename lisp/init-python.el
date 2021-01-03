@@ -31,6 +31,7 @@
 (setq python-indent-offset 4)
 
 (use-package ein
+  :straight t
   :ensure t
   :defer t
   :commands (ein:notebooklist-open ein:notebooklist-login)

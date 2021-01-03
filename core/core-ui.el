@@ -19,11 +19,41 @@
 ;;   (require 'dracula-pro-theme)
 ;;   (load-theme 'dracula-pro t))
 
-;; load theme
-(let ((theme-file (expand-file-name "theme/draculapro-theme.el" poly-core-dir)))
-  (when (file-exists-p theme-file)
-    (load theme-file nil t)
-    (load-theme 'draculapro t)))
+(use-package doom-themes
+  :straight t
+  :config
+  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+
+;;   (let ((theme-file (expand-file-name "theme/doom-draculapro-theme.el" poly-core-dir)))
+;;     (when (file-exists-p theme-file)
+;;       (load theme-file nil t)
+;;    ;; (load-theme 'doom-draculapro t)
+;;       ;; (load-theme 'doom-draculapro-theme t)
+;;       ))
+
+  (load-theme 'doom-dracula t)
+  ;; (load-theme 'doom-draculapro-theme t)
+
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+
+  ;; Enable custom neotree theme (all-the-icons must be installed!)
+  (doom-themes-neotree-config)
+  ;; or for treemacs users
+  (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
+  (doom-themes-treemacs-config)
+
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config)
+  )
+
+;; ;; load theme
+;; (let ((theme-file (expand-file-name "theme/draculapro-theme.el" poly-core-dir)))
+;;   (when (file-exists-p theme-file)
+;;     (load theme-file nil t)
+;;     (load-theme 'draculapro t)))
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 

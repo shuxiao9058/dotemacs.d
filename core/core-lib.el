@@ -12,6 +12,13 @@
 (defvar missing-packages-list nil
   "List of packages that `try-require' can't find.")
 
+; (defmacro watcher:try-load (module)
+;   "Try to load the given module, logging an error if unable to load"
+;   `(condition-case ex
+;        (require ,module)
+;      ('error
+;       (message "watcher: Unable to load [%s] module: %s" ,module ex))))
+
 (defun try-require (feature)
   "Attempt to load a library or module. Return true if the
 library given as argument is successfully loaded. If not, instead

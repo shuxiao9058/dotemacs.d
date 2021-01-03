@@ -47,14 +47,8 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
-
-;; *** watcher
-(add-to-list 'load-path
-	     (expand-file-name "watcher" (file-name-directory load-file-name)))
-(require 'watcher)
-
 ;; Load the bare necessities
-(watcher:try-load 'core-lib)
+(require 'core-lib)
 
 ;; REVIEW Fixes 'void-variable tab-prefix-map' errors caused by packages that
 ;;        prematurely use this variable before it was introduced. Remove this in
@@ -76,9 +70,9 @@
     (require 'core-evil)
     (require 'core-autoload)
     (poly-load-autoload)
-    (when (not noninteractive)
-      (add-to-list 'command-switch-alist (cons "--restore" #'poly-restore-session-handler))
-      )
+    ;; (when (not noninteractive)
+    ;;   (add-to-list 'command-switch-alist (cons "--restore" #'poly-restore-session-handler))
+    ;;   )
     )
   (setq poly-initialize-core-p t)
   )

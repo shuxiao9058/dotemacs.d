@@ -72,13 +72,13 @@
   (company-require-match nil)
   ;; (company-tooltip-limit           20)
   (company-tooltip-align-annotations t) ;; Align annotation to the right side.
-  ;; ;; (company-auto-complete nil)
-  ;; (company-begin-commands '(self-insert-command))
+  (company-auto-complete nil)
+  (company-begin-commands '(self-insert-command))
   ;; (company-require-match nil)
   ;; Don't use company in the following modes
   (company-global-modes '(not shell-mode eshell-mode shell-mode comint-mode erc-mode gud-mode rcirc-mode
 			      minibuffer-inactive-mode))
-  ;; (company-echo-delay 0)
+  (company-echo-delay 0)
   ;; Trigger completion immediately.
   ;; (company-idle-delay nil)
   (company-idle-delay 0.1)
@@ -88,9 +88,11 @@
   :config
   ;; set default `company-backends'
   (setq-default company-backends
-		'((
+		'(
+		  ;; company-capf
+		  (
 		   company-tabnine :with
-				   company-capf :separate)
+		   company-capf :separate)
 		  company-dabbrev-code
 		  (company-files          ; files & directory
 		   company-keywords       ; keywords
@@ -235,7 +237,7 @@
   :custom
   (company-tabnine-log-file-path "/tmp/TabNine.log")
   (company-tabnine-executable-args (list "--log-level" "Trace"))
-  (company-tabnine-wait 0.1)
+  (company-tabnine-wait 2)
   ;; (company-tabnine-max-num-results 9)
   (company-tabnine-no-continue t)
   :config
@@ -385,11 +387,11 @@
   :diminish yas-global-mode
   :commands yas-global-mode
   :hook (after-init . yas-global-mode)
-  :config
+  ;; :config
   ;; (add-to-list 'yas-snippet-dirs
   ;; 		 (expand-file-name "snippets" poly-etc-dir))
   ;; make company break completion
-  (setq company-continue-commands (-snoc company-continue-commands 'yas-insert-snippet))
+  ;; (setq company-continue-commands (-snoc company-continue-commands 'yas-insert-snippet))
   )
 
 (use-package yasnippet-snippets

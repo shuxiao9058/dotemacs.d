@@ -55,5 +55,15 @@
     (kbd "<backtab>")  'profiler-report-toggle-entry)
   )
 
+(use-package profiler
+  :straight t
+  :defer t
+  :config
+  :general
+  (nmap :keymaps '(profiler-report-mode-map)
+    (kbd "<tab>") 'profiler-report-toggle-entry
+    (kbd "<backtab>")  'profiler-report-toggle-entry)
+  )
+
 (provide 'init-lisp)
 ;;; init-lisp.el ends here

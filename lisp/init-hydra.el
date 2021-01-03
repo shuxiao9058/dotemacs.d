@@ -9,7 +9,7 @@
 (use-package hydra
   :straight t
   :ensure t
-  :after outline
+					; :after outline
   :custom
   (hydra-if-helpful t)
   :commands (defhydra)
@@ -28,8 +28,9 @@
              )
   :defer t
   :after (hydra posframe)
-  :config
-  (hydra-posframe-enable))
+					; :config
+					; (hydra-posframe-enable)
+  )
 
 
 (defhydra hydra-base ()
@@ -50,12 +51,12 @@ _e_in
 (use-package ace-window
   :straight t
   :ensure t
-  :defer 5
+  ;; :defer 5
   )
 
-;; Activate winner mode for quickly changing window sizes, etc
-(when (fboundp 'winner-mode)
-  (winner-mode 1))
+					; ;; Activate winner mode for quickly changing window sizes, etc
+					; (when (fboundp 'winner-mode)
+					;   (winner-mode 1))
 
 (defhydra hydra-straight (:hint nil)
   "
@@ -435,8 +436,6 @@ Headline^^            Visit entry^^               Filter^^                    Da
 ;;   ("g" straight-get-recipe)
 ;;   ("e" straight-prune-build)
 ;;   ("q" nil))
-
-
 
 (provide 'init-hydra)
 ;;; init-hydra.el ends here

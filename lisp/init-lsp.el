@@ -6,7 +6,7 @@
   :hook (((java-mode
 	   python-mode
 	   lua-mode
-	   go-mode
+	   ;; go-mode
 	   scala-mode
 	   js-mode
 	   js2-mode
@@ -33,7 +33,11 @@
 			     (make-local-variable 'company-backends)
 			     (setq company-backends nil)
 			     (setq company-backends
-				   '((company-tabnine :with company-capf :separate)
+				   '((
+				      company-tabnine :with
+				      company-capf
+				      :separate
+				      )
 				     company-dabbrev-code
 				     (company-files          ; files & directory
 				      company-keywords       ; keywords
@@ -41,14 +45,15 @@
 				     (company-abbrev company-dabbrev)))))
 	 )
   :custom
-  (lsp--throw-on-input nil)
+  (lsp-auto-configure t)
+  ;; (lsp--throw-on-input nil)
   (lsp-idle-delay 0.5)                 ;; lazy refresh
-  (lsp-log-io nil)
+  (lsp-log-io t)
   (lsp-enable-xref t)
   (lsp-enable-indentation t)
   (lsp-enable-completion-at-point t)
   (lsp-response-timeout 1000)
-  (lsp-enable-folding nil)             ;; use `evil-matchit' instead
+  (lsp-enable-folding t)             ;; use `evil-matchit' instead
   (lsp-diagnostic-package :none)   ;; prefer flycheck disable
   (lsp-flycheck-live-reporting nil)    ;; obey `flycheck-check-syntax-automatically'
   (lsp-prefer-capf t)                  ;; using `company-capf' by default
@@ -68,14 +73,14 @@
         lsp-prefer-flymake nil      ; Use lsp-ui and flycheck
         flymake-fringe-indicator-position 'right-fringe)
   :config
-  (lsp-register-custom-settings
-   '(("gopls.usePlaceholders" lsp-go-use-placeholders t)
-     ("gopls.hoverKind" lsp-go-hover-kind)
-     ("gopls.buildFlags" lsp-go-build-flags)
-     ("gopls.env" lsp-go-env)
-     ("gopls.linkTarget" lsp-go-link-target)
-     ;; ("gopls.codelens" lsp-go-codelens)
-     ))
+  ;; (lsp-register-custom-settings
+  ;;  '(("gopls.usePlaceholders" lsp-go-use-placeholders t)
+  ;;    ("gopls.hoverKind" lsp-go-hover-kind)
+  ;;    ("gopls.buildFlags" lsp-go-build-flags)
+  ;;    ("gopls.env" lsp-go-env)
+  ;;    ("gopls.linkTarget" lsp-go-link-target)
+  ;;    ;; ("gopls.codelens" lsp-go-codelens)
+  ;;    ))
 
   ;; ;; lsp-lua
   ;; ;; 暂时还有点问题，先不用了
@@ -100,41 +105,41 @@
     )
   )
 
-(use-package lsp-ui
-  :straight t
-  :after lsp-mode
-  :diminish
-  :commands lsp-ui-mode
-  ;; :custom-face
-  ;; (lsp-ui-doc-background ((t (:background nil))))
-  ;; (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
-  :hook (lsp-mode-hook . lisp-ui-mode)
-  :custom
-  (lsp-ui-doc-enable nil)
-  (lsp-ui-doc-header nil)
-  (lsp-ui-doc-include-signature nil)
-  ;; (lsp-ui-doc-position 'top)
-  ;; (lsp-ui-doc-border (face-foreground 'default))
-  (lsp-ui-sideline-enable nil)
-  (lsp-ui-sideline-ignore-duplicate t)
-  (lsp-ui-sideline-show-code-actions nil)
-  (lsp-ui-sideline-show-diagnostics nil)
-  :config
-  ;; ;; Use lsp-ui-doc-webkit only in GUI
-  ;; (if IS-GUI
-  ;; 	(setq lsp-ui-doc-use-webkit t))
-  ;; WORKAROUND Hide mode-line of the lsp-ui-imenu buffer
-  ;; https://github.com/emacs-lsp/lsp-ui/issues/243
-  (defadvice lsp-ui-imenu (after hide-lsp-ui-imenu-mode-line activate)
-    (setq mode-line-format nil))
-  :general
-  (nvmap :keymaps '(lsp-ui-mode-map)
-    [remap evil-goto-definition] #'lsp-ui-peek-find-definitions
-    "gD" #'lsp-ui-peek-find-references)
-  (:keymaps '(lsp-ui-peek-mode-map)
- 	    "C-j" 'lsp-ui-peek--select-next
-	    "C-k" 'lsp-ui-peek--select-prev)
-  )
+					; (use-package lsp-ui
+					;   :straight t
+					;   ; :after lsp-mode
+					;   :diminish
+					;   ; :commands lsp-ui-mode
+					;   ;; :custom-face
+					;   ;; (lsp-ui-doc-background ((t (:background nil))))
+					;   ;; (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
+					;   :hook (lsp-mode-hook . lisp-ui-mode)
+					;   :custom
+					;   (lsp-ui-doc-enable nil)
+					;   (lsp-ui-doc-header nil)
+					;   (lsp-ui-doc-include-signature nil)
+					;   ;; (lsp-ui-doc-position 'top)
+					;   ;; (lsp-ui-doc-border (face-foreground 'default))
+					;   (lsp-ui-sideline-enable nil)
+					;   (lsp-ui-sideline-ignore-duplicate t)
+					;   (lsp-ui-sideline-show-code-actions nil)
+					;   (lsp-ui-sideline-show-diagnostics nil)
+					;   :config
+					;   ;; ;; Use lsp-ui-doc-webkit only in GUI
+					;   ;; (if IS-GUI
+					;   ;; 	(setq lsp-ui-doc-use-webkit t))
+					;   ;; WORKAROUND Hide mode-line of the lsp-ui-imenu buffer
+					;   ;; https://github.com/emacs-lsp/lsp-ui/issues/243
+					;   (defadvice lsp-ui-imenu (after hide-lsp-ui-imenu-mode-line activate)
+					;     (setq mode-line-format nil))
+					;   :general
+					;   (nvmap :keymaps '(lsp-ui-mode-map)
+					;     [remap evil-goto-definition] #'lsp-ui-peek-find-definitions
+					;     "gD" #'lsp-ui-peek-find-references)
+					;   (:keymaps '(lsp-ui-peek-mode-map)
+					;  	    "C-j" 'lsp-ui-peek--select-next
+					; 	    "C-k" 'lsp-ui-peek--select-prev)
+					;   )
 
 (use-package lsp-ivy
   :straight t

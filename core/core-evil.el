@@ -95,21 +95,22 @@
   (evil-exchange-cx-install))
 
 ;;; Press “%” to jump between matched tags in Emacs. For example, in HTML “<div>” and “</div>” are a pair of tags.
-(use-package evil-matchit
-  :ensure t
-  :commands evilmi-jump-items
-  :custom
-  (global-evil-matchit-mode t)
-  :config
-  ;; disable evil-matchit
-  (dolist (mode '(magit-status-mode-hook))
-    (add-hook mode (lambda()
-		     (evil-matchit-mode 0))))
-  :general
-  ([remap evil-jump-item] #'evilmi-jump-items)
-  (nvmap :keymaps '(evil-matchit-mode-map)
-    "%" #'evilmi-text-object)
-  )
+ (use-package evil-matchit
+   :straight t
+   :ensure t
+   :commands evilmi-jump-items
+   :custom
+   (global-evil-matchit-mode t)
+   :config
+   ;; disable evil-matchit
+   (dolist (mode '(magit-status-mode-hook))
+     (add-hook mode (lambda()
+ 		     (evil-matchit-mode 0))))
+   :general
+   ([remap evil-jump-item] #'evilmi-jump-items)
+   (nvmap :keymaps '(evil-matchit-mode-map)
+     "%" #'evilmi-text-object)
+   )
 
 (use-package evil-snipe
   :straight t
@@ -164,6 +165,7 @@
   (global-evil-visualstar-mode 1))
 
 (use-package evil-textobj-entire
+  :straight t
   :after evil
   :general
   (general-itomap "e" #'evil-entire-entire-buffer)

@@ -3,10 +3,10 @@
 (use-package go-mode
   :straight t
   :ensure t
-  ;; :commands (godoc gofmt gofmt-before-save)
+  :commands (godoc gofmt gofmt-before-save)
   ;; :hook (befor-save . gofmt-before-save)
-  ;; :config
-  ;; (setq gofmt-command "goimports")
+  :config
+  (setq gofmt-command "goimports")
   ;; (setenv "GO111MODULE" "on")
   ;; :general
   ;; (nmap :keymaps '(go-mode-map)
@@ -22,10 +22,10 @@
   ;;   )
   )
 
-(use-package gorepl-mode
-  :straight t
-  :after go-mode
-  :commands gorepl-run-load-current-file)
+;; (use-package gorepl-mode
+;;   :straight t
+;;   :after go-mode
+;;   :commands gorepl-run-load-current-file)
 
 ;; (use-package flycheck-golangci-lint
 ;;     :straight t
@@ -38,19 +38,19 @@
 ;;      (expand-file-name "golangci.yml" "~/.config/golangci-lint"))
 ;;     (flycheck-golangci-lint-tests t))
 
-(use-package go-eldoc
-  :straight t
-  :after go-mode
-  :ensure t
-  :commands go-eldoc-setup
-  :init
-  (add-hook 'go-mode-hook #'go-eldoc-setup))
+;; (use-package go-eldoc
+;;   :straight t
+;;   :after go-mode
+;;   :ensure t
+;;   :commands go-eldoc-setup
+;;   :init
+;;   (add-hook 'go-mode-hook #'go-eldoc-setup))
 
-(use-package go-rename
-  :straight t
-  :after go-mode
-  :ensure t
-  :commands go-rename)
+;; (use-package go-rename
+;;   :straight t
+;;   :after go-mode
+;;   :ensure t
+;;   :commands go-rename)
 
 ;; (use-package go-guru
 ;;   :straight t

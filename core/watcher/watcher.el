@@ -85,12 +85,5 @@ WRAPPERS) and pushes them to `watcher-init-errors'. PATH is a the list of headin
                   ,format-string)
           ,@args)))))
 
-(defmacro watcher:try-load (module)
-  "Try to load the given module, logging an error if unable to load"
-  `(condition-case ex
-       (require ,module)
-     ('error
-      (message "watcher: Unable to load [%s] module: %s" ,module ex))))
-
 (provide 'watcher)
 ;;; watcher.el ends here

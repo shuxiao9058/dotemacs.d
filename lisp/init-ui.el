@@ -42,37 +42,37 @@ WIN-ID : Window index."
 ;;   (doom-themes-org-config)
 ;;   )
 
-(use-package doom-modeline
-  :straight t
-  :custom
-  (doom-modeline-buffer-file-name-style 'truncate-with-project)
-  (doom-modeline-icon nil)
-  (doom-modeline-major-mode-icon nil)
-  (doom-modeline-minor-modes nil)
-  (doom-modeline-major-mode-color-icon nil)
-  (doom-modeline-persp-name nil)
-  (doom-modeline-lsp nil)
-  ;; Whether display github notifications or not. Requires `ghub+` package.
-  (doom-modeline-github nil)
-  ;; The interval of checking github.
-  (doom-modeline-github-interval (* 30 60))
-  (doom-modeline-height 25)
-  (doom-modeline-bar-width 3)
-  (doom-modeline-checker-simple-format t)
-  :hook (after-init . doom-modeline-init)
-  :config
-  (progn
-    ;; Define your custom doom-modeline
-    (doom-modeline-def-modeline 'my-simple-line
-      '(bar input-method matches buffer-info remote-host buffer-position parrot selection-info)
-      '(objed-state misc-info persp-name lsp minor-modes indent-info buffer-encoding major-mode process vcs checker))
+; (use-package doom-modeline
+;   :straight t
+;   :custom
+;   (doom-modeline-buffer-file-name-style 'truncate-with-project)
+;   (doom-modeline-icon nil)
+;   (doom-modeline-major-mode-icon nil)
+;   (doom-modeline-minor-modes nil)
+;   (doom-modeline-major-mode-color-icon nil)
+;   (doom-modeline-persp-name nil)
+;   (doom-modeline-lsp nil)
+;   ;; Whether display github notifications or not. Requires `ghub+` package.
+;   (doom-modeline-github nil)
+;   ;; The interval of checking github.
+;   (doom-modeline-github-interval (* 30 60))
+;   (doom-modeline-height 25)
+;   (doom-modeline-bar-width 3)
+;   (doom-modeline-checker-simple-format t)
+;   :hook (after-init . doom-modeline-init)
+;   :config
+;   (progn
+;     ;; Define your custom doom-modeline
+;     (doom-modeline-def-modeline 'my-simple-line
+;       '(bar input-method matches buffer-info remote-host buffer-position parrot selection-info)
+;       '(objed-state misc-info persp-name lsp minor-modes indent-info buffer-encoding major-mode process vcs checker))
 
-    ;; Add to `doom-modeline-mode-hook` or other hooks
-    (add-hook 'doom-modeline-mode-hook
-	      (lambda() (doom-modeline-set-modeline 'my-simple-line 'default)))
-    )
-  ;; (doom-modeline-mode +1)
-  )
+;     ;; Add to `doom-modeline-mode-hook` or other hooks
+;     (add-hook 'doom-modeline-mode-hook
+; 	      (lambda() (doom-modeline-set-modeline 'my-simple-line 'default)))
+;     )
+;   ;; (doom-modeline-mode +1)
+;   )
 
 (use-package treemacs
   :straight t
