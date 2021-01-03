@@ -236,8 +236,8 @@
   :after company
   :custom
   (company-tabnine-log-file-path "/tmp/TabNine.log")
-  (company-tabnine-executable-args (list "--log-level" "Trace"))
-  (company-tabnine-wait 2)
+  (company-tabnine-executable-args (list "--log-level" "Error"))
+  (company-tabnine-wait 0.3)
   ;; (company-tabnine-max-num-results 9)
   (company-tabnine-no-continue t)
   :config
