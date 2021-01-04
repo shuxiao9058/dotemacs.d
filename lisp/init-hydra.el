@@ -48,16 +48,6 @@ _e_in
   ("e" hydra-ein/body :exit t)
   )
 
-(use-package ace-window
-  :straight t
-  :ensure t
-  ;; :defer 5
-  )
-
-					; ;; Activate winner mode for quickly changing window sizes, etc
-					; (when (fboundp 'winner-mode)
-					;   (winner-mode 1))
-
 (defhydra hydra-straight (:hint nil)
   "
 _c_heck all       |_f_etch all     |_m_erge all      |_n_ormalize all   |p_u_sh all

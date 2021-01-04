@@ -20,3 +20,4 @@ history/
 .local/
 .local/rime/user.yaml
 .local/rime/installation.yaml
+/bookmarks

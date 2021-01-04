@@ -212,12 +212,13 @@
 ;; 	      (ElispFace . ,(my-company-box-icon 'material "format_paint" 'all-the-icons-pink)))))
 ;;     )
 
-;; (use-package company-flx
-;;   :straight t
-;;   :after company
-;;   :config
-;;   (company-flx-mode 1)
-;;   (setq company-flx-limit 256))
+(use-package company-flx
+  :straight t
+  :after company
+  :custom
+  (company-flx-limit 256)
+  :config
+  (company-flx-mode 1))
 
 (use-package company-prescient
   :straight t
@@ -238,10 +239,10 @@
   (company-tabnine-log-file-path "/tmp/TabNine.log")
   (company-tabnine-executable-args (list "--log-level" "Error"))
   (company-tabnine-wait 0.3)
-  ;; (company-tabnine-max-num-results 9)
+  (company-tabnine-max-num-results 9)
+  ;; (company-tabnine-max-num-results 4)
   (company-tabnine-no-continue t)
   :config
-  (setq company-tabnine-max-num-results 4)
   (when (> 9 company-tabnine-max-num-results)
     (add-to-list 'company-transformers 'company//sort-by-tabnine t)
     )
@@ -298,71 +299,6 @@
 ;; 					      )
 ;; 					     (company-abbrev company-dabbrev)))))
 ;;   )
-
-;; (use-package eglot
-;;   :straight t
-;;   :hook
-;;   ((go-mode lua-mode python-mode c-mode c++-mode python-mode) . eglot-ensure)
-;;   :custom
-;;   (eglot-stay-out-of '(flymake))
-;;   (eglot-autoshutdown t)
-;;   (eglot-sync-connect 1)
-;;   (eglot-connect-timeout 40)
-;;   (eglot-send-changes-idle-time 0.5)
-;;   ;; (eglot-events-buffer-size 500000)
-;;   (eglot-events-buffer-size 0)
-;;   ;; disable symbol highlighting and documentation on hover
-;;   (eglot-ignored-server-capabilites
-;;    '(:documentHighlightProvider
-;;      :signatureHelpProvider
-;;      :hoverProvider))
-;;   ;; NOTE We disable eglot-auto-display-help-buffer because :select t in
-;;   ;; its popup rule causes eglot to steal focus too often.
-;;   (eglot-auto-display-help-buffer nil)
-;;   :config
-;;   (setq eglot-workspace-configuration
-;;         '((:gopls . (:usePlaceholders t
-;; 				      :completeUnimported  t
-;; 				      :experimentalWorkspaceModule t
-;; 				      ;; :experimentalDiagnosticsDelay "800ms"
-;; 				      ))))
-;;   ;; emmylua
-;;   (let ((emmylua-jar-path (expand-file-name "bin/EmmyLua-LS-all.jar" poly-local-dir)))
-;;     (add-to-list 'eglot-server-programs
-;; 		 `(lua-mode  . ("/usr/bin/java" "-cp" ,emmylua-jar-path "com.tang.vscode.MainKt"))))
-
-;;   (when (executable-find "ccls")
-;;     (add-to-list 'eglot-server-programs '((c-mode c++-mode) "ccls"
-;;  					  "-init={\"compilationDatabaseDirectory\":\"build\"}")))
-;;   (when (executable-find "gopls")
-;;     (add-to-list 'eglot-server-programs `(go-mode . ("gopls" "-logfile=/tmp/gopls.log" "-rpc.trace" "-vv" "--debug=localhost:6060"))))
-
-;;   (add-hook 'eglot-managed-mode-hook (lambda()
-;; 				       (make-local-variable 'company-backends)
-;; 				       (setq company-backends nil)
-;; 				       ;; (setq company-backends
-;; 				       ;; 	     '(company-capf
-;; 				       ;; 	       ;; company-dabbrev-code
-;; 				       ;; 	       (company-files          ; files & directory
-;; 				       ;; 		company-keywords       ; keywords
-;; 				       ;; 		)
-;; 				       ;; 	       (company-abbrev company-dabbrev)))
-;; 				       (setq company-backends
-;; 					     '((company-tabnine :with company-capf :separate)
-;; 					       company-dabbrev-code
-;; 					       (company-files          ; files & directory
-;; 						company-keywords       ; keywords
-;; 						)
-;; 					       (company-abbrev company-dabbrev)))
-;; 				       ))
-
-;;   ;; (dolist (hook '(go-mode-hook))
-;;   ;;   (add-hook 'before-save-hook 'eglot-format-buffer))
-;;   )
-
-;; fix (void-function project-root)
-(defun project-root (project)
-  (car (project-roots project)))
 
 ;;     (dolist (hook (list
 ;; 		   'js-mode-hook

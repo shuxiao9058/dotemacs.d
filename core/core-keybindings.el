@@ -36,7 +36,7 @@
   (general-override-mode)
   (general-auto-unbind-keys)
   (general-create-definer leader-def
-    :states '(normal insert motion visual emacs) ;; '(normal visual insert emacs)
+    :states '(normal insert motion visual emacs dashboard) ;; '(normal visual insert emacs)
     ;; :prefix-name "SPC"
     :non-normal-prefix leader-key-non-normal
     :prefix leader-key
@@ -56,6 +56,7 @@
     "C-x C-f"
     "C-x C-w"
     "C-x C-s"
+    "C-x o"
     ;; disable C-z
     "C-z"
     "M-x"

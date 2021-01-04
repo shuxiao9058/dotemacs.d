@@ -49,7 +49,7 @@
 	     :files ("undo-fu.el"))
   :after evil
   :ensure t
-  :disabled
+  ;; :disabled
   :demand t
   ;; :init
   ;; ;; `evil' activates undo-tree, so we must pre-emptively disable it.
@@ -68,7 +68,20 @@
   (undo-strong-limit 3000000)
   (undo-outer-limit 3000000))
 
+;; persistent undo across sessions
+(use-package undo-fu-session
+  :after undo-fu
+  :demand t
+  :custom
+  (undo-fu-session-file-limit nil)
+  (undo-fu-session-directory (expand-file-name "undo-fu-session" poly-cache-dir))
+  (undo-fu-session-incompatible-files '("/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'")))
+:config
+(with-eval-after-load 'undo
+  (global-undo-fu-session-mode))
+
 (use-package undo-tree
+  :disabled
   :straight (:type git :host nil :repo "http://www.dr-qubit.org/git/undo-tree.git")
   ;; :disabled
   ;; :if IS-MAC
@@ -85,14 +98,10 @@
   (undo-tree-visualizer-timestamps t)
   (undo-tree-visualizer-diff t)
   ;; (undo-tree-history-directory-alist (list (cons ".*" (expand-file-name "undo-tree-history" poly-cache-dir))))
+  ;; ;; stop littering - set undo directory
+  (undo-tree-history-directory-alist `(("." . ,(expand-file-name "undo-tree-history" poly-cache-dir))))
   (undo-tree-auto-save-history t)
   (undo-tree-visualizer-lazy-drawing 1000)
-  :init
-  ;; stop littering - set undo directory
-  (let ((undo-dir (expand-file-name "undo-tree-history" poly-cache-dir)))
-    (setq undo-tree-history-directory-alist `(("." . ,undo-dir)))
-    (unless (file-directory-p undo-dir)
-      (make-directory undo-dir t)))
   :config
   (global-undo-tree-mode)
   :general

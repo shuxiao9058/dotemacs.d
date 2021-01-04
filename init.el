@@ -44,7 +44,13 @@
 (require 'init-proto)
 (require 'init-projectile)
 (require 'init-company)
-(require 'init-lsp)
+
+;; language server protocol
+(setq with-company-lsp nil)
+(if with-company-lsp
+    (require 'init-lsp)
+  (require 'init-eglot))
+
 (require 'init-go)
 (require 'init-python)
 (require 'init-lua)

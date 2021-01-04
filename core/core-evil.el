@@ -20,10 +20,15 @@
 ;; 	      (lambda (frame) (my-evil-terminal-cursor-change)))
 ;;     (my-evil-terminal-cursor-change)))
 
+(defun sp/evil-hook ()
+  (dolist (mode '(dashboard-mode))
+    (add-to-list 'evil-emacs-state-modes mode)))
+
 (use-package evil
   :straight t
   :ensure t
   :commands evil-normalize-keymaps
+  :hook (evil-mode . sp/evil-hook)
   :custom
   ;; Change cursor color depending on mode
   (evil-emacs-state-cursor `("red" hbar))     ; _
@@ -95,37 +100,38 @@
   (evil-exchange-cx-install))
 
 ;;; Press “%” to jump between matched tags in Emacs. For example, in HTML “<div>” and “</div>” are a pair of tags.
- (use-package evil-matchit
-   :straight t
-   :ensure t
-   :commands evilmi-jump-items
-   :custom
-   (global-evil-matchit-mode t)
-   :config
-   ;; disable evil-matchit
-   (dolist (mode '(magit-status-mode-hook))
-     (add-hook mode (lambda()
+(use-package evil-matchit
+  :straight t
+  :ensure t
+  :commands evilmi-jump-items
+  :custom
+  (global-evil-matchit-mode t)
+  :config
+  ;; disable evil-matchit
+  (dolist (mode '(magit-status-mode-hook))
+    (add-hook mode (lambda()
  		     (evil-matchit-mode 0))))
-   :general
-   ([remap evil-jump-item] #'evilmi-jump-items)
-   (nvmap :keymaps '(evil-matchit-mode-map)
-     "%" #'evilmi-text-object)
-   )
+  :general
+  ([remap evil-jump-item] #'evilmi-jump-items)
+  (nvmap :keymaps '(evil-matchit-mode-map)
+    "%" #'evilmi-text-object)
+  )
 
 (use-package evil-snipe
   :straight t
   :commands (evil-snipe-mode evil-snipe-override-mode
 			     evil-snipe-local-mode evil-snipe-override-local-mode)
   :hook (prog-mode . evil-snipe-mode)
-  :init
-  (setq evil-snipe-smart-case t
-        evil-snipe-scope 'line
-        evil-snipe-repeat-scope 'visible
-        evil-snipe-char-fold t
-        evil-snipe-disabled-modes '(magit-mode elfeed-show-mode elfeed-search-mode)
-        evil-snipe-aliases '((?\[ "[[{(]")
-                             (?\] "[]})]")
-                             (?\; "[;:]")))
+  :custom
+  (evil-snipe-smart-case t)
+  (evil-snipe-scope 'line)
+  (evil-snipe-repeat-scope 'visible)
+  (evil-snipe-spillover-scope 'visible)
+  (evil-snipe-char-fold t)
+  (evil-snipe-disabled-modes '(magit-mode elfeed-show-mode elfeed-search-mode))
+  (evil-snipe-aliases '((?\[ "[[{(]")
+                        (?\] "[]})]")
+                        (?\; "[;:]")))
   :config
   (evil-snipe-mode +1)
   (evil-snipe-override-mode +1))

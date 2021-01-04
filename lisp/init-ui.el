@@ -226,39 +226,61 @@ WIN-ID : Window index."
 	      persp-switch-to-buffer
 	      winner-undo
 	      widget-forward)
-  :init
+  :demand
+  :diminish (dashboard-mode page-break-lines-mode)
+  :custom
+  (dashboard-center-content t)
+  (dashboard-items '((recents . 5)
+		     (projects . 5)
+		     (agenda . 5)))
+  (dashboard-set-init-info t)
+  (dashboard-set-file-icons t)
+  (dashboard-set-heading-icons t)
+  (dashboard-heading-icons '((recents . "file-text")
+			     (bookmarks . "bookmark")
+			     (agenda . "calendar")
+			     (projects . "file-directory")
+			     (registers . "database")))
+  (dashboard-set-navigator t)
+  (initial-buffer-choice (lambda () (get-buffer dashboard-buffer-name)))
+  (dashboard-navigator-buttons
+   `(((,(when (display-graphic-p)
+	  (all-the-icons-octicon "tools" :height 1.0 :v-adjust 0.0))
+       "Settings" "Opens settings file"
+       (lambda (&rest _) (config-file)))
+      (,(when (display-graphic-p)
+	  (all-the-icons-material "update" :height 1.35 :v-adjust -0.24))
+       "Update" "Update Emacs Configuration to the latest version"
+       (lambda (&rest _) (update-config)))
+      (,(when (display-graphic-p)
+	  (all-the-icons-material "info" :height 1.35 :v-adjust -0.24))
+       "Personal File" "Opens the personal config file"
+       (lambda (&rest _) (personal-file))))))
+  ;; (dashboard-banner-logo-title "Close the world. Open the nExt.")
+  ;; (dashboard-startup-banner (expand-file-name "images/KEC_Dark_BK_Small.png" user-emacs-directory))
+  ;; (dashboard-startup-banner "~/Imágenes/logo.png")
   ;; (setq dahboard-banner-logo-title "")
-  ;;(setq dashboard-startup-banner "~/Imágenes/logo.png")
-  (setq dashboard-center-content t)
-  (setq dashboard-items '((recents . 5)
-			  (projects . 5)
-			  (agenda . 5)))
   :hook
   (dashboard-mode . (lambda () (linum-mode -1)))
   :config
-  (setq dashboard-set-init-info t
-	dashboard-set-file-icons t
-	dashboard-set-heading-icons t
-	dashboard-heading-icons '((recents . "file-text")
-				  (bookmarks . "bookmark")
-				  (agenda . "calendar")
-				  (projects . "file-directory")
-				  (registers . "database"))
-	dashboard-set-navigator t
-	dashboard-navigator-buttons
-	`(((,(when (display-graphic-p)
-	       (all-the-icons-octicon "tools" :height 1.0 :v-adjust 0.0))
-            "Settings" "Opens settings file"
-            (lambda (&rest _) (config-file)))
-           (,(when (display-graphic-p)
-	       (all-the-icons-material "update" :height 1.35 :v-adjust -0.24))
-            "Update" "Update Emacs Configuration to the latest version"
-            (lambda (&rest _) (update-config)))
-	   (,(when (display-graphic-p)
-	       (all-the-icons-material "info" :height 1.35 :v-adjust -0.24))
-            "Personal File" "Opens the personal config file"
-            (lambda (&rest _) (personal-file))))))
-  (dashboard-setup-startup-hook))
+  (dashboard-setup-startup-hook)
+  ;; Open Dashboard function
+  (defun open-dashboard ()
+    "Open the *dashboard* buffer and jump to the first widget."
+    (interactive)
+    (if (get-buffer dashboard-buffer-name)
+        (kill-buffer dashboard-buffer-name))
+    (dashboard-insert-startupify-lists)
+    (switch-to-buffer dashboard-buffer-name)
+    (goto-char (point-min))
+    (delete-other-windows))
+  :general
+  (:keymaps 'dashboard-mode-map
+	    "n"  #'dashboard-next-line
+	    "p"  #'dashboard-previous-line
+	    "N"  #'dashboard-next-section
+	    "F"  #'dashboard-previous-section)
+  )
 
 (use-package all-the-icons
   :straight t

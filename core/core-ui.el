@@ -26,12 +26,12 @@
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
 
-;;   (let ((theme-file (expand-file-name "theme/doom-draculapro-theme.el" poly-core-dir)))
-;;     (when (file-exists-p theme-file)
-;;       (load theme-file nil t)
-;;    ;; (load-theme 'doom-draculapro t)
-;;       ;; (load-theme 'doom-draculapro-theme t)
-;;       ))
+  ;;   (let ((theme-file (expand-file-name "theme/doom-draculapro-theme.el" poly-core-dir)))
+  ;;     (when (file-exists-p theme-file)
+  ;;       (load theme-file nil t)
+  ;;    ;; (load-theme 'doom-draculapro t)
+  ;;       ;; (load-theme 'doom-draculapro-theme t)
+  ;;       ))
 
   (load-theme 'doom-dracula t)
   ;; (load-theme 'doom-draculapro-theme t)
@@ -226,6 +226,19 @@
        "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
     (set-fontset-font
      t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend)))
+
+(use-package ace-window
+  :straight t
+  :ensure t
+  :defer t
+  :custom
+  (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  :general
+  ("C-x o"  #'ace-window))
+
+;; Activate winner mode for quickly changing window sizes, etc
+(when (fboundp 'winner-mode)
+  (winner-mode 1))
 
 (provide 'core-ui)
 ;;; core-ui.el ends here
