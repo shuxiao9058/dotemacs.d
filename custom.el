@@ -1,6 +1,9 @@
 ;;; custom.el -*- lexical-binding: t; -*-
 
 (setq make-backup-files nil
+      enable-local-variables :all
+      save-silently t
+      find-file-suppress-same-file-warnings t
       inhibit-startup-screen t
       whitespace-line-column 100
       default-directory (expand-file-name "workspace/" "~")

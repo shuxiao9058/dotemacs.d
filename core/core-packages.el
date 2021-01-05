@@ -31,6 +31,20 @@
     (server-start))
   )
 
+;; (use-package files
+;;   :straight nil
+;;   :ensure t
+;;   :init
+;;   (setq make-backup-files nil
+;;         enable-local-variables :all
+;;         create-lockfiles nil
+;;         auto-save-default nil
+;;         auto-save-list-file-prefix nil
+;;         save-silently t
+;;         confirm-kill-processes nil
+;;         find-file-suppress-same-file-warnings t))
+
+
 (use-package autorevert
   :straight nil
   :diminish auto-revert-mode

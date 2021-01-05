@@ -13,7 +13,7 @@
 	  ;; clang-mode
 	  elisp-mode
 	  emacs-lisp-mode
-	  ;; markdown-mode
+	  markdown-mode
 	  ;; nix-mode
 	  ;;  objc-mode
 	  ;;  swift-mode
@@ -83,22 +83,17 @@
     (:languages "Go")
     (:format (format-all--buffer-easy executable "-c" "goimports | gofmt -s")))
 
-
-
   (eval-after-load 'format-all
-    (dolist (hook '(	  lua-mode-hook
-			  go-mode-hook
-			  python-mode-hook
-			  ;; cc-mode
-			  c-mode-hook
-			  c++-mode-hook
-			  ;; clang-mode
-			  emacs-lisp-mode-hook
-			  emacs-lisp-mode-hook
-			  ))
-      (add-hook hook 'format-all-ensure-formatter)
-      )
-    )
+    (dolist (hook '(lua-mode-hook
+		    go-mode-hook
+		    python-mode-hook
+		    cc-mode
+		    c-mode-hook
+		    c++-mode-hook
+		    clang-mode
+		    emacs-lisp-mode-hook
+		    markdown-mode-hook))
+      (add-hook hook 'format-all-ensure-formatter)))
 
   ;; ;; (define-format-all-formatter goimports
   ;; ;;   (:executable "goimports")

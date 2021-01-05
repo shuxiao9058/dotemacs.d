@@ -35,24 +35,24 @@
 ;;              (seq-drop candidates-1 2)
 ;;              (seq-drop candidates-2 2)))))
 
-(defun company//sort-by-tabnine (candidates)
-  (if (or (functionp company-backend)
-	  (not (and (listp company-backend) (memq 'company-tabnine company-backend))))
-      candidates
-    (let ((candidates-table (make-hash-table :test #'equal))
-	  candidates-capf
-	  candidates-tabnine)
-      (dolist (candidate candidates)
-	(if (eq (get-text-property 0 'company-backend candidate)
-		'company-tabnine)
-	    (unless (gethash candidate candidates-table)
-	      (push candidate candidates-tabnine))
-	  (push candidate candidates-capf)
-	  (puthash candidate t candidates-table)))
-      (setq candidates-capf (nreverse candidates-capf))
-      (setq candidates-tabnine (nreverse candidates-tabnine))
-      (nconc (seq-take candidates-tabnine company-tabnine-max-num-results)
-	     (seq-take candidates-capf (- 9 company-tabnine-max-num-results))))))
+;; (defun company//sort-by-tabnine (candidates)
+;;   (if (or (functionp company-backend)
+;; 	  (not (and (listp company-backend) (memq 'company-tabnine company-backend))))
+;;       candidates
+;;     (let ((candidates-table (make-hash-table :test #'equal))
+;; 	  candidates-capf
+;; 	  candidates-tabnine)
+;;       (dolist (candidate candidates)
+;; 	(if (eq (get-text-property 0 'company-backend candidate)
+;; 		'company-tabnine)
+;; 	    (unless (gethash candidate candidates-table)
+;; 	      (push candidate candidates-tabnine))
+;; 	  (push candidate candidates-capf)
+;; 	  (puthash candidate t candidates-table)))
+;;       (setq candidates-capf (nreverse candidates-capf))
+;;       (setq candidates-tabnine (nreverse candidates-tabnine))
+;;       (nconc (seq-take candidates-tabnine company-tabnine-max-num-results)
+;; 	     (seq-take candidates-capf (- 9 company-tabnine-max-num-results))))))
 
 (use-package company
   :straight t
@@ -243,9 +243,9 @@
   ;; (company-tabnine-max-num-results 4)
   (company-tabnine-no-continue t)
   :config
-  (when (> 9 company-tabnine-max-num-results)
-    (add-to-list 'company-transformers 'company//sort-by-tabnine t)
-    )
+  ;; (when (> 9 company-tabnine-max-num-results)
+  ;;   (add-to-list 'company-transformers 'company//sort-by-tabnine t)
+  ;;   )
   ;; workaround for company-flx-mode and other transformers
   (setq company-tabnine--disable-next-transform nil)
   (defun my-company--transform-candidates (func &rest args)

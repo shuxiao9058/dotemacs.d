@@ -99,14 +99,14 @@
   "bx" '((lambda ()(interactive)(switch-to-buffer "*scratch*")) :wk "scratch buffer")
 
   ;;<leader> c --- code
-  "c" '(:wk "Code")
-  "cc" '(compile :wk "Compile")
-  "cC" '(recompile :wk "Recompile")
+  ;; "c" '(:wk "Code")
+  ;; "cc" '(compile :wk "Compile")
+  ;; "cC" '(recompile :wk "Recompile")
   ;; "cd" '(xref-find-definitions :wk "Jump to definition")
   ;; "cD" '(xref-find-references :wk "Jump to references")'
-  ;; "cd" '(+lookup/definition :wk "Jump to definition")
-  ;; "cD" '(+lookup/references :wk "Jump to references")
-  "cf" '(+format/region-or-buffer :wk "Format buffer/region")
+  ;; ;; "cd" '(+lookup/definition :wk "Jump to definition")
+  ;; ;; "cD" '(+lookup/references :wk "Jump to references")
+  ;; "cf" '(+format/region-or-buffer :wk "Format buffer/region")
   ;; "cF" '(+format/lsp-format-region-or-buffer :wk "LSP Format buffer/region")
   ;; "ci" '(lsp-organize-imports :wk "LSP Organize imports")
   ;; "ca" '(eglot-code-actions :wk "LSP Execute code action")

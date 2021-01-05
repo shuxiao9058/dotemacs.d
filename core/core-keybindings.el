@@ -35,13 +35,36 @@
   (delete 'emacs general-non-normal-states)
   (general-override-mode)
   (general-auto-unbind-keys)
-  (general-create-definer leader-def
-    :states '(normal insert motion visual emacs dashboard) ;; '(normal visual insert emacs)
-    ;; :prefix-name "SPC"
-    :non-normal-prefix leader-key-non-normal
+
+  ;; https://github.com/noctuid/general.el/issues/126
+
+  (general-create-definer poly--default-leader
+    :states '(normal visual)
     :prefix leader-key
-    :keymaps 'override
-    ) ;; normal visual insert emacs
+    :keymaps 'override)
+
+  (general-create-definer poly-global-leader
+    :states general-non-normal-states
+    :prefix leader-key-non-normal
+    :keymaps 'override)
+
+  (defmacro leader-def (&rest args)
+    "Define for both default leader and global leader."
+    (declare (indent defun))
+    `(progn
+       (poly--default-leader
+	,@args)
+       (poly-global-leader
+	,@args)))
+
+  ;; (general-create-definer leader-def
+  ;;   :states '(normal insert motion visual emacs dashboard) ;; '(normal visual insert emacs)
+  ;;   ;; :prefix-name "SPC"
+  ;;   :non-normal-prefix leader-key-non-normal
+  ;;   :prefix leader-key
+  ;;   :keymaps 'override
+  ;;   ) ;; normal visual insert emacs
+
   (leader-def
     "" '(nil :which-key "leader prefix"))
   (general-create-definer local-leader-def
@@ -56,7 +79,7 @@
     "C-x C-f"
     "C-x C-w"
     "C-x C-s"
-    "C-x o"
+    ;; "C-x o"
     ;; disable C-z
     "C-z"
     "M-x"

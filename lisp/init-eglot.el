@@ -2,8 +2,7 @@
 
 (use-package eglot
   :straight t
-  :hook
-  ((lua-mode python-mode c-mode c++-mode python-mode) . eglot-ensure)
+  :hook ((go-mode lua-mode python-mode c-mode c++-mode python-mode) . eglot-ensure)
   :custom
   (eglot-stay-out-of '(flymake))
   (eglot-autoshutdown t)
@@ -36,7 +35,7 @@
     (add-to-list 'eglot-server-programs '((c-mode c++-mode) "ccls"
  					  "-init={\"compilationDatabaseDirectory\":\"build\"}")))
   (when (executable-find "gopls")
-    (add-to-list 'eglot-server-programs `(go-mode . ("gopls" "-logfile=/tmp/gopls.log" "-rpc.trace" "-vv" "--debug=localhost:6060"))))
+    (add-to-list 'eglot-server-programs `(go-mode . ("gopls" "-logfile=/tmp/gopls.log" "-vv"))))
 
   (add-hook 'eglot-managed-mode-hook (lambda()
 				       (make-local-variable 'company-backends)
@@ -50,12 +49,27 @@
 				       ;; 	       (company-abbrev company-dabbrev)))
 				       (setq company-backends
 					     '((company-tabnine :with company-capf :separate)
+					       ;; '(company-tabnine
 					       company-dabbrev-code
 					       (company-files          ; files & directory
 						company-keywords       ; keywords
 						)
 					       (company-abbrev company-dabbrev)))
-				       )))
+				       ))
+  :general
+  (leader-def
+    "cC" '(eglot :wk "connect to lsp"))
+  (leader-def :keymaps 'eglot-mode-map
+    "ce" '(:ignore t :wk "eglot")
+    "ced" '(xref-find-definitions :wk "Jump to definition")
+    "ceD" '(xref-find-references :wk "Jump to references")'
+    "ce=" #'eglot-format-buffer
+    "cef" #'eglot-format
+    "ceh" #'eglot-help-at-point
+    "cem" #'eglot-events-buffer
+    "cer" #'eglot-rename
+    "ceR" #'eglot-reconnect)
+  )
 
 ;; fix (void-function project-root)
 (defun project-root (project)
