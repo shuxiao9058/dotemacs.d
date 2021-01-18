@@ -11,6 +11,10 @@
 	 ("\\.cxx\\'" . c++-mode)
          ("\\.cpp\\'" . c++-mode)
          ("\\.hpp\\'" . c++-mode)
+	 ("\\.x\\'" . objc-mode)
+	 ("\\.xm\\'" . objc-mode)
+	 ("\\.m\\'" . objc-mode)
+	 ("\\.mm\\'" . objc-mode)
 
 	 ;; ("\\.c" . c-mode)
          ;; ("\\.h" . c-mode)

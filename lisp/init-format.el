@@ -4,6 +4,7 @@
   :straight t
   ;; :ensure t
   :hook ((
+	  prog-mode
 	  lua-mode
 	  go-mode
 	  python-mode
@@ -22,6 +23,7 @@
 	  ) . format-all-mode)
   :commands (format-all-mode
 	     format-all-buffer)
+  ;; :custom
   :init
   (defconst format-all--system-type
     (cl-case system-type
@@ -37,42 +39,43 @@
 		 ((string-match "netbsd"  system-configuration) 'netbsd))))))
     "Current operating system according to the format-all package.")
 
-  ;; (defun format-all--resolve-system (choices)
-  ;;   "Get first choice matching `format-all--system-type' from CHOICES."
-  ;;   (cl-dolist (choice choices)
-  ;;     (cond ((atom choice)
-  ;; 	     (cl-return choice))
-  ;; 	    ((eql format-all--system-type (car choice))
-  ;; 	     (cl-return (cadr choice))))))
-
+  (defun format-all--resolve-system (choices)
+    "Get first choice matching `format-all--system-type' from CHOICES."
+    (cl-dolist (choice choices)
+      (cond ((atom choice)
+	     (cl-return choice))
+	    ((eql format-all--system-type (car choice))
+	     (cl-return (cadr choice))))))
   :config
-  (define-format-all-formatter lua-format
+  (define-format-all-formatter cpp-lua-format
     (:executable "lua-format")
     (:install (macos ""))
     (:languages "Lua")
     (:format (format-all--buffer-easy executable "-i" "-c" (expand-file-name "~/.config/lua-format/config.yaml") "--"))
     )
 
-  ;; (define-format-all-formatter clang-format
-  ;;   (:executable "clang-format")
-  ;;   (:install
-  ;;    (macos "brew install clang-format")
-  ;;    (windows "scoop install llvm"))
-  ;;   (:languages "C" "C++" "Java" "Objective-C" "Protocol Buffer")
-  ;;   ;; (:modes c-mode c++-mode java-mode protobuf-mode  objc-mode)
-  ;;   ;; (:format (format-all--buffer-easy executable ("-assume-filename=%S" (or buffer-file-name mode-result "")) "-style=file"))
-  ;;   (:format
-  ;;    (format-all--buffer-easy
-  ;;     executable
-  ;;     (concat "-assume-filename="
-  ;; 	      (or (buffer-file-name)
-  ;; 		  (cdr (assoc language
-  ;; 			      '(("C"               . ".c")
-  ;; 				("C++"             . ".cpp")
-  ;; 				("Java"            . ".java")
-  ;; 				("Objective-C"     . ".m")
-  ;; 				("Protocol Buffer" . ".proto"))))))))
-  ;;   )
+  (define-format-all-formatter my-clang-format
+    (:executable "clang-format")
+    (:install
+     (macos "brew install clang-format")
+     (windows "scoop install llvm"))
+    (:languages "C" "C++" "Java" "Objective-C" "Protocol Buffer")
+    ;; (:modes c-mode c++-mode java-mode protobuf-mode  objc-mode)
+    (:format
+     (format-all--buffer-easy
+      executable
+      (concat "-assume-filename="
+	      (or (buffer-file-name)
+		  (cdr (assoc language
+			      '(("C"               . ".c")
+				("C++"             . ".cpp")
+				("Java"            . ".java")
+				("Objective-C"     . ".m")
+				("Objective-C" . ".x")
+				("Objective-C" . ".xm")
+				("Objective-C" . ".m")
+				("Objective-C" . ".mm")
+				("Protocol Buffer" . ".proto")))))))))
 
   (define-format-all-formatter goimports-gofmt
     (:executable "/bin/sh")
@@ -83,27 +86,43 @@
     (:languages "Go")
     (:format (format-all--buffer-easy executable "-c" "goimports | gofmt -s")))
 
+
+  (define-format-all-formatter goimports
+    (:executable "goimports")
+    (:install (macos ""))
+    (:languages "Go")
+    (:format (format-all--buffer-easy executable))
+    )
+
   (eval-after-load 'format-all
     (dolist (hook '(lua-mode-hook
 		    go-mode-hook
 		    python-mode-hook
-		    cc-mode
+		    cc-mode-hook
 		    c-mode-hook
 		    c++-mode-hook
-		    clang-mode
+		    clang-mode-hook
+		    objc-mode-hook
 		    emacs-lisp-mode-hook
 		    markdown-mode-hook))
       (add-hook hook 'format-all-ensure-formatter)))
 
-  ;; ;; (define-format-all-formatter goimports
-  ;; ;;   (:executable "goimports")
-  ;; ;;   (:install (macos ""))
-  ;; ;;   (:languages "Go")
-  ;; ;;   (:format (format-all--buffer-easy executable))
-  ;; ;;   )
-  ;; :general
-  ;; (nvmap :keymaps '(format-all-buffer-mode-map)
-  ;;   "==" #'format-all-buffer)
+  (setq-default format-all-formatters
+		'(("Go" goimports)
+		  ("Lua" cpp-lua-format)
+		  ("C" my-clang-format)
+		  ("C++" my-clang-format)
+		  ("Protocol Buffer" my-clang-format)
+		  ("SQL" pgformatter)
+		  ;; ("CSS" prettier)
+		  ;; ("HTML" prettier)
+		  ;; ("Dockerfile" dockfmt)
+		  ;; ("Shell" shfmt)
+		  ;; ("Markdown" prettier)
+		  ;; ("Nix" nixfmt)
+		  ;; ("Emacs Lisp" emacs-lisp)
+		  ;; ("YAML" prettier)
+		  ))
   )
 
 (provide 'init-format)

@@ -58,6 +58,12 @@
     (recenter))
   )
 
+   ;;; This advice is related to issue: https://github.com/hlissner/doom-emacs/issues/2493
+(advice-add #'turn-on-evil-mode :before
+            (lambda (&optional args)
+              (when (eq major-mode 'fundamental-mode)
+                (hack-local-variables))))
+
 (use-package evil-terminal-cursor-changer
   :straight t
   :unless IS-GUI

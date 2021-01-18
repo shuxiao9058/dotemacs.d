@@ -46,6 +46,7 @@ WIN-ID : Window index."
   :straight t
   :custom
   ;; (doom-modeline-buffer-file-name-style 'truncate-with-project)
+  ;; (doom-modeline-buffer-file-name-style 'relative-to-project)
   (doom-modeline-buffer-file-name-style 'relative-to-project)
   (doom-modeline-icon nil)
   (doom-modeline-major-mode-icon nil)
@@ -292,11 +293,13 @@ WIN-ID : Window index."
 
 (use-package all-the-icons-dired
   :straight t
+  :if (or IS-GUI (daemonp))
   :after (all-the-icons dired)
   :hook (dired-mode . all-the-icons-dired-mode))
 
 (use-package all-the-icons-ibuffer
   :straight t
+  :if (or IS-GUI (daemonp))
   :after (all-the-icons ibuffer)
   :config
   (all-the-icons-ibuffer-mode t))
@@ -304,6 +307,7 @@ WIN-ID : Window index."
 (use-package all-the-icons-ivy
   :straight t
   :after (all-the-icons ivy)
+  :if (or IS-GUI (daemonp))
   :config
   (add-to-list 'all-the-icons-ivy-file-commands #'counsel-buffer-or-recentf)
   (add-to-list 'all-the-icons-ivy-file-commands #'counsel-ibuffer)
@@ -321,6 +325,7 @@ WIN-ID : Window index."
   :straight t
   :ensure t
   :after (all-the-icons ivy)
+  :if (or IS-GUI (daemonp))
   :init (all-the-icons-ivy-rich-mode 1)
   :custom
   (all-the-icons-ivy-rich-icon-size 0.9)
@@ -333,6 +338,7 @@ WIN-ID : Window index."
   :custom
   (ivy-rich-switch-buffer-align-virtual-buffer t)
   (ivy-rich-path-style 'abbrev)
+  :if (or IS-GUI (daemonp))
   :init (ivy-rich-mode 1)
   :config
   (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)

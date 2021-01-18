@@ -35,7 +35,7 @@
     (add-to-list 'eglot-server-programs '((c-mode c++-mode) "ccls"
  					  "-init={\"compilationDatabaseDirectory\":\"build\"}")))
   (when (executable-find "gopls")
-    (add-to-list 'eglot-server-programs `(go-mode . ("gopls" "-logfile=/tmp/gopls.log" "-vv"))))
+    (add-to-list 'eglot-server-programs `(go-mode . ("gopls" "-logfile=/tmp/gopls.log" "-rpc.trace" "-vv" "--debug=localhost:6060"))))
 
   (add-hook 'eglot-managed-mode-hook (lambda()
 				       (make-local-variable 'company-backends)
@@ -48,8 +48,8 @@
 				       ;; 		)
 				       ;; 	       (company-abbrev company-dabbrev)))
 				       (setq company-backends
-					     '((company-tabnine :with company-capf :separate)
-					       ;; '(company-tabnine
+					     ;; '((company-tabnine :with company-capf :separate)
+					     '(company-tabnine
 					       company-dabbrev-code
 					       (company-files          ; files & directory
 						company-keywords       ; keywords

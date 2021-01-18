@@ -147,6 +147,7 @@
 
 (use-package ivy-posframe
   :straight t
+  :disabled
   :if IS-GUI
   :hook
   (ivy-mode . ivy-posframe-mode)

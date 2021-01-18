@@ -4,6 +4,7 @@
   :straight t
   :ensure t
   :commands (godoc gofmt gofmt-before-save)
+  :after (company eglot)
   ;; :hook (befor-save . gofmt-before-save)
   :config
   (setq gofmt-command "goimports")

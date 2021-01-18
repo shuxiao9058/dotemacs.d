@@ -1,6 +1,7 @@
 ;;; custom.el -*- lexical-binding: t; -*-
 
 (setq make-backup-files nil
+      enable-local-eval t
       enable-local-variables :all
       save-silently t
       find-file-suppress-same-file-warnings t
