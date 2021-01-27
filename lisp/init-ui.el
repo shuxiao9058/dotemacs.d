@@ -42,6 +42,17 @@ WIN-ID : Window index."
 ;;   (doom-themes-org-config)
 ;;   )
 
+
+(use-package ace-window
+  :straight t
+  :ensure t
+  :defer t
+  :after general
+  :custom
+  (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  :general
+  ("C-x o"  #'ace-window))
+
 (use-package doom-modeline
   :straight t
   :custom

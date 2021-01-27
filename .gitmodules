@@ -1,3 +1,6 @@
 [submodule "site-lisp/undo-tree"]
 	path = site-lisp/undo-tree
 	url = http://www.dr-qubit.org/git/undo-tree.git
+[submodule ".local/etc/org-html-themes"]
+	path = .local/etc/org-html-themes
+	url = git@github.com:fniessen/org-html-themes.git

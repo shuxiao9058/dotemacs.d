@@ -53,12 +53,12 @@
   (add-to-list 'org-modules 'org-habit)
   (add-to-list 'org-modules 'org-timer)
   (add-to-list 'org-modules 'org-protocol)
-  (add-to-list 'org-modules 'org-cliplink)
-  (add-to-list 'org-modules 'org-dashboard)
-  (add-to-list 'org-modules 'org-journal)
+  ;; (add-to-list 'org-modules 'org-cliplink)
+  ;; (add-to-list 'org-modules 'org-dashboard)
+  ;; (add-to-list 'org-modules 'org-journal)
   (add-to-list 'org-modules 'org-agenda)
-  (add-to-list 'org-modules 'org-pdfview)
-  (add-to-list 'org-modules 'org-download)
+  ;; (add-to-list 'org-modules 'org-pdfview)
+  ;; (add-to-list 'org-modules 'org-download)
 
   (add-hook 'org-mode-hook
 	    (lambda () (setq truncate-lines nil)))

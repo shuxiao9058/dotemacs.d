@@ -38,6 +38,7 @@
 (require 'init-markdown)
 (require 'init-pair)
 (require 'init-org)
+(require 'init-org-roam)
 
 ;; programming
 (require 'init-flycheck)

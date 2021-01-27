@@ -232,20 +232,20 @@
   (evil-osx-clipboard/set-osx-defaults)
   )
 
-;; ;; Evil, probably the best thing since Evil.
-;; (use-package evil-collection
-;;   :straight t
-;;   :after evil
-;;   :ensure t
-;;   :demand
-;;   :init
-;;   :config
-;;   ;; enabled for all modes provided by default by evil-collection
-;;   ;; change this if wanted to enable for specific modes
-;;   (evil-collection-init)
-;;   :custom
-;;   (evil-collection-setup-minibuffer t)
-;; )
+;; Evil, probably the best thing since Evil.
+(use-package evil-collection
+  :straight t
+  :after evil
+  :ensure t
+  :demand
+  ;; :init
+  :config
+  ;; enabled for all modes provided by default by evil-collection
+  ;; change this if wanted to enable for specific modes
+  (evil-collection-init)
+  :custom
+  (evil-collection-setup-minibuffer t)
+  )
 
 (provide 'core-evil)
 ;;; core-evil.el ends here

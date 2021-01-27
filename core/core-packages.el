@@ -84,6 +84,7 @@
 
 ;; persistent undo across sessions
 (use-package undo-fu-session
+  :straight t
   :after undo-fu
   :demand t
   :custom

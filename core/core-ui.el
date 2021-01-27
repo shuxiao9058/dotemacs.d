@@ -227,15 +227,6 @@
     (set-fontset-font
      t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend)))
 
-(use-package ace-window
-  :straight t
-  :ensure t
-  :defer t
-  :custom
-  (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-  :general
-  ("C-x o"  #'ace-window))
-
 ;; Activate winner mode for quickly changing window sizes, etc
 (when (fboundp 'winner-mode)
   (winner-mode 1))
