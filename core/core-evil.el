@@ -243,8 +243,28 @@
   ;; enabled for all modes provided by default by evil-collection
   ;; change this if wanted to enable for specific modes
   (evil-collection-init)
+  ;; magit-evil
+  (evil-set-initial-state 'magit-log-edit-mode 'insert)
+  (evil-set-initial-state 'git-commit-mode 'insert)
+  (evil-set-initial-state 'magit-log-mode 'motion)
+  (evil-set-initial-state 'magit-diff-mode 'normal)
+  (evil-set-initial-state 'magit-wassup-mode 'motion)
+  (evil-set-initial-state 'magit-mode 'motion)
+  (evil-set-initial-state 'git-rebase-mode 'motion)
+  (eval-after-load 'git-rebase
+    `(progn
+       (dolist (key '(("M-k" . "gk") ("M-j" . "gj")))
+	 (when-let (desc (assoc (car key) evil-magit-rebase-commands-w-descriptions))
+	   (setcar desc (cdr key))))
+       )
+    )
   :custom
   (evil-collection-setup-minibuffer t)
+  :general
+  (:states '(evil-magit-state)
+	   :keymaps '(git-rebase-mode-map)
+	   "gj" #'git-rebase-move-line-down
+	   "gk" #'git-rebase-move-line-up)
   )
 
 (provide 'core-evil)
