@@ -42,6 +42,9 @@
   (evil-emacs-state-cursor '(bar))
   (evil-want-C-u-scroll t)
   (evil-search-module 'evil-search)
+  (evil-want-integration t)
+  (evil-want-keybinding nil)
+  (evil-want-C-i-jump nil)
   :general
   (nmap "q" nil ;; q quit, not evil-record-macro
     "Q" #'evil-record-macro)
