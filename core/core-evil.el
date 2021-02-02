@@ -98,8 +98,11 @@
         evil-escape-delay 0.25)
   :config
   (push #'minibufferp evil-escape-inhibit-functions)
-  ;; (map! :irvo "C-g" #'evil-escape)
-  (evil-escape-mode))
+  (evil-escape-mode)
+  :general
+  (general-define-key :states '(insert replace visual operator)
+		      "C-g" #'evil-escape)
+  )
 
 (use-package evil-exchange
   :after evil
