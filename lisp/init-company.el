@@ -59,16 +59,6 @@
   :ensure t
   :custom
   (company-minimum-prefix-length 2)
-  ;; (company-frontends nil)
-  ;; (company-frontends '(company-pseudo-tooltip-frontend
-  ;; 		       ;; company-echo-frontend
-  ;;                      company-echo-metadata-frontend
-  ;; 		       ))
-  (company-frontends '(
-		       company-pseudo-tooltip-frontend
-		       ;; company-pseudo-tooltip-unless-just-one-frontend
-	               company-preview-frontend
-	               company-echo-metadata-frontend))
   (company-require-match nil)
   ;; (company-tooltip-limit           20)
   (company-tooltip-align-annotations t) ;; Align annotation to the right side.
@@ -84,8 +74,15 @@
   (company-idle-delay 0.1)
   ;; Number the candidates (use M-1, M-2 etc to select completions).
   (company-show-numbers t)
+  (company-tng-mode nil)
   :hook (after-init . global-company-mode)
   :config
+  (setq company-frontends '(
+			    ;; company-pseudo-tooltip-frontend
+			    company-pseudo-tooltip-unless-just-one-frontend
+			    ;; company-preview-frontend
+			    company-preview-if-just-one-frontend
+			    company-echo-metadata-frontend))
   ;; set default `company-backends'
   (setq-default company-backends
 		'(
@@ -100,8 +97,16 @@
 		  (company-abbrev company-dabbrev)
 		  ))
   :general
-  (:keymaps '(company-active-map)
-	    "C-w"     nil  ; don't interfere with `evil-delete-backward-word'
+  (general-unbind '(company-active-map)
+    "C-w"     nil  ; don't interfere with `evil-delete-backward-word'
+    [f1]      nil
+    [return] nil
+    "RET" nil
+    [space] nil
+    )
+  ;; (help-key-description [13] nil)
+  (:keymaps 'company-active-map
+	    ;; "C-w"     nil  ; don't interfere with `evil-delete-backward-word'
 	    "C-n"     #'company-select-next
 	    "C-p"     #'company-select-previous
 	    "C-j"     #'company-select-next
@@ -115,9 +120,13 @@
 	    "TAB"     #'company-complete-common-or-cycle
 	    [tab]     #'company-complete-common-or-cycle
 	    [backtab] #'company-select-previous
-	    [f1]      nil
+	    ;; [f1]      nil
+	    ;; [return] nil
+	    ;; "RET" nil
+	    ;; ;; [RET] nil
+	    ;; [space] nil
 	    )
-  (:keymaps '(company-search-map)
+  (:keymaps 'company-search-map
 	    "C-n"     #'company-select-next-or-abort
 	    "C-p"     #'company-select-previous-or-abort
 	    "C-j"     #'company-select-next-or-abort
@@ -212,13 +221,13 @@
 ;; 	      (ElispFace . ,(my-company-box-icon 'material "format_paint" 'all-the-icons-pink)))))
 ;;     )
 
-(use-package company-flx
-  :straight t
-  :after company
-  :custom
-  (company-flx-limit 256)
-  :config
-  (company-flx-mode 1))
+;; (use-package company-flx
+;;   :straight t
+;;   :after company
+;;   :custom
+;;   (company-flx-limit 256)
+;;   :config
+;;   (company-flx-mode 1))
 
 (use-package company-prescient
   :straight t

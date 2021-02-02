@@ -136,9 +136,11 @@
 
 (use-package forge
   :straight t
+  :after magit
   :commands forge-create-pullreq forge-create-issue
   :custom
   (forge-database-file (expand-file-name "forge/forge-database.sqlite" poly-etc-dir))
+  (custom-set-variables '(forge-post-mode-hook '(visual-line-mode)))
   :config
   (setq forge-alist
 	(append forge-alist
@@ -146,6 +148,12 @@
 		  ("git.alenshaw.com" "git.alenshaw.com/api/v1" "git.alenshaw.com" forge-gogs-repository)
 		  ("github.com" "api.github.com" "github.com" forge-github-repository))))
   )
+
+(use-package ghub
+  :straight t
+  :after (magit forge)
+  :config
+  (setq ghub-insecure-hosts '("git.17usoft.com/api/v4")))
 
 
 (provide 'init-vc)

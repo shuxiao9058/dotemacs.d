@@ -263,6 +263,7 @@
     )
   :custom
   (evil-collection-setup-minibuffer t)
+  (evil-collection-company-use-tng nil)
   :general
   (:states '(evil-magit-state)
 	   :keymaps '(git-rebase-mode-map)
