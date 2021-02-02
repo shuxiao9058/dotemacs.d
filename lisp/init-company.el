@@ -74,7 +74,6 @@
   (company-idle-delay 0.1)
   ;; Number the candidates (use M-1, M-2 etc to select completions).
   (company-show-numbers t)
-  (company-tng-mode nil)
   :hook (after-init . global-company-mode)
   :config
   (setq company-frontends '(
@@ -100,8 +99,8 @@
   (general-unbind '(company-active-map)
     "C-w"     nil  ; don't interfere with `evil-delete-backward-word'
     [f1]      nil
-    [return] nil
-    "RET" nil
+    ;; [return] nil
+    ;; "RET" nil
     [space] nil
     )
   ;; (help-key-description [13] nil)
