@@ -137,7 +137,7 @@
 
 (use-package xclip
   :straight t
-  :if IS-LINUX
+  ;; :if IS-LINUX
   :ensure t
   :custom
   (xclip-method 'xclip)
@@ -151,12 +151,12 @@
   :ensure t
   :hook (after-init . global-clipetty-mode))
 
-(use-package pbcopy
-  :straight t
-  ;; :if (and IS-MAC (not IS-GUI))
-  :if IS-MAC
-  :init (turn-on-pbcopy)
-  )
+;; (use-package pbcopy
+;;   :straight t
+;;   ;; :if (and IS-MAC (not IS-GUI))
+;;   :if IS-MAC
+;;   :init (turn-on-pbcopy)
+;;   )
 
 (use-package posframe
   :straight (posframe
