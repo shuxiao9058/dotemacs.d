@@ -228,119 +228,120 @@ WIN-ID : Window index."
   ;; (custom-set-faces '(show-paren-match ((t (:foreground "SpringGreen1" :underline t)))))
   )
 
-(use-package dashboard
-  :straight t
-  :ensure t
-  :functions (all-the-icons-faicon
-	      all-the-icons-material
-	      open-custom-file
-	      persp-get-buffer-or-nil
-	      persp-load-state-from-file
-	      persp-switch-to-buffer
-	      winner-undo
-	      widget-forward)
-  :demand
-  :diminish (dashboard-mode page-break-lines-mode)
-  :custom
-  (dashboard-center-content t)
-  (dashboard-items '((recents . 5)
-		     (projects . 5)
-		     (agenda . 5)))
-  (dashboard-set-init-info t)
-  (dashboard-set-file-icons t)
-  (dashboard-set-heading-icons t)
-  (dashboard-heading-icons '((recents . "file-text")
-			     (bookmarks . "bookmark")
-			     (agenda . "calendar")
-			     (projects . "file-directory")
-			     (registers . "database")))
-  (dashboard-set-navigator t)
-  (initial-buffer-choice (lambda () (get-buffer dashboard-buffer-name)))
-  (dashboard-navigator-buttons
-   `(((,(when (display-graphic-p)
-	  (all-the-icons-octicon "tools" :height 1.0 :v-adjust 0.0))
-       "Settings" "Opens settings file"
-       (lambda (&rest _) (config-file)))
-      (,(when (display-graphic-p)
-	  (all-the-icons-material "update" :height 1.35 :v-adjust -0.24))
-       "Update" "Update Emacs Configuration to the latest version"
-       (lambda (&rest _) (update-config)))
-      (,(when (display-graphic-p)
-	  (all-the-icons-material "info" :height 1.35 :v-adjust -0.24))
-       "Personal File" "Opens the personal config file"
-       (lambda (&rest _) (personal-file))))))
-  ;; (dashboard-banner-logo-title "Close the world. Open the nExt.")
-  ;; (dashboard-startup-banner (expand-file-name "images/KEC_Dark_BK_Small.png" user-emacs-directory))
-  ;; (dashboard-startup-banner "~/Imágenes/logo.png")
-  ;; (setq dahboard-banner-logo-title "")
-  :hook
-  (dashboard-mode . (lambda () (linum-mode -1)))
-  :config
-  (dashboard-setup-startup-hook)
-  ;; Open Dashboard function
-  (defun open-dashboard ()
-    "Open the *dashboard* buffer and jump to the first widget."
-    (interactive)
-    (if (get-buffer dashboard-buffer-name)
-        (kill-buffer dashboard-buffer-name))
-    (dashboard-insert-startupify-lists)
-    (switch-to-buffer dashboard-buffer-name)
-    (goto-char (point-min))
-    (delete-other-windows))
-  :general
-  (:keymaps 'dashboard-mode-map
-	    "n"  #'dashboard-next-line
-	    "p"  #'dashboard-previous-line
-	    "N"  #'dashboard-next-section
-	    "F"  #'dashboard-previous-section)
-  )
+;; (use-package dashboard
+;;   :straight t
+;;   :ensure t
+;;   :functions (
+;; 	      ;; all-the-icons-faicon
+;; 	      ;; all-the-icons-material
+;; 	      open-custom-file
+;; 	      persp-get-buffer-or-nil
+;; 	      persp-load-state-from-file
+;; 	      persp-switch-to-buffer
+;; 	      winner-undo
+;; 	      widget-forward)
+;;   :demand
+;;   :diminish (dashboard-mode page-break-lines-mode)
+;;   :custom
+;;   (dashboard-center-content t)
+;;   (dashboard-items '((recents . 5)
+;; 		     (projects . 5)
+;; 		     (agenda . 5)))
+;;   (dashboard-set-init-info t)
+;;   (dashboard-set-file-icons nil)
+;;   (dashboard-set-heading-icons nil)
+;;   ;; (dashboard-heading-icons '((recents . "file-text")
+;;   ;; 			     (bookmarks . "bookmark")
+;;   ;; 			     (agenda . "calendar")
+;;   ;; 			     (projects . "file-directory")
+;;   ;; 			     (registers . "database")))
+;;   (dashboard-set-navigator t)
+;;   (initial-buffer-choice (lambda () (get-buffer dashboard-buffer-name)))
+;;   ;; (dashboard-navigator-buttons
+;;   ;;  `(((,(when (display-graphic-p)
+;;   ;; 	  (all-the-icons-octicon "tools" :height 1.0 :v-adjust 0.0))
+;;   ;;      "Settings" "Opens settings file"
+;;   ;;      (lambda (&rest _) (config-file)))
+;;   ;;     (,(when (display-graphic-p)
+;;   ;; 	  (all-the-icons-material "update" :height 1.35 :v-adjust -0.24))
+;;   ;;      "Update" "Update Emacs Configuration to the latest version"
+;;   ;;      (lambda (&rest _) (update-config)))
+;;   ;;     (,(when (display-graphic-p)
+;;   ;; 	  (all-the-icons-material "info" :height 1.35 :v-adjust -0.24))
+;;   ;;      "Personal File" "Opens the personal config file"
+;;   ;;      (lambda (&rest _) (personal-file))))))
+;;   ;; (dashboard-banner-logo-title "Close the world. Open the nExt.")
+;;   ;; (dashboard-startup-banner (expand-file-name "images/KEC_Dark_BK_Small.png" user-emacs-directory))
+;;   ;; (dashboard-startup-banner "~/Imágenes/logo.png")
+;;   ;; (setq dahboard-banner-logo-title "")
+;;   :hook
+;;   (dashboard-mode . (lambda () (linum-mode -1)))
+;;   :config
+;;   (dashboard-setup-startup-hook)
+;;   ;; Open Dashboard function
+;;   (defun open-dashboard ()
+;;     "Open the *dashboard* buffer and jump to the first widget."
+;;     (interactive)
+;;     (if (get-buffer dashboard-buffer-name)
+;;         (kill-buffer dashboard-buffer-name))
+;;     (dashboard-insert-startupify-lists)
+;;     (switch-to-buffer dashboard-buffer-name)
+;;     (goto-char (point-min))
+;;     (delete-other-windows))
+;;   :general
+;;   (:keymaps 'dashboard-mode-map
+;; 	    "n"  #'dashboard-next-line
+;; 	    "p"  #'dashboard-previous-line
+;; 	    "N"  #'dashboard-next-section
+;; 	    "F"  #'dashboard-previous-section)
+;;   )
 
-(use-package all-the-icons
-  :straight t
-  :if (or IS-GUI (daemonp))
-  ;; :init
-  ;; (setq all-the-icons-scale-factor 0.8)
-  )
+;; (use-package all-the-icons
+;;   :straight t
+;;   :if (or IS-GUI (daemonp))
+;;   ;; :init
+;;   ;; (setq all-the-icons-scale-factor 0.8)
+;;   )
 
-(use-package all-the-icons-dired
-  :straight t
-  :if (or IS-GUI (daemonp))
-  :after (all-the-icons dired)
-  :hook (dired-mode . all-the-icons-dired-mode))
+;; (use-package all-the-icons-dired
+;;   :straight t
+;;   :if (or IS-GUI (daemonp))
+;;   :after (all-the-icons dired)
+;;   :hook (dired-mode . all-the-icons-dired-mode))
 
-(use-package all-the-icons-ibuffer
-  :straight t
-  :if (or IS-GUI (daemonp))
-  :after (all-the-icons ibuffer)
-  :config
-  (all-the-icons-ibuffer-mode t))
+;; (use-package all-the-icons-ibuffer
+;;   :straight t
+;;   :if (or IS-GUI (daemonp))
+;;   :after (all-the-icons ibuffer)
+;;   :config
+;;   (all-the-icons-ibuffer-mode t))
 
-(use-package all-the-icons-ivy
-  :straight t
-  :after (all-the-icons ivy)
-  :if (or IS-GUI (daemonp))
-  :config
-  (add-to-list 'all-the-icons-ivy-file-commands #'counsel-buffer-or-recentf)
-  (add-to-list 'all-the-icons-ivy-file-commands #'counsel-ibuffer)
-  (add-to-list 'all-the-icons-ivy-file-commands #'counsel-fzf)
-  (all-the-icons-ivy-setup)
+;; (use-package all-the-icons-ivy
+;;   :straight t
+;;   :after (all-the-icons ivy)
+;;   :if (or IS-GUI (daemonp))
+;;   :config
+;;   (add-to-list 'all-the-icons-ivy-file-commands #'counsel-buffer-or-recentf)
+;;   (add-to-list 'all-the-icons-ivy-file-commands #'counsel-ibuffer)
+;;   (add-to-list 'all-the-icons-ivy-file-commands #'counsel-fzf)
+;;   (all-the-icons-ivy-setup)
 
-  (with-eval-after-load 'counsel-projectile
-    (add-to-list 'all-the-icons-ivy-file-commands #'counsel-projectile)
-    (add-to-list 'all-the-icons-ivy-file-commands #'counsel-projectile-switch-project)
-    (add-to-list 'all-the-icons-ivy-file-commands #'counsel-projectile-find-file)
-    (add-to-list 'all-the-icons-ivy-file-commands #'counsel-projectile-find-dir)
-    (all-the-icons-ivy-setup)))
+;; (with-eval-after-load 'counsel-projectile
+;;   (add-to-list 'all-the-icons-ivy-file-commands #'counsel-projectile)
+;;   (add-to-list 'all-the-icons-ivy-file-commands #'counsel-projectile-switch-project)
+;;   (add-to-list 'all-the-icons-ivy-file-commands #'counsel-projectile-find-file)
+;;   (add-to-list 'all-the-icons-ivy-file-commands #'counsel-projectile-find-dir)
+;;   (all-the-icons-ivy-setup)))
 
-(use-package all-the-icons-ivy-rich
-  :straight t
-  :ensure t
-  :after (all-the-icons ivy)
-  :if (or IS-GUI (daemonp))
-  :init (all-the-icons-ivy-rich-mode 1)
-  :custom
-  (all-the-icons-ivy-rich-icon-size 0.9)
-  )
+;; (use-package all-the-icons-ivy-rich
+;;   :straight t
+;;   :ensure t
+;;   :after (all-the-icons ivy)
+;;   :if (or IS-GUI (daemonp))
+;;   :init (all-the-icons-ivy-rich-mode 1)
+;;   :custom
+;;   (all-the-icons-ivy-rich-icon-size 0.9)
+;;   )
 
 (use-package ivy-rich
   :straight t

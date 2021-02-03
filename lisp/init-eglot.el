@@ -4,7 +4,7 @@
   :straight t
   :hook ((go-mode lua-mode python-mode c-mode c++-mode python-mode) . eglot-ensure)
   :custom
-  (eglot-stay-out-of '(flymake))
+  (eglot-stay-out-of '(flymake imenu eldoc company))  ;; eglot reinits backends
   (eglot-autoshutdown t)
   (eglot-sync-connect 1)
   (eglot-connect-timeout 40)
@@ -20,6 +20,7 @@
   ;; its popup rule causes eglot to steal focus too often.
   (eglot-auto-display-help-buffer nil)
   :config
+  (setq eldoc-echo-area-use-multiline-p nil)
   (setq eglot-workspace-configuration
         '((:gopls . (:usePlaceholders t
 				      :completeUnimported  t

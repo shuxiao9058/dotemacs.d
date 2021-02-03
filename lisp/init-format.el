@@ -4,6 +4,7 @@
   :straight t
   ;; :ensure t
   :hook ((
+	  fish-mode
 	  prog-mode
 	  lua-mode
 	  go-mode
@@ -104,7 +105,9 @@
 		    clang-mode-hook
 		    objc-mode-hook
 		    emacs-lisp-mode-hook
-		    markdown-mode-hook))
+		    markdown-mode-hook
+		    fish-mode-hook
+		    ))
       (add-hook hook 'format-all-ensure-formatter)))
 
   (setq-default format-all-formatters

@@ -59,6 +59,7 @@
 (require 'init-web)
 (require 'init-cc)
 (require 'init-nix)
+(require 'init-fish)
 (require 'init-format)
 
 ;; functions
