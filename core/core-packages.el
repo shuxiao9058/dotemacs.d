@@ -135,28 +135,28 @@
   :straight t
   :commands (hide-mode-line-mode))
 
-(use-package xclip
-  :straight t
-  ;; :if IS-LINUX
-  :ensure t
-  :custom
-  (xclip-method 'xclip)
-  :config
-  (xclip-mode +1)
-  (xterm-mouse-mode +1)
-  )
+;; (use-package xclip
+;;   :straight t
+;;   ;; :if IS-LINUX
+;;   :ensure t
+;;   :custom
+;;   (xclip-method 'xclip)
+;;   :config
+;;   (xclip-mode +1)
+;;   (xterm-mouse-mode +1)
+;;   )
 
 (use-package clipetty
   :straight t
   :ensure t
   :hook (after-init . global-clipetty-mode))
 
-;; (use-package pbcopy
-;;   :straight t
-;;   ;; :if (and IS-MAC (not IS-GUI))
-;;   :if IS-MAC
-;;   :init (turn-on-pbcopy)
-;;   )
+(use-package pbcopy
+  :straight t
+  ;; :if (and IS-MAC (not IS-GUI))
+  :if IS-MAC
+  :init (turn-on-pbcopy)
+  )
 
 (use-package posframe
   :straight (posframe

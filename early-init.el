@@ -15,7 +15,7 @@
             comp-speed 2
 	    comp-async-report-warnings-errors nil
 	    )
-      (setq comp-deferred-compilation-deny-list '("\\(?:[^z-a]*-autoloads\\.el$\\)\"))\\)"))
+      ; (setq comp-deferred-compilation-deny-list '("\\(?:[^z-a]*-autoloads\\.el$\\)\"))\\)"))
       ;; (native--compile-async '("~/.emacs.d/lisp/" "~/.emacs.d/themes/" "~/.emacs.d/modules/" "~/.emacs.d/local-config.el") t)
       )
   (message "Not support native-comp"))

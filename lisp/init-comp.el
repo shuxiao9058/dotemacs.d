@@ -1,5 +1,9 @@
 ;;; lisp/init-comp.el -*- lexical-binding: t; -*-
 
+(defun native-comp? ()
+  (and (functionp 'native-comp-available-p)
+       (native-comp-available-p)))
+
 (defun jeff/native-comp-path (path)
   (when (native-comp?)
     (let ((comp-always-compile t))
@@ -21,4 +25,5 @@
   (jeff/native-comp-elpa)
   t)
 
+(provide 'init-comp)
 ;;; init-comp.el ends here
