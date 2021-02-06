@@ -7,8 +7,17 @@
 ;; (setq gc-cons-threshold most-positive-fixnum)
 
 (if (and (fboundp 'native-comp-available-p) (native-comp-available-p) (fboundp 'json-serialize))
-    (setq comp-deferred-compilation t
-          comp-speed 2)
+    (progn
+      (setq comp-deferred-compilation t
+            package-native-compile t
+	    ;; native-comp settings per
+	    ;; https://github.com/shshkn/emacs.d/blob/master/docs/nativecomp.md
+            comp-speed 2
+	    comp-async-report-warnings-errors nil
+	    )
+      (setq comp-deferred-compilation-deny-list '("\\(?:[^z-a]*-autoloads\\.el$\\)\"))\\)"))
+      ;; (native--compile-async '("~/.emacs.d/lisp/" "~/.emacs.d/themes/" "~/.emacs.d/modules/" "~/.emacs.d/local-config.el") t)
+      )
   (message "Not support native-comp"))
 
 (when (boundp 'comp-eln-load-path)
@@ -36,10 +45,12 @@
                              (makunbound 'file-name-handler-alist-original)))
 
 
-;; ;; Package initialize occurs automatically, before `user-init-file' is
-;; ;; loaded, but after `early-init-file'. We handle package
-;; ;; initialization, so we must prevent Emacs from doing it early!
-;; (setq package-enable-at-startup nil)
+;; Package initialize occurs automatically, before `user-init-file' is
+;; loaded, but after `early-init-file'. We handle package
+;; initialization, so we must prevent Emacs from doing it early!
+;; Disable Emacs 27's automatic package.el initialization before the init.el
+;; file is loaded. I use straight.el instead of package.el.
+(setq package-enable-at-startup nil)
 
 
 ;; In noninteractive sessions, prioritize non-byte-compiled source files to

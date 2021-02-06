@@ -24,6 +24,7 @@
       autoload-compute-prefixes nil
       straight-fix-org t
       straight-enable-use-package-integration t
+      straight-disable-native-compilation nil
 
       ;; Tell straight.el about the profiles we are going to be using.
       straight-profiles

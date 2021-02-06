@@ -14,6 +14,7 @@
 
 ;;; core
 (require 'init-env)
+(require 'init-comp)
 (require 'init-ivy)
 (require 'init-ui) ;; ui
 (require 'init-recentf)

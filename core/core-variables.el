@@ -40,6 +40,14 @@ Use this for files that change often, like cache files. Must end with a slash.")
 (defconst poly-autoload-dir (expand-file-name "autoload/" poly-emacs-dir)
   "Directory for autoload files.")
 
+
+(defconst poly/using-native-comp (fboundp 'native-comp-available-p)
+  ;; for native comp branch
+  )
+
+;; (when (boundp 'comp-deferred-compilation)
+;;   (setq comp-deferred-compilation t))
+
 (setq x-select-enable-clipboard           t
       x-select-enable-primary             t
       save-interprogram-paste-before-kill t
