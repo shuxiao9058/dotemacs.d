@@ -27,7 +27,7 @@
 (require 'init-wakatime)
 (require 'init-keyfreq)
 (require 'init-rime)
-;; (require 'init-vterm)
+(require 'init-vterm)
 (require 'init-dired)
 (require 'init-search)
 (require 'init-telega)
