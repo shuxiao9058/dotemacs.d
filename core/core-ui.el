@@ -170,18 +170,20 @@
 ;; (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
 (when IS-MAC
-  (setq-default ns-use-thin-smoothing t
-                ns-use-fullscreen-animation t
-                ns-use-native-fullscreen t
-                frame-resize-pixelwise t
-                ns-use-proxy-icon t
-                ns-use-mwheel-momentum t
-                ns-use-mwheel-acceleration t
-                mac-command-modifier 'super
-                mac-option-modifier  'meta
-                )
-  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-  (add-to-list 'default-frame-alist '(ns-appearance . dark))
+  (setq                   frame-resize-pixelwise t
+			  mac-command-modifier 'super
+			  mac-option-modifier  'meta)
+  (when (featurep 'ns)
+    (setq-default ns-use-thin-smoothing t
+                  ns-use-fullscreen-animation t
+                  ns-use-native-fullscreen t
+                  ns-use-proxy-icon t
+                  ns-use-mwheel-momentum t
+                  ns-use-mwheel-acceleration t
+
+                  )
+    (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+    (add-to-list 'default-frame-alist '(ns-appearance . dark)))
   ;; (add-hook 'window-setup-hook #'toggle-frame-maximized)
   )
 

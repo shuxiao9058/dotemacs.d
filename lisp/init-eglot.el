@@ -40,7 +40,7 @@
 
   (add-hook 'eglot-managed-mode-hook (lambda()
 				       (make-local-variable 'company-backends)
-				       (setq company-backends nil)
+				       ;; (setq-local company-backends nil)
 				       ;; (setq company-backends
 				       ;; 	     '(company-capf
 				       ;; 	       ;; company-dabbrev-code
@@ -48,14 +48,14 @@
 				       ;; 		company-keywords       ; keywords
 				       ;; 		)
 				       ;; 	       (company-abbrev company-dabbrev)))
-				       (setq company-backends
-					     ;; '((company-tabnine :with company-capf :separate)
-					     '(company-tabnine
-					       company-dabbrev-code
-					       (company-files          ; files & directory
-						company-keywords       ; keywords
-						)
-					       (company-abbrev company-dabbrev)))
+				       (setq-local company-backends
+						   ;; '((company-tabnine :with company-capf :separate)
+						   '(company-tabnine
+						     company-dabbrev-code
+						     (company-files          ; files & directory
+						      company-keywords       ; keywords
+						      )
+						     (company-abbrev company-dabbrev)))
 				       ))
   :general
   (leader-def
@@ -72,9 +72,9 @@
     "ceR" #'eglot-reconnect)
   )
 
-;; fix (void-function project-root)
-(defun project-root (project)
-  (car (project-roots project)))
+;; ;; fix (void-function project-root)
+;; (defun project-root (project)
+;;   (car (project-roots project)))
 
 (provide 'init-eglot)
 ;;; init-eglot.el ends here
