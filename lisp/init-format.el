@@ -5,13 +5,13 @@
   ;; :ensure t
   :hook ((
 	  fish-mode
-	  prog-mode
+	  ;; prog-mode
 	  lua-mode
 	  go-mode
 	  python-mode
 	  ;; cc-mode
-	  c-mode
-	  c++-mode
+	  ;; c-mode
+	  ;; c++-mode
 	  ;; clang-mode
 	  elisp-mode
 	  emacs-lisp-mode
@@ -99,11 +99,11 @@
     (dolist (hook '(lua-mode-hook
 		    go-mode-hook
 		    python-mode-hook
-		    cc-mode-hook
-		    c-mode-hook
-		    c++-mode-hook
-		    clang-mode-hook
-		    objc-mode-hook
+		    ;; cc-mode-hook
+		    ;; c-mode-hook
+		    ;; c++-mode-hook
+		    ;; clang-mode-hook
+		    ;; objc-mode-hook
 		    emacs-lisp-mode-hook
 		    markdown-mode-hook
 		    fish-mode-hook
@@ -113,8 +113,9 @@
   (setq-default format-all-formatters
 		'(("Go" goimports)
 		  ("Lua" cpp-lua-format)
-		  ("C" my-clang-format)
-		  ("C++" my-clang-format)
+		  ;; ("C" my-clang-format)
+		  ;; ("C++" my-clang-format)
+		  ;; ("Objective-C" my-clang-format)
 		  ("Protocol Buffer" my-clang-format)
 		  ("SQL" pgformatter)
 		  ;; ("CSS" prettier)

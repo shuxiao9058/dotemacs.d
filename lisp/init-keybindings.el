@@ -34,6 +34,8 @@
 ;; 		    "zs" #'flyspell-correct-word-generic
 ;; 		    "z=" #'flyspell-buffer)
 
+
+
 ;; help-map
 (general-define-key :keymaps 'help-map
 		    ;; new keybinds

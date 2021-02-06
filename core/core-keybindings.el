@@ -53,9 +53,9 @@
     (declare (indent defun))
     `(progn
        (poly--default-leader
-	,@args)
+	 ,@args)
        (poly-global-leader
-	,@args)))
+	 ,@args)))
 
   ;; (general-create-definer leader-def
   ;;   :states '(normal insert motion visual emacs dashboard) ;; '(normal visual insert emacs)
@@ -104,6 +104,91 @@
   (set-face-attribute 'which-key-local-map-description-face nil :weight 'bold)
   (which-key-setup-side-window-bottom)
   (which-key-mode +1))
+
+
+(require 'mouse)
+(xterm-mouse-mode t)
+(defun track-mouse (e))
+
+;; Yank text to clipboard
+(cond
+ ;; OS X
+ ((string-equal system-type "darwin") ; Mac OS X
+  (progn
+    (setq save-to-clipboard-cmd "pbcopy")
+    (setq paste-from-clipboard-cmd "pbpaste")
+    )
+  )
+ ;; Linux
+ ((string-equal system-type "gnu/linux") ; linux
+  (progn
+    (setq save-to-clipboard-cmd "xsel -i -b")
+    (setq paste-from-clipboard-cmd "xsel -o -b")
+    )
+  )
+ )
+
+(defun copy-to-clipboard ()
+  "Copies selection to x-clipboard."
+  (interactive)
+  (if (display-graphic-p)
+      (progn
+        (message "Yanked region to x-clipboard!")
+        (call-interactively 'clipboard-kill-ring-save)
+        )
+    (if (region-active-p)
+        (progn
+          (shell-command-on-region (region-beginning) (region-end) save-to-clipboard-cmd)
+          (message "Yanked region to clipboard!")
+          (deactivate-mark))
+      (message "No region active; can't yank to clipboard!")))
+  )
+
+(defun paste-from-clipboard ()
+  "Pastes from x-clipboard."
+  (interactive)
+  (if (display-graphic-p)
+      (progn
+        (clipboard-yank)
+        (message "graphics active")
+        )
+    (insert (shell-command-to-string paste-from-clipboard-cmd))
+    )
+  )
+;; (defun copy-to-clipboard()
+;;   "Copies selection to x-clipboard."
+;;   (interactive)
+;;   (if (display-graphic-p)
+;;       (progn
+;;         (if (use-region-p)
+;;             (progn
+;;               (evil-yank (region-beginning) (region-end) t (evil-use-register ?+))
+;;               (message "Yanked region to clipboard!")
+;;               (deactivate-mark))
+;;           (message "No region active; can't yank to clipboard!"))
+;;         )
+;;     ))
+
+;; (defun paste-from-clipboard ()
+;;   "Pastes from x-clipboard."
+;;   (interactive)
+;;   (evil-paste-after 1 (evil-use-register ?+))
+;;   )
+
+;; (defun my/evil-paste ()
+;;   (interactive)
+;;   (evil-visual-paste 1)
+;;   (right-char))
+
+(general-define-key
+ :keymaps 'override
+ "s-c" #'copy-to-clipboard
+ "s-v" #'paste-from-clipboard
+ )
+
+;; (general-define-key :states '(visual insert normal)
+;; 		    :keymaps 'override
+;; 		    "s-v" 'my/evil-paste)
 
 (provide 'core-keybindings)
 ;;; core-keybindings.el ends here

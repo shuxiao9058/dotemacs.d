@@ -21,7 +21,7 @@
 (defconst poly-local-dir
   (let ((localdir (getenv "POLYLOCALDIR")))
     (if localdir
-      (expand-file-name (file-name-as-directory localdir))
+	(expand-file-name (file-name-as-directory localdir))
       (expand-file-name ".local/" poly-emacs-dir)))
   "Root directory for local storage.
 Use this as a storage location for this system's installation of Doom Emacs.
@@ -34,11 +34,19 @@ Use this for files that don't change much, like server binaries, external
 dependencies or long-term shared data. Must end with a slash.")
 
 (defconst poly-cache-dir (concat poly-local-dir "cache/")
-    "Directory for volatile local storage.
+  "Directory for volatile local storage.
 Use this for files that change often, like cache files. Must end with a slash.")
 
 (defconst poly-autoload-dir (expand-file-name "autoload/" poly-emacs-dir)
   "Directory for autoload files.")
+
+(setq x-select-enable-clipboard           t
+      x-select-enable-primary             t
+      save-interprogram-paste-before-kill t
+      apropos-do-all                      t
+      mouse-yank-at-point                 t
+      require-final-newline               t)
+
 
 (provide 'core-variables)
 ;;; core-variables.el ends here
