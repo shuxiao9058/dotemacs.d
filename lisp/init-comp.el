@@ -11,7 +11,8 @@
 
 (defun jeff/native-comp-elpa ()
   (interactive)
-  (jeff/native-comp-path "~/.emacs.d/elpa/")
+  ;; (jeff/native-comp-path "~/.emacs.d/elpa/")
+  (jeff/native-comp-path "~/.emacs.d/.local/straight/build")
   t)
 
 (defun jeff/native-comp-emacs-base ()

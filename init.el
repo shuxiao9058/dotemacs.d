@@ -13,7 +13,7 @@
 	     (concat user-emacs-directory "lisp"))
 
 ;;; core
-(require 'init-env)
+;; (require 'init-env)
 (require 'init-comp)
 (require 'init-ivy)
 (require 'init-ui) ;; ui
@@ -28,7 +28,7 @@
 (require 'init-wakatime)
 (require 'init-keyfreq)
 (require 'init-rime)
-(require 'init-vterm)
+;; (require 'init-vterm)
 (require 'init-dired)
 (require 'init-search)
 (require 'init-telega)
