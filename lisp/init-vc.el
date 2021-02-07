@@ -9,6 +9,10 @@
   (magit-revert-buffers 'silent)
   (magit-push-always-verify nil)
   (git-commit-summary-max-length 70)
+  (magit-diff-options (quote ("--minimal" "--patience")))
+  (magit-tag-arguments (quote ("--annotate" "--sign")))
+  (magit-merge-arguments (quote ("--no-ff")))
+  (magit-rebase-arguments (quote ("--autostash")))
   ;; use colored graph lines. Could be a performance issue.
   (magit-log-arguments (quote ("-n256" "--graph" "--decorate" "--color" "--stat")))
   (magit-diff-use-overlays nil)
