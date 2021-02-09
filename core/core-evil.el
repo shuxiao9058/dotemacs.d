@@ -25,7 +25,7 @@
     (add-to-list 'evil-emacs-state-modes mode)))
 
 (use-package evil
-  :straight t
+  :straight (:no-byte-compile t)
   :ensure t
   :commands evil-normalize-keymaps
   :hook (evil-mode . sp/evil-hook)
