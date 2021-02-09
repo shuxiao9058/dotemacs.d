@@ -1,12 +1,16 @@
 ;;; core/core-packages.el -*- lexical-binding: t; -*-
 
-;; ;; Delay `tty-run-terminal-initialization'.
-;; (unless (display-graphic-p)
-;;   (advice-add #'tty-run-terminal-initialization :override #'ignore)
-;;   (defun 0x0049//delay-tty-init ()
-;;     (advice-remove #'tty-run-terminal-initialization #'ignore)
-;;     (tty-run-terminal-initialization (selected-frame) nil t))
-;;   (add-hook 'window-setup-hook #'0x0049//delay-tty-init))
+;; HACK `tty-run-terminal-initialization' is *tremendously* slow for some
+;; reason; inexplicably doubling startup time for terminal Emacs. Keeping
+;; it disabled will have nasty side-effects, so we simply delay it until
+;; later in the startup process and, for some reason, it runs much faster
+;; when it does.
+(unless (daemonp)
+  (defun doom-init-tty-h ()
+    (advice-remove #'tty-run-terminal-initialization #'ignore)
+    (tty-run-terminal-initialization (selected-frame) nil t))
+  (advice-add #'tty-run-terminal-initialization :override #'ignore)
+  (add-hook 'window-setup-hook #'doom-init-tty-h))
 
 (use-package server ; built-in
   :straight nil
