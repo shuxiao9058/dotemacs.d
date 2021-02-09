@@ -21,8 +21,8 @@
 ;; case show line numbers
 (require 'init-linum)
 
-(unless window-system
-  (require 'init-iterm2))
+;; (unless window-system
+;;   (require 'init-iterm2))
 
 ;; ;; tools
 (require 'init-wakatime)
@@ -99,3 +99,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ivy-posframe-cursor ((t (:background "#268bd2")))))
+
+;; For profiling
+;; (profiler-start 'cpu)
+;; (profiler-report)
+;; (profiler-stop)

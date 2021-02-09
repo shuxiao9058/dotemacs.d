@@ -1,5 +1,13 @@
 ;;; core/core-packages.el -*- lexical-binding: t; -*-
 
+;; ;; Delay `tty-run-terminal-initialization'.
+;; (unless (display-graphic-p)
+;;   (advice-add #'tty-run-terminal-initialization :override #'ignore)
+;;   (defun 0x0049//delay-tty-init ()
+;;     (advice-remove #'tty-run-terminal-initialization #'ignore)
+;;     (tty-run-terminal-initialization (selected-frame) nil t))
+;;   (add-hook 'window-setup-hook #'0x0049//delay-tty-init))
+
 (use-package server ; built-in
   :straight nil
   ;; :if (display-graphic-p)

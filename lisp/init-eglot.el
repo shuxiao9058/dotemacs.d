@@ -1,8 +1,45 @@
 ;;; lisp/init-eglot.el -*- lexical-binding: t; -*-
 
+;; https://github.com/DEbling/dotfiles/blob/9dc0e347267dd68111baf8e7ab7d33c2e39ed404/.emacs.d/elisp/lang-java.el
+;; (defconst jdt-jar-path "~/.emacs.d/.local/jar/org.eclipse.equinox.launcher.jar")
+(defconst jdt-jar-path "/opt/jdt-language-server/plugins/org.eclipse.equinox.launcher_1.6.0.v20200915-1508.jar")
+(defconst jdt-extra-jvm-args '("-noverify"
+			       "-javaagent:/Users/jiya/workspace/dotemacs.d/.local/jar/lombok.jar"
+			       ;; "-javaagent:[~/.emacs.d/.local/jar/lombok.jar][classes=META-INF/]"
+			       "-Xbootclasspath/a:~/.emacs.d/.local/jar/lombok.jar"
+			       "--add-modules=ALL-SYSTEM"
+			       "--add-opens"
+			       "java.base/java.util=ALL-UNNAMED"
+			       "--add-opens"
+			       "java.base/java.lang=ALL-UNNAMED"
+			       ;; "-configuration"
+			       ;; "/opt/jdt-language-server/config_mac"
+			       ))
+
+(defun my-eclipse-jdt-contact (interactive)
+  "Contact with the jdt server.
+If INTERACTIVE, prompt user for details."
+  (let* ((cp (getenv "CLASSPATH"))
+	 (contact (unwind-protect (progn
+				    (setenv "CLASSPATH" jdt-jar-path)
+				    (eglot--eclipse-jdt-contact interactive))
+		    (setenv "CLASSPATH" cp)))
+	 (jdt-class (car contact))
+	 (args (cddr contact)))
+    (append (list jdt-class "/usr/local/opt/java11/bin/java")
+	    jdt-extra-jvm-args args)))
+;; (setq aaabb (my-eclipse-jdt-contact))
+
+(defun dart-lsp-contact (interactive)
+  (list (executable-find "dart")
+        (concat (file-name-directory (nix-executable-find nil "dart"))
+                "snapshots/analysis_server.dart.snapshot")
+        "--lsp"
+        "--client-id=emacs.eglot"))
+
 (use-package eglot
   :straight t
-  :hook ((go-mode lua-mode python-mode c-mode c++-mode python-mode) . eglot-ensure)
+  :hook ((go-mode lua-mode python-mode c-mode c++-mode python-mode java-mode) . eglot-ensure)
   :custom
   (eglot-stay-out-of '(flymake imenu eldoc company))  ;; eglot reinits backends
   (eglot-autoshutdown t)
@@ -19,6 +56,7 @@
   ;; NOTE We disable eglot-auto-display-help-buffer because :select t in
   ;; its popup rule causes eglot to steal focus too often.
   (eglot-auto-display-help-buffer nil)
+  :functions eglot--eclipse-jdt-contact
   :config
   (setq eldoc-echo-area-use-multiline-p nil)
   (setq eglot-workspace-configuration
@@ -31,6 +69,12 @@
   (let ((emmylua-jar-path (expand-file-name "bin/EmmyLua-LS-all.jar" poly-local-dir)))
     (add-to-list 'eglot-server-programs
 		 `(lua-mode  . ("/usr/bin/java" "-cp" ,emmylua-jar-path "com.tang.vscode.MainKt"))))
+
+  (add-to-list 'eglot-server-programs
+	       '(java-mode .  my-eclipse-jdt-contact))
+
+  (add-to-list 'eglot-server-programs
+	       '(dart-mode . dart-lsp-contact))
 
   (when (executable-find "ccls")
     (add-to-list 'eglot-server-programs '((c-mode c++-mode) "ccls"

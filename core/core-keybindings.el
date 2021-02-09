@@ -13,7 +13,11 @@
   "The local leader prefix key for major mode specific commands in emacs and insert states.")
 
 (use-package general
-  :straight t
+  :straight (general
+	     :host github
+	     :repo "noctuid/general.el"
+	     :files ("general.el")
+	     )
   :ensure t
   :demand t
   :commands (general-define-key general-create-definer general-override-mode general-evil-setup general--simulate-keys)

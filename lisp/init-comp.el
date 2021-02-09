@@ -18,6 +18,7 @@
 (defun jeff/native-comp-emacs-base ()
   (interactive)
   (jeff/native-comp-path "/usr/local/share/emacs/28.0.50/lisp/")
+  (jeff/native-comp-path "~/.emacs.d/lisp/")
   t)
 
 (defun jeff/native-comp-all ()

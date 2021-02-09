@@ -343,5 +343,15 @@
   :ensure t
   :after yasnippet)
 
+
+(use-package java-snippets
+  :straight t
+  :defer t
+  :after yasnippet)
+
+(use-package javadoc-lookup
+  :straight t)
+
+
 (provide 'init-company)
 ;;; init-company.el ends here

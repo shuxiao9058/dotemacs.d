@@ -29,6 +29,9 @@
   :ensure t
   :commands evil-normalize-keymaps
   :hook (evil-mode . sp/evil-hook)
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
   :custom
   ;; Change cursor color depending on mode
   (evil-emacs-state-cursor `("red" hbar))     ; _
@@ -42,8 +45,7 @@
   (evil-emacs-state-cursor '(bar))
   (evil-want-C-u-scroll t)
   (evil-search-module 'evil-search)
-  (evil-want-integration t)
-  (evil-want-keybinding nil)
+  ;; (evil-want-keybinding nil)
   (evil-want-C-i-jump nil)
   :general
   (nmap "q" nil ;; q quit, not evil-record-macro
@@ -118,6 +120,7 @@
   :commands evilmi-jump-items
   :custom
   (global-evil-matchit-mode t)
+  :after evil
   :config
   ;; disable evil-matchit
   (dolist (mode '(magit-status-mode-hook))
@@ -134,6 +137,7 @@
   :commands (evil-snipe-mode evil-snipe-override-mode
 			     evil-snipe-local-mode evil-snipe-override-local-mode)
   :hook (prog-mode . evil-snipe-mode)
+  :after evil
   :custom
   (evil-snipe-smart-case t)
   (evil-snipe-scope 'line)
@@ -153,6 +157,7 @@
              evil-surround-edit
              evil-Surround-edit
              evil-surround-region)
+  :after evil
   :straight t
   :config
   (global-evil-surround-mode 1))
@@ -160,6 +165,7 @@
 (use-package evil-arglist
   :straight (evil-arglist :host github
 			  :repo "dzop/evil-arglist")
+  :after evil
   )
 
 (use-package evil-args
@@ -229,7 +235,7 @@
   )
 
 (use-package evil-osx-clipboard
-  :after pbcopy
+  :after (pbcopy evil)
   :straight (evil-osx-clipboard
 	     :host github
 	     :repo "stroxler/evil-osx-clipboard.el"
