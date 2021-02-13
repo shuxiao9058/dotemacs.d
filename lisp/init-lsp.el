@@ -12,6 +12,8 @@
 	   js-mode
 	   js2-mode
 	   typescript-mode
+	   ;; lisp-mode
+	   ;; emacs-lisp-mode
 	   ;; c-mode
 	   ;; cc-mode
 	   ;; c++-mode
@@ -95,6 +97,16 @@
   (lsp-gopls-server-path "/usr/local/gopath/bin/gopls")
   (lsp-gopls-server-args '("-debug" "127.0.0.1:3000" "-logfile=/tmp/gopls-emacs.log" "-rpc.trace" "-vv" ))
   :config
+
+  ;; Run ros install cxxxr/cl-lsp
+  ;; also see repo https://github.com/cxxxr/cl-lsp.git
+  ;; (add-to-list 'lsp-language-id-configuration '(lisp-mode "lisp"))
+  ;; (add-to-list 'lsp-language-id-configuration '(emacs-lisp-mode "elisp"))
+  ;; (lsp-register-client
+  ;;  (make-lsp-client :new-connection (lsp-stdio-connection "/usr/local/bin/cl-lsp")
+  ;;                   :major-modes '(lisp-mode emacs-lisp-mode)
+  ;;                   :server-id 'cl-lsp))
+
   (lsp-register-custom-settings
    `(("gopls.experimentalWorkspaceModule" t t)
      ("gopls.experimentalPackageCacheKey" t t)
