@@ -2,20 +2,21 @@
 
 (use-package lsp-mode
   :straight t
-  :commands lsp
+  :diminish
+  :commands (lsp lsp-deferred lsp-enable-which-key-integration lsp-format-buffer lsp-organize-imports)
   :hook (((java-mode
 	   python-mode
 	   lua-mode
-	   ;; go-mode
+	   go-mode
 	   scala-mode
 	   js-mode
 	   js2-mode
 	   typescript-mode
-	   c-mode
-	   cc-mode
-	   c++-mode
-	   C/*l-mode
-	   web-mode) . lsp)
+	   ;; c-mode
+	   ;; cc-mode
+	   ;; c++-mode
+	   ;; C/*l-mode
+	   web-mode) . lsp-deferred)
 	 ;; if you want which-key integration
 	 (lsp-mode . lsp-enable-which-key-integration)
 
@@ -29,34 +30,47 @@
 	 ;; 			      company-keywords       ; keywords
 	 ;; 			      )
 	 ;; 			     (company-abbrev company-dabbrev)))))
-	 (lsp-after-open . (lambda()
-			     (make-local-variable 'company-backends)
-			     (setq company-backends nil)
-			     (setq company-backends
-				   '((
-				      company-tabnine :with
-				      company-capf
-				      :separate
-				      )
-				     company-dabbrev-code
-				     (company-files          ; files & directory
-				      company-keywords       ; keywords
-				      )
-				     (company-abbrev company-dabbrev)))))
+	 ;; (lsp-after-open . (lambda()
+	 ;; 		     (make-local-variable 'company-backends)
+	 ;; 		     ;; (setq company-backends nil)
+	 ;; 		     (setq-local company-backends
+	 ;; 				 '(
+	 ;; 				   ;; company-tabnine
+	 ;; 				   ;; company-capf
+	 ;; 				   (company-capf :with
+	 ;; 						 company-tabnine    :separate)
+	 ;; 				   company-dabbrev-code
+	 ;; 				   (company-files          ; files & directory
+	 ;; 				    company-keywords       ; keywords
+	 ;; 				    )
+	 ;; 				   (company-abbrev company-dabbrev)))))
 	 )
   :custom
+  (lsp-restart 'ignore)
+  (lsp-server-trace nil)
   (lsp-auto-configure t)
-  ;; (lsp--throw-on-input nil)
-  (lsp-idle-delay 0.5)                 ;; lazy refresh
-  (lsp-log-io t)
+  (lsp-idle-delay 0.1)                 ;; lazy refresh
+  (lsp-log-io nil)
+  (lsp-print-performance nil)
+  (lsp-auto-execute-action nil) ;; Auto-execute single action
+  (lsp-document-sync-method nil) ;; use default method recommended by server. 'incremental 'full
   (lsp-enable-xref t)
-  (lsp-enable-indentation t)
-  (lsp-enable-completion-at-point t)
-  (lsp-response-timeout 1000)
-  (lsp-enable-folding t)             ;; use `evil-matchit' instead
+  (lsp-headerline-breadcrumb-enable nil)
+  (lsp-modeline-code-actions-enable nil)
+  (lsp-modeline-diagnostics-enable t)
+  (lsp-modeline-diagnostics-scope :file)
+  (lsp-diagnostics-provider :auto)
+  (lsp-diagnostic-clean-after-change t)
+  (lsp-enable-indentation nil)
+  (lsp-completion-enable nil)
+  (lsp-completion-enable-additional-text-edit nil)
+  (lsp-response-timeout 2)
+  (lsp-enable-folding nil)             ;; use `evil-matchit' instead
   (lsp-diagnostic-package :none)   ;; prefer flycheck disable
+  (lsp-modeline-diagnostics-enable nil)
+  (lsp-diagnostics-disabled-modes '(js-mode go-mode))
   (lsp-flycheck-live-reporting nil)    ;; obey `flycheck-check-syntax-automatically'
-  (lsp-prefer-capf t)                  ;; using `company-capf' by default
+  (lsp-completion-provider :none)    ;; set company-backends manually
   (lsp-enable-snippet nil)             ;; no snippet
   (lsp-enable-file-watchers nil)       ;; turn off for better performance
   ;; (lsp-file-watch-threshold 10000)
@@ -65,22 +79,46 @@
   (lsp-enable-on-type-formatting nil)  ;; disable formatting on the fly
   (lsp-auto-guess-root t)              ;; auto guess root
   (lsp-keep-workspace-alive nil)       ;; auto kill lsp server
+  ;; (lsp-signature-auto-activate nil)
+  (lsp-signature-auto-activate #'(:after-completion :on-trigger-char)) ; nil
+  (lsp-signature-render-documentation nil "Display signature documentation in `eldoc'")
   (lsp-eldoc-enable-hover nil)         ;; disable eldoc displays in minibuffer
+  (lsp-eldoc-render-all nil)
+  (lsp-enable-snippet t)
   (lsp-enable-imenu nil)
+  (lsp-enable-links nil) ;;
+  (lsp-prefer-flymake nil) ;; Use lsp-ui and flycheck
+  (lsp-imenu-container-name-separator "⦿")
+  (lsp-imenu-show-container-name t)
+  ;; (flymake-fringe-indicator-position 'right-fringe)
   ;; (lsp-clients-emmy-lua-jar-path (expand-file-name  "bin/EmmyLua-LS-all.jar" poly-local-dir))
-  :init
-  (setq lsp-auto-guess-root t       ; Detect project root
-        lsp-prefer-flymake nil      ; Use lsp-ui and flycheck
-        flymake-fringe-indicator-position 'right-fringe)
+  (lsp-gopls-server-path "/usr/local/gopath/bin/gopls")
+  (lsp-gopls-server-args '("-debug" "127.0.0.1:3000" "-logfile=/tmp/gopls-emacs.log" "-rpc.trace" "-vv" ))
   :config
-  ;; (lsp-register-custom-settings
-  ;;  '(("gopls.usePlaceholders" lsp-go-use-placeholders t)
-  ;;    ("gopls.hoverKind" lsp-go-hover-kind)
-  ;;    ("gopls.buildFlags" lsp-go-build-flags)
-  ;;    ("gopls.env" lsp-go-env)
-  ;;    ("gopls.linkTarget" lsp-go-link-target)
-  ;;    ;; ("gopls.codelens" lsp-go-codelens)
-  ;;    ))
+  (lsp-register-custom-settings
+   `(("gopls.experimentalWorkspaceModule" t t)
+     ("gopls.experimentalPackageCacheKey" t t)
+     ("gopls.usePlaceholders" t t)
+     ("gopls.completeUnimported" t t)
+     ("gopls.staticcheck" ,(if (executable-find "staticcheck") t nil) t)
+     ("gopls.completionBudget" "200ms" nil)
+     ("gopls.semanticTokens" t t)
+     ("gopls.allExperiments" t t)
+     ("gopls.matcher" "Fuzzy" nil)
+     ("gopls.hoverKind" lsp-go-hover-kind)
+     ("gopls.codelenses" lsp-go-codelenses)
+     ;; ("gopls.analyses.unusedparams" nil nil)
+     ;; ST1003 CamelCase
+     ;; ST1021 comment on exported type
+     ;; ST1016 methods on the same type should have the same receiver name
+     ;; ST1020 comment on exported function
+     ("gopls.analyses" ,(mapcar (lambda (a) (cons a :json-false)) '(unusedparams composites ST1003  ST1021 ST1016 SA5011 ST1020)))
+     ("gopls.buildFlags" lsp-go-build-flags)
+     ("gopls.env" lsp-go-env)
+     ("gopls.linkTarget" lsp-go-link-target)
+     ("gopls.gofumpt" ,(if (executable-find "gofumpt") t nil) t)
+     ;; ("gopls.directoryFilters" (quote ("-" "+vendor" "+internal")))
+     ))
 
   ;; ;; lsp-lua
   ;; ;; 暂时还有点问题，先不用了
@@ -89,10 +127,6 @@
   (advice-add 'lsp-warn
 	      :around (lambda (orig-func &rest r)
 			(message (apply #'format-message r))))
-
-  ;; (add-hook 'lsp-after-open-hook
-  ;; 	       (lambda()
-  ;; 		 (setq company-backends (delete 'company-capf company-backends))))
   :general
   (leader-def :keymaps '(lsp-mode-map)
     "c" '(:ignore t :wk "code")

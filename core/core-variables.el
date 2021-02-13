@@ -55,6 +55,5 @@ Use this for files that change often, like cache files. Must end with a slash.")
       mouse-yank-at-point                 t
       require-final-newline               t)
 
-
 (provide 'core-variables)
 ;;; core-variables.el ends here

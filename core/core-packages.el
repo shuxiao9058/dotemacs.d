@@ -154,6 +154,10 @@
   :config
   (exec-path-from-shell-initialize)
 
+  (setenv "GOINSECURE" "git.17usoft.com")
+  (setenv "GOPRIVATE" "git.17usoft.com")
+  (setenv "GOPATH" "/usr/local/gopath")
+
   (if (and (fboundp 'native-comp-available-p)
 	   (native-comp-available-p))
       (progn
@@ -195,8 +199,8 @@
 
 (use-package pbcopy
   :straight t
-  ;; :if (and IS-MAC (not IS-GUI))
-  :if IS-MAC
+  :if (and IS-MAC (not IS-GUI))
+  ;; :if IS-MAC
   :init (turn-on-pbcopy)
   )
 

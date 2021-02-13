@@ -35,7 +35,7 @@
 ;;              (seq-drop candidates-1 2)
 ;;              (seq-drop candidates-2 2)))))
 
-;; (defun company//sort-by-tabnine (candidates)
+;; (defun tabnine//sort-by-tabnine (candidates)
 ;;   (if (or (functionp company-backend)
 ;; 	  (not (and (listp company-backend) (memq 'company-tabnine company-backend))))
 ;;       candidates
@@ -54,20 +54,57 @@
 ;;       (nconc (seq-take candidates-tabnine company-tabnine-max-num-results)
 ;; 	     (seq-take candidates-capf (- 9 company-tabnine-max-num-results))))))
 
+
+;; (defun tabnine//merge-company-tabnine-to-company-lsp ()
+;;   (when (memq 'company-capf company-backends)
+;;     (setq-local company-backends (remove 'company-capf company-backends))
+;;     (add-to-list 'company-backends '(company-capf :with company-tabnine :separate)))
+;;   )
+
+(defun tabnine//company-box-icons--tabnine (candidate)
+  (when (eq (get-text-property 0 'company-backend candidate)
+            'company-tabnine)
+    'Reference))
+
+(defun tabnine//sort-by-tabnine (candidates)
+  "The first two candidates will be from company-lsp, the following two
+candidates will be from company-tabnine, others keeping their own origin order."
+  (if (or (functionp company-backend)
+          (not (and (listp company-backend) (memq 'company-tabnine company-backend))))
+      candidates
+    (let ((candidates-table (make-hash-table :test #'equal))
+          candidates-1
+          candidates-2)
+      (dolist (candidate candidates)
+        (if (eq (get-text-property 0 'company-backend candidate)
+                'company-tabnine)
+            (unless (gethash candidate candidates-table)
+              (push candidate candidates-2))
+          (push candidate candidates-1)
+          (puthash candidate t candidates-table)))
+      (setq candidates-1 (nreverse candidates-1))
+      (setq candidates-2 (nreverse candidates-2))
+      (nconc (seq-take candidates-1 2)
+             (seq-take candidates-2 2)
+             (seq-drop candidates-1 2)
+             (seq-drop candidates-2 2)))))
+
 (use-package company
   :straight t
   :ensure t
   :custom
   (company-minimum-prefix-length 2)
-  (company-require-match nil)
+  ;; (company-require-match 'never)
   ;; (company-tooltip-limit           20)
   (company-tooltip-align-annotations t) ;; Align annotation to the right side.
-  (company-auto-complete nil)
+  (company-auto-commit nil)
+  (company-selection-wrap-around t)
   (company-begin-commands '(self-insert-command))
   ;; (company-require-match nil)
   ;; Don't use company in the following modes
   (company-global-modes '(not shell-mode eshell-mode shell-mode comint-mode erc-mode gud-mode rcirc-mode
 			      minibuffer-inactive-mode))
+  (company-candidates-length 10)
   (company-echo-delay 0)
   ;; Trigger completion immediately.
   ;; (company-idle-delay nil)
@@ -85,10 +122,12 @@
   ;; set default `company-backends'
   (setq-default company-backends
 		'(
+		  ;; company-tabnine
 		  ;; company-capf
-		  (
-		   company-tabnine :with
-		   company-capf :separate)
+		  (company-tabnine :with
+				   company-capf :separate)
+		  ;; (company-capf :with
+		  ;; 		company-tabnine :separate)
 		  company-dabbrev-code
 		  (company-files          ; files & directory
 		   company-keywords       ; keywords
@@ -245,15 +284,16 @@
   :after company
   :custom
   (company-tabnine-log-file-path "/tmp/TabNine.log")
-  (company-tabnine-executable-args (list "--log-level" "Error"))
-  (company-tabnine-wait 0.3)
-  (company-tabnine-max-num-results 9)
+  (company-tabnine-executable-args (list "--log-level" "Debug"))
+  (company-tabnine-wait 0.25)
+  (company-tabnine-max-num-results 5)
   ;; (company-tabnine-max-num-results 4)
   (company-tabnine-no-continue t)
   :config
-  ;; (when (> 9 company-tabnine-max-num-results)
-  ;;   (add-to-list 'company-transformers 'company//sort-by-tabnine t)
-  ;;   )
+  (when (> 9 company-tabnine-max-num-results)
+    ;; (add-to-list 'company-transformers 'company//sort-by-tabnine t)
+    (add-to-list 'company-transformers 'tabnine//sort-by-tabnine t)
+    )
   ;; workaround for company-flx-mode and other transformers
   (setq company-tabnine--disable-next-transform nil)
   (defun my-company--transform-candidates (func &rest args)
@@ -269,6 +309,9 @@
 
   (advice-add #'company--transform-candidates :around #'my-company--transform-candidates)
   (advice-add #'company-tabnine :around #'my-company-tabnine)
+
+  ;; (with-eval-after-load 'lsp-mode
+  ;; (advice-add 'lsp :after #'tabnine//merge-company-tabnine-to-company-lsp))
   )
 
 ;; ;; try nox

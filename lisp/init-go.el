@@ -6,8 +6,10 @@
   :commands (godoc gofmt gofmt-before-save)
   :after (company eglot)
   ;; :hook (befor-save . gofmt-before-save)
-  :config
-  (setq gofmt-command "goimports")
+  ;; :config
+  ;; ;; (setq gofmt-command "goimports")
+  ;; (eval-after-load 'lsp
+  ;;   (setq lsp-completion-enable nil))
   ;; (setenv "GO111MODULE" "on")
   ;; :general
   ;; (nmap :keymaps '(go-mode-map)

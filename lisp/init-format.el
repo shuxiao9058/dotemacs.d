@@ -9,6 +9,7 @@
 	  lua-mode
 	  go-mode
 	  python-mode
+	  java-mode
 	  ;; cc-mode
 	  ;; c-mode
 	  ;; c++-mode
@@ -95,10 +96,21 @@
     (:format (format-all--buffer-easy executable))
     )
 
+  (define-format-all-formatter gofumpt
+    (:executable "gopls")
+    (:install (macos ""))
+    (:languages "Go")
+    (:format (lsp-format-buffer))
+    ;; (:format (format-all--buffer-easy executable))
+    )
+
+  ;; lsp-format-buffer
+
   (eval-after-load 'format-all
     (dolist (hook '(lua-mode-hook
 		    go-mode-hook
 		    python-mode-hook
+		    java-mode-hook
 		    ;; cc-mode-hook
 		    ;; c-mode-hook
 		    ;; c++-mode-hook
@@ -111,8 +123,11 @@
       (add-hook hook 'format-all-ensure-formatter)))
 
   (setq-default format-all-formatters
-		'(("Go" goimports)
+		'(
+		  ("Go" gofumpt)
+		  ;; ("Go" goimports)
 		  ("Lua" cpp-lua-format)
+		  ("Java" my-clang-format)
 		  ;; ("C" my-clang-format)
 		  ;; ("C++" my-clang-format)
 		  ;; ("Objective-C" my-clang-format)

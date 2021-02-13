@@ -48,6 +48,7 @@
   (org-agenda-start-on-weekday 1)
   (calendar-week-start-day 1)
   (org-display-custom-times t)
+  (org-confirm-babel-evaluate nil)
   :config
   (add-to-list 'org-modules 'org-capture)
   (add-to-list 'org-modules 'org-habit)

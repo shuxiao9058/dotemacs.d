@@ -48,7 +48,7 @@
 (require 'init-company)
 
 ;; language server protocol
-(setq with-company-lsp nil)
+(setq with-company-lsp t)
 (if with-company-lsp
     (require 'init-lsp)
   (require 'init-eglot))

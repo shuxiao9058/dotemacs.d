@@ -6,6 +6,7 @@
       enable-local-variables :all
       save-silently t
       find-file-suppress-same-file-warnings t
+      vc-follow-symlinks t
       inhibit-startup-screen t
       whitespace-line-column 100
       default-directory (expand-file-name "workspace/" "~")
@@ -14,6 +15,9 @@
       truncate-lines t
       truncate-partial-width-windows 50
       whitespace-style '(face trailing lines-tail))
+
+;; @see https://github.com/emacs-lsp/lsp-mode#performance
+(setq read-process-output-max (* 3 1024 1024))
 
 ;;; lisp
 (setq ;; lisp-body-indent   2
