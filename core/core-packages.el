@@ -150,13 +150,23 @@
 (use-package exec-path-from-shell
   :straight t
   :ensure t
-  :if IS-MAC
+  :if (and IS-MAC IS-GUI)
   :config
-  (exec-path-from-shell-initialize)
+  (when (file-executable-p "/usr/local/bin/fish")
+    (setq exec-path-from-shell-shell-name "/usr/local/bin/fish"
+          exec-path-from-shell-debug nil))
 
-  (setenv "GOINSECURE" "git.17usoft.com")
-  (setenv "GOPRIVATE" "git.17usoft.com")
-  (setenv "GOPATH" "/usr/local/gopath")
+  ;; (setq exec-path-from-shell-arguments '("-l"))
+  (setq exec-path-from-shell-variables
+	'("PATH"
+	  "PYENV_ROOT"
+	  "JAVA_HOME"
+	  "GOPATH"
+	  "GOINSECURE"
+	  "GOINSECURE"
+	  "SDKMAN_DIR"))
+
+  (exec-path-from-shell-initialize)
 
   (if (and (fboundp 'native-comp-available-p)
 	   (native-comp-available-p))

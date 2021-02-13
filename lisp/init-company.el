@@ -284,7 +284,7 @@ candidates will be from company-tabnine, others keeping their own origin order."
   :after company
   :custom
   (company-tabnine-log-file-path "/tmp/TabNine.log")
-  (company-tabnine-executable-args (list "--log-level" "Debug"))
+  (company-tabnine-executable-args (list "--log-level" "Error"))
   (company-tabnine-wait 0.25)
   (company-tabnine-max-num-results 5)
   ;; (company-tabnine-max-num-results 4)
@@ -309,9 +309,6 @@ candidates will be from company-tabnine, others keeping their own origin order."
 
   (advice-add #'company--transform-candidates :around #'my-company--transform-candidates)
   (advice-add #'company-tabnine :around #'my-company-tabnine)
-
-  ;; (with-eval-after-load 'lsp-mode
-  ;; (advice-add 'lsp :after #'tabnine//merge-company-tabnine-to-company-lsp))
   )
 
 ;; ;; try nox

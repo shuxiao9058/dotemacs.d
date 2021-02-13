@@ -26,7 +26,6 @@
     (setenv "TERM" "emacs"))
   :hook (eshell-mode . turn-on-fish-completion-mode))
 
-
 (use-package esh-autosuggest
   :straight t
   :commands esh-autosuggest-mode
