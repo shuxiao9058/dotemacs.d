@@ -12,13 +12,13 @@
 (defun jeff/native-comp-elpa ()
   (interactive)
   ;; (jeff/native-comp-path "~/.emacs.d/elpa/")
-  (jeff/native-comp-path "~/.emacs.d/.local/straight/build")
+  (jeff/native-comp-path (expand-file-name ".local/straight/build" user-emacs-directory))
   t)
 
 (defun jeff/native-comp-emacs-base ()
   (interactive)
   (jeff/native-comp-path "/usr/local/share/emacs/28.0.50/lisp/")
-  (jeff/native-comp-path "~/.emacs.d/lisp/")
+  (jeff/native-comp-path (expand-file-name "lisp/" user-emacs-directory))
   t)
 
 (defun jeff/native-comp-all ()

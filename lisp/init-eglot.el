@@ -6,7 +6,7 @@
 (defconst jdt-extra-jvm-args '("-noverify"
 			       "-javaagent:/Users/jiya/workspace/dotemacs.d/.local/jar/lombok.jar"
 			       ;; "-javaagent:[~/.emacs.d/.local/jar/lombok.jar][classes=META-INF/]"
-			       "-Xbootclasspath/a:~/.emacs.d/.local/jar/lombok.jar"
+			       "-Xbootclasspath/a:~/.config/emacs/.local/jar/lombok.jar"
 			       "--add-modules=ALL-SYSTEM"
 			       "--add-opens"
 			       "java.base/java.util=ALL-UNNAMED"

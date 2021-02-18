@@ -65,7 +65,7 @@
            (function org-roam-capture--get-point)
            "%?" :file-name "%<%Y%m%d%H%M%S>-${slug}"
            :head "#+LATEX_HEADER: \\usepackage[citestyle=authoryear-icomp,bibstyle=authoryear, hyperref=true,backref=true,maxcitenames=3,url=true,backend=bibtex,natbib=true] {biblatex}
-#+SETUPFILE: ~/.emacs.d/.local/etc/org-html-themes/setup/theme-readtheorg.setup
+#+SETUPFILE: ~/.config/emacs/.local/etc/org-html-themes/setup/theme-readtheorg.setup
 #+TITLE: ${title}
 #+CREATED: %u
 Time-stamp: <>
