@@ -235,6 +235,7 @@
   "oe" '(eshell :wk "Open eshell here")
   "ot" '(treemacs :wk "Treemacs")
   "oT" '(telega :wk "Telega")
+  "or" '(poly/magit-open-repo :wk "Repository in browse")
 
   ;;<leader> w --- windows
   "w" '(:wk "Windows")

@@ -53,6 +53,7 @@
   (lsp-auto-configure t)
   (lsp-idle-delay 0.1)                 ;; lazy refresh
   (lsp-log-io nil)
+  (lsp-log-max nil)
   (lsp-print-performance nil)
   (lsp-auto-execute-action nil) ;; Auto-execute single action
   (lsp-document-sync-method nil) ;; use default method recommended by server. 'incremental 'full
@@ -94,8 +95,9 @@
   (lsp-imenu-show-container-name t)
   ;; (flymake-fringe-indicator-position 'right-fringe)
   ;; (lsp-clients-emmy-lua-jar-path (expand-file-name  "bin/EmmyLua-LS-all.jar" poly-local-dir))
-  (lsp-gopls-server-path "/usr/local/gopath/bin/gopls")
-  (lsp-gopls-server-args '("-debug" "127.0.0.1:3000" "-logfile=/tmp/gopls-emacs.log" "-rpc.trace" "-vv" ))
+  (lsp-gopls-server-path "/usr/local/bin/gopls")
+  (lsp-gopls-server-args '("-debug" "127.0.0.1:3000" ;; "-logfile=/tmp/gopls-emacs.log" ;; "-rpc.trace" "-vv"
+			   ))
   :config
 
   ;; Run ros install cxxxr/cl-lsp
@@ -124,11 +126,19 @@
      ;; ST1021 comment on exported type
      ;; ST1016 methods on the same type should have the same receiver name
      ;; ST1020 comment on exported function
-     ("gopls.analyses" ,(mapcar (lambda (a) (cons a :json-false)) '(unusedparams composites ST1003  ST1021 ST1016 SA5011 ST1020)))
+     ;; ST1005 error strings should not be capitalized
+     ;; SA9003 empty branch
+     ;; ST1022 comment on exported var
+     ;; S1023 redundant break statement
+     ;; SA4011 ineffective break statement. Did you mean to break out of the outer loop?
+     ;; SA4010 this result of append is never used, except maybe in other appends
+     ;; S1007 should use raw string (`...`) with regexp.Compile to avoid having to escape twice
+     ("gopls.analyses" ,(mapcar (lambda (a) (cons a :json-false))
+				'(unusedparams composites ST1003  ST1021 ST1016 SA5011 ST1020 ST1005 SA9003 SA4006 ST1022 S1023 SA4011 SA4010)))
      ("gopls.buildFlags" lsp-go-build-flags)
      ("gopls.env" lsp-go-env)
      ("gopls.linkTarget" lsp-go-link-target)
-     ("gopls.gofumpt" ,(if (executable-find "gofumpt") t nil) t)
+     ;; ("gopls.gofumpt" ,(if (executable-find "gofumpt") t nil) t)
      ;; ("gopls.directoryFilters" (quote ("-" "+vendor" "+internal")))
      ))
 

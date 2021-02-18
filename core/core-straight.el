@@ -3,7 +3,7 @@
 ;; Emacs wants to load `package.el' before the init file,
 ;; so we do the same with `straight.el'
 (setq straight-base-dir poly-local-dir
-      straight-repository-branch "master"
+      straight-repository-branch "develop"
       ;; straight-use-package-by-default t
       straight-cache-autoloads t ;; we already do this, and better.
       ;; Doom doesn't encourage you to modify packages in place. Disabling this

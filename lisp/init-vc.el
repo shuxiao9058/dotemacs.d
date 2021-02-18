@@ -7,7 +7,6 @@
   :custom
   (magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
   (magit-revert-buffers 'silent)
-  (magit-push-always-verify nil)
   (git-commit-summary-max-length 70)
   (magit-diff-options (quote ("--minimal" "--patience")))
   (magit-tag-arguments (quote ("--annotate" "--sign")))
@@ -18,7 +17,14 @@
   (magit-diff-use-overlays nil)
   (magit-use-overlays nil)
   (magit-auto-revert-mode t)
+  (git-rebase-auto-advance  t)
+  (magit-stage-all-confirm nil)
+  (magit-commit-squash-commit 'marked-or-curren)
+  (magit-push-always-verify ni) ;; cuz it says so
+  (magit-diff-refine-hunk 'all)
   (git-commit-finish-query-functions nil)
+  (magit-log-section-commit-count 10)
+  (magit-log-section-arguments '("--graph" "--decorate" "--color"))
   :init
   ;; Must be set early to prevent ~/.emacs.d/transient from being created
   (setq transient-levels-file  (concat poly-etc-dir "transient/levels")
@@ -30,6 +36,75 @@
   :config
   (when IS-MAC
     (setq magit-git-executable "/usr/local/bin/git"))
+
+  (setq magit-status-sections-hook
+	'(magit-insert-status-headers
+	  magit-insert-merge-log
+	  magit-insert-rebase-sequence
+	  magit-insert-am-sequence
+	  magit-insert-sequencer-sequence
+	  magit-insert-bisect-output
+	  magit-insert-bisect-rest
+	  magit-insert-bisect-log
+	  magit-insert-untracked-files
+	  magit-insert-unstaged-changes
+	  magit-insert-staged-changes
+	  magit-insert-unpushed-cherries
+	  magit-insert-recent-commits
+	  magit-insert-stashes
+	  magit-insert-unpulled-from-pushremote
+	  magit-insert-unpushed-to-upstream
+	  magit-insert-unpushed-to-pushremote
+	  magit-insert-unpulled-from-upstream))
+  (setq magit-status-headers-hook
+	'(magit-insert-repo-header
+	  magit-insert-remote-header
+	  magit-insert-error-header
+	  magit-insert-diff-filter-header
+	  magit-insert-head-branch-header
+	  magit-insert-upstream-branch-header
+	  magit-insert-push-branch-header
+	  magit-insert-tags-header))
+
+  ;; Opening repo externally
+  (defun poly/parse-repo-url (url)
+    "convert a git remote location as a HTTP URL"
+    (if (string-match "^http" url)
+        url
+      (replace-regexp-in-string "\\(.*\\)@\\(.*\\):\\(.*\\)\\(\\.git?\\)"
+                                (concat (if (string-match "17usoft.com" url) "http" "https") "://\\2/\\3")
+                                url)))
+  (defun poly/magit-open-repo ()
+    "open remote repo URL"
+    (interactive)
+    (let ((url (magit-get "remote" "origin" "url")))
+      (progn
+        (browse-url (poly/parse-repo-url url))
+        (message "opening repo %s" url))))
+
+  (defun m/magit-display-buffer-traditional (buffer)
+    "Like magit-display-buffer-traditional, but re-uses window for status mode, too."
+    (display-buffer
+     buffer (if (not (memq (with-current-buffer buffer major-mode)
+                           '(magit-process-mode
+                             magit-revision-mode
+                             magit-diff-mode
+                             magit-stash-mode)))
+		'(display-buffer-same-window)
+              nil)))
+
+  (setq magit-display-buffer-function 'm/magit-display-buffer-traditional)
+
+  (defun m/magit-reset-author (&optional args)
+    "Resets the authorship information for the last commit"
+    (interactive)
+    (magit-run-git-async "commit" "--amend" "--no-edit" "--reset-author"))
+
+  ;; (magit-define-popup-action 'magit-commit-popup
+  ;;   ?R "Reset author" 'm/magit-reset-author)
+  (transient-append-suffix 'magit-commit
+    "S"
+    '("R" "Reset author" m/magit-reset-author))
   :general
   (general-unbind '(magit-mode-map)
     ;; Replaced by z1, z2, z3, etc

@@ -61,6 +61,7 @@
 (require 'init-cc)
 (require 'init-nix)
 (require 'init-fish)
+(require 'init-docker)
 (require 'init-format)
 
 ;; functions

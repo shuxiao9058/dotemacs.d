@@ -90,6 +90,7 @@ Time-stamp: <>
 (use-package org-roam-server
   :straight t
   :ensure t
+  :after org
   :config
   (setq org-roam-server-host "127.0.0.1"
         org-roam-server-port 8848
@@ -114,6 +115,7 @@ Time-stamp: <>
 
 (use-package company-org-roam
   :straight t
+  :after org
   :ensure t
   :after '(org-roam company)
   :config
@@ -124,6 +126,7 @@ Time-stamp: <>
 
 (use-package org-ref
   :straight t
+  :after org
   :config
   (setq
    org-latex-prefer-user-labels t
@@ -142,6 +145,7 @@ Time-stamp: <>
 
 (use-package bibtex
   :straight t
+  :after org
   :config
   (setq
    ;; org-ref-completion-library 'org-ref-ivy-cite
@@ -175,6 +179,7 @@ Time-stamp: <>
 
 ;; org-noter
 (use-package org-noter
+  :after org
   :straight t
   :config
   (setq

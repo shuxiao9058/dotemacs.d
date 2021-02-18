@@ -37,7 +37,7 @@
 	      ".+-pkg\\.el$"
 	      "\\(?:[^a-z]+-autoloads\\.el$\\)"))
       (setq comp-deferred-compilation-black-list
-            '(evil "/xterm\\.el$" "/xterm\\.el.gz$" "/evil-collection-vterm\\.el\\'" "/mu4e.*\\.el$"))
+            '("/xterm\\.el$" "/xterm\\.el.gz$" "/evil-collection-vterm\\.el\\'" "/mu4e.*\\.el$"))
 					; (add-to-list 'comp-deferred-compilation-deny-list "init\\.el$")
       ;; (native--compile-async '("~/.emacs.d/lisp/" "~/.emacs.d/themes/" "~/.emacs.d/modules/" "~/.emacs.d/local-config.el") t)
       )

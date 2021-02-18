@@ -1,7 +1,7 @@
 ;;; lisp/init-org.el -*- lexical-binding: t; -*-
 
 (use-package org
-  :straight t
+  :straight (:no-native-compile t)
   :ensure t
   :custom
   (org-todo-keywords '((sequence "TODO(t)" "HOLD(h!)" "NEXT(n!)" "WAIT(w!)" "|" "DONE(d!)" "CANCELLED(c@/!)")
@@ -435,7 +435,8 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
          (org-trello-mode . evil-org-mode))
   :delight
   evil-org-mode
-  :straight t
+  :straight (:flavor melpa :no-native-compile t)
+  ;; :straight t
   :after org
   ;; :hook (org-mode . evil-org-mode)
   :general
@@ -629,7 +630,8 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
 
 
 (use-package ox-hugo
-  :straight t
+  ;; :straight t
+  :straight (:flavor melpa :no-native-compile t)
   :after ox
   :defer t
   :config
@@ -667,7 +669,8 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
   )
 
 (use-package org-bullets
-  :straight t
+  ;; :straight t
+  :straight (:flavor melpa :no-native-compile t)
   :commands (org-bullets-mode org-bullets)
   :hook (org-mode . org-bullets-mode)
   ;; :custom
@@ -679,7 +682,8 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
 
 
 (use-package org-kanban
-  :straight t
+  ;; :straight t
+  :straight (:flavor melpa :no-native-compile t)
   :commands (org-kanban/initialize-at-end)
   ;; :ensure t
   ;; :defer t
@@ -692,6 +696,7 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
   :straight (org-clock-budget
              :host github
              :repo "Fuco1/org-clock-budget"
+	     :no-native-compile t
              )
   :commands (org-clock-budget-report)
   :init

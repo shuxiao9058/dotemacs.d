@@ -5,6 +5,7 @@
   ;; :ensure t
   :hook ((
 	  fish-mode
+	  sh-mode
 	  ;; prog-mode
 	  lua-mode
 	  go-mode
@@ -104,6 +105,28 @@
     ;; (:format (format-all--buffer-easy executable))
     )
 
+  (define-format-all-formatter my-shfmt
+    (:executable "shfmt")
+    (:install
+     (macos "brew install shfmt")
+     (windows "scoop install shfmt"))
+    (:languages "Shell")
+    (:format
+     (format-all--buffer-easy
+      executable
+      "-i"
+      "4"
+      "-ci"
+      (if (buffer-file-name)
+          (list "-filename" (buffer-file-name))
+	(list "-ln"
+	      (cl-case (and (eql major-mode 'sh-mode)
+			    (boundp 'sh-shell)
+			    (symbol-value 'sh-shell))
+		(bash "bash")
+		(mksh "mksh")
+		(t "posix")))))))
+
   ;; lsp-format-buffer
 
   (eval-after-load 'format-all
@@ -124,8 +147,8 @@
 
   (setq-default format-all-formatters
 		'(
-		  ("Go" gofumpt)
-		  ;; ("Go" goimports)
+		  ;; ("Go" gofumpt)
+		  ("Go" goimports)
 		  ("Lua" cpp-lua-format)
 		  ("Java" my-clang-format)
 		  ;; ("C" my-clang-format)
@@ -136,7 +159,7 @@
 		  ;; ("CSS" prettier)
 		  ;; ("HTML" prettier)
 		  ;; ("Dockerfile" dockfmt)
-		  ;; ("Shell" shfmt)
+		  ("Shell" my-shfmt)
 		  ;; ("Markdown" prettier)
 		  ;; ("Nix" nixfmt)
 		  ;; ("Emacs Lisp" emacs-lisp)
