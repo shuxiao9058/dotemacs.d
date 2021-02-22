@@ -4,7 +4,18 @@
   :straight t
   :ensure t
   :commands (godoc gofmt gofmt-before-save)
-  :after (company eglot)
+  :after company
+  :config
+  (defun lsp-go-install-save-hooks ()
+    (add-hook 'before-save-hook #'lsp-format-buffer t t)
+    (add-hook 'before-save-hook #'lsp-organize-imports t t))
+
+  (eval-after-load 'lsp
+    (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+    ;; (add-hook 'before-save-hook #'lsp-organize-imports)
+    ;; (add-hook 'before-save-hook #'lsp-format-buffer)
+    ;; )
+    )
   ;; :hook (befor-save . gofmt-before-save)
   ;; :config
   ;; ;; (setq gofmt-command "goimports")
@@ -41,7 +52,11 @@
   (flycheck-golangci-lint-fast t)
   (flycheck-golangci-lint-config
    (expand-file-name "golangci.yml" "~/.config/golangci-lint"))
-  (flycheck-golangci-lint-tests t))
+  (flycheck-golangci-lint-tests t)
+  ;; :config
+  ;; (eval-after-load 'flycheck
+  ;;   '(add-hook 'flycheck-mode-hook #'flycheck-golangci-lint-setup))
+  )
 
 (use-package go-eldoc
   :straight t

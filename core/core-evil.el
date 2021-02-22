@@ -47,6 +47,11 @@
   (evil-search-module 'evil-search)
   ;; (evil-want-keybinding nil)
   (evil-want-C-i-jump nil)
+  (evil-goto-definition-functions
+   '(evil-goto-definition-xref
+     evil-goto-definition-imenu
+     evil-goto-definition-semantic
+     evil-goto-definition-search))
   :general
   (nmap "q" nil ;; q quit, not evil-record-macro
     "Q" #'evil-record-macro)
@@ -72,9 +77,9 @@
 (use-package evil-terminal-cursor-changer
   :straight t
   :unless IS-GUI
+  :demand
   :ensure t
   :after evil
-  ;; :custom
   :config
   (evil-terminal-cursor-changer-activate) ; or (etcc-on)
   )

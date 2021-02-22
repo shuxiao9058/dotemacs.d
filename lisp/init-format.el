@@ -8,7 +8,7 @@
 	  sh-mode
 	  ;; prog-mode
 	  lua-mode
-	  go-mode
+	  ;; go-mode
 	  python-mode
 	  java-mode
 	  ;; cc-mode
@@ -18,6 +18,7 @@
 	  elisp-mode
 	  emacs-lisp-mode
 	  markdown-mode
+	  yaml-mode
 	  ;; nix-mode
 	  ;;  objc-mode
 	  ;;  swift-mode
@@ -101,9 +102,7 @@
     (:executable "gopls")
     (:install (macos ""))
     (:languages "Go")
-    (:format (lsp-format-buffer))
-    ;; (:format (format-all--buffer-easy executable))
-    )
+    (:format  (lsp-format-buffer)))
 
   (define-format-all-formatter my-shfmt
     (:executable "shfmt")
@@ -131,7 +130,7 @@
 
   (eval-after-load 'format-all
     (dolist (hook '(lua-mode-hook
-		    go-mode-hook
+		    ;; go-mode-hook
 		    python-mode-hook
 		    java-mode-hook
 		    ;; cc-mode-hook
@@ -148,7 +147,7 @@
   (setq-default format-all-formatters
 		'(
 		  ;; ("Go" gofumpt)
-		  ("Go" goimports)
+		  ;; ("Go" goimports)
 		  ("Lua" cpp-lua-format)
 		  ("Java" my-clang-format)
 		  ;; ("C" my-clang-format)

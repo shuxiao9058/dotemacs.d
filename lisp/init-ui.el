@@ -89,7 +89,7 @@ WIN-ID : Window index."
 
 (use-package treemacs
   :straight t
-  :after hl-line-mode
+  ;; :after hl-line-mode
   :custom
   (treemacs-collapse-dirs                 (if (executable-find "python") 3 0))
   (treemacs-deferred-git-apply-delay      0.5)
@@ -126,6 +126,14 @@ WIN-ID : Window index."
   (treemacs-tag-follow-delay              1.5)
   (treemacs-width                         28)
   (doom-treemacs-use-generic-icons nil)
+  :defines winum-keymap
+  :commands (treemacs-follow-mode
+             treemacs-filewatch-mode
+             treemacs-fringe-indicator-mode
+             treemacs-git-mode)
+  :init
+  (with-eval-after-load 'winum
+    (bind-key (kbd "M-9") #'treemacs-select-window winum-keymap))
   :config
   (treemacs-follow-mode t)
   (treemacs-filewatch-mode t)
@@ -135,14 +143,59 @@ WIN-ID : Window index."
     (`(t . t)
      (treemacs-git-mode 'deferred))
     (`(t . _)
-     (treemacs-git-mode 'simple))))
+     (treemacs-git-mode 'simple)))
+  (if (fboundp 'define-fringe-bitmap)
+      (define-fringe-bitmap 'treemacs--fringe-indicator-bitmap
+        (vector #b00000111111
+                #b00000111111
+                #b00000111111
+                #b00000111111
+                #b00000111111
+                #b00000111111
+                #b00000111111
+                #b00000111111
+                #b00000111111
+                #b00000111111
+                #b00000111111
+                #b00000111111
+                #b00000111111
+                #b00000111111
+                #b00000111111
+                #b00000111111
+                #b00000111111
+                #b00000111111
+                #b00000111111
+                #b00000111111
+                #b00000111111
+                #b00000111111
+                #b00000111111
+                #b00000111111
+                #b00000111111
+                #b00000111111)))
+  :bind (([f8]        . treemacs)
+         ("C-`"       . treemacs-select-window)
+         ("M-0"       . treemacs-select-window)
+         ("C-x 1"     . treemacs-delete-other-windows)
+         ("C-x t 1"   . treemacs-delete-other-windows)
+         ("C-x t t"   . treemacs)
+         ("C-x t b"   . treemacs-bookmark)
+         ("C-x t C-t" . treemacs-find-file)
+         ("C-x t M-t" . treemacs-find-tag)
+	 :map treemacs-mode-map
+         ([mouse-1]   . treemacs-single-click-expand-action))
+  )
 
 (use-package treemacs-projectile
   :straight t
   :ensure t
-  :after treemacs
+  :after (treemacs projectile)
   :config
   (setq treemacs-header-function #'treemacs-projectile-create-header))
+
+(use-package treemacs-magit
+  :straight t
+  :after (treemacs magit)
+  :ensure t)
 
 ;; (use-package awesome-tab
 ;;   :straight (awesome-tab

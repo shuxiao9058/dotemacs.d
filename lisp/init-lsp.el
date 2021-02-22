@@ -1,5 +1,21 @@
 ;;; lisp/init-lsp.el -*- lexical-binding: t; -*-
 
+(defvar my-disable-lsp-completion nil
+  "If non-nil, disable lsp-completion-enable, can work with .dir-locals
+   ((nil . ((eval . (setq-local my-disable-lsp-completion t)))))
+.")
+
+(defun lsp-configure-buffer@after()
+  "disable lsp-completion-enable"
+  (progn
+    (when my-disable-lsp-completion
+      (setq-local lsp-completion-enable nil
+		  ;; lsp-modeline-code-actions-enable nil
+		  ))))
+
+;; disable lsp-completion-enable with some project
+(advice-add 'lsp-configure-buffer :after 'lsp-configure-buffer@after)
+
 (use-package lsp-mode
   :straight t
   :diminish
@@ -19,6 +35,7 @@
 	   ;; c++-mode
 	   ;; C/*l-mode
 	   web-mode) . lsp-deferred)
+	 ;; (go-mode . my/lsp-go) ;; disable lsp-completion-enable with go, since gopls is quite slow
 	 ;; if you want which-key integration
 	 (lsp-mode . lsp-enable-which-key-integration)
 
@@ -65,7 +82,7 @@
   (lsp-diagnostics-provider :auto)
   (lsp-diagnostic-clean-after-change t)
   (lsp-enable-indentation nil)
-  (lsp-completion-enable nil)
+  (lsp-completion-enable t)
   (lsp-completion-enable-additional-text-edit nil)
   (lsp-response-timeout 2)
   (lsp-enable-folding nil)             ;; use `evil-matchit' instead
@@ -83,16 +100,17 @@
   (lsp-auto-guess-root t)              ;; auto guess root
   (lsp-keep-workspace-alive nil)       ;; auto kill lsp server
   ;; (lsp-signature-auto-activate nil)
-  (lsp-signature-auto-activate #'(:after-completion :on-trigger-char)) ; nil
+  ;; (lsp-signature-auto-activate #'(:after-completion :on-trigger-char)) ; nil
+  (lsp-signature-auto-activate nil) ; nil
   (lsp-signature-render-documentation nil "Display signature documentation in `eldoc'")
   (lsp-eldoc-enable-hover nil)         ;; disable eldoc displays in minibuffer
   (lsp-eldoc-render-all nil)
-  (lsp-enable-snippet t)
+  (lsp-enable-snippet nil)
   (lsp-enable-imenu nil)
   (lsp-enable-links nil) ;;
   (lsp-prefer-flymake nil) ;; Use lsp-ui and flycheck
   (lsp-imenu-container-name-separator "⦿")
-  (lsp-imenu-show-container-name t)
+  (lsp-imenu-show-container-name nil)
   ;; (flymake-fringe-indicator-position 'right-fringe)
   ;; (lsp-clients-emmy-lua-jar-path (expand-file-name  "bin/EmmyLua-LS-all.jar" poly-local-dir))
   (lsp-gopls-server-path "/usr/local/bin/gopls")
@@ -113,6 +131,7 @@
    `(("gopls.experimentalWorkspaceModule" t t)
      ("gopls.experimentalPackageCacheKey" t t)
      ("gopls.usePlaceholders" t t)
+     ("gopls.deepCompletion" t t)
      ("gopls.completeUnimported" t t)
      ("gopls.staticcheck" ,(if (executable-find "staticcheck") t nil) t)
      ("gopls.completionBudget" "200ms" nil)
@@ -138,7 +157,7 @@
      ("gopls.buildFlags" lsp-go-build-flags)
      ("gopls.env" lsp-go-env)
      ("gopls.linkTarget" lsp-go-link-target)
-     ;; ("gopls.gofumpt" ,(if (executable-find "gofumpt") t nil) t)
+     ("gopls.gofumpt" ,(if (executable-find "gofumpt") t nil) t)
      ;; ("gopls.directoryFilters" (quote ("-" "+vendor" "+internal")))
      ))
 
@@ -159,6 +178,21 @@
     "cD" '(lsp-find-reference :wk "Jump to references")
     "ck" '(lsp-find-document :wk "Jump to documentation")
     )
+  )
+
+(use-package dap-mode
+  :straight t
+  :ensure t
+  :after lsp-mode
+  :config
+  (dap-auto-configure-mode)
+  ;; (dap-mode t)
+  (dap-ui-mode t)
+  )
+
+(use-package lsp-treemacs
+  :straight t
+  :commands lsp-treemacs-errors-list
   )
 
 ;; (use-package lsp-ui
@@ -197,9 +231,9 @@
 ;; 	    "C-k" 'lsp-ui-peek--select-prev)
 ;;   )
 
-(use-package lsp-ivy
-  :straight t
-  :commands lsp-ivy-workspace-symbol)
+;; (use-package lsp-ivy
+;;   :straight t
+;;   :commands lsp-ivy-workspace-symbol)
 
 (provide 'init-lsp)
 ;;; init-lsp ends here
