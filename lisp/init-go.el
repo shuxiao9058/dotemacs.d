@@ -4,7 +4,7 @@
   :straight t
   :ensure t
   :commands (godoc gofmt gofmt-before-save)
-  :after company
+  ;; :after company
   :config
   (defun lsp-go-install-save-hooks ()
     (add-hook 'before-save-hook #'lsp-format-buffer t t)

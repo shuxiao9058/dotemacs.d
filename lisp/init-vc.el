@@ -1,13 +1,19 @@
 ;;; lisp/init-vc.el -*- lexical-binding: t; -*-
 
+(use-package with-editor
+  :straight t
+  :ensure t)
+
 (use-package magit
   :straight t
   :commands (magit-file-delete magit-status magit-checkout)
   :hook (magit-pop-mode . hide-mode-line-mode)
   :custom
+  (magit-refresh-verbose t) ;; debug only
   (magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
   (magit-revert-buffers 'silent)
-  (git-commit-summary-max-length 70)
+  (git-commit-summary-max-length 50)
+  (magit-log-section-commit-count 5)
   (magit-diff-options (quote ("--minimal" "--patience")))
   (magit-tag-arguments (quote ("--annotate" "--sign")))
   (magit-merge-arguments (quote ("--no-ff")))
@@ -25,20 +31,30 @@
   (git-commit-finish-query-functions nil)
   (magit-log-section-commit-count 10)
   (magit-log-section-arguments '("--graph" "--decorate" "--color"))
+  (magit-git-executable "/usr/local/bin/git")
   :init
   ;; Must be set early to prevent ~/.emacs.d/transient from being created
   (setq transient-levels-file  (concat poly-etc-dir "transient/levels")
         transient-values-file  (concat poly-etc-dir "transient/values")
         transient-history-file (concat poly-etc-dir "transient/history"))
+
+  ;; Have magit-status go full screen and quit to previous
+  ;; configuration.  Taken from
+  ;; http://whattheemacsd.com/setup-magit.el-01.html#comment-748135498
+  ;; and http://irreal.org/blog/?p=2253
+  (defadvice magit-status (around magit-fullscreen activate)
+    (window-configuration-to-register :magit-fullscreen)
+    ad-do-it
+    (delete-other-windows))
+  (defadvice magit-quit-window (after magit-restore-screen activate)
+    (jump-to-register :magit-fullscreen))
   ;; (setq
   ;; ;; Use flyspell in the commit buffer
   ;; (add-hook 'git-commit-setup-hook 'git-commit-turn-on-flyspell)
   :config
-  (when IS-MAC
-    (setq magit-git-executable "/usr/local/bin/git"))
-
   (setq magit-status-sections-hook
-	'(magit-insert-status-headers
+	'(
+	  ;; magit-insert-status-headers
 	  magit-insert-merge-log
 	  magit-insert-rebase-sequence
 	  magit-insert-am-sequence
@@ -49,22 +65,26 @@
 	  magit-insert-untracked-files
 	  magit-insert-unstaged-changes
 	  magit-insert-staged-changes
-	  magit-insert-unpushed-cherries
+	  ;; magit-insert-unpushed-cherries
 	  magit-insert-stashes
-	  magit-insert-recent-commits
-	  magit-insert-unpulled-from-pushremote
+	  ;; magit-insert-recent-commits
+	  ;; magit-insert-unpulled-from-pushremote
 	  magit-insert-unpushed-to-upstream
-	  magit-insert-unpushed-to-pushremote
-	  magit-insert-unpulled-from-upstream))
+	  ;; magit-insert-unpushed-to-pushremote
+	  ;; magit-insert-unpulled-from-upstream
+	  ))
+
   (setq magit-status-headers-hook
-	'(magit-insert-repo-header
-	  magit-insert-remote-header
+	'(
+	  ;; magit-insert-repo-header
+	  ;; magit-insert-remote-header
 	  magit-insert-error-header
 	  magit-insert-diff-filter-header
 	  magit-insert-head-branch-header
 	  magit-insert-upstream-branch-header
 	  magit-insert-push-branch-header
-	  magit-insert-tags-header))
+	  ;; magit-insert-tags-header
+	  ))
 
   ;; Opening repo externally
   (defun poly/parse-repo-url (url)
