@@ -4,7 +4,6 @@
   :straight t
   :ensure t
   :commands (godoc gofmt gofmt-before-save)
-  ;; :after company
   :config
   (defun lsp-go-install-save-hooks ()
     (add-hook 'before-save-hook #'lsp-format-buffer t t)
@@ -12,9 +11,6 @@
 
   (eval-after-load 'lsp
     (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
-    ;; (add-hook 'before-save-hook #'lsp-organize-imports)
-    ;; (add-hook 'before-save-hook #'lsp-format-buffer)
-    ;; )
     )
   ;; :hook (befor-save . gofmt-before-save)
   ;; :config
@@ -47,6 +43,7 @@
   :straight t
   :after go-mode
   :hook (go-mode . flycheck-golangci-lint-setup)
+  :disabled
   :custom
   (flycheck-golangci-lint-enable-all t)
   (flycheck-golangci-lint-fast t)
@@ -62,6 +59,7 @@
   :straight t
   :after go-mode
   :ensure t
+  :disabled
   :commands go-eldoc-setup
   :init
   (add-hook 'go-mode-hook #'go-eldoc-setup))
@@ -69,12 +67,14 @@
 (use-package go-rename
   :straight t
   :after go-mode
+  :disabled
   :ensure t
   :commands go-rename)
 
 (use-package go-guru
   :straight t
   :after go-mode
+  :disabled
   :ensure t
   :commands go-guru-hl-identifier-mode
   :init

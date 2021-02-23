@@ -5,44 +5,49 @@
        (string-match-p "\.\\(mock\\|min\\)\.js" buffer-file-name)))
 
 ;; http://stackoverflow.com/questions/3875213/turning-on-linum-mode-when-in-python-c-mode
-(setq linum-mode-inhibit-modes-list '(eshell-mode
-                                      shell-mode
-                                      profiler-report-mode
-                                      ffip-diff-mode
-                                      dictionary-mode
-                                      erc-mode
-                                      dired-mode
-                                      help-mode
-                                      text-mode
-                                      fundamental-mode
-                                      jabber-roster-mode
-                                      jabber-chat-mode
-                                      inferior-js-mode
-                                      inferior-python-mode
-                                      ivy-occur-grep-mode ; better performance
-                                      ivy-occur-mode ; better performance
-                                      twittering-mode
-                                      compilation-mode
-                                      weibo-timeline-mode
-                                      woman-mode
-                                      Info-mode
-                                      calc-mode
-                                      calc-trail-mode
-                                      comint-mode
-                                      gnus-group-mode
-                                      gud-mode
-                                      org-mode
-                                      vc-git-log-edit-mode
-                                      log-edit-mode
-                                      term-mode
-                                      w3m-mode
-                                      speedbar-mode
-                                      gnus-summary-mode
-                                      gnus-article-mode
-                                      calendar-mode))
+(setq linum-mode-inhibit-modes-list
+      '(eshell-mode
+        shell-mode
+        profiler-report-mode
+        ffip-diff-mode
+        dictionary-mode
+        erc-mode
+        dired-mode
+        help-mode
+        text-mode
+        fundamental-mode
+        jabber-roster-mode
+        jabber-chat-mode
+        inferior-js-mode
+        inferior-python-mode
+        ivy-occur-grep-mode ; better performance
+        ivy-occur-mode ; better performance
+        twittering-mode
+        compilation-mode
+        weibo-timeline-mode
+        woman-mode
+        Info-mode
+        calc-mode
+        calc-trail-mode
+        comint-mode
+        gnus-group-mode
+        gud-mode
+        org-mode
+        vc-git-log-edit-mode
+        log-edit-mode
+        term-mode
+        w3m-mode
+        speedbar-mode
+        gnus-summary-mode
+        gnus-article-mode
+	company-mode
+	magit-status-mode
+	messages-buffer-mode
+        calendar-mode))
 
 (cond
- ((fboundp 'global-display-line-numbers-mode)
+ ;; ((fbounp 'linum-mode))
+ (nil;; (fboundp 'global-display-line-numbers-mode)
   (defun display-line-numbers-mode-hook-setup ()
     (setq display-line-numbers (if (or (memq major-mode linum-mode-inhibit-modes-list)
                                        ;; don't show line number for certain file extensions
@@ -67,7 +72,7 @@
   ;; So we have to use `linum-mode'.
   (setq linum-delay t)
   (defadvice linum-schedule (around my-linum-schedule () activate)
-    (run-with-idle-timer 1 nil #'linum-update-current))))
+    (run-with-idle-timer 2 nil #'linum-update-current))))
 
 (provide 'init-linum)
 ;;; init-linum.el ends here

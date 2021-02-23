@@ -94,6 +94,8 @@ candidates will be from company-tabnine, others keeping their own origin order."
   :ensure t
   :custom
   (company-minimum-prefix-length 2)
+  (company-async-wait 0.5)
+  (company-async-timeout 1)
   ;; (company-require-match 'never)
   ;; (company-tooltip-limit           20)
   (company-tooltip-align-annotations t) ;; Align annotation to the right side.

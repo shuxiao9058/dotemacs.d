@@ -64,13 +64,14 @@ WIN-ID : Window index."
   (doom-modeline-minor-modes nil)
   (doom-modeline-major-mode-color-icon nil)
   (doom-modeline-persp-name nil)
-  (doom-modeline-lsp nil)
+  (doom-modeline-lsp t)
   ;; Whether display github notifications or not. Requires `ghub+` package.
   (doom-modeline-github nil)
   ;; The interval of checking github.
   (doom-modeline-github-interval (* 30 60))
   (doom-modeline-height 25)
   (doom-modeline-bar-width 3)
+  (doom-modeline-vcs-max-length 20)
   (doom-modeline-checker-simple-format t)
   :hook (after-init . doom-modeline-init)
   :config

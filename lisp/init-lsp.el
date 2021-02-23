@@ -1,20 +1,32 @@
 ;;; lisp/init-lsp.el -*- lexical-binding: t; -*-
 
-(defvar my-disable-lsp-completion nil
-  "If non-nil, disable lsp-completion-enable, can work with .dir-locals
-   ((nil . ((eval . (setq-local my-disable-lsp-completion t)))))
-.")
+;; (defvar my-disable-lsp-completion nil
+;;   "If non-nil, disable lsp-completion-enable, can work with .dir-locals
+;;    ((nil . ((eval . (setq-local my-disable-lsp-completion t)))))
+;; .")
 
-(defun lsp-configure-buffer@after()
+;; (defun lsp-configure-buffer@after()
+;;   "disable lsp-completion-enable"
+;;   (progn
+;;     (when my-disable-lsp-completion
+;;       (setq-local lsp-completion-enable nil
+;; 		  lsp-modeline-code-actions-enable nil
+;; 		  ))))
+
+;; ;; disable lsp-completion-enable with some project
+;; (advice-add 'lsp-configure-buffer :after 'lsp-configure-buffer@after)
+
+(defun my/local-variables-hook()
   "disable lsp-completion-enable"
-  (progn
-    (when my-disable-lsp-completion
-      (setq-local lsp-completion-enable nil
-		  ;; lsp-modeline-code-actions-enable nil
-		  ))))
+  (when my-disable-lsp-completion
+    (setq-local lsp-completion-enable nil
+		lsp-modeline-code-actions-enable nil)
+    )
+  (lsp-deferred))
 
-;; disable lsp-completion-enable with some project
-(advice-add 'lsp-configure-buffer :after 'lsp-configure-buffer@after)
+(defun my/lsp-go()
+  "run after local variables loaded"
+  (add-hook 'hack-local-variables-hook #'my/local-variables-hook))
 
 (use-package lsp-mode
   :straight t
@@ -23,7 +35,7 @@
   :hook (((java-mode
 	   python-mode
 	   lua-mode
-	   go-mode
+	   ;; go-mode
 	   scala-mode
 	   js-mode
 	   js2-mode
@@ -35,7 +47,7 @@
 	   ;; c++-mode
 	   ;; C/*l-mode
 	   web-mode) . lsp-deferred)
-	 ;; (go-mode . my/lsp-go) ;; disable lsp-completion-enable with go, since gopls is quite slow
+	 (go-mode . my/lsp-go) ;; disable lsp-completion-enable with go, since gopls is quite slow
 	 ;; if you want which-key integration
 	 (lsp-mode . lsp-enable-which-key-integration)
 
@@ -65,7 +77,8 @@
 	 ;; 				   (company-abbrev company-dabbrev)))))
 	 )
   :custom
-  (lsp-restart 'ignore)
+  (lsp-restart 'auto-restart)
+  ;; (lsp-restart 'ignore)
   (lsp-server-trace nil)
   (lsp-auto-configure t)
   (lsp-idle-delay 0.1)                 ;; lazy refresh

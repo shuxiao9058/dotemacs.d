@@ -9,8 +9,8 @@
   :commands (magit-file-delete magit-status magit-checkout)
   :hook (magit-pop-mode . hide-mode-line-mode)
   :custom
-  (magit-refresh-verbose t) ;; debug only
-  (magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
+  ;; (magit-refresh-verbose t) ;; debug only
+  ;; (magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
   (magit-revert-buffers 'silent)
   (git-commit-summary-max-length 50)
   (magit-log-section-commit-count 5)
@@ -54,7 +54,7 @@
   :config
   (setq magit-status-sections-hook
 	'(
-	  ;; magit-insert-status-headers
+	  magit-insert-status-headers
 	  magit-insert-merge-log
 	  magit-insert-rebase-sequence
 	  magit-insert-am-sequence
