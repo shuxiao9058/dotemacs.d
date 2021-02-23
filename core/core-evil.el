@@ -214,6 +214,8 @@
 (use-package evil-search-highlight-persist
   :after evil
   :straight t
+  :general
+  (:prefix "SPC" :states 'normal "SPC" #'evil-search-highlight-persist-remove-all)
   :config
   (global-evil-search-highlight-persist t))
 
@@ -286,6 +288,14 @@
       )
     )
   )
+
+(use-package key-chord
+  :straight t
+  :after evil
+  :config
+  (key-chord-mode 1)
+  (key-chord-define evil-insert-state-map
+                    "jk" 'evil-normal-state))
 
 (provide 'core-evil)
 ;;; core-evil.el ends here

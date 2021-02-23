@@ -433,12 +433,11 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
 (use-package evil-org
   :hook ((org-mode . evil-org-mode)
          (org-trello-mode . evil-org-mode))
-  :delight
-  evil-org-mode
-  :straight (:flavor melpa :no-native-compile t)
+  :delight evil-org-mode
+  :diminish evil-org-mode
+  :straight (:no-native-compile t)
   ;; :straight t
-  :after org
-  ;; :hook (org-mode . evil-org-mode)
+  :after (evil org)
   :general
   (:states 'insert :keymaps 'evil-org-mode-map
            "M-h"     #'org-metaleft

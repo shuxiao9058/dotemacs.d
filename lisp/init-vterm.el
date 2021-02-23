@@ -4,6 +4,7 @@
   :straight (vterm :type git :flavor melpa
                    :files ("*" (:exclude ".dir-locals.el" ".gitignore" ".clang-format" ".travis.yml") "vterm-pkg.el")
                    :host github :repo "akermu/emacs-libvterm"
+ 		   :no-native-compile t
                    )
   :demand
   :commands (vterm ds/vterm)

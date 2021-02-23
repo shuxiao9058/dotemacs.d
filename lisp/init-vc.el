@@ -50,8 +50,8 @@
 	  magit-insert-unstaged-changes
 	  magit-insert-staged-changes
 	  magit-insert-unpushed-cherries
-	  magit-insert-recent-commits
 	  magit-insert-stashes
+	  magit-insert-recent-commits
 	  magit-insert-unpulled-from-pushremote
 	  magit-insert-unpushed-to-upstream
 	  magit-insert-unpushed-to-pushremote
