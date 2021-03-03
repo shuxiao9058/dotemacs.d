@@ -12,8 +12,7 @@
 (use-package orderless
   :straight t
   :ensure t
-  ;; :after icomplete
-  ;; :init (icomplete-mode)
+  :after icomplete
   :custom
   (orderless-component-separator " +")
   (orderless-matching-styles
@@ -67,40 +66,10 @@
   (minibuffer-prompt-properties
    '(read-only t point-entered minibuffer-avoid-prompt face minibuffer-prompt))
   ;; Shorten "(default ...)" to "[...]".
-  (minibuffer-eldef-shorten-default t)
+  ;; (minibuffer-eldef-shorten-default t)
   :config
-  ;; completion-styles try to match candidates using one style at a time moving
-  ;; from the first to the last until something is matched. orderless replaces
-  ;; all the built in completion styles apart from partial-completion.
-  ;; partial-completion = allows to navigate to a filesystem path like ~/.l/s/fo
-  ;; for ~/.local/share/fonts.
-  (setq completion-styles '(orderless partial-completion))
-  (setq completion-category-defaults nil)
-  ;; Cycling is used if there aren't more candidates than this number.
-  (setq completion-cycle-threshold 3)
-  (setq completion-flex-nospace nil)
-  (setq completion-pcm-complete-word-inserts-delimiters t)
-  ;; Characters treated as word delimiters for completion.
-  (setq completion-pcm-word-delimiters "-_./:| ")
-  (setq completion-show-help nil)
-  (setq completion-ignore-case t)
-  ;; Ignore case when reading a buffer name.
-  (setq read-buffer-completion-ignore-case t)
-  ;; Ignore case when reading a file name.
-  (setq read-file-name-completion-ignore-case t)
-  ;; Layout of *Completions* buffer.
-  (setq completions-format 'vertical)
-  ;; Start something in the minibuffer, switch to another window, call
-  ;; minibuffer again, run commands and then move back to the original
-  ;; minibuffer.
-  (setq enable-recursive-minibuffers t)
-  ;; Accept short answers to questions.
-  (setq read-answer-short t)
-  ;; Resize minibuffer and echo area to fit the text inside.
-  (setq resize-mini-windows t)
   ;; Make "unimportant" part of filename in minibuffer visually less noticeable.
   (file-name-shadow-mode t)
-
   ;; Show recursion depth in minibuffer (related to
   ;; enable-recursive-minibuffers).
   (minibuffer-depth-indicate-mode t)
@@ -192,29 +161,68 @@ key in `completion-list-mode-map'."
   ;; 	("SPC" . nil))
   )
 
-(use-package icomplete
-  :straight nil
+(use-package icomplete-vertical
+  :straight (icomplete-vertical :type git
+  				:host github
+  				:repo "oantolin/icomplete-vertical"
+  				:branch "master")
   :ensure t
-  ;; :demand t
-  ;; :hook (after-init . icomplete-mode)
+  :demand t
   :after minibuffer
+  ;; :hook ((after-init . icomplete-mode)
+  ;;        (after-init . icomplete-vertical-mode))
   :custom
+  (icomplete-vertical-prospects-height (/ (window-height) 6))
+  ;; Ignore case when reading a buffer name.
+  (read-buffer-completion-ignore-case t)
+  ;; Ignore case when reading a file name.
+  (read-file-name-completion-ignore-case t)
+  ;; ;; Layout of *Completions* buffer.
+  ;; (completions-format 'vertical)
+  ;; Start something in the minibuffer, switch to another window, call
+  ;; minibuffer again, run commands and then move back to the original
+  ;; minibuffer.
+  (enable-recursive-minibuffers t)
+  ;; Accept short answers to questions.
+  (read-answer-short t)
+  ;; Resize minibuffer and echo area to fit the text inside.
+  (resize-mini-windows t)
+
+  ;; completion-styles try to match candidates using one style at a time moving
+  ;; from the first to the last until something is matched. orderless replaces
+  ;; all the built in completion styles apart from partial-completion.
+  ;; partial-completion = allows to navigate to a filesystem path like ~/.l/s/fo
+  ;; for ~/.local/share/fonts.
+  (completion-styles '(orderless partial-completion substring flex))
+  (completion-category-overrides '((file (styles basic substring))))
+  ;; ;; (setq completion-category-defaults nil)
+  ;; ;; ;; Cycling is used if there aren't more candidates than this number.
+  ;; ;; (completion-cycle-threshold 3)
+  (completion-flex-nospace nil)
+  (completion-pcm-complete-word-inserts-delimiters t)
+  ;; ;; Characters treated as word delimiters for completion.
+  (completion-pcm-word-delimiters "-_./:| ")
+  ;; disable display two buffer *Completions* and minibuffer
+  (completion-show-help nil)
+  (completion-auto-help nil)
+  (completion-ignore-case t)
   (completion-cycle-threshold t)
   (icomplete-delay-completions-threshold 100)
-  (icomplete-max-delay-chars 2)
-  (icomplete-compute-delay 0)
+  ;; (icomplete-max-delay-chars 0)
+  ;; (icomplete-compute-delay 0)
   (icomplete-show-matches-on-no-input t)
-  ;; Hide common prefix from completion candidates.
-  (icomplete-hide-common-prefix nil)
-  ;; Max number of lines to use in minibuffer.
-  (icomplete-prospects-height 1)
-  ;; Candidate separator.
-  (icomplete-separator (propertize " ┆ " 'face 'shadow))
+  ;; ;; Hide common prefix from completion candidates.
+  ;; (icomplete-hide-common-prefix nil)
+  ;; ;; Max number of lines to use in minibuffer.
+  ;; (icomplete-prospects-height 2)
+  ;; ;; Candidate separator.
+  ;; ;; (icomplete-separator "\n")
+  ;; ;; (icomplete-separator (propertize " ┆ " 'face 'shadow))
   (icomplete-with-completion-tables t)
-  ;; Do not use Icomplete in non-mini buffers (use company in these buffers).
+  ;; ;; Do not use Icomplete in non-mini buffers (use company in these buffers).
   (icomplete-in-buffer nil)
-  (icomplete-tidy-shadowed-file-names t)
-  (icomplete-prospects-height 2)
+  ;; (icomplete-tidy-shadowed-file-names t)
+  ;; (icomplete-prospects-height 2)
   :config
   (when (require 'orderless nil t)
     (setq completion-styles (cons 'orderless completion-styles)) ;把orderless放到completion-styles 开头
@@ -222,49 +230,21 @@ key in `completion-list-mode-map'."
     (setq orderless-matching-styles '(orderless-regexp orderless-literal orderless-initialism ))
     (defun without-if-$! (pattern _index _total)
       (when (or (string-prefix-p "$" pattern) ;如果以! 或$ 开头，则表示否定，即不包含此关键字
-  		(string-prefix-p "!" pattern))
-  	`(orderless-without-literal . ,(substring pattern 1))))
+		(string-prefix-p "!" pattern))
+	`(orderless-without-literal . ,(substring pattern 1))))
     (defun flex-if-comma (pattern _index _total) ;如果以逗号结尾，则以flex 算法匹配此组件
       (when (string-suffix-p "," pattern)
-  	`(orderless-flex . ,(substring pattern 0 -1))))
+	`(orderless-flex . ,(substring pattern 0 -1))))
     (defun literal-if-= (pattern _index _total) ;如果以=结尾，则以literal  算法匹配此关键字
       (when (or (string-suffix-p "=" pattern)
-  		(string-suffix-p "-" pattern)
-  		(string-suffix-p ";" pattern))
-  	`(orderless-literal . ,(substring pattern 0 -1))))
+		(string-suffix-p "-" pattern)
+		(string-suffix-p ";" pattern))
+	`(orderless-literal . ,(substring pattern 0 -1))))
     (setq orderless-style-dispatchers '(literal-if-= flex-if-comma without-if-$!)))
-  ;; ;; Disable icomplete-mode act like ido.
-  ;; (fido-mode -1)
-  (icomplete-mode 1)
-  :general
-  (:keymaps 'icomplete-minibuffer-map
-	    "C-n"  #'icomplete-forward-completions
-	    "<up>" #'icomplete-backward-completions
-	    "C-p"  #'icomplete-backward-completions
-	    ;; "C-v"  #'icomplete-vertical-toggle
-	    "RET"  #'icomplete-force-complete-and-exit
-	    ;; "RET" #'icomplete-fido-ret
-	    ;; "C-m" #'icomplete-fido-ret
-	    "C-s" #'icomplete-forward-completions
-	    "C-r" #'icomplete-backward-completions
-	    "C-." #'next-history-element
-	    ;; "C-l" #'icomplete-fido-backward-updir
-	    "C-e" #'(lambda(&optional argv)(interactive)(if (eolp) (call-interactively #'icomplete-fido-exit) (end-of-line)))
-	    )
-  )
 
-(use-package icomplete-vertical
-  :straight t
-  :ensure t
-  :demand t
-  ;; :hook (after-init . icomplete-vertical-mode)
-  :after icomplete
-  ;; :hook ((after-init . icomplete-mode)
-  ;;        (after-init . icomplete-vertical-mode))
-  :custom
-  (icomplete-vertical-prospects-height (/ (window-height) 6))
-  :config
-  ;; (icomplete-mode 1)
+  (advice-add 'icomplete-vertical-minibuffer-teardown
+              :after #'visual-line-mode)
+  (icomplete-mode 1)
   (icomplete-vertical-mode 1)
   (defun my/icomplete-recentf ()
     "Open `recent-list' item in a new buffer.
@@ -295,9 +275,41 @@ normally would when calling `yank' followed by `yank-pop'."
         (insert
          (completing-read "Yank from kill ring: " kills nil t)))))
   :general
-  (:keymaps 'icomplete-minibuffer-map
-	    "C-v" #'icomplete-vertical-toggle)
+  (:keymaps  'icomplete-minibuffer-map
+	     "C-v" #'icomplete-vertical-toggle
+	     "C-n"  #'icomplete-forward-completions
+	     "M-n"  #'icomplete-forward-completions
+
+	     "<up>" #'icomplete-backward-completions
+	     "C-p"  #'icomplete-backward-completions
+	     "M-p"  #'icomplete-backward-completions
+	     ;; "C-v"  #'icomplete-vertical-toggle
+	     ;; "<tab>"  #'icomplete-forward-completions
+	     "<tab>"  #'icomplete-force-complete
+	     ;; "M-TAB" #'icomplete-force-complete
+	     "<return>" #'icomplete-force-complete-and-exit
+	     ;; "<tab>" #'icomplete-force-complete
+	     ;; "C-j" #'icomplete-force-complete
+	     "<left>"  #'icomplete-backward-completions
+	     "<right>" #'icomplete-forward-completions
+	     "<backtab>" #'icomplete-backward-completions
+	     "C-l" #'icomplete-fido-backward-updir
+	     "DEL" #'icomplete-fido-backward-updir
+
+	     ;; "RET" #'icomplete-fido-ret
+	     ;; "C-m" #'icomplete-fido-ret
+	     "C-s" #'icomplete-forward-completions
+	     "C-r" #'icomplete-backward-completions
+	     "C-." #'next-history-element
+	     ;; "C-l" #'icomplete-fido-backward-updir
+	     "C-e" #'(lambda(&optional argv)(interactive)(if (eolp) (call-interactively #'icomplete-fido-exit) (end-of-line)))
+	     [remap evil-complete-next] #'icomplete-forward-completions   ;; (evil-complete-next &optional ARG) C-n
+	     [remap evil-complete-previous] #'icomplete-backward-completions
+	     ;; [remap minibuffer-complete] #'icomplete-backward-completions
+	     [remap minibuffer-complete-and-exit] #'icomplete-ret
+	     )
   )
+
 
 (provide 'init-icomplete)
 ;;; init-icomplete.el ends here
