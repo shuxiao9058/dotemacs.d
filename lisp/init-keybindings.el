@@ -81,19 +81,21 @@
 (leader-def
   "TAB" '(evil-prev-buffer :which-key "prev buffer")
   "`"   '(evil-next-buffer :which-key "next buffer")
-  "SPC" '(counsel-M-x :wk "counsel-M-x")
+  "SPC" '(execute-extended-command :wk "M-x")
+  ;; "SPC" '(counsel-M-x :wk "counsel-M-x")
   "RET" '(bookmark-jump :wk "Jump to bookmark")
 
   "." '(find-file :wk "Find file")
   "," '(persp-switch-to-buffer :wk "Switch workspace buffer")
   "<" '(switch-to-buffer :wk "Switch buffer")
   "`" '(evil-switch-to-windows-last-buffer  :wk "Switch to last buffer")
-  "'" '(ivy-resume :wk "Resume last search")
+  ;; "'" '(ivy-resume :wk "Resume last search")
   ;; "U" '(undo-tree-visualize :which-key "undo-tree")
 
   ;;<leader> j --- Buffer
   "b" '(:ignore t :wk "buffers")
-  "bb" '(ivy-switch-buffer :wk "Switch Buffer")
+  "bb" '(switch-to-buffer :wk "Switch Buffer")
+  ;; "bb" '(ivy-switch-buffer :wk "Switch Buffer")
   "bo" '(other-buffer :wk "Other Buffer")
   "bk" '(kill-buffer :wk "Kill Buffer")
   "bs" '(save-buffer :wk "Save Buffer")
@@ -121,9 +123,10 @@
 
   ;;<leader> f --- file
   "f" '(:ignore t :which-key "Files")
-  "ff" '(counsel-find-file :wk "Find file")
-  "fr" '(counsel-recentf :wk "Recent files")
-  "fL" '(counsel-locate :wk "File Locate")
+  ;; "ff" '(counsel-find-file :wk "Find file")
+  ;; "fr" '(counsel-recentf :wk "Recent files")
+  ;; "fL" '(counsel-locate :wk "File Locate")
+  "fr" '(my/icomplete-recentf :wk "Recent files")
   "fR" '(projectile-recentf :wk "Recent project files")
   "fs" '(save-buffer :wk "Save buffer")
   "fS" '(save-some-buffer :wk "Save some buffers")
@@ -280,8 +283,10 @@
     minibuffer-local-must-match-map
     minibuffer-local-isearch-map
     read-expression-map
-    ivy-minibuffer-map
-    ivy-switch-buffer-map)
+    ;; ivy-minibuffer-map
+    ;; ivy-switch-buffer-map
+    icomplete-minibuffer-map
+    )
   "A list of all the keymaps used for the minibuffer.")
 
 (general-define-key :keymaps +default-minibuffer-maps
@@ -319,25 +324,25 @@
   )
 ;; ends of company
 
-;; sart of ivy
-(eval-after-load 'ivy
-  `(progn
-     (general-define-key :keymaps 'ivy-minibuffer-map
-			 "C-SPC" #'ivy-call-and-recenter  ; preview file
-			 "C-l"   #'ivy-alt-done
-			 "C-v"   #'yank
-			 )
-     ))
+;; ;; sart of ivy
+;; (eval-after-load 'ivy
+;;   `(progn
+;;      (general-define-key :keymaps 'ivy-minibuffer-map
+;; 			 "C-SPC" #'ivy-call-and-recenter  ; preview file
+;; 			 "C-l"   #'ivy-alt-done
+;; 			 "C-v"   #'yank
+;; 			 )
+;;      ))
 
-(eval-after-load 'counsel
-  `(progn
-     (general-define-key :keymaps 'counsel-ag-map
-			 "C-SPC"    #'ivy-call-and-recenter ; preview
-			 "C-l"      #'ivy-done
-			 ;; [C-return] #'+ivy/git-grep-other-window-action
-			 )
-     )
-  )
+;; (eval-after-load 'counsel
+;;   `(progn
+;;      (general-define-key :keymaps 'counsel-ag-map
+;; 			 "C-SPC"    #'ivy-call-and-recenter ; preview
+;; 			 "C-l"      #'ivy-done
+;; 			 ;; [C-return] #'+ivy/git-grep-other-window-action
+;; 			 )
+;;      )
+;;   )
 ;; end of ivy
 
 (general-define-key :keymaps 'read-expression-map

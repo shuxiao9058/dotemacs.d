@@ -1,16 +1,27 @@
 ;;; core/core-packages.el -*- lexical-binding: t; -*-
 
-;; HACK `tty-run-terminal-initialization' is *tremendously* slow for some
-;; reason; inexplicably doubling startup time for terminal Emacs. Keeping
-;; it disabled will have nasty side-effects, so we simply delay it until
-;; later in the startup process and, for some reason, it runs much faster
-;; when it does.
-(unless (daemonp)
-  (defun doom-init-tty-h ()
-    (advice-remove #'tty-run-terminal-initialization #'ignore)
-    (tty-run-terminal-initialization (selected-frame) nil t))
+;; ;; HACK `tty-run-terminal-initialization' is *tremendously* slow for some
+;; ;; reason; inexplicably doubling startup time for terminal Emacs. Keeping
+;; ;; it disabled will have nasty side-effects, so we simply delay it until
+;; ;; later in the startup process and, for some reason, it runs much faster
+;; ;; when it does.
+;; (unless (daemonp)
+;;   (defun doom-init-tty-h ()
+;;     (advice-remove #'tty-run-terminal-initialization #'ignore)
+;;     (tty-run-terminal-initialization (selected-frame) nil t))
+;;   (advice-add #'tty-run-terminal-initialization :override #'ignore)
+;;   (add-hook 'window-setup-hook #'doom-init-tty-h))
+
+;; (require 'faces)
+;; (setq xterm-extra-capabilities nil)
+
+
+(unless (display-graphic-p)
   (advice-add #'tty-run-terminal-initialization :override #'ignore)
-  (add-hook 'window-setup-hook #'doom-init-tty-h))
+  (add-hook 'window-setup-hook
+	    (lambda ()
+	      (advice-remove #'tty-run-terminal-initialization #'ignore)
+	      (tty-run-terminal-initialization (selected-frame) nil t))))
 
 (use-package server ; built-in
   :straight nil
@@ -166,6 +177,8 @@
 	  "GOINSECURE"
 	  "SDKMAN_DIR"))
 
+  (setenv "GOPROXY" "")
+
   (exec-path-from-shell-initialize)
 
   (if (and (fboundp 'native-comp-available-p)
@@ -180,12 +193,12 @@
 					 ":")
 				       ;; This is where Homebrew puts gcc libraries.
 				       (car (file-expand-wildcards
-					     (expand-file-name "/usr/local/opt/gcc/lib/gcc/10")))))
+					     (expand-file-name "/usr/local/lib/gcc/10")))))
 	(setenv "DYLD_LIBRARY_PATH" (concat (getenv "DYLD_LIBRARY_PATH")
 					    (when (getenv "DYLD_LIBRARY_PATH") ":")
 					    ;; This is where Homebrew puts gcc libraries.
 					    (car (file-expand-wildcards
-						  (expand-file-name "/usr/local/opt/gcc/lib/gcc/10")))))
+						  (expand-file-name "/usr/local/lib/gcc/10")))))
 	;; Only set after LIBRARY_PATH can find gcc libraries.
 	(setq comp-deferred-compilation t))
     (message "Native comp is *not* available"))
@@ -204,8 +217,12 @@
 
 (use-package clipetty
   :straight t
+  :after evil
   :ensure t
-  :hook (after-init . global-clipetty-mode))
+  :hook (after-init . global-clipetty-mode)
+  :config
+  ;; copy to system clipboard with `:copy`
+  (evil-ex-define-cmd "copy" #'clipetty-kill-ring-save))
 
 (use-package pbcopy
   :straight t
@@ -251,6 +268,12 @@
   ;; (add-hook 'focus-out-hook #'gcmh-idle-garbage-collect)
   ;; (add-hook 'pre-command-hook (lambda ()(gcmh-mode +1)))
   )
+
+;; ;; Keep ~/.emacs.d clean
+;; (use-package no-littering
+;;   :straight t
+;;   :ensure t
+;;   :demand t)
 
 ;;;; disable annoying notifications
 (defcustom message-filter-regexp-list '("^Starting new Ispell process \\[.+\\] \\.\\.\\.$"

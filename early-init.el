@@ -27,17 +27,20 @@
 	    ;; https://github.com/shshkn/emacs.d/blob/master/docs/nativecomp.md
             comp-speed 2
 	    comp-async-report-warnings-errors nil
+	    comp-verbose 0
+	    comp-async-jobs-number 2
 	    )
 
       ;; https://github.com/raxod502/straight.el/issues/680
       (setq comp-deferred-compilation-deny-list
 	    '("init\\.el$"
+	      "xterm\\.el$"
 	      "^.+evil-pkg\\.el$"
 	      "markdown-toc-pkg\\.el$"
 	      ".+-pkg\\.el$"
 	      "\\(?:[^a-z]+-autoloads\\.el$\\)"))
       (setq comp-deferred-compilation-black-list
-            '("/xterm\\.el$" "/xterm\\.el.gz$" "/evil-collection-vterm\\.el\\'" "/mu4e.*\\.el$"))
+            '(xterm "/xterm\\.el$" "/xterm\\.el.gz$" "/evil-collection-vterm\\.el\\'" "/mu4e.*\\.el$"))
 					; (add-to-list 'comp-deferred-compilation-deny-list "init\\.el$")
       ;; (native--compile-async '("~/.emacs.d/lisp/" "~/.emacs.d/themes/" "~/.emacs.d/modules/" "~/.emacs.d/local-config.el") t)
       )
@@ -91,8 +94,16 @@
 ;; cursor color is concerned).
 (advice-add #'x-apply-session-resources :override #'ignore)
 
-;; (setq warning-minimum-level :emergency)
+; (setq warning-minimum-level :emergency)
+; (setq debug-on-error nil)
 
 (setq warning-minimum-level :debug)
+(setq debug-on-error t)
 
-;; (setq debug-on-error t)
+;; (setq stack-trace-on-error t)
+
+;; (setq debug-on-entry t)
+
+;; (debug-on-entry 'tty-find-type)
+
+;; (tty-run-terminal-initialization (selected-frame) "xterm-256color")

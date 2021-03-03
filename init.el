@@ -15,14 +15,15 @@
 ;;; core
 ;; (require 'init-env)
 (require 'init-comp)
-(require 'init-ivy)
+;; (require 'init-ivy)
+(require 'init-icomplete)
 (require 'init-ui) ;; ui
 (require 'init-recentf)
 ;; case show line numbers
 (require 'init-linum)
 
-;; (unless window-system
-;;   (require 'init-iterm2))
+(unless window-system
+  (require 'init-iterm2))
 
 ;; ;; tools
 (require 'init-wakatime)
@@ -45,6 +46,7 @@
 (require 'init-flycheck)
 (require 'init-proto)
 (require 'init-projectile)
+(require 'init-perspective)
 (require 'init-company)
 
 ;; language server protocol
@@ -62,6 +64,8 @@
 (require 'init-nix)
 (require 'init-fish)
 (require 'init-docker)
+(require 'init-yaml)
+(require 'init-java)
 (require 'init-format)
 
 ;; functions
@@ -74,6 +78,12 @@
 ;; hydra
 (require 'init-hydra)
 
+;; mail
+(require 'init-mail)
+(require 'init-gnus)
+
+;; (require 'init-misc)
+
 ;; keybindings
 ;; early load with general in core
 (eval-after-load 'general
@@ -84,6 +94,11 @@
 (let ((custom-file (expand-file-name "custom.el" user-emacs-directory)))
   (when (file-exists-p custom-file)
     (load custom-file nil t)))
+
+;; (let ((personal-file (expand-file-name ".private.el" user-emacs-directory)))
+;;   (when (file-exists-p private-file)
+;;     (load private-file nil t)))
+
 ;;; init.el ends here
 (put 'scroll-left 'disabled nil)
 (custom-set-variables
@@ -92,6 +107,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(git-messenger:use-magit-popup t)
+ '(helm-minibuffer-history-key "M-p")
+ '(smtpmail-smtp-server "smtp.google.com")
+ '(smtpmail-smtp-service 25)
  '(warning-suppress-log-types '((comp)))
  '(warning-suppress-types '((comp))))
 (custom-set-faces

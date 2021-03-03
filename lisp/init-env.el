@@ -14,7 +14,6 @@
 ;;   ;; (setenv "PATH" (concat "/opt/local/bin:" (getenv "PATH")))
 ;;   )
 
-
 (use-package exec-path-from-shell
   :straight t
   :ensure t

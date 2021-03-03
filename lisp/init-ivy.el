@@ -3,12 +3,13 @@
 ;; generic completion front-end
 (use-package ivy
   :straight t
-  ;; :after general
   :commands (ivy-switch-buffer ivy-occur ivy-help ivy-mode)
   :init
   (progn
     (declare-function ivy-completing-read "ivy")
     (setq completing-read-function #'ivy-completing-read))
+  (ivy-mode +1)
+  ;; (historian-mode +1)
   :preface
   (progn
     (defun config-ivy--ignore-errors (f &rest args)
@@ -78,6 +79,8 @@
   ;; [1]: https://github.com/PythonNut/emacs-config/blob/c8bff5cce293006ec5cdc39a86982431a758a9a0/modules/config-ivy.el#L68
   (setq ivy-flx-limit 2000)
   (ivy-mode)
+
+					; (historian-mode +1)
   )
 
 ;; flx is used as the fuzzy-matching indexer backend for ivy.
@@ -103,8 +106,8 @@
   :custom
   (counsel-yank-pop-separator (concat "\n" (make-vector 120 ?─) "\n"))
   :config
-  (put 'counsel-find-symbol 'no-counsel-M-x t)
-  (setf (alist-get 'counsel-yank-pop ivy-height-alist) 20)
+  ;; (put 'counsel-find-symbol 'no-counsel-M-x t)
+  ;; (setf (alist-get 'counsel-yank-pop ivy-height-alist) 20)
   ;; Don't use ^ as initial input. Set this here because `counsel' defines more
   ;; of its own, on top of the defaults.
   (setq ivy-initial-inputs-alist nil)
@@ -113,28 +116,34 @@
 
 ;; historian remembers your choices in completion menus.
 (use-package historian
-  :straight t
-  :commands (historian-mode)
-  :after ivy
-  ;; :custom
-  :config
-  (setq historian-save-file (expand-file-name "historican" poly-cache-dir))
-  (historian-mode +1)
+  ;; :straight t
+  :straight (:local-repo  "/Users/jiya/workspace/historian.el")
+  :commands historian-mode
+  :custom
+  (historian-save-file (expand-file-name "historican" poly-cache-dir))
   )
 
 ;; ivy-historian uses Historian to sort Ivy candidates by frecency+flx.
-(use-package ivy-historian
-  :straight t
-  :commands (ivy-historian-mode)
-  :after (:and ivy historian)
-  :custom
-  ;; Tweak historian weighting settings. These values are chosen
-  ;; subjectively to produce good results.
-  (ivy-historian-freq-boost-factor 2000)
-  (ivy-historian-recent-boost 2000)
-  (ivy-historian-recent-decrement 1000)
-  :config
-  (ivy-historian-mode 1))
+;; (use-package ivy-historian
+;;   ;; :straight t
+;;   :straight (:local-repo  "/Users/jiya/workspace/historian.el")
+;;   :ensure t
+;;   :commands ivy-historian-mode
+;;   :after ivy
+;;   :custom
+;;   ;; Tweak historian weighting settings. These values are chosen
+;;   ;; subjectively to produce good results.
+;;   ;; (ivy-historian-freq-boost-factor 2000)
+;;   (ivy-historian-recent-boost most-positive-fixnum)
+;;   ;; (ivy-historian-recent-boost 2000)
+;;   ;; (ivy-historian-recent-decrement 1000)
+;;   ;; :config
+;;   ;; (ivy-historian-mode 1)
+;;   :init
+;;   (historian-mode +1)
+;;   :config
+;;   (ivy-historian-mode +1)
+;;   )
 
 ;; (use-package flyspell-correct-ivy
 ;;     :straight t

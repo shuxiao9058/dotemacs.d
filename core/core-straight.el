@@ -4,7 +4,7 @@
 ;; so we do the same with `straight.el'
 (setq straight-base-dir poly-local-dir
       straight-repository-branch "develop"
-      ;; straight-use-package-by-default t
+      straight-use-package-by-default t
       straight-cache-autoloads t ;; we already do this, and better.
       ;; Doom doesn't encourage you to modify packages in place. Disabling this
       ;; makes 'doom refresh' instant (once everything set up), which is much
@@ -23,6 +23,7 @@
       ;; we just don't have to deal with them at all.
       autoload-compute-prefixes nil
       straight-fix-org t
+      straight-fix-flycheck t
       straight-enable-use-package-integration t
       straight-disable-native-compilation nil
 
@@ -50,11 +51,37 @@
 	   'silent 'inhibit-cookies)
 	(goto-char (point-max))
 	(eval-print-last-sexp)))
-    (load bootstrap-file nil 'nomessage))
-
+    ;; catch emacs updates that have native compiled leftovers
+    ;; Credits: https://github.com/raxod502/straight.el/643/issues
+    (unless (catch 'emacs-version-changed
+              (load bootstrap-file nil 'nomessage))
+      ;; remove historian-save-file
+      ;; try fix (void-variable _args)
+      (when (boundp 'historian-save-file)
+	(delete-directory (file-truename (expand-file-name (car historian-save-file))) t)
+	)
+      (when (boundp 'comp-eln-load-path)
+	;; remove leftovers
+	(when (y-or-n-p (format "Delete '%s'? " (car comp-eln-load-path)))
+          (delete-directory (file-truename (expand-file-name (car comp-eln-load-path))) t))
+	;; try loading again
+	(load bootstrap-file nil 'nomessage)))
+    )
   (straight-use-package 'use-package)
   )
 
+(straight-override-recipe
+ '(semi :host github :repo "wanderlust/semi" :branch "semi-1_14-wl"))
+
+(straight-override-recipe
+ '(flim :host github :repo "wanderlust/flim" :branch "flim-1_14-wl"
+        :files ("*.texi" "*.el" (:exclude "md5-dl.el"
+                                          "md5-el.el" "mel-b-dl.el" "sha1-dl.el"
+                                          "smtpmail.el") "flim-pkg.el")))
+(straight-override-recipe
+ '(apel :host github :repo "wanderlust/apel" :branch "apel-wl"))
+(straight-override-recipe
+ '(wanderlust :host github :repo "wanderlust/wanderlust" :branch "master"))
 
 (straight-override-recipe
  '(org :type git :host github :repo "emacsmirror/org" :no-build t))

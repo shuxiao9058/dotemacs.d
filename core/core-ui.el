@@ -21,6 +21,16 @@
 
 (use-package doom-themes
   :straight t
+  :custom-face
+  (icomplete-first-match ((t (:inherit mode-line-emphasis))))
+  (mode-line-buffer-id ((t (:foreground "Light Blue"))))
+  ; (font-lock-variable-name-face ((t (:foreground "#50fa7b"))))
+  ; (highlight-indentation-face ((t (:inherit default :foreground "#878787"))))
+  ; (hl-line ((t (:background "DodgerBlue4"))))
+  ; (orderless-match-face-0 ((t (:inherit font-lock-type-face :weight bold))))
+  ; (orderless-match-face-1 ((t (:inherit error :weight bold))))
+  ; (orderless-match-face-2 ((t (:inherit font-lock-string-face :weight bold))))
+  ; (orderless-match-face-3 ((t (:inherit font-lock-keyword-face :weight bold))))
   :config
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled

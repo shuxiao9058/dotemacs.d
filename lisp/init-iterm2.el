@@ -1,7 +1,29 @@
 ;;; lisp/init-iterm2.el -*- lexical-binding: t; -*-
 
-;; ITERM2 MOUSE SUPPORT
-(require 'mouse)
+;; ;; ITERM2 MOUSE SUPPORT
+;; (require 'mouse)
+
+(unless IS-GUI
+  (require 'mouse) ;; needed for iterm2 compatibility
+  (setq mouse-sel-mode t)
+  (setq x-select-enable-clipboard t)
+  ;;  (setq x-select-enable-primary nil)
+  ;;  (setq mouse-drag-copy-region nil)
+  (xterm-mouse-mode t)
+  (if (eq system-type 'darwin)
+      (progn
+	(global-set-key [mouse-4] '(lambda ()
+				     (interactive)
+				     (scroll-down 1)))
+	(global-set-key [mouse-5] '(lambda ()
+				     (interactive)
+				     (scroll-up 1)))
+	))
+
+  (defun track-mouse (e))
+  )
+
+
 
 ;; Fix mouse from emacsclient
 ;; http://stackoverflow.com/a/6798279

@@ -12,6 +12,8 @@
   (eval-after-load 'lsp
     (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
     )
+
+  (setenv "GOPROXY" "")
   ;; :hook (befor-save . gofmt-before-save)
   ;; :config
   ;; ;; (setq gofmt-command "goimports")

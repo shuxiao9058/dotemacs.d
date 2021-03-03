@@ -285,6 +285,8 @@ candidates will be from company-tabnine, others keeping their own origin order."
   :ensure t
   :after company
   :custom
+  (company-tabnine-binaries-folder (expand-file-name ".TabNine" "~"))
+  ;; (company-)
   (company-tabnine-log-file-path "/tmp/TabNine.log")
   (company-tabnine-executable-args (list "--log-level" "Error"))
   (company-tabnine-wait 0.25)

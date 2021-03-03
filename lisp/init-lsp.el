@@ -1,9 +1,9 @@
 ;;; lisp/init-lsp.el -*- lexical-binding: t; -*-
 
-;; (defvar my-disable-lsp-completion nil
-;;   "If non-nil, disable lsp-completion-enable, can work with .dir-locals
-;;    ((nil . ((eval . (setq-local my-disable-lsp-completion t)))))
-;; .")
+(defvar my-disable-lsp-completion nil
+  "If non-nil, disable lsp-completion-enable, can work with .dir-locals
+   ((nil . ((eval . (setq-local my-disable-lsp-completion t)))))
+.")
 
 ;; (defun lsp-configure-buffer@after()
 ;;   "disable lsp-completion-enable"
@@ -22,11 +22,60 @@
     (setq-local lsp-completion-enable nil
 		lsp-modeline-code-actions-enable nil)
     )
-  (lsp-deferred))
+  (when (derived-mode-p 'go-mode)
+    (lsp-deferred)))
 
 (defun my/lsp-go()
   "run after local variables loaded"
-  (add-hook 'hack-local-variables-hook #'my/local-variables-hook))
+  (add-hook 'hack-local-variables-hook #'my/local-variables-hook)
+  )
+
+;; ;; lsp-diagnostics-updated-hook
+;; (defun my/auto-restart-lsp-after-diagnostics ()
+;;   "After diagnostics handler."
+;;   (save-excursion
+;;     (condition-case _err
+;;         ;; (with-current-buffer (get-buffer-create lsp-treemacs-errors-buffer-name)
+;;         ;;   ;; (treemacs-update-node '(:custom LSP-Errors) t)
+;;         ;;   )
+;; 	(error)))
+;;   )
+
+(with-eval-after-load 'lsp-mode
+  (lsp-defun my/lsp--window-log-message@after(workspace (&ShowMessageRequestParams :message :type))
+    "filter lsp log message, then try restart lsp when neeeded"
+    ;; (ignore
+    ;; (print (format "receive goplsworkspace requires error, restart lsp, message: %s" message))
+    (when (string-match-p (regexp-quote "goplsworkspace requires") message)
+      (print "receive goplsworkspace requires error, restart lsp")
+      ;; (message "receive goplsworkspace requires error, restart lsp")
+      (lsp-workspace-restart workspace)
+      ))
+
+  (advice-add 'lsp--window-log-message :after 'my/lsp--window-log-message@after)
+  ;; )
+  )
+
+
+;; (defun my/lsp-notify-wrapper (params)
+;;   "filter lsp notify message, then try restart lsp"
+;;   ;; (let ((lsp--virtual-buffer-mappings (ht)))
+;;   (pcase (plist-get params :method)
+;;     (`"window/logMessage"
+;;      ;; (setq my/params params)
+;;      (-let [(&plist :params
+;;                     (&plist :type
+;;                             :message))
+;;             params]
+;;        (when (string-match-p (regexp-quote "goplsworkspace requires") message)
+;; 	 (message "receive goplsworkspace requires error, restart lsp")
+;; 	 (lsp-workspace-restart)
+;; 	 )
+;;        ))
+;;     )
+;;   ;; )
+;;   )
+
 
 (use-package lsp-mode
   :straight t
@@ -82,7 +131,7 @@
   (lsp-server-trace nil)
   (lsp-auto-configure t)
   (lsp-idle-delay 0.1)                 ;; lazy refresh
-  (lsp-log-io nil)
+  (lsp-log-io t)
   (lsp-log-max nil)
   (lsp-print-performance nil)
   (lsp-auto-execute-action nil) ;; Auto-execute single action
@@ -92,7 +141,7 @@
   (lsp-modeline-code-actions-enable nil)
   (lsp-modeline-diagnostics-enable t)
   (lsp-modeline-diagnostics-scope :file)
-  (lsp-diagnostics-provider :auto)
+  (lsp-diagnostics-provider :none)
   (lsp-diagnostic-clean-after-change t)
   (lsp-enable-indentation nil)
   (lsp-completion-enable t)
@@ -112,10 +161,9 @@
   (lsp-enable-on-type-formatting nil)  ;; disable formatting on the fly
   (lsp-auto-guess-root t)              ;; auto guess root
   (lsp-keep-workspace-alive nil)       ;; auto kill lsp server
-  ;; (lsp-signature-auto-activate nil)
   ;; (lsp-signature-auto-activate #'(:after-completion :on-trigger-char)) ; nil
   (lsp-signature-auto-activate nil) ; nil
-  (lsp-signature-render-documentation nil "Display signature documentation in `eldoc'")
+  (lsp-signature-render-documentation nil)
   (lsp-eldoc-enable-hover nil)         ;; disable eldoc displays in minibuffer
   (lsp-eldoc-render-all nil)
   (lsp-enable-snippet nil)
@@ -127,7 +175,7 @@
   ;; (flymake-fringe-indicator-position 'right-fringe)
   ;; (lsp-clients-emmy-lua-jar-path (expand-file-name  "bin/EmmyLua-LS-all.jar" poly-local-dir))
   (lsp-gopls-server-path "/usr/local/bin/gopls")
-  (lsp-gopls-server-args '("-debug" "127.0.0.1:3000" ;; "-logfile=/tmp/gopls-emacs.log" ;; "-rpc.trace" "-vv"
+  (lsp-gopls-server-args '("-debug" "127.0.0.1:3000" "-logfile=/tmp/gopls-emacs.log" ;; "-rpc.trace" "-vv"
 			   ))
   :config
 
@@ -208,41 +256,40 @@
   :commands lsp-treemacs-errors-list
   )
 
-;; (use-package lsp-ui
-;;   :straight t
-;; 					; :after lsp-mode
-;;   :diminish
-;; 					; :commands lsp-ui-mode
-;;   ;; :custom-face
-;;   ;; (lsp-ui-doc-background ((t (:background nil))))
-;;   ;; (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
-;;   :hook (lsp-mode-hook . lisp-ui-mode)
-;;   :custom
-;;   (lsp-ui-doc-enable nil)
-;;   (lsp-ui-doc-header nil)
-;;   (lsp-ui-doc-include-signature nil)
-;;   ;; (lsp-ui-doc-position 'top)
-;;   ;; (lsp-ui-doc-border (face-foreground 'default))
-;;   (lsp-ui-sideline-enable nil)
-;;   (lsp-ui-sideline-ignore-duplicate t)
-;;   (lsp-ui-sideline-show-code-actions nil)
-;;   (lsp-ui-sideline-show-diagnostics nil)
-;;   :config
-;;   ;; ;; Use lsp-ui-doc-webkit only in GUI
-;;   ;; (if IS-GUI
-;;   ;; 	(setq lsp-ui-doc-use-webkit t))
-;;   ;; WORKAROUND Hide mode-line of the lsp-ui-imenu buffer
-;;   ;; https://github.com/emacs-lsp/lsp-ui/issues/243
-;;   (defadvice lsp-ui-imenu (after hide-lsp-ui-imenu-mode-line activate)
-;;     (setq mode-line-format nil))
-;;   :general
-;;   (nvmap :keymaps '(lsp-ui-mode-map)
-;;     [remap evil-goto-definition] #'lsp-ui-peek-find-definitions
-;;     "gD" #'lsp-ui-peek-find-references)
-;;   (:keymaps '(lsp-ui-peek-mode-map)
-;; 	    "C-j" 'lsp-ui-peek--select-next
-;; 	    "C-k" 'lsp-ui-peek--select-prev)
-;;   )
+(use-package lsp-ui
+  :straight t
+  :after lsp-mode
+  :diminish
+  ;; :custom-face
+  ;; (lsp-ui-doc-background ((t (:background nil))))
+  ;; (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
+  :hook (lsp-mode-hook . lisp-ui-mode)
+  :custom
+  (lsp-ui-doc-enable nil)
+  (lsp-ui-doc-header nil)
+  (lsp-ui-doc-include-signature nil)
+  ;; (lsp-ui-doc-position 'top)
+  ;; (lsp-ui-doc-border (face-foreground 'default))
+  (lsp-ui-sideline-enable nil)
+  (lsp-ui-sideline-ignore-duplicate t)
+  (lsp-ui-sideline-show-code-actions nil)
+  (lsp-ui-sideline-show-diagnostics nil)
+  :config
+  ;; ;; Use lsp-ui-doc-webkit only in GUI
+  ;; (if IS-GUI
+  ;; 	(setq lsp-ui-doc-use-webkit t))
+  ;; WORKAROUND Hide mode-line of the lsp-ui-imenu buffer
+  ;; https://github.com/emacs-lsp/lsp-ui/issues/243
+  (defadvice lsp-ui-imenu (after hide-lsp-ui-imenu-mode-line activate)
+    (setq mode-line-format nil))
+  :general
+  (nvmap :keymaps '(lsp-ui-mode-map)
+    [remap evil-goto-definition] #'lsp-ui-peek-find-definitions
+    "gD" #'lsp-ui-peek-find-references)
+  (:keymaps '(lsp-ui-peek-mode-map)
+	    "C-j" 'lsp-ui-peek--select-next
+	    "C-k" 'lsp-ui-peek--select-prev)
+  )
 
 ;; (use-package lsp-ivy
 ;;   :straight t

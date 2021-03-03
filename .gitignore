@@ -24,3 +24,4 @@ history/
 /org-roam.db
 /eglot-eclipse-jdt-cache/
 /eln-cache/
+/.personal.el

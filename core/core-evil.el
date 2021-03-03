@@ -269,7 +269,6 @@
   ;; enabled for all modes provided by default by evil-collection
   ;; change this if wanted to enable for specific modes
   (evil-collection-init)
-
   (with-eval-after-load 'magit
     ;; magit-evil
     (evil-set-initial-state 'magit-log-edit-mode 'insert)
