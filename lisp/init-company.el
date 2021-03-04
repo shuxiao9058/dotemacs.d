@@ -155,7 +155,7 @@ candidates will be from company-tabnine, others keeping their own origin order."
 	    "C-u"     #'company-previous-page
 	    "C-d"     #'company-next-page
 	    "C-s"     #'company-filter-candidates
-	    "C-S-s"  #'counsel-company
+	    ;; "C-S-s"  #'counsel-company
 	    "C-SPC"   #'company-complete-common
 	    "TAB"     #'company-complete-common-or-cycle
 	    [tab]     #'company-complete-common-or-cycle

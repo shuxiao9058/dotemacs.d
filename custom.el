@@ -14,7 +14,8 @@
       ;; Wrapping
       truncate-lines t
       truncate-partial-width-windows 50
-      whitespace-style '(face trailing lines-tail))
+      whitespace-style '(face trailing lines-tail)
+      )
 
 ;; @see https://github.com/emacs-lsp/lsp-mode#performance
 (setq read-process-output-max (* 3 1024 1024))

@@ -4,7 +4,8 @@
   :straight t
   :hook (protobuf-mode . (lambda () (add-hook 'before-save-hook #'whitespace-cleanup nil t)))
   :mode (("\\.proto\\'" . protobuf-mode))
-  :ensure t)
+  :ensure t
+  )
 
 (provide 'init-proto)
 ;;; init-proto.el ends here

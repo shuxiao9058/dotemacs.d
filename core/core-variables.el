@@ -53,7 +53,10 @@ Use this for files that change often, like cache files. Must end with a slash.")
       save-interprogram-paste-before-kill t
       apropos-do-all                      t
       mouse-yank-at-point                 t
-      require-final-newline               t)
+      require-final-newline               t
+      ;; silence ad-handle-definition about advised functions getting redefined
+      ad-redefinition-action 'accept
+      )
 
 (provide 'core-variables)
 ;;; core-variables.el ends here

@@ -94,11 +94,11 @@
 ;; cursor color is concerned).
 (advice-add #'x-apply-session-resources :override #'ignore)
 
-; (setq warning-minimum-level :emergency)
-; (setq debug-on-error nil)
+(setq warning-minimum-level :emergency)
+(setq debug-on-error nil)
 
-(setq warning-minimum-level :debug)
-(setq debug-on-error t)
+;; (setq warning-minimum-level :debug)
+;; (setq debug-on-error t)
 
 ;; (setq stack-trace-on-error t)
 

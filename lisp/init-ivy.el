@@ -92,11 +92,11 @@
   :straight t
   :config (ivy-prescient-mode 1))
 
-;; swiper is a buffer search interface using ivy.
-(use-package swiper
-  :straight t
-  :commands swiper
-  :after ivy)
+;; ;; swiper is a buffer search interface using ivy.
+;; (use-package swiper
+;;   :straight t
+;;   :commands swiper
+;;   :after ivy)
 
 ;; counsel provides replacements for core Emacs commands using ivy.
 (use-package counsel
@@ -195,6 +195,19 @@
   (list
    :min-height ivy-height
    :min-width (round (* (frame-width) 0.72))))
+
+(use-package ivy-rich
+  :straight t
+  :ensure t
+  :after (counsel ivy)
+  :custom
+  (ivy-rich-switch-buffer-align-virtual-buffer t)
+  (ivy-rich-path-style 'abbrev)
+  :if (or IS-GUI (daemonp))
+  :init (ivy-rich-mode 1)
+  :config
+  (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
+  )
 
 (provide 'init-ivy)
 ;;; init-ivy.el ends here

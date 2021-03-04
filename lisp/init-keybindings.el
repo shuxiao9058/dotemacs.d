@@ -85,7 +85,8 @@
   ;; "SPC" '(counsel-M-x :wk "counsel-M-x")
   "RET" '(bookmark-jump :wk "Jump to bookmark")
 
-  "." '(find-file :wk "Find file")
+  ;; "." '(find-file :wk "Find file")
+  "." '(poly/find-file :wk "Find file")
   "," '(persp-switch-to-buffer :wk "Switch workspace buffer")
   "<" '(switch-to-buffer :wk "Switch buffer")
   "`" '(evil-switch-to-windows-last-buffer  :wk "Switch to last buffer")
@@ -129,18 +130,19 @@
   "fr" '(my/icomplete-recentf :wk "Recent files")
   "fR" '(projectile-recentf :wk "Recent project files")
   "fs" '(save-buffer :wk "Save buffer")
-  "fS" '(save-some-buffer :wk "Save some buffers")
+  "fS" '((lambda ()(interactive)((when (bound-and-true-p projectile-mode) (projectile-save-project-buffers)))) :wk "Save project buffers")
 
   ;; <leader> p --- project
   "p" '(:ignore t :which-key "project")
-  "pp" '(counsel-projectile-switch-project :wk "Switch Project")
-  "pf" '(counsel-projectile-find-file :wk "Find file in project")
-  "pd" '(counsel-projectile-find-dir :wk "Find directory in project")
-  "pb" '(counsel-projectile-switch-to-buffer :wk "Switch buffer in project")
-  "ps" '(counsel-projectile-rg :wk "Ag search in project")
+  "pp" '(projectile-switch-project :wk "Switch Project")
+  "pf" '(projectile-find-file :wk "Find file in project")
+  "pd" '(projectile-find-dir :wk "Find directory in project")
+  "pb" '(projectile-switch-to-buffer :wk "Switch buffer in project")
+  ;; "ps" '(projectile-rg :wk "Ag search in project")
+  "pc" '(projectile-commander :wk "Run projectile commander")
   "pr" '(projectile-recentf :wk "Recentf in project")
-  "p*" '((lambda () (interactive) (counsel-git-grep (current-word))) :wk "Git grep current word")
-  "p/" '(counsel-git-grep :wk "Git grep")
+  ;; "p*" '((lambda () (interactive) (counsel-git-grep (current-word))) :wk "Git grep current word")
+  ;; "p/" '(counsel-git-grep :wk "Git grep")
 
   ;;<leader> s --- search
   "s" '(:wk "Search")
@@ -216,7 +218,7 @@
   "ir" '(evil-ex-registers :wk "From evil register")
   "is" '(yas-insert-snippet :wk "Snippet")
   "iu" '(unicode-chars-list-chars :wk "Unicode")
-  "iy" '(counsel-yank-pop :wk "From clipboard")
+  "iy" '(yank-pop :wk "From clipboard")
 
   ;; <leader> n --- notes
   "n" '(:ignore t :wk "notes")
@@ -400,12 +402,17 @@
 		    "p" #'ein:tb-prev-item
 		    "q" #'bury-buffer)
 
+;; ;; global keybindings
+;; (general-define-key "C-h o" #'describe-symbol
+;; 		    "C-h f" #'describe-function
+;; 		    "C-h k" #'describe-key) ;; use for debug
+
 ;; keybindings mirror ipython web interface behavior
 (evil-define-key 'insert ein:notebook-multilang-mode-map
   (kbd "<C-return>") 'ein:worksheet-execute-cell
   (kbd "<S-return>") 'ein:worksheet-execute-cell-and-goto-next)
 
-					; keybindings mirror ipython web interface behavior
+;; keybindings mirror ipython web interface behavior
 (evil-define-key 'hybrid ein:notebook-multilang-mode-map
   (kbd "<C-return>") 'ein:worksheet-execute-cell
   (kbd "<S-return>") 'ein:worksheet-execute-cell-and-goto-next)

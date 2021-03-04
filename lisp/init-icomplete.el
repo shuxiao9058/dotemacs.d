@@ -209,10 +209,10 @@ key in `completion-list-mode-map'."
   (completion-cycle-threshold t)
   (icomplete-delay-completions-threshold 100)
   ;; (icomplete-max-delay-chars 0)
-  ;; (icomplete-compute-delay 0)
+  (icomplete-compute-delay 0)
   (icomplete-show-matches-on-no-input t)
-  ;; ;; Hide common prefix from completion candidates.
-  ;; (icomplete-hide-common-prefix nil)
+  ;; Hide common prefix from completion candidates.
+  (icomplete-hide-common-prefix nil)
   ;; ;; Max number of lines to use in minibuffer.
   ;; (icomplete-prospects-height 2)
   ;; ;; Candidate separator.
@@ -278,10 +278,12 @@ normally would when calling `yank' followed by `yank-pop'."
   (:keymaps  'icomplete-minibuffer-map
 	     "C-v" #'icomplete-vertical-toggle
 	     "C-n"  #'icomplete-forward-completions
+	     "C-j"  #'icomplete-forward-completions
 	     "M-n"  #'icomplete-forward-completions
 
 	     "<up>" #'icomplete-backward-completions
 	     "C-p"  #'icomplete-backward-completions
+	     "C-k"  #'icomplete-backward-completions
 	     "M-p"  #'icomplete-backward-completions
 	     ;; "C-v"  #'icomplete-vertical-toggle
 	     ;; "<tab>"  #'icomplete-forward-completions
@@ -305,11 +307,65 @@ normally would when calling `yank' followed by `yank-pop'."
 	     "C-e" #'(lambda(&optional argv)(interactive)(if (eolp) (call-interactively #'icomplete-fido-exit) (end-of-line)))
 	     [remap evil-complete-next] #'icomplete-forward-completions   ;; (evil-complete-next &optional ARG) C-n
 	     [remap evil-complete-previous] #'icomplete-backward-completions
+	     [remap kill-line] #'icomplete-forward-completions
+	     [remap evil-insert-digraph] #'icomplete-backward-completions
+	     [remap next-line] #'icomplete-forward-completions
 	     ;; [remap minibuffer-complete] #'icomplete-backward-completions
 	     [remap minibuffer-complete-and-exit] #'icomplete-ret
 	     )
   )
 
+(use-package restricto
+  :after minibuffer
+  :straight (:host github :repo "oantolin/restricto")
+
+  :bind (:map minibuffer-local-completion-map
+	      ("SPC"   . restricto-narrow)
+	      ("S-SPC" . restricto-widen))
+
+  :config
+  (restricto-mode))
+
+;; swiper is a buffer search interface using ivy.
+(use-package swiper
+  :straight t
+  :commands swiper
+  ;; :after ivy
+  )
+
+(use-package ripgrep
+  :straight t
+  )
+
+;; (use-package wgrep-ag
+;;   :straight t
+;;   )
+
+;; rg: like ag, but faster (and rustier)
+(use-package rg
+  :straight t
+  ;; :hook (rg-mode . wgrep-ag-setup)
+  :custom
+  ;; (rg-custom-type-aliases
+  ;;  '(("clojure" . "*.clj *.cljs *.cljc *.cljx *.edn"))
+  (rg-group-result t)
+  (rg-show-columns t)
+  (rg-ignore-case 'smart)
+  (rg-show-header t)
+  :config
+  (rg-define-search bl/rg-regexp-project
+    :query ask
+    :format regexp
+    :files current
+    :dir project
+    :confirm never)
+  :general
+  (:keymaps  'rg-mode-map
+             "M-n" #'rg-next-file
+             "M-p" #'rg-prev-file
+             "C-n" #'compilation-next-error
+             "C-p" #'compilation-previous-error)
+  )
 
 (provide 'init-icomplete)
 ;;; init-icomplete.el ends here

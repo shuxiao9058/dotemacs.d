@@ -10,10 +10,14 @@
     (add-hook 'before-save-hook #'lsp-organize-imports t t))
 
   (eval-after-load 'lsp
-    (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
-    )
+    (progn
+      (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 
-  (setenv "GOPROXY" "")
+      (general-define-key :keymaps 'go-mode-map
+			  [remap godef-jump] #'lsp-find-definition
+			  [remap godef-describe] #'lsp-describe-thing-at-point)
+      )
+    )
   ;; :hook (befor-save . gofmt-before-save)
   ;; :config
   ;; ;; (setq gofmt-command "goimports")
@@ -34,6 +38,7 @@
   ;;   ;; "cD" '(go-guru-referrers :wk "Jump to references")
   ;;   "ck" '(godoc-at-point :wk "Jump to documentation")
   ;;   )
+  (setenv "GOPROXY" "")
   )
 
 ;; (use-package gorepl-mode

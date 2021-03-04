@@ -397,19 +397,6 @@ WIN-ID : Window index."
 ;;   (all-the-icons-ivy-rich-icon-size 0.9)
 ;;   )
 
-(use-package ivy-rich
-  :straight t
-  :ensure t
-  :after (counsel ivy)
-  :custom
-  (ivy-rich-switch-buffer-align-virtual-buffer t)
-  (ivy-rich-path-style 'abbrev)
-  :if (or IS-GUI (daemonp))
-  :init (ivy-rich-mode 1)
-  :config
-  (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
-  )
-
 ;; growl notify
 (use-package alert
   :straight (alert
