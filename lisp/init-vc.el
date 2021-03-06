@@ -247,7 +247,7 @@
 		  ("git.alenshaw.com" "git.alenshaw.com/api/v1" "git.alenshaw.com" forge-gogs-repository)
 		  ("github.com" "api.github.com" "github.com" forge-github-repository))))
   ;; remove some hooks for magit performance-s
-  (remove-hook 'magit-status-sections-hook 'forge-insert-pullreqs)
+  ;; (remove-hook 'magit-status-sections-hook 'forge-insert-pullreqs)
   (remove-hook 'magit-status-sections-hook 'forge-insert-issues)
   )
 

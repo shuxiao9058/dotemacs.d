@@ -54,12 +54,19 @@
      evil-goto-definition-search))
   :general
   (nmap "q" nil ;; q quit, not evil-record-macro
-    "Q" #'evil-record-macro)
+    "Q" #'evil-record-macro
+    [remap yank-pop] nil
+    )
   :config
   (evil-mode +1)
   (add-to-list 'evil-insert-state-modes 'shell-mode)
   (add-to-list 'evil-insert-state-modes 'dashboard-mode)
   (add-to-list 'evil-insert-state-modes 'git-timemachine-mode)
+
+  (defun my/evil-paste-pop ()
+    (interactive)
+    (if (eq last-command 'evil-paste-after) (evil-paste-pop 1)
+      (previous-line)))
 
   (defadvice evil-ex-search-next (after advice-for-evil-ex-search-next activate)
     (recenter))

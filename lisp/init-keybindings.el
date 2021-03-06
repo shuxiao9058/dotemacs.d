@@ -130,7 +130,7 @@
   "fr" '(my/icomplete-recentf :wk "Recent files")
   "fR" '(projectile-recentf :wk "Recent project files")
   "fs" '(save-buffer :wk "Save buffer")
-  "fS" '((lambda ()(interactive)((when (bound-and-true-p projectile-mode) (projectile-save-project-buffers)))) :wk "Save project buffers")
+  "fS" '((lambda ()(interactive)(when (bound-and-true-p projectile-mode) (projectile-save-project-buffers))) :wk "Save project buffers")
 
   ;; <leader> p --- project
   "p" '(:ignore t :which-key "project")
@@ -241,6 +241,11 @@
   "ot" '(treemacs :wk "Treemacs")
   "oT" '(telega :wk "Telega")
   "or" '(poly/magit-open-repo :wk "Repository in browse")
+
+  ;; <leader> r --- restart
+  "r" '(:wk "Restart")
+  "rt" '(company-tabnine-restart-server :wk "Restart tabnine server")
+  "rw" '(lsp-workspace-restart :wk "Restart lsp workspace")
 
   ;;<leader> w --- windows
   "w" '(:wk "Windows")
