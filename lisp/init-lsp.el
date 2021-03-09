@@ -18,7 +18,7 @@
 
 (defun my/local-variables-hook()
   "disable lsp-completion-enable"
-  (when my-disable-lsp-completion
+  (when (bound-and-true-p my-disable-lsp-completion)
     (setq-local lsp-completion-enable nil
 		lsp-modeline-code-actions-enable nil)
     )
@@ -27,8 +27,14 @@
 
 (defun my/lsp-go()
   "run after local variables loaded"
-  (add-hook 'hack-local-variables-hook #'my/local-variables-hook)
-  )
+  ;; (setq lsp-gopls-build-flags '("-mod=readonly"))
+  (add-to-list 'lsp-file-watch-ignored "[/\\\\]\\vendor$")
+  (add-to-list 'lsp-file-watch-ignored "[/\\\\].git$")
+  (add-to-list 'lsp-file-watch-ignored "[/\\\\]internal$")
+  (add-to-list 'lsp-file-watch-ignored "[/\\\\]\\.gocache$")
+  ;; https://github.com/golang/tools/commit/b2d8b0336
+  (setq-local lsp-completion-filter-on-incomplete nil)
+  (add-hook 'hack-local-variables-hook #'my/local-variables-hook))
 
 ;; ;; lsp-diagnostics-updated-hook
 ;; (defun my/auto-restart-lsp-after-diagnostics ()
@@ -47,7 +53,7 @@
     ;; (ignore
     ;; (print (format "receive goplsworkspace requires error, restart lsp, message: %s" message))
     (when (string-match-p (regexp-quote "goplsworkspace requires") message)
-      (print "receive goplsworkspace requires error, restart lsp")
+      (print (format "receive gopls workspace requires error, restart lsp, log message: %s" message))
       ;; (message "receive goplsworkspace requires error, restart lsp")
       (lsp-workspace-restart workspace)
       ))
@@ -131,22 +137,23 @@
   (lsp-server-trace nil)
   (lsp-auto-configure t)
   (lsp-idle-delay 0.1)                 ;; lazy refresh
-  (lsp-log-io t)
+  (lsp-log-io nil)
   (lsp-log-max nil)
   (lsp-print-performance nil)
-  (lsp-auto-execute-action nil) ;; Auto-execute single action
+  (lsp-auto-execute-action t) ;; Auto-execute single action
   (lsp-document-sync-method nil) ;; use default method recommended by server. 'incremental 'full
   (lsp-enable-xref t)
   (lsp-headerline-breadcrumb-enable nil)
   (lsp-modeline-code-actions-enable nil)
-  (lsp-modeline-diagnostics-enable t)
+  (lsp-modeline-diagnostics-enable nil)
   (lsp-modeline-diagnostics-scope :file)
   (lsp-diagnostics-provider :none)
-  (lsp-diagnostic-clean-after-change t)
+  (lsp-diagnostic-clean-after-change nil)
   (lsp-enable-indentation nil)
   (lsp-completion-enable t)
   (lsp-completion-enable-additional-text-edit nil)
-  (lsp-response-timeout 2)
+  (lsp-response-timeout 5)
+  (lsp-tcp-connection-timeout 2)
   (lsp-enable-folding nil)             ;; use `evil-matchit' instead
   (lsp-diagnostic-package :none)   ;; prefer flycheck disable
   (lsp-modeline-diagnostics-enable nil)
@@ -189,18 +196,20 @@
   ;;                   :server-id 'cl-lsp))
 
   (lsp-register-custom-settings
-   `(("gopls.experimentalWorkspaceModule" t t)
-     ("gopls.experimentalPackageCacheKey" t t)
+   `(;; ("gopls.experimentalWorkspaceModule" t t)
+     ("gopls.allExperiments" nil nil)
+     ;; ("gopls.experimentalPackageCacheKey" t t)
      ("gopls.usePlaceholders" t t)
-     ("gopls.deepCompletion" t t)
+     ("gopls.deepCompletion" nil nil)
      ("gopls.completeUnimported" t t)
      ("gopls.staticcheck" ,(if (executable-find "staticcheck") t nil) t)
      ("gopls.completionBudget" "200ms" nil)
-     ("gopls.semanticTokens" t t)
-     ("gopls.allExperiments" t t)
+     ("gopls.semanticTokens" nil nil)
+     ;; ("gopls.allExperiments" t t)
      ("gopls.matcher" "Fuzzy" nil)
-     ("gopls.hoverKind" lsp-go-hover-kind)
-     ("gopls.codelenses" lsp-go-codelenses)
+     ("gopls.hoverKind" "NoDocumentation" nil)
+     ;; ("gopls.codelenses" '((gc_details . t) (generate . t) (regenerate_cgo . t) (test . t) (tidy . t) (upgrade_dependency . t) (vendor . t)))
+     ("gopls.codelenses"  nil nil)
      ;; ("gopls.analyses.unusedparams" nil nil)
      ;; ST1003 CamelCase
      ;; ST1021 comment on exported type
@@ -215,11 +224,11 @@
      ;; S1007 should use raw string (`...`) with regexp.Compile to avoid having to escape twice
      ("gopls.analyses" ,(mapcar (lambda (a) (cons a :json-false))
 				'(unusedparams composites ST1003  ST1021 ST1016 SA5011 ST1020 ST1005 SA9003 SA4006 ST1022 S1023 SA4011 SA4010)))
-     ("gopls.buildFlags" lsp-go-build-flags)
+     ("gopls.buildFlags" ["-mod=readonly"])
      ("gopls.env" lsp-go-env)
      ("gopls.linkTarget" lsp-go-link-target)
      ("gopls.gofumpt" ,(if (executable-find "gofumpt") t nil) t)
-     ;; ("gopls.directoryFilters" (quote ("-" "+vendor" "+internal")))
+     ("gopls.directoryFilters" ["-vendor" "-internal" "-.gocache" "-.git" "-!out"])
      ))
 
   ;; ;; lsp-lua

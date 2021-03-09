@@ -85,8 +85,8 @@
   ;; "SPC" '(counsel-M-x :wk "counsel-M-x")
   "RET" '(bookmark-jump :wk "Jump to bookmark")
 
-  ;; "." '(find-file :wk "Find file")
-  "." '(poly/find-file :wk "Find file")
+  "." '(find-file :wk "Find file")
+  ;; "." '(poly/find-file :wk "Find file")
   "," '(persp-switch-to-buffer :wk "Switch workspace buffer")
   "<" '(switch-to-buffer :wk "Switch buffer")
   "`" '(evil-switch-to-windows-last-buffer  :wk "Switch to last buffer")

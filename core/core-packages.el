@@ -36,14 +36,14 @@
     (setq server-use-tcp nil)
     (setq server-use-socket t))
 
-  (setq server-auth-dir  (expand-file-name "emacs-server" poly-cache-dir))
-  (setq server-socket-dir (expand-file-name "emacs-server" poly-cache-dir))
-  (setq server-name (expand-file-name "emacs-server-file" server-socket-dir))
+  ;; (setq server-auth-dir  (expand-file-name "emacs-server" poly-cache-dir))
+  ;; (setq server-socket-dir (expand-file-name "emacs-server" poly-cache-dir))
+  ;; (setq server-name (expand-file-name "emacs-server-file" server-socket-dir))
 
-  (unless (file-exists-p server-auth-dir)
-    (make-directory server-auth-dir))
-  (unless (or (not server-socket-dir) (file-exists-p server-socket-dir))
-    (make-directory server-socket-dir))
+  ;; (unless (file-exists-p server-auth-dir)
+  ;;   (make-directory server-auth-dir))
+  ;; (unless (or (not server-socket-dir) (file-exists-p server-socket-dir))
+  ;;   (make-directory server-socket-dir))
 
   (defadvice server-ensure-safe-dir
       (around my-around-server-ensure-safe-dir activate)

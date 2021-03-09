@@ -108,16 +108,36 @@
  ;; If there is more than one, they won't work right.
  '(git-messenger:use-magit-popup t)
  '(helm-minibuffer-history-key "M-p")
- '(smtpmail-smtp-server "smtp.google.com")
- '(smtpmail-smtp-service 25)
+ '(lsp-go-gopls-server-args
+   '("-debug" "127.0.0.1:3000" "-logfile=/tmp/gopls-emacs.log") nil nil "Customized with use-package lsp-mode")
+ '(lsp-go-gopls-server-path "/usr/local/bin/gopls" nil nil "Customized with use-package lsp-mode")
+ '(smtpmail-smtp-server "smtp.google.com" t)
+ '(smtpmail-smtp-service 25 t)
  '(warning-suppress-log-types '((comp)))
- '(warning-suppress-types '((comp))))
+ '(warning-suppress-types
+   '((emacs)
+     (emacs)
+     (emacs)
+     (emacs)
+     (emacs)
+     (emacs)
+     (emacs)
+     (comp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ivy-posframe-cursor ((t (:background "#268bd2")))))
+ '(font-lock-variable-name-face ((t (:foreground "#50fa7b"))))
+ '(highlight-indentation-face ((t (:inherit default :foreground "#878787"))))
+ '(hl-line ((t (:background "DodgerBlue4"))))
+ '(icomplete-first-match ((t (:inherit mode-line-emphasis))))
+ '(ivy-posframe-cursor ((t (:background "#268bd2"))))
+ '(mode-line-buffer-id ((t (:foreground "Light Blue"))))
+ '(orderless-match-face-0 ((t (:inherit font-lock-type-face :weight bold))))
+ '(orderless-match-face-1 ((t (:inherit error :weight bold))))
+ '(orderless-match-face-2 ((t (:inherit font-lock-string-face :weight bold))))
+ '(orderless-match-face-3 ((t (:inherit font-lock-keyword-face :weight bold)))))
 
 ;; For profiling
 ;; (profiler-start 'cpu)

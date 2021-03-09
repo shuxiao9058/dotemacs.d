@@ -240,6 +240,8 @@
   :custom
   (forge-database-file (expand-file-name "forge/forge-database.sqlite" poly-etc-dir))
   (custom-set-variables '(forge-post-mode-hook '(visual-line-mode)))
+  (forge-bug-reference-hooks
+   '(git-commit-setup-hook magit-mode-hook))
   :config
   (setq forge-alist
 	(append forge-alist

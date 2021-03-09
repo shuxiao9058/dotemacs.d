@@ -96,13 +96,17 @@
 (use-package which-key
   :straight t
   :defer 1
-  :init
-  (setq which-key-sort-order #'which-key-prefix-then-key-order
-	which-key-sort-uppercase-first nil
-	which-key-add-column-padding 1
-	which-key-max-display-columns nil
-	which-key-min-display-lines 4
-	which-key-side-window-slot -10)
+  :custom
+  (which-key-idle-delay 0.5)
+  (which-key-idle-secondary-delay 0.3)
+  (which-key-sort-order #'which-key-prefix-then-key-order)
+  (which-key-sort-uppercase-first nil)
+  (which-key-add-column-padding 1)
+  (which-key-max-display-columns nil)
+  (which-key-min-display-lines 4)
+  (which-key-side-window-slot -10)
+  (which-key-show-early-on-C-h t)
+  (which-key-allow-evil-operators t)
   :config
   ;; general improvements to which-key readability
   (set-face-attribute 'which-key-local-map-description-face nil :weight 'bold)
