@@ -172,7 +172,8 @@ key in `completion-list-mode-map'."
   ;; :hook ((after-init . icomplete-mode)
   ;;        (after-init . icomplete-vertical-mode))
   :custom
-  (icomplete-vertical-prospects-height (/ (window-height) 6))
+  ;; (icomplete-vertical-prospects-height (/ (window-height) 6))
+  (icomplete-vertical-prospects-height 15)
   ;; Ignore case when reading a buffer name.
   (read-buffer-completion-ignore-case t)
   ;; Ignore case when reading a file name.
