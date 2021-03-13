@@ -16,8 +16,8 @@
 
 ;;; cua-mode for colum-editing
 ;; windows style keybind C-x, C-v, cut paste
-(cua-mode t)
-(setq cua-auto-tabify-rectangles nil) ;; Don't tabify after rectangle commands
+;; (cua-mode t)
+;; (setq cua-auto-tabify-rectangles nil) ;; Don't tabify after rectangle commands
 
 ;; ;; Disable splash screen
 ;; (setq inhibit-startup-message t)
@@ -67,7 +67,7 @@
     (require 'core-ui)
     (require 'core-keybindings)
     (require 'core-packages)
-    (require 'core-evil)
+    ;; (require 'core-evil)
     ;; (require 'core-autoload)
     ;; (poly-load-autoload)
     ;; (when (not noninteractive)

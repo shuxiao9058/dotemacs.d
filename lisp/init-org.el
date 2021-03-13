@@ -430,29 +430,6 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
   ;; (setq org-modules (append org-modules '(org-drill)))
   )
 
-(use-package evil-org
-  :hook ((org-mode . evil-org-mode)
-         (org-trello-mode . evil-org-mode))
-  :delight evil-org-mode
-  :diminish evil-org-mode
-  :straight t
-  ;; :straight t
-  :after (evil org)
-  :general
-  (:states 'insert :keymaps 'evil-org-mode-map
-           "M-h"     #'org-metaleft
-           "M-l"     #'org-metaright)
-  (:states 'normal :keymaps 'evil-org-mode-map
-	   "H" #'org-shiftleft
-	   "L" #'org-shiftright
-	   "K" #'org-shiftup
-	   "J" (lambda ()
-		 (interactive)
-		 (if (current-line-starts-with "*")
-                     (call-interactively #'org-shiftdown)
-		   (call-interactively #'evil-join)))
-	   "D" #'org-cut-subtree))
-
 (use-package org-agenda
   :ensure nil
   :straight nil
@@ -523,22 +500,22 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
   (appt-activate 1)
   (org-agenda-to-appt)
   ;; keymap https://github.com/Timidger/dotfiles/blob/master/.emacs.d/layers/+emacs/org/packages.el
-  :general
-  (general-unbind '(org-agenda-mode-map)
-    "M-m")
-  (:keymaps  'org-agenda-mode-map
-	     "j" #'org-agenda-next-line
-	     "k" #'org-agenda-previous-line
-	     "M-j" #'org-agenda-next-item
-	     "M-k" #'org-agenda-previous-item
-	     "M-h" #'org-agenda-earlier
-	     "M-l" #'org-agenda-later
-	     "gd" #'org-agenda-toggle-time-grid
-	     "gr" #'org-agenda-redo
-	     "M-RET" #'org-agenda-show-and-scroll-up
-	     local-leader-key-non-normal #'hydra-agenda-view/body
-	     ;; (kbd "s-M-SPC") 'spacemacs/org-agenda-transient-state/body
-	     )
+  ;; :general
+  ;; (general-unbind '(org-agenda-mode-map)
+  ;;   "M-m")
+  ;; (:keymaps  'org-agenda-mode-map
+  ;;     "j" #'org-agenda-next-line
+  ;;     "k" #'org-agenda-previous-line
+  ;;     "M-j" #'org-agenda-next-item
+  ;;     "M-k" #'org-agenda-previous-item
+  ;;     "M-h" #'org-agenda-earlier
+  ;;     "M-l" #'org-agenda-later
+  ;;     "gd" #'org-agenda-toggle-time-grid
+  ;;     "gr" #'org-agenda-redo
+  ;;     "M-RET" #'org-agenda-show-and-scroll-up
+  ;;     local-leader-key-non-normal #'hydra-agenda-view/body
+  ;;     ;; (kbd "s-M-SPC") 'spacemacs/org-agenda-transient-state/body
+  ;;     )
   )
 
 ;; overwrite built-in function (proviError running timer appt-delete-window': (error "No buffer named *appt-buf*")de 'init-org)
@@ -708,15 +685,15 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
 						   (my-buffer-face-mode-org-clock-budget)
 						   )
 						 ))
-  :general
-  (nmap :keymaps 'org-clock-budget-report-mode-map
-    "h" #'org-shifttab
-    "l" #'org-cycle
-    "e" #'org-clock-budget-report
-    "s" #'org-clock-budget-report-sort
-    "d" #'org-clock-budget-remove-budget
-    "q" #'quit-window
-    )
+  ;; :general
+  ;; (nmap :keymaps 'org-clock-budget-report-mode-map
+  ;;   "h" #'org-shifttab
+  ;;   "l" #'org-cycle
+  ;;   "e" #'org-clock-budget-report
+  ;;   "s" #'org-clock-budget-report-sort
+  ;;   "d" #'org-clock-budget-remove-budget
+  ;;   "q" #'quit-window
+  ;;   )
   )
 
 (provide 'init-org)

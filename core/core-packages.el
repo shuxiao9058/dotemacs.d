@@ -84,7 +84,7 @@
 	     :host gitlab
 	     :repo "ideasman42/emacs-undo-fu"
 	     :files ("undo-fu.el"))
-  :after evil
+  ;; :after evil
   :ensure t
   ;; :disabled
   :demand t
@@ -92,13 +92,13 @@
   ;; ;; `evil' activates undo-tree, so we must pre-emptively disable it.
   ;; (eval-after-load 'undo-tree
   ;;   (global-undo-tree-mode -1))
-  :general
-  (:states '(normal)
-	   "u" 'undo-only
-	   "\C-r" 'undo-fu-only-redo)
-  (:states '(normal insert motion emacs)
-	   "s-z" 'undo-fu-only-undo
-	   "s-Z" 'undo-fu-only-redo)
+  ;; :general
+  ;; (:states '(normal)
+  ;; 	   "u" 'undo-only
+  ;; 	   "\C-r" 'undo-fu-only-redo)
+  ;; (:states '(normal insert motion emacs)
+  ;; 	   "s-z" 'undo-fu-only-undo
+  ;; 	   "s-Z" 'undo-fu-only-redo)
   :custom
   ;; Store more undo history to prevent loss of data
   (undo-limit 400000)
@@ -142,17 +142,7 @@
   (undo-tree-visualizer-lazy-drawing 1000)
   :config
   (global-undo-tree-mode)
-  :general
-  (nmap "u" 'undo-tree-undo)
-  (:states '(normal insert motion emacs)
-           "s-z" #'undo-tree-undo
-           "s-Z" #'undo-tree-redo)
-  (:keymaps 'undo-tree-visualizer-mode-map
-            ;; Make return accept currently selected revision and q
-            ;; (and C-g) abort. The defaults are weird.
-            "<return>" #'undo-tree-visualizer-quit
-            "C-g" #'undo-tree-visualizer-abort
-            "q" #'undo-tree-visualizer-abort))
+  )
 
 (use-package hide-mode-line
   :straight t

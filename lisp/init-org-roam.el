@@ -25,38 +25,37 @@
              org-roam-dailies-today
              org-roam-dailies-tomorrow
              org-roam-dailies-yesterday)
-  :general
-  (:keymaps 'org-roam-mode-map
-	    "C-c n l"  #'org-roam
-	    "C-c n f" #'org-roam-find-file
-	    "C-c n g" #'org-roam-graph
-	    ;; "C-c n n" . org-roam
-            "C-c n f" #'org-roam-find-file
-            "C-c n c" #'org-roam-capture
-            "C-c n o" #'org-noter ;; open
-            "C-c n g" #'org-noter-sync-current-note  ;; goto
-            "C-c n G" #'org-noter-sync-current-page-or-chapter
-            "C-c n v" #'org-roam-server-open  ;; view
-            "C-c n u" #'org-roam-unlinked-references  ;; unlinked
-            "C-c n j" #'org-roam-jump-to-index
-            "C-c n b" #'org-roam-switch-to-buffer
-            "C-c n d" #'deft
-            "C-c n r" #'org-ref-helm-insert-cite-link
-            ;; "C-c n s" #'+default/org-notes-search)
-            "C-c n t" #'org-roam-dailies-today
-            "C-c n i"  #'org-roam-insert
-	    )
-  (:keymaps 'org-mode-map
-	    "C-c n i" #'org-roam-insert
-	    "C-c n I" #'org-roam-insert-immediate)
+  ;; :general
+  ;; (:keymaps 'org-roam-mode-map
+  ;; 	    "C-c n l"  #'org-roam
+  ;; 	    "C-c n f" #'org-roam-find-file
+  ;; 	    "C-c n g" #'org-roam-graph
+  ;; 	    ;; "C-c n n" . org-roam
+  ;;           "C-c n f" #'org-roam-find-file
+  ;;           "C-c n c" #'org-roam-capture
+  ;;           "C-c n o" #'org-noter ;; open
+  ;;           "C-c n g" #'org-noter-sync-current-note  ;; goto
+  ;;           "C-c n G" #'org-noter-sync-current-page-or-chapter
+  ;;           "C-c n v" #'org-roam-server-open  ;; view
+  ;;           "C-c n u" #'org-roam-unlinked-references  ;; unlinked
+  ;;           "C-c n j" #'org-roam-jump-to-index
+  ;;           "C-c n b" #'org-roam-switch-to-buffer
+  ;;           "C-c n d" #'deft
+  ;;           "C-c n r" #'org-ref-helm-insert-cite-link
+  ;;           ;; "C-c n s" #'+default/org-notes-search)
+  ;;           "C-c n t" #'org-roam-dailies-today
+  ;;           "C-c n i"  #'org-roam-insert
+  ;; 	    )
+  ;; (:keymaps 'org-mode-map
+  ;; 	    "C-c n i" #'org-roam-insert
+  ;; 	    "C-c n I" #'org-roam-insert-immediate)
   :after org
   :config
   ;; For org-roam to update LAST_MODIFIED field
   (require 'time-stamp)
   (add-hook 'write-file-functions 'time-stamp) ; update when saving
 
-  (setq org-roam-completion-system 'ivy)
-
+  ;; (setq org-roam-completion-system 'ivy)
 
   ;; #+LATEX_HEADER: \\addbibresource{~/Cloud/Documents/bib/zotLib.bib}
   (setq org-roam-capture-templates

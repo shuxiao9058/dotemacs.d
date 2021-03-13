@@ -101,24 +101,20 @@ If INTERACTIVE, prompt user for details."
 						      )
 						     (company-abbrev company-dabbrev)))
 				       ))
-  :general
-  (leader-def
-    "cC" '(eglot :wk "connect to lsp"))
-  (leader-def :keymaps 'eglot-mode-map
-    "ce" '(:ignore t :wk "eglot")
-    "ced" '(xref-find-definitions :wk "Jump to definition")
-    "ceD" '(xref-find-references :wk "Jump to references")'
-    "ce=" #'eglot-format-buffer
-    "cef" #'eglot-format
-    "ceh" #'eglot-help-at-point
-    "cem" #'eglot-events-buffer
-    "cer" #'eglot-rename
-    "ceR" #'eglot-reconnect)
+  ;; :general
+  ;; (leader-def
+  ;;   "cC" '(eglot :wk "connect to lsp"))
+  ;; (leader-def :keymaps 'eglot-mode-map
+  ;;   "ce" '(:ignore t :wk "eglot")
+  ;;   "ced" '(xref-find-definitions :wk "Jump to definition")
+  ;;   "ceD" '(xref-find-references :wk "Jump to references")'
+  ;;   "ce=" #'eglot-format-buffer
+  ;;   "cef" #'eglot-format
+  ;;   "ceh" #'eglot-help-at-point
+  ;;   "cem" #'eglot-events-buffer
+  ;;   "cer" #'eglot-rename
+  ;;   "ceR" #'eglot-reconnect)
   )
-
-;; ;; fix (void-function project-root)
-;; (defun project-root (project)
-;;   (car (project-roots project)))
 
 (provide 'init-eglot)
 ;;; init-eglot.el ends here

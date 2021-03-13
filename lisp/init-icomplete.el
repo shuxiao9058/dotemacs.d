@@ -1,10 +1,5 @@
 ;;; lisp/init-icomplete.el -*- lexical-binding: t; -*-
 
-;; (use-package recentf
-;;   :straight nil
-;;   :ensure t
-;;   :demand t)
-
 ;; This is a completion style, it's a back-end for completion and is used by a
 ;; front-end that provides a completion UI.
 ;; TODO: check intergration with company:
@@ -275,57 +270,53 @@ normally would when calling `yank' followed by `yank-pop'."
           (delete-region (region-beginning) (region-end)))
         (insert
          (completing-read "Yank from kill ring: " kills nil t)))))
-  :general
-  (:keymaps  'icomplete-minibuffer-map
-	     "C-v" #'icomplete-vertical-toggle
-	     "C-n"  #'icomplete-forward-completions
-	     "C-j"  #'icomplete-forward-completions
-	     "M-n"  #'icomplete-forward-completions
+  :bind (
+	 ([remap yank-pop] . my/icomplete-yank-kill-ring)
+	 :map icomplete-minibuffer-map
+         ("C-v" . icomplete-vertical-toggle)
+	 ("C-n"  . icomplete-forward-completions)
+	 ("C-j"  . icomplete-forward-completions)
+	 ("M-n"  . icomplete-forward-completions)
 
-	     "<up>" #'icomplete-backward-completions
-	     "C-p"  #'icomplete-backward-completions
-	     "C-k"  #'icomplete-backward-completions
-	     "M-p"  #'icomplete-backward-completions
-	     ;; "C-v"  #'icomplete-vertical-toggle
-	     ;; "<tab>"  #'icomplete-forward-completions
-	     "<tab>"  #'icomplete-force-complete
-	     ;; "M-TAB" #'icomplete-force-complete
-	     "<return>" #'icomplete-force-complete-and-exit
-	     ;; "<tab>" #'icomplete-force-complete
-	     ;; "C-j" #'icomplete-force-complete
-	     "<left>"  #'icomplete-backward-completions
-	     "<right>" #'icomplete-forward-completions
-	     "<backtab>" #'icomplete-backward-completions
-	     "C-l" #'icomplete-fido-backward-updir
-	     "DEL" #'icomplete-fido-backward-updir
+	 ("<up>" . icomplete-backward-completions)
+	 ("C-p"  . icomplete-backward-completions)
+	 ("C-k"  . icomplete-backward-completions)
+	 ("M-p"  . icomplete-backward-completions)
+	 ;; "C-v"  #'icomplete-vertical-toggle
+	 ;; "<tab>"  #'icomplete-forward-completions
+	 ("<tab>"  . icomplete-force-complete)
+	 ;; "M-TAB" #'icomplete-force-complete
+	 ("<return>" . icomplete-force-complete-and-exit)
+	 ;; "<tab>" #'icomplete-force-complete
+	 ;; "C-j" #'icomplete-force-complete
+	 ("<left>"  . icomplete-backward-completions)
+	 ("<right>" . icomplete-forward-completions)
+	 ("<backtab>" . icomplete-backward-completions)
+	 ("C-l" . icomplete-fido-backward-updir)
+	 ("DEL" . icomplete-fido-backward-updir)
 
-	     ;; "RET" #'icomplete-fido-ret
-	     ;; "C-m" #'icomplete-fido-ret
-	     "C-s" #'icomplete-forward-completions
-	     "C-r" #'icomplete-backward-completions
-	     "C-." #'next-history-element
-	     ;; "C-l" #'icomplete-fido-backward-updir
-	     "C-e" #'(lambda(&optional argv)(interactive)(if (eolp) (call-interactively #'icomplete-fido-exit) (end-of-line)))
-	     [remap evil-complete-next] #'icomplete-forward-completions   ;; (evil-complete-next &optional ARG) C-n
-	     [remap evil-complete-previous] #'icomplete-backward-completions
-	     [remap kill-line] #'icomplete-forward-completions
-	     [remap evil-insert-digraph] #'icomplete-backward-completions
-	     [remap next-line] #'icomplete-forward-completions
-	     ;; [remap minibuffer-complete] #'icomplete-backward-completions
-	     [remap minibuffer-complete-and-exit] #'icomplete-ret
-	     )
+	 ;; "RET" #'icomplete-fido-ret
+	 ;; "C-m" #'icomplete-fido-ret
+	 ("C-s" . icomplete-forward-completions)
+	 ("C-r" . icomplete-backward-completions)
+	 ("C-." . next-history-element)
+	 ;; "C-l" #'icomplete-fido-backward-updir
+					; ("C-e" . (lambda(&optional argv)(interactive)(if (eolp) (call-interactively #'icomplete-fido-exit) (end-of-line))))
+	 ([remap next-line] . icomplete-forward-completions)
+	 ;; [remap minibuffer-complete] #'icomplete-backward-completions
+	 ;; ([remap minibuffer-complete-and-exit] . icomplete-ret)
+	 )
   )
 
-(use-package restricto
-  :after minibuffer
-  :straight (:host github :repo "oantolin/restricto")
+					; (use-package restricto
+					;   :after minibuffer
+					;   :straight (:host github :repo "oantolin/restricto")
 
-  :bind (:map minibuffer-local-completion-map
-	      ("SPC"   . restricto-narrow)
-	      ("S-SPC" . restricto-widen))
-
-  :config
-  (restricto-mode))
+					;   :bind (:map minibuffer-local-completion-map
+					; 	      ("SPC"   . restricto-narrow)
+					; 	      ("S-SPC" . restricto-widen))
+					;   :config
+					;   (restricto-mode))
 
 ;; swiper is a buffer search interface using ivy.
 (use-package swiper
@@ -360,12 +351,6 @@ normally would when calling `yank' followed by `yank-pop'."
     :files current
     :dir project
     :confirm never)
-  :general
-  (:keymaps  'rg-mode-map
-             "M-n" #'rg-next-file
-             "M-p" #'rg-prev-file
-             "C-n" #'compilation-next-error
-             "C-p" #'compilation-previous-error)
   )
 
 (provide 'init-icomplete)

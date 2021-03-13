@@ -22,31 +22,34 @@
 
     (setq nov-text-width 120)
 
-    (evil-set-initial-state 'nov-mode 'normal)
+    ;; (evil-set-initial-state 'nov-mode 'normal)
 
-    (general-define-key
-     :keymaps 'nov-mode-map
-     :states 'normal
-     "g" 'nov-render-document
-     "n" 'nov-next-document
-     "(point)" 'nov-previous-document
-     "t" 'nov-goto-toc
-     "l" 'nov-history-back
-     "r" 'nov-history-forward
-     "RET" 'nov-browse-url
-     "c" 'nov-copy-url
-     ;;"<follow-link>" 'mouse-face
-     ;;"<mouse-2>" 'nov-browse-url
-     "TAB" 'shr-next-link
-     "M-TAB" 'shr-previous-link
-     "<backtab>" 'shr-previous-link
-     ;; Toggle normal emacs font rendering
-     "f" (lambda ()
-           (interactive)
-           (setq nov-variable-pitch (not nov-variable-pitch))
-           (nov-render-document)))))
+    ;; (general-define-key
+    ;;  :keymaps 'nov-mode-map
+    ;;  :states 'normal
+    ;;  "g" 'nov-render-document
+    ;;  "n" 'nov-next-document
+    ;;  "(point)" 'nov-previous-document
+    ;;  "t" 'nov-goto-toc
+    ;;  "l" 'nov-history-back
+    ;;  "r" 'nov-history-forward
+    ;;  "RET" 'nov-browse-url
+    ;;  "c" 'nov-copy-url
+    ;;  ;;"<follow-link>" 'mouse-face
+    ;;  ;;"<mouse-2>" 'nov-browse-url
+    ;;  "TAB" 'shr-next-link
+    ;;  "M-TAB" 'shr-previous-link
+    ;;  "<backtab>" 'shr-previous-link
+    ;;  ;; Toggle normal emacs font rendering
+    ;;  "f" (lambda ()
+    ;;        (interactive)
+    ;;        (setq nov-variable-pitch (not nov-variable-pitch))
+    ;;        (nov-render-document)))
+    )
+  )
 
-(use-package bookmark+)
+(use-package bookmark+
+  :straight t)
 
 ;; ;;; nov.el for epub ebooks reading
 ;; (use-package nov

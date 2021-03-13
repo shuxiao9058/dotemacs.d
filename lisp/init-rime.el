@@ -41,13 +41,13 @@
   ;;    ))
   ;; (rime-share-data-dir "")
   (rime-user-data-dir (expand-file-name "rime" poly-local-dir))
-  :general
-  ("M-SPC" #'toggle-input-method)
-  (:keymaps '(rime-active-mode-map)
-	    "<tab>"  'rime-inline-ascii)
-  (:keymaps '(rime-mode-map)
-	    "C-$" #'rime-send-keybinding
-	    "M-j"  #'rime-force-enable)
+  ;; :general
+  ;; ("M-SPC" #'toggle-input-method)
+  ;; (:keymaps '(rime-active-mode-map)
+  ;; 	    "<tab>"  'rime-inline-ascii)
+  ;; (:keymaps '(rime-mode-map)
+  ;; 	    "C-$" #'rime-send-keybinding
+  ;; 	    "M-j"  #'rime-force-enable)
   )
 
 (provide 'init-rime)

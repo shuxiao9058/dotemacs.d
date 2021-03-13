@@ -23,8 +23,6 @@
   (defun track-mouse (e))
   )
 
-
-
 ;; Fix mouse from emacsclient
 ;; http://stackoverflow.com/a/6798279
 (defun my-terminal-mouse-config (&optional frame)
@@ -55,10 +53,10 @@
 
 
 ;; tmux-navigate
-(use-package navigate
-  :straight (navigate
-	     :host github
-	     :repo "keith/evil-tmux-navigator"))
+;; (use-package navigate
+;;   :straight (navigate
+;; 	     :host github
+;; 	     :repo "keith/evil-tmux-navigator"))
 
 ;; (use-package tmux-pane
 ;;   :ensure t
@@ -71,8 +69,6 @@
 ;;   :config
 ;;   (tmux-pane-mode +1)
 ;;   )
-
-
 
 ;; TERMINAL MAPPINGS TO SUPPORT ITERM2 FOR MAC
 (progn

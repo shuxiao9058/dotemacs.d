@@ -13,10 +13,10 @@
   :mode ("\\.lua$" . lua-mode)
   :config
   (autoload 'lua-mode "lua-mode" "Lua editing mode." t)
-  :general
-  (nvmap :keymaps 'lua-mode-map
-    "TAB" #'lua-goto-forward
-    "C-o" #'lua-goto-backward)
+  ;; :general
+  ;; (nvmap :keymaps 'lua-mode-map
+  ;;   "TAB" #'lua-goto-forward
+  ;;   "C-o" #'lua-goto-backward)
   )
 
 (provide 'init-lua)
