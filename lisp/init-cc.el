@@ -4,7 +4,6 @@
 (use-package cc-mode
   :straight t
   :ensure t
-  ;; :defines (lsp-clients-clangd-args)
   :mode (
 	 ("\\.c\\'" . c-mode)
          ("\\.h\\'" . c-mode)

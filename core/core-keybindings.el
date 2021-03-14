@@ -185,11 +185,9 @@
 ;;   (evil-visual-paste 1)
 ;;   (right-char))
 
-;; (general-define-key
-;;  :keymaps 'override
-;;  "s-c" #'copy-to-clipboard
-;;  "s-v" #'paste-from-clipboard
-;;  )
+(bind-key "s-c" #'copy-to-clipboard)
+(bind-key "s-v" #'paste-from-clipboard)
+(bind-key "s-SPC" #'set-mark-command)
 
 ;; (general-define-key :states '(visual insert normal)
 ;; 		    :keymaps 'override

@@ -95,6 +95,11 @@
   :custom
   (meow-expand-hint-remove-delay 3.0)
   :config
+  (add-to-list 'meow-selection-command-fallback
+	       (cons 'meow-replace '(lambda()(delete-char 1)
+				      (call-interactively #'quoted-insert))))
+  (add-to-list 'meow-normal-state-mode-list 'eaf-mode)
+
   (meow-leader-define-key
    '("e" . my/icomplete-recentf)
    '("." . find-file)

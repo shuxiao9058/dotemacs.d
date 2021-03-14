@@ -29,6 +29,7 @@
   (sp-show-pair-from-inside t)
   (sp-autoskip-closing-pair 'always)
   (sp-hybrid-kill-entire-symbol nil)
+  (sp-autowrap-region nil)
   :config
   (show-smartparens-global-mode t)
   (smartparens-global-mode t)

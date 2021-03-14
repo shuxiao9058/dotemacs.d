@@ -181,6 +181,7 @@
   (lsp-imenu-show-container-name nil)
   ;; (flymake-fringe-indicator-position 'right-fringe)
   ;; (lsp-clients-emmy-lua-jar-path (expand-file-name  "bin/EmmyLua-LS-all.jar" poly-local-dir))
+  (lsp-clients-emmy-lua-jar-path (expand-file-name "workspace/EmmyLua-LanguageServer/EmmyLua-LS/build/libs/EmmyLua-LS-all.jar" "~"))
   (lsp-gopls-server-path "/usr/local/bin/gopls")
   (lsp-gopls-server-args '("-debug" "127.0.0.1:3000" "-logfile=/tmp/gopls-emacs.log" ;; "-rpc.trace" "-vv"
 			   ))
@@ -230,9 +231,9 @@
      ("gopls.directoryFilters" ["-vendor" "-internal" "-.gocache" "-.git" "-!out"])
      ))
 
-  ;; ;; lsp-lua
-  ;; ;; 暂时还有点问题，先不用了
-  (require 'init-lsp-lua)
+  ;; ;; ;; lsp-lua
+  ;; ;; ;; 暂时还有点问题，先不用了
+  ;; (require 'init-lsp-lua)
   ;; cancel warning
   (advice-add 'lsp-warn
 	      :around (lambda (orig-func &rest r)
