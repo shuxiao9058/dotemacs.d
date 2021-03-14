@@ -4,6 +4,13 @@
   :straight t
   :ensure t)
 
+(use-package emacsql
+  :straight t
+  :ensure t
+  :custom
+  (emacsql-sqlite-executable "/usr/local/opt/emacsql/sqlite/emacsql-sqlite")
+  )
+
 (use-package magit
   :straight t
   :commands (magit-file-delete magit-status magit-checkout)
@@ -241,6 +248,52 @@
   :config
   (setq ghub-insecure-hosts '("git.17usoft.com/api/v4")))
 
+(use-package smerge-mode
+  :straight t
+  :after hydra
+  :init
+  (setq smerge-command-prefix "\C-cv")
+  :config
+  (defhydra unpackaged/smerge-hydra
+    (:color pink :hint nil :post (smerge-auto-leave))
+    "
+^Move^       ^Keep^               ^Diff^                 ^Other^
+^^-----------^^-------------------^^---------------------^^-------
+_n_ext       _b_ase               _<_: upper/base        _C_ombine
+_p_rev       _u_pper              _=_: upper/lower       _r_esolve
+^^           _l_ower              _>_: base/lower        _k_ill current
+^^           _a_ll                _R_efine
+^^           _RET_: current       _E_diff
+"
+    ("n" smerge-next)
+    ("p" smerge-prev)
+    ("b" smerge-keep-base)
+    ("u" smerge-keep-upper)
+    ("l" smerge-keep-lower)
+    ("a" smerge-keep-all)
+    ("RET" smerge-keep-current)
+    ("\C-m" smerge-keep-current)
+    ("<" smerge-diff-base-upper)
+    ("=" smerge-diff-upper-lower)
+    (">" smerge-diff-base-lower)
+    ("R" smerge-refine)
+    ("E" smerge-ediff)
+    ("C" smerge-combine-with-next)
+    ("r" smerge-resolve)
+    ("k" smerge-kill-current)
+    ("ZZ" (lambda ()
+            (interactive)
+            (save-buffer)
+            (bury-buffer))
+     "Save and bury buffer" :color blue)
+    ("q" nil "cancel" :color blue))
+  :hook (magit-diff-visit-file . (lambda ()
+                                   (when smerge-mode
+                                     (unpackaged/smerge-hydra/body)))))
+
+(defun zw/magit-hydra ()
+  (interactive)
+  (unpackaged/smerge-hydra/body))
 
 (provide 'init-vc)
 ;;; init-vc.el ends here

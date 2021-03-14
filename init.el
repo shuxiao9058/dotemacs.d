@@ -81,7 +81,7 @@
 (require 'init-hydra)
 
 ;; mail
-(require 'init-mail)
+;; (require 'init-mail)
 (require 'init-gnus)
 
 ;; (require 'init-misc)

@@ -250,15 +250,6 @@
                              lambda () (setq-local fill-column 80)
                              )
 			  )
-  :general
-  (:keymaps 'gnus-article-mode-map
-            "i" #'gnus-article-show-images
-            "s" #'gnus-mime-save-part
-            "o" #'gnus-mime-copy-part)
-  ;; :bind (:map gnus-article-mode-map
-  ;;             ("i" . gnus-article-show-images)
-  ;;             ("s" . gnus-mime-save-part)
-  ;;             ("o" . gnus-mime-copy-part))
   )
 
 (provide 'init-gnus)

@@ -47,7 +47,7 @@
    '("x" . meow-line)
    '("f" . meow-find)
    '("F" . meow-find-expand)
-   '("g" . meow-keyboard-quit)
+   '("g" . meow-grab)
    '("G" . meow-goto-line)
    '("h" . meow-left)
    '("H" . meow-left-expand)
@@ -79,10 +79,13 @@
    '("E" . meow-next-symbol)
    '("y" . meow-save)
    '("p" . meow-yank)
-   '("z" . meow-pop-selection)
+   '("P" . meow-yank-pop)
+   '("z" . meow-pop)
    '("Z" . meow-pop-all-selection)
    '("&" . meow-query-replace)
-   '("%" . meow-query-replace-regexp)
+   ;; '("%" . meow-search)
+   '("/" . meow-search)
+   ;; '("." . repeat)
    ;; '("<escape>" . meow-last-buffer)
    ))
 
@@ -95,9 +98,13 @@
   :custom
   (meow-expand-hint-remove-delay 3.0)
   :config
+  (defun my/replace()
+    (interactive)
+    (delete-char 1)
+    (call-interactively #'quoted-insert))
+  (add-to-list 'meow-normal-state-mode-list 'eaf-mode)
   (add-to-list 'meow-selection-command-fallback
-	       (cons 'meow-replace '(lambda()(delete-char 1)
-				      (call-interactively #'quoted-insert))))
+	       (cons 'meow-replace 'my/replace))
   (add-to-list 'meow-normal-state-mode-list 'eaf-mode)
 
   (meow-leader-define-key
