@@ -125,31 +125,13 @@
   (transient-append-suffix 'magit-commit
     "S"
     '("R" "Reset author" m/magit-reset-author))
-  :general
-  (general-unbind '(magit-mode-map)
-    ;; Replaced by z1, z2, z3, etc
-    "M-1" "M-2" "M-3" "M-4"
-    "1" "2" "3" "4"
-    "0") ; moved to g=
-
-  (nmap
-    (magit-status-mode-map
-     magit-stash-mode-map
-     magit-revision-mode-map
-     magit-diff-mode-map)
-    [tab] #'magit-section-toggle)
-  ;; q is enough
-  (nmap :keymaps '(magit-status-mode-map)
-    [escape] nil
-    ;; Temporary workaround for +magit/quit hang with lots of buffers
-    [remap magit-mode-bury-buffer] #'magit-kill-buffers
-    "z" #'magit-stash
-    )
-  (nvmap :keymaps '(magit-mode-map)
-    "%"  #'magit-gitflow-popup
-    "zz" #'evil-scroll-line-to-center
-    "g=" #'magit-diff-default-context
-    )
+  :bind
+  (:map transient-base-map ("q" . transient-quit-one))
+  (:map transient-base-map ("<escape>" . transient-quit-one))
+  (:map transient-edit-map ("q" . transient-quit-one))
+  (:map transient-edit-map ("<escape>" . transient-quit-one))
+  (:map transient-sticky-map ("q" . transient-quit-one))
+  (:map transient-sticky-map ("<escape>" . transient-quit-one))
   )
 
 (use-package magit-gitflow

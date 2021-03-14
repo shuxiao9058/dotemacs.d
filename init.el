@@ -12,6 +12,8 @@
 (add-to-list 'load-path
 	     (concat user-emacs-directory "lisp"))
 
+(require 'init-meow)
+
 ;;; core
 ;; (require 'init-env)
 (require 'init-comp)
@@ -86,9 +88,9 @@
 
 ;; keybindings
 ;; early load with general in core
-(eval-after-load 'general
-  `(progn
-     (require 'init-keybindings)))
+;; (eval-after-load 'general
+;;   `(progn
+;;      (require 'init-keybindings)))
 
 ;; Load customization file now
 (let ((custom-file (expand-file-name "custom.el" user-emacs-directory)))
@@ -108,9 +110,9 @@
  ;; If there is more than one, they won't work right.
  '(git-messenger:use-magit-popup t)
  '(helm-minibuffer-history-key "M-p")
- '(lsp-go-gopls-server-args
-   '("-debug" "127.0.0.1:3000" "-logfile=/tmp/gopls-emacs.log") nil nil "Customized with use-package lsp-mode")
- '(lsp-go-gopls-server-path "/usr/local/bin/gopls" nil nil "Customized with use-package lsp-mode")
+ ;; '(lsp-go-gopls-server-args
+ ;; '("-debug" "127.0.0.1:3000" "-logfile=/tmp/gopls-emacs.log") nil nil "Customized with use-package lsp-mode")
+ ;; '(lsp-go-gopls-server-path "/usr/local/bin/gopls" nil nil "Customized with use-package lsp-mode")
  '(smtpmail-smtp-server "smtp.google.com" t)
  '(smtpmail-smtp-service 25 t)
  '(warning-suppress-log-types '((comp)))

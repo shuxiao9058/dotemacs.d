@@ -136,44 +136,34 @@ candidates will be from company-tabnine, others keeping their own origin order."
 		   )
 		  (company-abbrev company-dabbrev)
 		  ))
-  :general
-  (general-unbind '(company-active-map)
-    "C-w"     nil  ; don't interfere with `evil-delete-backward-word'
-    [f1]      nil
-    ;; [return] nil
-    ;; "RET" nil
-    [space] nil
-    )
-  ;; (help-key-description [13] nil)
-  (:keymaps 'company-active-map
-	    ;; "C-w"     nil  ; don't interfere with `evil-delete-backward-word'
-	    "C-n"     #'company-select-next
-	    "C-p"     #'company-select-previous
-	    "C-j"     #'company-select-next
-	    "C-k"     #'company-select-previous
-	    "C-h"     #'company-show-doc-buffer
-	    "C-u"     #'company-previous-page
-	    "C-d"     #'company-next-page
-	    "C-s"     #'company-filter-candidates
-	    ;; "C-S-s"  #'counsel-company
-	    "C-SPC"   #'company-complete-common
-	    "TAB"     #'company-complete-common-or-cycle
-	    [tab]     #'company-complete-common-or-cycle
-	    [backtab] #'company-select-previous
-	    ;; [f1]      nil
-	    ;; [return] nil
-	    ;; "RET" nil
-	    ;; ;; [RET] nil
-	    ;; [space] nil
-	    )
-  (:keymaps 'company-search-map
-	    "C-n"     #'company-select-next-or-abort
-	    "C-p"     #'company-select-previous-or-abort
-	    "C-j"     #'company-select-next-or-abort
-	    "C-k"     #'company-select-previous-or-abort
-	    "C-s"     (lambda () (interactive) (company-search-abort) (company-filter-candidates))
-	    [escape]  #'company-search-abort)
+  :bind
+  (:map company-active-map
+	;; (help-key-description [13] nil)
+	;; "C-w"     nil  ; don't interfere with `evil-delete-backward-word'
+	("C-n"   .  company-select-next)
+	("C-p"     . company-select-previous)
+	("C-j"     . company-select-next)
+	("C-k"     . company-select-previous)
+	("C-h"     . company-show-doc-buffer)
+	("C-u"    . company-previous-page)
+	("C-d"     . company-next-page)
+	("C-s"    . company-filter-candidates)
+	;; "C-S-s"  #'counsel-company
+	("C-SPC"   . company-complete-common)
+	("TAB"     . company-complete-common-or-cycle)
+	([tab]     . company-complete-common-or-cycle)
+	([backtab] . company-select-previous)
+	:map company-search-map
+        ("C-n"     . company-select-next-or-abort)
+	("C-p"     . company-select-previous-or-abort)
+	("C-j"     . company-select-next-or-abort)
+	("C-k"    .  company-select-previous-or-abort)
+	("C-s"    .  (lambda () (interactive) (company-search-abort) (company-filter-candidates)))
+	([escape]  . company-search-abort)
+	)
   )
+
+
 
 ;; (use-package company-posframe
 ;;     :straight t
@@ -286,7 +276,6 @@ candidates will be from company-tabnine, others keeping their own origin order."
   :after company
   :custom
   (company-tabnine-binaries-folder (expand-file-name ".TabNine" "~"))
-  ;; (company-)
   (company-tabnine-log-file-path "/tmp/TabNine.log")
   (company-tabnine-executable-args (list "--log-level" "Error"))
   (company-tabnine-wait 0.25)

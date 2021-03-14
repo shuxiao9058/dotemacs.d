@@ -54,53 +54,53 @@
     ("C" color-rg-customized-search)
     ("i" color-rg-switch-to-edit-mode)
     ("q" nil "quit"))
-  :general
-  (nvmap :keymaps '(color-rg-mode-map)
-    ;; "M-o" #'color-rg-hydra/body
-    ;; Lower keys for commands not operating on all the marked files
-    "RET" #'color-rg-open-file
-    ;; "q" #'quit-window
-    "e" #'color-rg-switch-to-edit-mode
-    "p" #'color-rg-jump-prev-keyword
-    "n" #'color-rg-jump-next-keyword
-    "H" #'color-rg-jump-next-file
-    "L" #'color-rg-jump-prev-file
-    "r" #'color-rg-replace-all-matches
-    "f" #'color-rg-filter-match-results
-    "F" #'color-rg-filter-mismatch-results
+  ;; :general
+  ;; (nvmap :keymaps '(color-rg-mode-map)
+  ;;   ;; "M-o" #'color-rg-hydra/body
+  ;;   ;; Lower keys for commands not operating on all the marked files
+  ;;   "RET" #'color-rg-open-file
+  ;;   ;; "q" #'quit-window
+  ;;   "e" #'color-rg-switch-to-edit-mode
+  ;;   "p" #'color-rg-jump-prev-keyword
+  ;;   "n" #'color-rg-jump-next-keyword
+  ;;   "H" #'color-rg-jump-next-file
+  ;;   "L" #'color-rg-jump-prev-file
+  ;;   "r" #'color-rg-replace-all-matches
+  ;;   "f" #'color-rg-filter-match-results
+  ;;   "F" #'color-rg-filter-mismatch-results
 
-    "x" #'color-rg-filter-match-files
-    "X" #'color-rg-filter-mismatch-files
-    "u" #'color-rg-unfilter
+  ;;   "x" #'color-rg-filter-match-files
+  ;;   "X" #'color-rg-filter-mismatch-files
+  ;;   "u" #'color-rg-unfilter
 
-    "D" #'color-rg-remove-line-from-results
+  ;;   "D" #'color-rg-remove-line-from-results
 
-    "I" #'color-rg-rerun-toggle-ignore
-    "t" #'color-rg-rerun-literal
-    "c" #'color-rg-rerun-toggle-case
-    "s" #'color-rg-rerun-regexp
-    "d" #'color-rg-rerun-change-dir
-    "z" #'color-rg-rerun-change-globs
-    "Z" #'color-rg-rerun-change-exclude-files
-    "C" #'color-rg-customized-search
+  ;;   "I" #'color-rg-rerun-toggle-ignore
+  ;;   "t" #'color-rg-rerun-literal
+  ;;   "c" #'color-rg-rerun-toggle-case
+  ;;   "s" #'color-rg-rerun-regexp
+  ;;   "d" #'color-rg-rerun-change-dir
+  ;;   "z" #'color-rg-rerun-change-globs
+  ;;   "Z" #'color-rg-rerun-change-exclude-files
+  ;;   "C" #'color-rg-customized-search
 
-    "i" #'color-rg-switch-to-edit-mode
-    "q" #'color-rg-quit
-    "?" #'color-rg-hydra/body
-    )
-  (nmap :keymaps '(color-rg-mode-edit-map)
-    "j" #'evil-next-line
-    "k" #'evil-previous-line
-    "h" #'evil-backward-char
-    "l" #'evil-forward-char
+  ;;   "i" #'color-rg-switch-to-edit-mode
+  ;;   "q" #'color-rg-quit
+  ;;   "?" #'color-rg-hydra/body
+  ;;   )
+  ;; (nmap :keymaps '(color-rg-mode-edit-map)
+  ;;   "j" #'evil-next-line
+  ;;   "k" #'evil-previous-line
+  ;;   "h" #'evil-backward-char
+  ;;   "l" #'evil-forward-char
 
-    "n" #'color-rg-jump-next-keyword
-    "p" #'color-rg-jump-prev-keyword
-    "N" #'color-rg-jump-next-file
-    "P" #'color-rg-jump-prev-file)
-  (:keymaps '(color-rg-mode-edit-map)
-            [remap evil-write] #'color-rg-apply-changed
-	    [remap evil-quit] #'color-rg-quit)
+  ;;   "n" #'color-rg-jump-next-keyword
+  ;;   "p" #'color-rg-jump-prev-keyword
+  ;;   "N" #'color-rg-jump-next-file
+  ;;   "P" #'color-rg-jump-prev-file)
+  ;; (:keymaps '(color-rg-mode-edit-map)
+  ;;           [remap evil-write] #'color-rg-apply-changed
+  ;; 	    [remap evil-quit] #'color-rg-quit)
   )
 
 (provide 'init-search)

@@ -181,11 +181,11 @@
   (lsp-imenu-show-container-name nil)
   ;; (flymake-fringe-indicator-position 'right-fringe)
   ;; (lsp-clients-emmy-lua-jar-path (expand-file-name  "bin/EmmyLua-LS-all.jar" poly-local-dir))
+  (lsp-clients-emmy-lua-jar-path (expand-file-name "workspace/EmmyLua-LanguageServer/EmmyLua-LS/build/libs/EmmyLua-LS-all.jar" "~"))
   (lsp-gopls-server-path "/usr/local/bin/gopls")
   (lsp-gopls-server-args '("-debug" "127.0.0.1:3000" "-logfile=/tmp/gopls-emacs.log" ;; "-rpc.trace" "-vv"
 			   ))
   :config
-
   ;; Run ros install cxxxr/cl-lsp
   ;; also see repo https://github.com/cxxxr/cl-lsp.git
   ;; (add-to-list 'lsp-language-id-configuration '(lisp-mode "lisp"))
@@ -231,23 +231,13 @@
      ("gopls.directoryFilters" ["-vendor" "-internal" "-.gocache" "-.git" "-!out"])
      ))
 
-  ;; ;; lsp-lua
-  ;; ;; 暂时还有点问题，先不用了
-  (require 'init-lsp-lua)
+  ;; ;; ;; lsp-lua
+  ;; ;; ;; 暂时还有点问题，先不用了
+  ;; (require 'init-lsp-lua)
   ;; cancel warning
   (advice-add 'lsp-warn
 	      :around (lambda (orig-func &rest r)
 			(message (apply #'format-message r))))
-  :general
-  (leader-def :keymaps '(lsp-mode-map)
-    "c" '(:ignore t :wk "code")
-    "cc" '(compile :wk "Compile")
-    "cC" '(recompile :wk "Recompile")
-    "cd" '(lsp-find-definition :wk "Jump to definition")
-    "cr" '(lsp-rename :wk "lsp rename")
-    "cD" '(lsp-find-reference :wk "Jump to references")
-    "ck" '(lsp-find-document :wk "Jump to documentation")
-    )
   )
 
 (use-package dap-mode
@@ -291,13 +281,13 @@
   ;; https://github.com/emacs-lsp/lsp-ui/issues/243
   (defadvice lsp-ui-imenu (after hide-lsp-ui-imenu-mode-line activate)
     (setq mode-line-format nil))
-  :general
-  (nvmap :keymaps '(lsp-ui-mode-map)
-    [remap evil-goto-definition] #'lsp-ui-peek-find-definitions
-    "gD" #'lsp-ui-peek-find-references)
-  (:keymaps '(lsp-ui-peek-mode-map)
-	    "C-j" 'lsp-ui-peek--select-next
-	    "C-k" 'lsp-ui-peek--select-prev)
+  ;; :general
+  ;; (nvmap :keymaps '(lsp-ui-mode-map)
+  ;;   [remap evil-goto-definition] #'lsp-ui-peek-find-definitions
+  ;;   "gD" #'lsp-ui-peek-find-references)
+  ;; (:keymaps '(lsp-ui-peek-mode-map)
+  ;;    "C-j" 'lsp-ui-peek--select-next
+  ;;    "C-k" 'lsp-ui-peek--select-prev)
   )
 
 ;; (use-package lsp-ivy

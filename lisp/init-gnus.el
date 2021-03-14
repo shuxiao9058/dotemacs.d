@@ -1,7 +1,8 @@
 ;;; lisp/init-gnus.el -*- lexical-binding: t; -*-
 
 (use-package gnus
-  :straight (gnus :type built-in)
+  :straight (:type built-in)
+  :ensure t
   ;; :straight (nnhackernews :type built-in)
   ;; :straight (nnreddit :type built-in)
   :bind (("C-c m" . 'gnus))
@@ -18,7 +19,7 @@
   ((gnus-browse-mode gnus-server-mode gnus-group-mode gnus-summary-mode) . hl-line-mode)
   (gnus-started-hook . gnus-group-list-all-groups)
   :custom
-  (gnus-use-cache t)
+  (gnus-use-cache nil)
   (gnus-use-scoring nil)
   (gnus-keep-backlog 10)
   (gnus-suppress-duplicates t)
@@ -28,33 +29,27 @@
   (gnus-dbus-close-on-sleep t)
   (gnus-use-cross-reference nil)
   (gnus-inhibit-startup-message nil)
-  (gnus-home-directory (expand-file-name "gnus/" poly-cache-dir))
-  ;; (gnus-home-directory (no-littering-expand-var-file-name "gnus/"))
-  (gnus-select-method '(nnimap "GMail"
-                               (nnimap-address "imap.gmail.com")
-                               (nnimap-server-port "imaps")
-                               (nnimap-stream ssl)
-                               (nnimap-expunge 'on-exit)
-                               (nnimap-streaming t)
-                               (nnimap-fetch-partial-articles "text/")
-                               (nnimap-record-commands t)
-                               (nnmail-expiry-target "nnimap+GMail:[Gmail]/Trash")
-                               (nnir-search-engine imap)
-                               ;; Client-Side settings
-                               (nnimap-inbox "INBOX")))
+  ;; (gnus-home-directory (expand-file-name "gnus/" poly-cache-dir))
+  (gnus-select-method '(nnnil ""))
+  (gnus-secondary-select-methods
+   '((nnmaildir "Gmail"
+                (directory "~/Mail/"))
+     )
+   )
+  ;; (gnus-select-method
+  ;;  '(nnmaildir "MyMail"
+  ;;              (directory "~/Mail/")))
+  ;; (gnus-secondary-select-methods nil)
+  ;; (gnus-select-method '(nnnil))
   ;; (gnus-secondary-select-methods
-  ;;  '((nntp "gmane" (nntp-address "news.gmane.io"))
-  ;;    (nntp "news.gwene.org")
-  ;;    ;; Still use mbsync to sync Mail directory
-  ;;    (nnmaildir "church"
-  ;;               (directory "~/Maildir/church/"))
-  ;;    (nnmaildir "fastmail"
-  ;;               (directory "~/Maildir/fastmail/"))
-  ;;    (nnhackernews "")))
+  ;;  '((nnmaildir "MyMail"
+  ;;               (directory "~/Mail/"))))
   ;; Render HTML content using gnus-w3m
   (mm-text-html-renderer 'gnus-w3m)
   (gnus-inhibit-images nil);; Keep images displayed
+  (gnus-blocked-images nil)
   :config
+  (auto-image-file-mode t)
   (setq  ;; user-mail-address "xxx@gmail.com"
    send-mail-function 'smtpmail-send-it
    starttls-gnutls-program "gnutls-cli"
@@ -65,6 +60,26 @@
    smtpmail-smtp-service 587
    ;; smtpmail-smtp-service 465
    )
+
+  (setq ;; mail-sources
+   mail-sources '((maildir :path "~/Mail/" :subdirs ("cur" "new")))
+   ;; '((maildir :path "~/Mail/Inbox/")
+   ;;   (maildir :path "~/Mail/archive/"))
+   )
+  (setq group-name-map '(
+			 ;; 	 ("nnmaildir+OldEmail:INBOX" . "Gmail-Inbox")
+			 ;; ("nnmaildir+Work:INBOX" . "Work-Inbox")
+			 ;; ("nnmaildir+Work:Archive" . "Work-Archive")
+			 ;; ("nnmaildir+Work:Backlog" . "Work-Backlog")
+			 ;; ("nnmaildir+Work:Sent Mail" . "Work-Sent")
+			 ;; ("nnmaildir+Work:org-archive" . "Work-Org-Archive")
+			 ;; ("nnmaildir+Gmail:INBOX" . "Gmail: Inbox")
+			 ("Inbox" . "Gmail: Inbox")
+			 ("QQMail" . "Gmail: QQMail")
+			 ))
+  ;; (setq gnus-group-line-format "%ue%uM %S%p[%5t][%L]\t%P%5y:%B%(%uG%)%O\n")
+
+
   ;; You need to replace this key ID with your own key ID!
   (setq mml2015-signers '("FC6BDB92CD5BEB22")
 	mml2015-encrypt-to-self t)
@@ -141,7 +156,7 @@
   :after (gnus gnus-group)
   :ensure nil
   :config
-  (setq gnus-topic-display-empty-topics nil)
+  (setq gnus-topic-display-empty-topics t)
   (add-hook 'gnus-group-mode-hook #'gnus-topic-mode)
   )
 
@@ -202,7 +217,48 @@
 
 (use-package gnus-dired
   :straight (:type built-in)
+  :after gnus
   :hook (dired-mode . gnus-dired-mode)
+  )
+
+(use-package gnus-art
+  :straight (:type built-in)
+  :after gnus
+  :config
+  (setq
+   gnus-article-browse-delete-temp 'ask
+   gnus-article-over-scroll nil
+   gnus-article-show-cursor t
+   gnus-article-sort-functions
+   '((not gnus-article-sort-by-number)
+     (not gnus-article-sort-by-date))
+   gnus-article-truncate-lines nil
+   gnus-html-frame-width 80
+   gnus-html-image-automatic-caching t
+   gnus-inhibit-images t
+   gnus-max-image-proportion 0.7
+   gnus-treat-display-smileys nil
+   gnus-article-mode-line-format "%G %S %m"
+   gnus-visible-headers
+   '("^From:" "^Subject:" "^To:" "^Cc:" "^Newsgroups:" "^Date:"
+     "Followup-To:" "Reply-To:" "^Organization:" "^X-Newsreader:"
+     "^X-Mailer:")
+   gnus-sorted-header-list gnus-visible-headers
+   )
+  :hook
+  (gnus-article-mode-hook . (
+                             lambda () (setq-local fill-column 80)
+                             )
+			  )
+  :general
+  (:keymaps 'gnus-article-mode-map
+            "i" #'gnus-article-show-images
+            "s" #'gnus-mime-save-part
+            "o" #'gnus-mime-copy-part)
+  ;; :bind (:map gnus-article-mode-map
+  ;;             ("i" . gnus-article-show-images)
+  ;;             ("s" . gnus-mime-save-part)
+  ;;             ("o" . gnus-mime-copy-part))
   )
 
 (provide 'init-gnus)

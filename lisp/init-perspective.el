@@ -10,9 +10,7 @@
 
 (use-package persp-projectile
   :straight t
-  :general
-  ('(normal visual evilified) :prefix "SPC" :non-normal-prefix "C-SPC"
-   "pl" #'projectile-persp-switch-project))
+  )
 
 (provide 'init-perspective)
 

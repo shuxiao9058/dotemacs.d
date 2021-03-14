@@ -12,12 +12,12 @@
 (defvar missing-packages-list nil
   "List of packages that `try-require' can't find.")
 
-; (defmacro watcher:try-load (module)
-;   "Try to load the given module, logging an error if unable to load"
-;   `(condition-case ex
-;        (require ,module)
-;      ('error
-;       (message "watcher: Unable to load [%s] module: %s" ,module ex))))
+;; (defmacro watcher:try-load (module)
+;;   "Try to load the given module, logging an error if unable to load"
+;;   `(condition-case ex
+;;        (require ,module)
+;;      ('error
+;;       (message "watcher: Unable to load [%s] module: %s" ,module ex))))
 
 (defun try-require (feature)
   "Attempt to load a library or module. Return true if the
@@ -80,13 +80,13 @@ of an error, just add the package to a list of missing packages."
     (setq exp (cadr exp)))
   exp)
 
-(defun poly-region-active-p ()
-  "Return non-nil if selection is active.
-Detects evil visual mode as well."
-  (declare (side-effect-free t))
-  (or (use-region-p)
-      (and (bound-and-true-p evil-local-mode)
-           (evil-visual-state-p))))
+;; (defun poly-region-active-p ()
+;;   "Return non-nil if selection is active.
+;; Detects evil visual mode as well."
+;;   (declare (side-effect-free t))
+;;   (or (use-region-p)
+;;       (and (bound-and-true-p evil-local-mode)
+;;            (evil-visual-state-p))))
 
 
 (defun poly-keyword-name (keyword)

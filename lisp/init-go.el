@@ -13,9 +13,9 @@
     (progn
       (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 
-      (general-define-key :keymaps 'go-mode-map
-			  [remap godef-jump] #'lsp-find-definition
-			  [remap godef-describe] #'lsp-describe-thing-at-point)
+      ;; (general-define-key :keymaps 'go-mode-map
+      ;; 			  [remap godef-jump] #'lsp-find-definition
+      ;; 			  [remap godef-describe] #'lsp-describe-thing-at-point)
       )
     )
   ;; :hook (befor-save . gofmt-before-save)
