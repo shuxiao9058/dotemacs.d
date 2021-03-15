@@ -207,26 +207,27 @@
 
 (use-package clipetty
   :straight t
-  :after evil
+  ;; :after evil
   :ensure t
   :hook (after-init . global-clipetty-mode)
-  :config
-  ;; copy to system clipboard with `:copy`
-  (evil-ex-define-cmd "copy" #'clipetty-kill-ring-save))
+  ;; :config
+  ;; ;; copy to system clipboard with `:copy`
+  ;; (evil-ex-define-cmd "copy" #'clipetty-kill-ring-save)
+  )
 
 (use-package pbcopy
   :straight t
-  :if (and IS-MAC (not IS-GUI))
+  :if IS-MAC
   ;; :if IS-MAC
   :init (turn-on-pbcopy)
   )
 
-(use-package posframe
-  :straight (posframe
-	     :host github
-	     :repo "tumashu/posframe"
-	     :files ("posframe.el"))
-  :ensure t)
+;; (use-package posframe
+;;   :straight (posframe
+;; 	     :host github
+;; 	     :repo "tumashu/posframe"
+;; 	     :files ("posframe.el"))
+;;   :ensure t)
 
 (use-package restart-emacs
   :straight t
@@ -242,7 +243,8 @@
   :straight t
   :custom
   (gcmh-verbose             nil)
-  ;; (gcmh-lows-cons-threshold #x800000)
+  ;; (gcmh-lows
+  ;; -cons-threshold #x800000)
   (gcmh-high-cons-threshold most-positive-fixnum)
   ;; (gc-cons-percentage 0.1)
   (gcmh-idle-delay 10)
