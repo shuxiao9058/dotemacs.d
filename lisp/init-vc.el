@@ -138,8 +138,7 @@
   (:map transient-edit-map ("q" . transient-quit-one))
   (:map transient-edit-map ("<escape>" . transient-quit-one))
   (:map transient-sticky-map ("q" . transient-quit-one))
-  (:map transient-sticky-map ("<escape>" . transient-quit-one))
-  )
+  (:map transient-sticky-map ("<escape>" . transient-quit-one)))
 
 (use-package magit-gitflow
   :straight t

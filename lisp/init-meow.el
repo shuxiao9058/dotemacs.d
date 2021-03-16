@@ -83,10 +83,10 @@
    '("z" . meow-pop)
    '("Z" . meow-pop-all-selection)
    '("&" . meow-query-replace)
-   ;; '("%" . meow-search)
-   '("/" . meow-search)
+   '("%" . meow-search)
+   ;; '("/" . meow-search)
    ;; '("." . repeat)
-   ;; '("<escape>" . meow-last-buffer)
+   '("<escape>" . meow-last-buffer)
    ))
 
 (use-package meow
@@ -107,10 +107,15 @@
 	       (cons 'meow-replace 'my/replace))
   (add-to-list 'meow-normal-state-mode-list 'eaf-mode)
 
+  (dolist (hook '(git-commit-mode-hook
+		  magit-log-edit-mode-hook))
+    (add-hook hook (lambda()(meow--switch-state 'insert))))
+
   (meow-leader-define-key
    '("e" . my/icomplete-recentf)
    '("." . find-file)
    '("p" . projectile-command-map)
+   '("b" . switch-to-buffer)
    )
   ;; meow-setup is your custom function, see below
   (meow-setup)
@@ -118,6 +123,7 @@
   (meow-setup-line-number)
   ;; If you need setup indicator, see `meow-indicator' for customizing by hand.
   (meow-setup-indicator)
+  :bind ("?" . meow-cheatsheet)
   )
 
 (provide 'init-meow)

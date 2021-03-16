@@ -42,7 +42,7 @@
   ;; (rime-share-data-dir "")
   (rime-user-data-dir (expand-file-name "rime" poly-local-dir))
   :bind
-  (("M-SPC" . toggle-input-method)
+  (;; ("M-SPC" . toggle-input-method)
    :map rime-active-mode-map
    ("<tab>" . rime-inline-ascii)
    :map rime-mode-map
