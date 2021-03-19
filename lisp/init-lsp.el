@@ -97,10 +97,8 @@
 	   typescript-mode
 	   ;; lisp-mode
 	   ;; emacs-lisp-mode
-	   ;; c-mode
-	   ;; cc-mode
-	   ;; c++-mode
-	   ;; C/*l-mode
+	   c-mode
+	   c++-mode
 	   web-mode) . lsp-deferred)
 	 (go-mode . my/lsp-go) ;; disable lsp-completion-enable with go, since gopls is quite slow
 	 ;; if you want which-key integration
@@ -242,6 +240,7 @@
 
 (use-package dap-mode
   :straight t
+  :disabled
   :ensure t
   :after lsp-mode
   :config
@@ -252,47 +251,50 @@
 
 (use-package lsp-treemacs
   :straight t
+  :disabled
   :commands lsp-treemacs-errors-list
   )
 
 (use-package lsp-ui
   :straight t
   :after lsp-mode
+  :disabled
   :diminish
   ;; :custom-face
   ;; (lsp-ui-doc-background ((t (:background nil))))
   ;; (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
-  :hook (lsp-mode-hook . lisp-ui-mode)
+  :hook (lsp . lsp-ui-mode)
   :custom
-  (lsp-ui-doc-enable nil)
+  (lsp-ui-doc-enable t)
   (lsp-ui-doc-header nil)
-  (lsp-ui-doc-include-signature nil)
-  ;; (lsp-ui-doc-position 'top)
-  ;; (lsp-ui-doc-border (face-foreground 'default))
-  (lsp-ui-sideline-enable nil)
+  (lsp-ui-doc-max-height 45)
+  (lsp-ui-doc-include-signature t)
+  (lsp-ui-doc-position 'top)
+  (lsp-ui-doc-alignment 'frame)
+  ;; (lsp-ui-doc-position 'at-point)
+  (lsp-ui-doc-border (face-foreground 'default))
+  (lsp-ui-sideline-enable t)
   (lsp-ui-sideline-ignore-duplicate t)
-  (lsp-ui-sideline-show-code-actions nil)
-  (lsp-ui-sideline-show-diagnostics nil)
+  (lsp-ui-sideline-show-code-actions t)
+  (lsp-ui-sideline-show-diagnostics t)
+  (lsp-ui-doc-use-childframe nil)
+  (lsp-ui-doc-use-webkit t)
+  (lsp-ui-doc-show-with-cursor nil)
+  (lsp-ui-imenu-window-width 200)
+  (lsp-ui-doc-border (face-foreground 'font-lock-comment-face))
+  (lsp-ui-imenu-colors `(,(face-foreground 'font-lock-keyword-face)
+                         ,(face-foreground 'font-lock-string-face)
+                         ,(face-foreground 'font-lock-constant-face)
+                         ,(face-foreground 'font-lock-variable-name-face)))
   :config
   ;; ;; Use lsp-ui-doc-webkit only in GUI
-  ;; (if IS-GUI
-  ;; 	(setq lsp-ui-doc-use-webkit t))
+  ;; (when IS-GUI
+  ;;   (setq lsp-ui-doc-use-webkit t))
   ;; WORKAROUND Hide mode-line of the lsp-ui-imenu buffer
   ;; https://github.com/emacs-lsp/lsp-ui/issues/243
   (defadvice lsp-ui-imenu (after hide-lsp-ui-imenu-mode-line activate)
     (setq mode-line-format nil))
-  ;; :general
-  ;; (nvmap :keymaps '(lsp-ui-mode-map)
-  ;;   [remap evil-goto-definition] #'lsp-ui-peek-find-definitions
-  ;;   "gD" #'lsp-ui-peek-find-references)
-  ;; (:keymaps '(lsp-ui-peek-mode-map)
-  ;;    "C-j" 'lsp-ui-peek--select-next
-  ;;    "C-k" 'lsp-ui-peek--select-prev)
   )
-
-;; (use-package lsp-ivy
-;;   :straight t
-;;   :commands lsp-ivy-workspace-symbol)
 
 (provide 'init-lsp)
 ;;; init-lsp ends here

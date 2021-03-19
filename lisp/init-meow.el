@@ -47,7 +47,7 @@
    '("x" . meow-line)
    '("f" . meow-find)
    '("F" . meow-find-expand)
-   '("g" . meow-grab)
+   '("g" . meow-keyboard-quit)
    '("G" . meow-goto-line)
    '("h" . meow-left)
    '("H" . meow-left-expand)
@@ -98,13 +98,13 @@
   :custom
   (meow-expand-hint-remove-delay 3.0)
   :config
-  (defun my/replace()
-    (interactive)
-    (delete-char 1)
-    (call-interactively #'quoted-insert))
+  ;; (defun my/replace()
+  ;;   (interactive)
+  ;;   (delete-char 1)
+  ;;   (call-interactively #'quoted-insert))
   (add-to-list 'meow-normal-state-mode-list 'eaf-mode)
-  (add-to-list 'meow-selection-command-fallback
-	       (cons 'meow-replace 'my/replace))
+  ;; (add-to-list 'meow-selection-command-fallback
+  ;; 	       (cons 'meow-replace 'my/replace))
   (add-to-list 'meow-normal-state-mode-list 'eaf-mode)
 
   (dolist (hook '(git-commit-mode-hook

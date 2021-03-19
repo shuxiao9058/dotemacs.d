@@ -107,3 +107,5 @@
 ;; (debug-on-entry 'tty-find-type)
 
 ;; (tty-run-terminal-initialization (selected-frame) "xterm-256color")
+
+;;; early-init.el ends here

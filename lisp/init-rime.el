@@ -16,9 +16,12 @@
   ;;                    (ignore-errors (rime-sync)))))
   :custom
   (rime-disable-predicates '(rime-predicate-prog-in-code-p
-                             rime-predicate-after-alphabet-char-p))
+                             rime-predicate-after-alphabet-char-p
+			     meow-normal-mode-p
+                             meow-motion-mode-p
+                             meow-keypad-mode-p))
   (rime-inline-predicates '(
-			    ;; rime-predicate-space-after-cc-p
+			    rime-predicate-space-after-cc-p
                             +rime-predicate-is-back-quote-or-tilde
                             rime-predicate-current-uppercase-letter-p))
   (rime-translate-keybindings '("C-f" "C-b" "C-n" "C-p" "C-g"))
@@ -28,7 +31,8 @@
   (rime-librime-root "/usr/local")
   ;; (rime-show-candidate 'minibuffer)
   (rime-show-preedit t)
-  (rime-show-candidate 'posframe)
+  ;; (rime-show-candidate 'posframe)
+  (rime-show-candidate 'minibuffer)
   ;; (rime-posframe-properties (list :background-color "#202325"
   ;; 				  :foreground-color "#ddddde" ;; "#dedddd"
   ;; 				  :internal-border-width 6))
