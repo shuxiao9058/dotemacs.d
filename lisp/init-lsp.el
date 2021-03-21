@@ -195,16 +195,16 @@
 
   (lsp-register-custom-settings
    `(;; ("gopls.experimentalWorkspaceModule" t t)
-     ("gopls.allExperiments" nil nil)
+     ("gopls.allExperiments" t t)
      ;; ("gopls.experimentalPackageCacheKey" t t)
      ("gopls.usePlaceholders" t t)
-     ("gopls.deepCompletion" nil nil)
+     ("gopls.deepCompletion" t t)
      ("gopls.completeUnimported" t t)
      ("gopls.staticcheck" ,(if (executable-find "staticcheck") t nil) t)
      ("gopls.completionBudget" "200ms" nil)
      ("gopls.semanticTokens" nil nil)
      ;; ("gopls.allExperiments" t t)
-     ("gopls.matcher" "Fuzzy" nil)
+     ("gopls.matcher" "Fuzzy" t)
      ("gopls.hoverKind" "NoDocumentation" nil)
      ;; ("gopls.codelenses" '((gc_details . t) (generate . t) (regenerate_cgo . t) (test . t) (tidy . t) (upgrade_dependency . t) (vendor . t)))
      ("gopls.codelenses"  nil nil)
@@ -222,11 +222,11 @@
      ;; S1007 should use raw string (`...`) with regexp.Compile to avoid having to escape twice
      ("gopls.analyses" ,(mapcar (lambda (a) (cons a :json-false))
 				'(unusedparams composites ST1003  ST1021 ST1016 SA5011 ST1020 ST1005 SA9003 SA4006 ST1022 S1023 SA4011 SA4010)))
-     ("gopls.buildFlags" ["-mod=readonly"])
+     ;; ("gopls.buildFlags" ["-mod=readonly"])
      ("gopls.env" lsp-go-env)
      ("gopls.linkTarget" lsp-go-link-target)
      ("gopls.gofumpt" ,(if (executable-find "gofumpt") t nil) t)
-     ("gopls.directoryFilters" ["-vendor" "-internal" "-.gocache" "-.git" "-!out"])
+     ;; ("gopls.directoryFilters" ["-vendor" "-internal" "-.gocache" "-.git" "-!out"])
      ))
 
   ;; ;; ;; lsp-lua

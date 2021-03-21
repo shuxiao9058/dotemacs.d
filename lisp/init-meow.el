@@ -116,6 +116,8 @@
    '("." . find-file)
    '("p" . projectile-command-map)
    '("b" . switch-to-buffer)
+   '("s" . save-buffer)
+   ;; '("y" . lsp)
    )
   ;; meow-setup is your custom function, see below
   (meow-setup)
