@@ -5,47 +5,24 @@
    ((nil . ((eval . (setq-local my-disable-lsp-completion t)))))
 .")
 
-;; (defun lsp-configure-buffer@after()
-;;   "disable lsp-completion-enable"
-;;   (progn
-;;     (when my-disable-lsp-completion
-;;       (setq-local lsp-completion-enable nil
-;; 		  lsp-modeline-code-actions-enable nil
-;; 		  ))))
-
-;; ;; disable lsp-completion-enable with some project
-;; (advice-add 'lsp-configure-buffer :after 'lsp-configure-buffer@after)
-
 (defun my/local-variables-hook()
   "disable lsp-completion-enable"
   (when (bound-and-true-p my-disable-lsp-completion)
     (setq-local lsp-completion-enable nil
-		lsp-modeline-code-actions-enable nil)
-    )
-  (when (derived-mode-p 'go-mode)
+		lsp-modeline-code-actions-enable nil))
+  (when (derived-mode-p 'go-mode
+			'java-mode
+			'python-mode
+			'lua-mode
+			'scala-mode
+			'js-mode
+			'js2-mode
+			'typescript-mode
+			'c-mode
+			'c++-mode)
+    ;; https://github.com/golang/tools/commit/b2d8b0336
+    (setq-local lsp-completion-filter-on-incomplete nil)
     (lsp-deferred)))
-
-(defun my/lsp-go()
-  "run after local variables loaded"
-  ;; (setq lsp-gopls-build-flags '("-mod=readonly"))
-  (add-to-list 'lsp-file-watch-ignored "[/\\\\]\\vendor$")
-  (add-to-list 'lsp-file-watch-ignored "[/\\\\].git$")
-  (add-to-list 'lsp-file-watch-ignored "[/\\\\]internal$")
-  (add-to-list 'lsp-file-watch-ignored "[/\\\\]\\.gocache$")
-  ;; https://github.com/golang/tools/commit/b2d8b0336
-  (setq-local lsp-completion-filter-on-incomplete nil)
-  (add-hook 'hack-local-variables-hook #'my/local-variables-hook))
-
-;; ;; lsp-diagnostics-updated-hook
-;; (defun my/auto-restart-lsp-after-diagnostics ()
-;;   "After diagnostics handler."
-;;   (save-excursion
-;;     (condition-case _err
-;;         ;; (with-current-buffer (get-buffer-create lsp-treemacs-errors-buffer-name)
-;;         ;;   ;; (treemacs-update-node '(:custom LSP-Errors) t)
-;;         ;;   )
-;; 	(error)))
-;;   )
 
 (with-eval-after-load 'lsp-mode
   (lsp-defun my/lsp--window-log-message@after(workspace (&ShowMessageRequestParams :message :type))
@@ -58,77 +35,13 @@
       (lsp-workspace-restart workspace)
       ))
 
-  (advice-add 'lsp--window-log-message :after 'my/lsp--window-log-message@after)
-  ;; )
-  )
-
-
-;; (defun my/lsp-notify-wrapper (params)
-;;   "filter lsp notify message, then try restart lsp"
-;;   ;; (let ((lsp--virtual-buffer-mappings (ht)))
-;;   (pcase (plist-get params :method)
-;;     (`"window/logMessage"
-;;      ;; (setq my/params params)
-;;      (-let [(&plist :params
-;;                     (&plist :type
-;;                             :message))
-;;             params]
-;;        (when (string-match-p (regexp-quote "goplsworkspace requires") message)
-;; 	 (message "receive goplsworkspace requires error, restart lsp")
-;; 	 (lsp-workspace-restart)
-;; 	 )
-;;        ))
-;;     )
-;;   ;; )
-;;   )
-
+  (advice-add 'lsp--window-log-message :after 'my/lsp--window-log-message@after))
 
 (use-package lsp-mode
   :straight t
   :diminish
   :commands (lsp lsp-deferred lsp-enable-which-key-integration lsp-format-buffer lsp-organize-imports)
-  :hook (((java-mode
-	   python-mode
-	   lua-mode
-	   ;; go-mode
-	   scala-mode
-	   js-mode
-	   js2-mode
-	   typescript-mode
-	   ;; lisp-mode
-	   ;; emacs-lisp-mode
-	   c-mode
-	   c++-mode
-	   web-mode) . lsp-deferred)
-	 (go-mode . my/lsp-go) ;; disable lsp-completion-enable with go, since gopls is quite slow
-	 ;; if you want which-key integration
-	 (lsp-mode . lsp-enable-which-key-integration)
-
-	 ;; (lsp-after-open . (lambda()
-	 ;; 		     (make-local-variable 'company-backends)
-	 ;; 		     (setq company-backends nil)
-	 ;; 		     (setq company-backends
-	 ;; 			   '(company-capf
-	 ;; 			     company-dabbrev-code
-	 ;; 			     (company-files          ; files & directory
-	 ;; 			      company-keywords       ; keywords
-	 ;; 			      )
-	 ;; 			     (company-abbrev company-dabbrev)))))
-	 ;; (lsp-after-open . (lambda()
-	 ;; 		     (make-local-variable 'company-backends)
-	 ;; 		     ;; (setq company-backends nil)
-	 ;; 		     (setq-local company-backends
-	 ;; 				 '(
-	 ;; 				   ;; company-tabnine
-	 ;; 				   ;; company-capf
-	 ;; 				   (company-capf :with
-	 ;; 						 company-tabnine    :separate)
-	 ;; 				   company-dabbrev-code
-	 ;; 				   (company-files          ; files & directory
-	 ;; 				    company-keywords       ; keywords
-	 ;; 				    )
-	 ;; 				   (company-abbrev company-dabbrev)))))
-	 )
+  :hook (lsp-mode . lsp-enable-which-key-integration)
   :custom
   (lsp-restart 'auto-restart)
   ;; (lsp-restart 'ignore)
@@ -141,8 +54,9 @@
   (lsp-auto-execute-action t) ;; Auto-execute single action
   (lsp-document-sync-method nil) ;; use default method recommended by server. 'incremental 'full
   (lsp-enable-xref t)
-  (lsp-headerline-breadcrumb-enable nil)
-  (lsp-modeline-code-actions-enable nil)
+  (lsp-headerline-breadcrumb-enable t)
+  (lsp-modeline-code-actions-segments '(count name icon))
+  (lsp-modeline-code-actions-enable t)
   (lsp-modeline-diagnostics-enable nil)
   (lsp-modeline-diagnostics-scope :file)
   (lsp-diagnostics-provider :none)
@@ -184,14 +98,12 @@
   (lsp-gopls-server-args '("-debug" "127.0.0.1:3000" "-logfile=/tmp/gopls-emacs.log" ;; "-rpc.trace" "-vv"
 			   ))
   :config
-  ;; Run ros install cxxxr/cl-lsp
-  ;; also see repo https://github.com/cxxxr/cl-lsp.git
-  ;; (add-to-list 'lsp-language-id-configuration '(lisp-mode "lisp"))
-  ;; (add-to-list 'lsp-language-id-configuration '(emacs-lisp-mode "elisp"))
-  ;; (lsp-register-client
-  ;;  (make-lsp-client :new-connection (lsp-stdio-connection "/usr/local/bin/cl-lsp")
-  ;;                   :major-modes '(lisp-mode emacs-lisp-mode)
-  ;;                   :server-id 'cl-lsp))
+  (add-to-list 'lsp-file-watch-ignored "[/\\\\]\\vendor$")
+  (add-to-list 'lsp-file-watch-ignored "[/\\\\].git$")
+  (add-to-list 'lsp-file-watch-ignored "[/\\\\]internal$")
+  (add-to-list 'lsp-file-watch-ignored "[/\\\\]\\.gocache$")
+
+  (add-hook 'hack-local-variables-hook #'my/local-variables-hook)
 
   (lsp-register-custom-settings
    `(;; ("gopls.experimentalWorkspaceModule" t t)
@@ -229,9 +141,6 @@
      ;; ("gopls.directoryFilters" ["-vendor" "-internal" "-.gocache" "-.git" "-!out"])
      ))
 
-  ;; ;; ;; lsp-lua
-  ;; ;; ;; 暂时还有点问题，先不用了
-  ;; (require 'init-lsp-lua)
   ;; cancel warning
   (advice-add 'lsp-warn
 	      :around (lambda (orig-func &rest r)

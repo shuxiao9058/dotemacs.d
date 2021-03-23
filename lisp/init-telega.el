@@ -37,6 +37,12 @@
     (dolist (hook '(telga-chat-mode-hook telega-root-mode-hook))
       (add-hook hook (lambda()
 		       (buffer-face-set 'telega-align-by-sarasa)))))
+  (unbind-key (kbd "k") telega-msg-button-map)  ;; delete marked or at point (doubled with d)
+  (unbind-key (kbd "e") telega-msg-button-map)  ;; msg-edit
+  (define-key telega-msg-button-map (kbd "E") 'telega-msg-edit)
+  (unbind-key (kbd "n") telega-msg-button-map)  ;; button-forward (seems to not differ from next link)
+  (unbind-key (kbd "l") telega-msg-button-map)  ;; redisplay
+  (unbind-key (kbd "h") telega-chat-button-map) ;; info (doubled with i)
   )
 
 (provide 'init-telega)
