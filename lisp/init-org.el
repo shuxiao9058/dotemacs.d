@@ -426,8 +426,11 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
    ;;                         )
    org-latex-default-class "article"
    )
-
   ;; (setq org-modules (append org-modules '(org-drill)))
+  :bind
+  ("C-c l" . org-store-link)
+  ("C-c c" . org-capture)
+  ("C-c a" . org-agenda)
   )
 
 (use-package org-agenda
@@ -523,36 +526,6 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
   "Nothing.Overwrite built-in function."
   )
 
-;; Record the time
-(use-package org-clock
-  :straight nil
-  ;; ensure we always run org-clock-persistence-insinuate below
-  :demand t
-  :after (org alert)
-  :custom
-  (org-clock-persist 'history)
-  (org-clock-persist-file (expand-file-name "org-clock-save.el" poly-cache-dir))
-  (org-clock-sound t)
-  (org-clock-in-resume t)
-  (org-clock-idle-time 10)
-  (org-clock-into-drawer t)
-  (org-clock-out-when-done t)
-  (org-clock-persist 'history)
-  (org-clock-history-length 20)
-  (org-clock-mode-line-total 'today)
-  (org-clock-display-default-range 'thisweek)
-  (org-clock-in-switch-to-state "NEXT")
-  (org-clock-out-switch-to-state "WAIT")
-  (org-clock-out-remove-zero-time-clocks t)
-  (org-clock-report-include-clocking-task t)
-  :config
-  (org-clock-persistence-insinuate)
-  (setq org-show-notification-handler
-	'(lambda (m)
-	   (let ((ring-bell-function nil))
-	     (org-clock-play-sound org-clock-sound)
-	     (alert m :timeout 1200 :title "Org Clock Notify" :severity 'high)))))
-
 ;; Write codes in org-mode
 (use-package org-src
   :straight nil
@@ -597,13 +570,6 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
   :custom
   (org-habit-show-habits t)
   (org-habit-show-all-today t))
-
-(use-package evil-org-agenda
-  :straight nil
-  :after evil-org
-  :config
-  (evil-org-agenda-set-keys))
-
 
 (use-package ox-hugo
   :straight t
@@ -663,37 +629,6 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
   :after org
   :config
   (setq-default org-kanban/layout '("..." . 30))
-  )
-
-(use-package org-clock-budget
-  :straight (org-clock-budget
-             :host github
-             :repo "Fuco1/org-clock-budget"
-             )
-  :commands (org-clock-budget-report)
-  :init
-  (defun my-buffer-face-mode-org-clock-budget ()
-    "Sets a fixed width (monospace) font in current buffer"
-    (interactive)
-    ;; (setq buffer-face-mode-face '(:family "Iosevka" :height 1.0))
-    (buffer-face-mode)
-    (setq-local line-spacing nil))
-  :config
-  (add-hook 'org-clock-budget-report-mode-hook (lambda()
-						 (progn
-						   (toggle-truncate-lines 1)
-						   (my-buffer-face-mode-org-clock-budget)
-						   )
-						 ))
-  ;; :general
-  ;; (nmap :keymaps 'org-clock-budget-report-mode-map
-  ;;   "h" #'org-shifttab
-  ;;   "l" #'org-cycle
-  ;;   "e" #'org-clock-budget-report
-  ;;   "s" #'org-clock-budget-report-sort
-  ;;   "d" #'org-clock-budget-remove-budget
-  ;;   "q" #'quit-window
-  ;;   )
   )
 
 (provide 'init-org)
