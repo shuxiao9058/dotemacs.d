@@ -85,13 +85,18 @@
   (setq +org-capture-todo-file (expand-file-name  "todo-list.org" org-beorg-directory))
   (setq +org-capture-notes-file (expand-file-name  "notes.org" org-beorg-directory))
   (setq org-agenda-files (list
-			  (expand-file-name "todo-list.org" org-beorg-directory)))
+			  (expand-file-name "todo-list.org" org-beorg-directory)
+			  (expand-file-name "personal.org" org-beorg-directory)
+			  (expand-file-name "work.org" org-beorg-directory)
+			  ))
 
   ;; archived location
   (setq org-archive-location (concat org-directory "archive/%s_archive::"))
 
   (setq org-refile-targets
-	'((org-agenda-files :maxlevel . 2)))
+	'((org-agenda-files :maxlevel . 2)
+	  ;; ( :maxlevel . 2)
+	  ))
 
   (setq org-tag-alist
 	'(("ignore" . ?i)
@@ -102,32 +107,33 @@
   (setq org-capture-templates
 	'(("t" "Personal todo" entry
 	   (file+headline +org-capture-todo-file "Inbox")
-	   "* TODO %?\n%i\n:LOGBOOK:\n\n:END:\n" :prepend t :kill-buffer t)
+	   "* TODO %?\n%i%U\n" :prepend nil :kill-buffer t)
 	  ("n" "Personal notes" entry
 	   (file+headline +org-capture-notes-file "Inbox")
-	   "* %u %?\n%i\n%a" :prepend t :kill-buffer t)
+	   "* %u %?\n%i%U\n%a" :prepend nil :kill-buffer t)
 
 	  ("w" "Templates for work")
 	  ("wt" "Work todo" entry
 	   (file+headline  +org-capture-todo-file "Work")
-	   "* TODO %?\n%i\n:LOGBOOK:\n\n:END:\n" :prepend t :kill-buffer t)
+	   "* TODO %?\n%i%U\n" :prepend nil :kill-buffer t)
+	  ;; "* TODO %T%?\n%i\n:LOGBOOK:\n\n:END:\n" :prepend t :kill-buffer t)
 	  ("wn" "Work notes" entry
 	   (file+headline +org-capture-notes-file "Work")
-	   "* %u %?\n%i\n%a" :prepend t :kill-buffer t)
+	   "* %u %?\n%i\n%a" :prepend nil :kill-buffer t)
 
 	  ("p" "Templates for projects")
 	  ("pt" "Project todo" entry ; {project-root}/todo.org
 	   (file+headline +org-capture-project-todo-file "TODOs")
-	   "* TODO %?\n%i\n%a" :prepend t :kill-buffer t)
+	   "* TODO %T%?\n%i\n%a" :prepend nil :kill-buffer t)
 	  ("pn" "Project notes" entry ; {project-root}/notes.org
 	   (file+headline +org-capture-project-notes-file "Notes")
-	   "* TODO %?\n%i\n%a" :prepend t :kill-buffer t)
+	   "* TODO %?\n%i%U\n%a" :prepend nil :kill-buffer t)
 	  ("pc" "Project changelog" entry ; {project-root}/changelog.org
 	   (file+headline +org-capture-project-notes-file "Changelog")
-	   "* TODO %?\n%i\n%a" :prepend t :kill-buffer t)
+	   "* TODO %?\n%i%U\n%a" :prepend nil :kill-buffer t)
 	  ("j" "Journal" entry
 	   (file+olp+datetree (expand-file-name "journal.org" org-beorg-directory))
-	   "* %?\nEntered on %U\n %i\n" :empty-lines 1)))
+	   "* %T%?\nEntered on %U\n %i\n" :empty-lines 1)))
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.8))
 
   ;; minted required:
@@ -619,7 +625,6 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
   ;; (setq )
   ;; (setq org-bullets-bullet-list '("①" "②" "③" "④" "⑤" "⑥" "⑦" "⑧" "⑨"))
   )
-
 
 (use-package org-kanban
   :straight t

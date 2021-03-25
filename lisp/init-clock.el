@@ -56,14 +56,19 @@
 						 ))
   )
 
-(use-package secretaria
-  :straight t
-  :after org
-  :custom
-  ;; remind me about every 10 minutes
-  (secretaria-clocked-in-reminder-every-minutes 10)
-  (secretaria-today-unknown-time-appt-remind-every 10)
-  )
+;; (use-package secretaria
+;;   :straight t
+;;   :after (alert f s)
+;;   :custom
+;;   (secretaria-clocked-task-save-file
+;;    (expand-file-name "secretaria-clocked-task" poly-cache-dir))
+;;   ;; remind me about every 10 minutes
+;;   (secretaria-clocked-in-reminder-every-minutes 10)
+;;   (secretaria-today-unknown-time-appt-remind-every 10)
+;;   :config
+;;   ;; use this for getting a reminder every 30 minutes of those tasks scheduled
+;;   ;; for today and which have no time of day defined.
+;;   (add-hook 'after-init-hook #'secretaria-unknown-time-always-remind-me))
 
 (use-package org-pomodoro
   :straight t
@@ -81,17 +86,21 @@
   :config
   (add-hook 'org-pomodoro-started-hook
 	    (lambda()
-	      (do-applescript "tell application \"JustFocus\"\nlaunch\nstart pomodoro\nend tell\n")))
-  (add-hook
-   'org-pomodoro-finished-hook
-   (lambda ()
-     (do-applescript "tell application \"JustFocus\"\nstop\nend tell\n")))
+	      (do-applescript "tell application \"JustFocus\" \nlaunch\nstart pomodoro\nend tell")))
+  (add-hook 'org-pomodoro-finished-hook
+	    (lambda ()
+	      (do-applescript "tell application \"JustFocus\" \nstop\nend tell")
+	      (when (org-clock-is-active)
+		(if (org-pomodoro-active-p)
+		    (org-pomodoro)
+      		  ;; todo: subtract idle time (right not the loss is small, like 3 min)
+		  ;; something like org-clockout nil t (- (org-current-time) idle-time)
+		  (org-clock-out))
+		)))
   :bind
   (("C-c C-x C-p" . org-pomodoro)
    :map org-mode-map
-   ("C-c C-x C-p" . org-pomodoro))
-  )
-
+   ("C-c C-x C-p" . org-pomodoro)))
 
 (use-package org-mru-clock
   :straight t
@@ -103,7 +112,6 @@
   (org-mru-clock-keep-formatting t)
   (org-mru-clock-predicate nil))
 
-
 (defvar poly/previously-clocking '())
 
 (defun poly/temporarily-clock-out ()
@@ -113,7 +121,7 @@
         (progn
           (org-clock-goto)
           (add-to-list 'poly/previously-clocking
-                       (cons org-clock-heading (org-id-get-create)))
+		       (cons org-clock-heading (org-id-get-create)))
           (org-clock-out))
       (message "No clock is active now.")
       )))
@@ -125,7 +133,7 @@
         (progn
           (org-clock-goto)
           (add-to-list 'poly/previously-clocking
-                       (cons org-clock-heading (org-id-get-create)))
+		       (cons org-clock-heading (org-id-get-create)))
           (org-todo 'todo)
           (org-clock-out)
           (save-buffer))

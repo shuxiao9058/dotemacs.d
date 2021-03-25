@@ -23,6 +23,7 @@
 (require 'init-recentf)
 ;; case show line numbers
 (require 'init-linum)
+;; (require 'init-font)
 
 (unless window-system
   (require 'init-iterm2))
@@ -42,6 +43,7 @@
 (require 'init-markdown)
 (require 'init-pair)
 (require 'init-org)
+(require 'init-clock)
 (require 'init-org-roam)
 
 ;; programming
@@ -109,7 +111,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(git-messenger:use-magit-popup t)
- '(helm-minibuffer-history-key "M-p")
+ ;; '(helm-minibuffer-history-key "M-p")
  ;; '(lsp-go-gopls-server-args
  ;; '("-debug" "127.0.0.1:3000" "-logfile=/tmp/gopls-emacs.log") nil nil "Customized with use-package lsp-mode")
  ;; '(lsp-go-gopls-server-path "/usr/local/bin/gopls" nil nil "Customized with use-package lsp-mode")
@@ -134,7 +136,7 @@
  '(highlight-indentation-face ((t (:inherit default :foreground "#878787"))))
  '(hl-line ((t (:background "DodgerBlue4"))))
  '(icomplete-first-match ((t (:inherit mode-line-emphasis))))
- '(ivy-posframe-cursor ((t (:background "#268bd2"))))
+ ;; '(ivy-posframe-cursor ((t (:background "#268bd2"))))
  '(mode-line-buffer-id ((t (:foreground "Light Blue"))))
  '(orderless-match-face-0 ((t (:inherit font-lock-type-face :weight bold))))
  '(orderless-match-face-1 ((t (:inherit error :weight bold))))
