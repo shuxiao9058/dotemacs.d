@@ -44,6 +44,7 @@
 (require 'init-pair)
 (require 'init-org)
 (require 'init-clock)
+(require 'init-pomo)
 (require 'init-org-roam)
 
 ;; programming

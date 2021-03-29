@@ -51,12 +51,12 @@
   (lsp-log-io nil)
   (lsp-log-max nil)
   (lsp-print-performance nil)
-  (lsp-auto-execute-action t) ;; Auto-execute single action
+  (lsp-auto-execute-action nil) ;; Auto-execute single action
   (lsp-document-sync-method nil) ;; use default method recommended by server. 'incremental 'full
   (lsp-enable-xref t)
-  (lsp-headerline-breadcrumb-enable t)
+  (lsp-headerline-breadcrumb-enable nil)
   (lsp-modeline-code-actions-segments '(count name icon))
-  (lsp-modeline-code-actions-enable t)
+  (lsp-modeline-code-actions-enable nil)
   (lsp-modeline-diagnostics-enable nil)
   (lsp-modeline-diagnostics-scope :file)
   (lsp-diagnostics-provider :none)
@@ -110,7 +110,7 @@
      ("gopls.allExperiments" t t)
      ;; ("gopls.experimentalPackageCacheKey" t t)
      ("gopls.usePlaceholders" t t)
-     ("gopls.deepCompletion" t t)
+     ("gopls.deepCompletion" nil nil)
      ("gopls.completeUnimported" t t)
      ("gopls.staticcheck" ,(if (executable-find "staticcheck") t nil) t)
      ("gopls.completionBudget" "200ms" nil)

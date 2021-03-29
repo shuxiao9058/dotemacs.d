@@ -82,31 +82,39 @@
   (setq org-directory "~/Dropbox/org")
 
   (setq org-beorg-directory (expand-file-name "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/beorg/"))
-  (setq +org-capture-todo-file (expand-file-name  "todo-list.org" org-beorg-directory))
-  (setq +org-capture-notes-file (expand-file-name  "notes.org" org-beorg-directory))
+  (setq +org-capture-gtd-file (expand-file-name  "personal-gtd.org" org-beorg-directory))
+  (setq +org-capture-notes-file (expand-file-name  "personal-note.org" org-beorg-directory))
+  (setq +org-capture-work-gtd-file (expand-file-name "work-gtd.org" org-beorg-directory))
+  (setq +org-capture-work-notes-file (expand-file-name "work-note.org" org-beorg-directory))
+  (setq +org-capture-work-weekly-file (expand-file-name "work-weekly.org" org-beorg-directory))
   (setq org-agenda-files (list
-			  (expand-file-name "todo-list.org" org-beorg-directory)
-			  (expand-file-name "personal.org" org-beorg-directory)
-			  (expand-file-name "work.org" org-beorg-directory)
-			  ))
+			  +org-capture-gtd-file
+			  +org-capture-work-gtd-file))
 
   ;; archived location
   (setq org-archive-location (concat org-directory "archive/%s_archive::"))
 
   (setq org-refile-targets
-	'((org-agenda-files :maxlevel . 2)
-	  ;; ( :maxlevel . 2)
+	`((org-agenda-files :maxlevel . 2)
+	  (,(list +org-capture-notes-file
+		  +org-capture-work-notes-file
+		  +org-capture-work-weekly-file) :maxlevel . 2)
+	  ;; ((list +org-capture-notes-file
+	  ;; 	 +org-capture-work-notes-file
+	  ;; 	 +org-capture-work-weekly-file
+	  ;; 	 ) :maxlevel . 2)
 	  ))
 
   (setq org-tag-alist
 	'(("ignore" . ?i)
-	  ("CAT" . ?c)
-	  ("PMP" . ?p)))
-
+	  ;; ("CAT" . ?c)
+	  ;; ("PMP" . ?p)
+	  ("crypt" . ?c)
+	  ))
 
   (setq org-capture-templates
 	'(("t" "Personal todo" entry
-	   (file+headline +org-capture-todo-file "Inbox")
+	   (file+headline +org-capture-gtd-file "Inbox")
 	   "* TODO %?\n%i%U\n" :prepend nil :kill-buffer t)
 	  ("n" "Personal notes" entry
 	   (file+headline +org-capture-notes-file "Inbox")
@@ -114,19 +122,22 @@
 
 	  ("w" "Templates for work")
 	  ("wt" "Work todo" entry
-	   (file+headline  +org-capture-todo-file "Work")
+	   (file+olp +org-capture-work-gtd-file "Work" "Todo")
 	   "* TODO %?\n%i%U\n" :prepend nil :kill-buffer t)
 	  ;; "* TODO %T%?\n%i\n:LOGBOOK:\n\n:END:\n" :prepend t :kill-buffer t)
 	  ("wn" "Work notes" entry
-	   (file+headline +org-capture-notes-file "Work")
+	   (file+olp +org-capture-work-notes-file "Work" "Note")
 	   "* %u %?\n%i\n%a" :prepend nil :kill-buffer t)
+	  ("ww" "Work weekly" entry
+	   (file+olp +org-capture-work-weekly-file "Work" "Weekly")
+	   "* %U 周汇报\n\n   本周事项：\n\n     - %?\n\n   下周计划：\n\n%i\n" :prepend nil :kill-buffer t)
 
 	  ("p" "Templates for projects")
 	  ("pt" "Project todo" entry ; {project-root}/todo.org
-	   (file+headline +org-capture-project-todo-file "TODOs")
+	   (file+headline +org-capture-project-todo-file "Todo")
 	   "* TODO %T%?\n%i\n%a" :prepend nil :kill-buffer t)
 	  ("pn" "Project notes" entry ; {project-root}/notes.org
-	   (file+headline +org-capture-project-notes-file "Notes")
+	   (file+headline +org-capture-project-notes-file "Note")
 	   "* TODO %?\n%i%U\n%a" :prepend nil :kill-buffer t)
 	  ("pc" "Project changelog" entry ; {project-root}/changelog.org
 	   (file+headline +org-capture-project-notes-file "Changelog")
@@ -219,64 +230,64 @@
   ;; default article
   (setq org-latex-classes
 	'(("article" "
-%!TEX TS-program = xelatex
-%!TEX encoding = UTF-8 Unicode
+	%!TEX TS-program = xelatex
+	%!TEX encoding = UTF-8 Unicode
 
-\\documentclass[11pt,titlepage,a4paper]{article}
-\\usepackage{ctex}
-\\usepackage[top=3truecm,bottom=2.5truecm,left=1.1truecm,right=1.1truecm,bindingoffset=1.0truecm,
-headsep=1.6truecm,
-footskip=1.5truecm,
-headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt了
-]{geometry}
-%\\XeTeXlinebreaklocale \"zh\"
-%\\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
-%\\usepackage[top=1in,bottom=1in,left=0.8in,right=0.8in]{geometry}
-%\\usepackage[table]{xcolor}
-%\\definecolor{link}{HTML}{0366D6}
-%\\definecolor{lightgray}{rgb}{0.83, 0.83, 0.83}
-%\\definecolor{mintcream}{rgb}{0.96, 1.0, 0.98}
-%\\rowcolors{3}{lightgray!30}{white}
-%\\usepackage{fontspec}
-%\\newfontfamily\\zhfont[BoldFont=PingFang SC]{PingFang SC}
-%\\newfontfamily\\zhpunctfont{PingFang SC}
-%\\setmainfont{Monaco}
-%\\setsansfont{Monaco}
-%\\setmonofont{Monaco}
-%\\usepackage{zhspacing}
-%\\zhspacing
-%\\usepackage{indentfirst}
-%\\usepackage[table]{xcolor}
-\\usepackage{xcolor}
-%\\definecolor{link}{HTML}{0366D6}
-% \\definecolor{lightgray}{rgb}{0.83, 0.83, 0.83}
-%\\definecolor{mintcream}{rgb}{0.96, 1.0, 0.98}
-%\\rowcolors{3}{lightgray!30}{white}
-\\usepackage{hyperref}
-%\\hypersetup{
-%  colorlinks=true,
-%   linkcolor=link,
-%   citecolor=[rgb]{0,0.47,0.68},
-%   filecolor=link,
-%   urlcolor=link,
-%   pagebackref=true,
-%   linktoc=all,
-% }
-%\\usepackage[outputdir=./build/tex]{minted}
-                        \\usepackage[utf8]{inputenc}
-                        \\usepackage{alltt}
-                        \\usepackage{caption}
-                        \\usepackage{listings}
-%                        \\usepackage{xcolor}
-                        \\usepackage{graphicx}
-                        \\usepackage{lmodern}
-                        \\DeclareCaptionFormat{listing}{\\rule{\\dimexpr\\textwidth+17pt\\relax}{0.4}\\vskip1pt#1#2#3}
-                        % \\captionsetup[lstlisting]{singlelinecheck=false, margin=0pt, font={bf,footnotesize}}
-                        \\definecolor{wine-stain}{rgb}{0.4,0.3,0.3}
-                        \\hypersetup{colorlinks,linkcolor=wine-stain,anchorcolor=black,linktoc=all,
-                        citecolor=black}
-                        [NO-DEFAULT-PACKAGES]
-                      "
+	\\documentclass[11pt,titlepage,a4paper]{article}
+	\\usepackage{ctex}
+	\\usepackage[top=3truecm,bottom=2.5truecm,left=1.1truecm,right=1.1truecm,bindingoffset=1.0truecm,
+		     headsep=1.6truecm,
+		     footskip=1.5truecm,
+		     headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt了
+		     ]{geometry}
+	%\\XeTeXlinebreaklocale \"zh\"
+	%\\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+	%\\usepackage[top=1in,bottom=1in,left=0.8in,right=0.8in]{geometry}
+	%\\usepackage[table]{xcolor}
+	%\\definecolor{link}{HTML}{0366D6}
+	%\\definecolor{lightgray}{rgb}{0.83, 0.83, 0.83}
+	%\\definecolor{mintcream}{rgb}{0.96, 1.0, 0.98}
+	%\\rowcolors{3}{lightgray!30}{white}
+	%\\usepackage{fontspec}
+	%\\newfontfamily\\zhfont[BoldFont=PingFang SC]{PingFang SC}
+	%\\newfontfamily\\zhpunctfont{PingFang SC}
+	%\\setmainfont{Monaco}
+	%\\setsansfont{Monaco}
+	%\\setmonofont{Monaco}
+	%\\usepackage{zhspacing}
+	%\\zhspacing
+	%\\usepackage{indentfirst}
+	%\\usepackage[table]{xcolor}
+	\\usepackage{xcolor}
+	%\\definecolor{link}{HTML}{0366D6}
+	% \\definecolor{lightgray}{rgb}{0.83, 0.83, 0.83}
+	%\\definecolor{mintcream}{rgb}{0.96, 1.0, 0.98}
+	%\\rowcolors{3}{lightgray!30}{white}
+	\\usepackage{hyperref}
+	%\\hypersetup{
+	%  colorlinks=true,
+	%   linkcolor=link,
+	%   citecolor=[rgb]{0,0.47,0.68},
+	%   filecolor=link,
+	%   urlcolor=link,
+	%   pagebackref=true,
+	%   linktoc=all,
+	% }
+	%\\usepackage[outputdir=./build/tex]{minted}
+        \\usepackage[utf8]{inputenc}
+        \\usepackage{alltt}
+        \\usepackage{caption}
+        \\usepackage{listings}
+	%                        \\usepackage{xcolor}
+        \\usepackage{graphicx}
+        \\usepackage{lmodern}
+        \\DeclareCaptionFormat{listing}{\\rule{\\dimexpr\\textwidth+17pt\\relax}{0.4}\\vskip1pt#1#2#3}
+        % \\captionsetup[lstlisting]{singlelinecheck=false, margin=0pt, font={bf,footnotesize}}
+        \\definecolor{wine-stain}{rgb}{0.4,0.3,0.3}
+        \\hypersetup{colorlinks,linkcolor=wine-stain,anchorcolor=black,linktoc=all,
+        citecolor=black}
+        [NO-DEFAULT-PACKAGES]
+        "
 
 	   ("\\section{%s}" . "\\section*{%s}")
 	   ("\\subsection{%s}" . "\\subsection*{%s}")
@@ -468,6 +479,7 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
   ;; holidays
   (org-agenda-include-diary t)
   (org-agenda-include-deadlines t)
+  (org-agenda-todo-ignore-deadlines nil)
   (org-agenda-follow-indirect t)
   (org-agenda-inhibit-startup t)
   (org-agenda-show-all-dates t)
@@ -505,6 +517,13 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
      ;; (search . "[%-4e] %?-17b")
      )
    )
+  (org-agenda-custom-commands '(
+				("1" "Events" agenda "display deadlines and exclude scheduled"
+				 ((org-agenda-span 'month)
+				  (org-agenda-time-grid nil)
+				  (org-agenda-show-all-dates nil)
+				  (org-agenda-entry-types '(:deadline)) ;; this entry excludes :scheduled
+				  (org-deadline-warning-days 0)))))
   :config
   (appt-activate 1)
   (org-agenda-to-appt)
@@ -549,14 +568,14 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
   (org-confirm-babel-evaluate nil)
   (org-edit-src-content-indentation 0)
   (org-src-lang-modes '(("C"      . c)
-                        ("C++"    . c++)
-                        ("bash"   . sh)
-                        ("cpp"    . c++)
-                        ("dot"    . graphviz-dot)
-                        ("elisp"  . emacs-lisp)
-                        ("ocaml"  . tuareg)
-                        ("shell"  . sh)
-                        ("sqlite" . sql)))
+			("C++"    . c++)
+			("bash"   . sh)
+			("cpp"    . c++)
+			("dot"    . graphviz-dot)
+			("elisp"  . emacs-lisp)
+			("ocaml"  . tuareg)
+			("shell"  . sh)
+			("sqlite" . sql)))
   (org-babel-load-languages '((awk        . t)
 			      (C          . t)
 			      (calc       . t)
@@ -592,7 +611,7 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
   :after (org osx)
   :init
   (setq org-taskjuggler-default-global-properties
-        "shift s39 \"Full time shift\" {
+	"shift s39 \"Full time shift\" {
            workinghours mon-fri 9:00-12:00,13:00-19:00
         }")
   (setq org-duration-units `(("min" . 1)
@@ -619,8 +638,8 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
   :straight t
   :commands (org-bullets-mode org-bullets)
   :hook (org-mode . org-bullets-mode)
-  ;; :custom
-  ;; (org-bullets-bullet-list '("⊢" "⋮" "⋱" "⋱" "⋱"))
+  :custom
+  (org-bullets-bullet-list '("⊢" "⋮" "⋱" "⋱" "⋱"))
   ;; (setq org-bullets-bullet-list '("🐳" "🐬" "🐠" "🐟" "🐤"))
   ;; (setq )
   ;; (setq org-bullets-bullet-list '("①" "②" "③" "④" "⑤" "⑥" "⑦" "⑧" "⑨"))
@@ -635,6 +654,84 @@ headheight=15pt    % 标准中没有要求页眉的高度，这里设置成15pt�
   :config
   (setq-default org-kanban/layout '("..." . 30))
   )
+
+(use-package org-crypt
+  :straight nil
+  :after org
+  :config
+  (org-crypt-use-before-save-magic)
+  (setq org-tags-exclude-from-inheritance (quote ("crypt")))
+  ;; (setq org-crypt-disable-auto-save 'encrypt)
+  (setq org-crypt-disable-auto-save t)
+  ;; GPG key to use for encryption
+  ;; Either the Key ID or set to nil to use symmetric encryption.
+  (setq org-crypt-key "FC6BDB92CD5BEB22")
+  :bind
+  (:map org-mode-map
+	("C-c e" . org-encrypt-entry)
+	("C-c E" . org-encrypt-entries)
+	("C-c d" . org-decrypt-entry)
+	("C-c D" . org-decrypt-entries)
+	;; ("C-c I" . org-insert-epa-file-local-variables)
+	)
+  )
+
+;; (defun org-insert-epa-file-local-variables ()
+;;   (interactive)
+;;   (add-file-local-variable-prop-line 'mode 'org)
+;;   (add-file-local-variable-prop-line 'epa-file-encrypt-to
+;;                                      (progn
+;;                                        (when (not epa-file-encrypt-to)
+;;                                          (epa-file-select-keys))
+;;                                        epa-file-encrypt-to)))
+
+
+(defun org-unlinkify ()
+  "Replace an org-link with the path, or description."
+  (interactive)
+  (let ((eop (org-element-context)))
+    (when (eq (org-element-type eop) 'link)
+      (save-excursion
+        (let* ((start (org-element-property :begin eop))
+               (end (org-element-property :end eop))
+               (contents-begin (org-element-property :contents-begin eop))
+               (contents-end (org-element-property :contents-end eop))
+               (path (org-element-property :path eop))
+               (desc (and contents-begin
+                          contents-end
+                          (buffer-substring contents-begin contents-end))))
+          (setf (buffer-substring start end) (or desc path)))))))
+
+(defalias 'org-delinkify 'org-unlinkify)
+
+(defun org-refile-and-link ()
+  "Refile heading, adding a link to the new location.
+Prefix arguments are interpreted by `org-refile'."
+  (interactive)
+  (when (member current-prefix-arg '(3 (4) (16)))
+    (user-error "Linking is incompatible with that prefix argument"))
+  (let ((heading  (org-get-heading t t))
+        (orig-file (buffer-file-name)))
+    (call-interactively #'org-refile)
+    (let* ((refile-file
+	    (bookmark-get-filename
+	     (assoc (plist-get org-bookmark-names-plist :last-refile)
+		    bookmark-alist)))
+           (same-file (string= orig-file refile-file))
+           (link (if same-file
+		     (concat "*" heading)
+                   (concat refile-file "::*" heading)))
+           (desc heading))
+      (open-line 1)
+      (insert (org-make-link-string link desc)))))
+
+(defun my-org-insert-last-stored-link (arg)
+  "Insert the last link stored in `org-stored-links' like
+`org-insert-last-stored-link', but without a trailing newline."
+  (interactive "p")
+  (org-insert-all-links arg "" ""))
+
+(bind-key [remap org-insert-last-stored-link]  #'my-org-insert-last-stored-link 'org-mode-map)
 
 (provide 'init-org)
 ;;; init-org.el ends here

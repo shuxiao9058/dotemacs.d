@@ -26,7 +26,7 @@
   (magit-merge-arguments (quote ("--no-ff")))
   (magit-rebase-arguments (quote ("--autostash")))
   ;; use colored graph lines. Could be a performance issue.
-  (magit-log-arguments (quote ("-n256" "--graph" "--decorate" "--color" "--stat")))
+  (magit-log-arguments (quote ("-n64" "--graph" "--decorate" "--color" "--stat")))
   (magit-diff-use-overlays nil)
   (magit-use-overlays nil)
   (magit-auto-revert-mode t)

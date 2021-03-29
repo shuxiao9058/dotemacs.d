@@ -11,14 +11,24 @@
   :commands (telega)
   :defer t
   :custom
-  (telega-server-libs-prefix "/opt/td")
-  (telega-use-images t)
+  ( telega-symbol-reply "↫")
+  (telega-root-show-avatars nil)
+  (telega-animation-play-inline nil)
+  ;; (telega-server-libs-prefix "/opt/td")
+  (telega-server-libs-prefix "/usr/local/opt/tdlib")
+  ;; (telega-use-images t)
   (telega-proxies
    (list
     '(:server "127.0.0.1" :port 6153 :enable t
 	      :type (:@type "proxyTypeSocks5"))))
   (telega-directory (expand-file-name "telega" poly-cache-dir))
   :config
+  ;; show previews for photo/video webpages
+  (advice-add #'telega-ins--webpage :before-while
+              (lambda (msg &rest args)
+                (let ((ht (telega--tl-get msg :content :web_page :type)))
+                  (-contains? '("video" "photo") ht))))
+
   (add-hook 'telega-chat-mode-hook
 	    (lambda ()
 	      (set (make-local-variable 'company-backends)

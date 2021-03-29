@@ -27,7 +27,7 @@
      ;; orderless-strict-full-initialism = like strict-initialism but
      ;; require the first initial to match the candidate’s first word. 'bb'
      ;; would match 'bar-baz' but not 'foo-bar-baz'.
-     orderless-strict-leading-initialism
+     ;; orderless-strict-leading-initialism
      ;; The component is treated as a regexp that must match somewhere in
      ;; the candidate.
      orderless-regexp
@@ -37,7 +37,18 @@
      ;; The component is treated as a literal string that must occur in the
      ;; candidate.
      orderless-literal))
-  )
+  :config
+  (defun my/match-components-literally ()
+    "Components match literally for the rest of the session."
+    (interactive)
+    (setq-local
+     orderless-matching-styles '(orderless-literal)
+     completion-styles '(orderless)
+     ;; orderless-matching-styles '(orderless-strict-initialism)
+     orderless-style-dispatchers nil))
+  :bind
+  (:map minibuffer-local-completion-map
+	("C-l" . my/match-components-literally)))
 
 ;; ;; '=' at the end of a component will make this component match as a literal.
 ;; (defun my/orderless-literal-dispatcher (pattern _index _total)
@@ -220,23 +231,23 @@ key in `completion-list-mode-map'."
   ;; (icomplete-tidy-shadowed-file-names t)
   ;; (icomplete-prospects-height 2)
   :config
-  (when (require 'orderless nil t)
-    (setq completion-styles (cons 'orderless completion-styles)) ;把orderless放到completion-styles 开头
-    ;; 默认按空格开隔的每个关键字支持regexp/literal/initialism 3种算法
-    (setq orderless-matching-styles '(orderless-regexp orderless-literal orderless-initialism ))
-    (defun without-if-$! (pattern _index _total)
-      (when (or (string-prefix-p "$" pattern) ;如果以! 或$ 开头，则表示否定，即不包含此关键字
-		(string-prefix-p "!" pattern))
-	`(orderless-without-literal . ,(substring pattern 1))))
-    (defun flex-if-comma (pattern _index _total) ;如果以逗号结尾，则以flex 算法匹配此组件
-      (when (string-suffix-p "," pattern)
-	`(orderless-flex . ,(substring pattern 0 -1))))
-    (defun literal-if-= (pattern _index _total) ;如果以=结尾，则以literal  算法匹配此关键字
-      (when (or (string-suffix-p "=" pattern)
-		(string-suffix-p "-" pattern)
-		(string-suffix-p ";" pattern))
-	`(orderless-literal . ,(substring pattern 0 -1))))
-    (setq orderless-style-dispatchers '(literal-if-= flex-if-comma without-if-$!)))
+  ;; (when (require 'orderless nil t)
+  ;;   (setq completion-styles (cons 'orderless completion-styles)) ;把orderless放到completion-styles 开头
+  ;;   ;; 默认按空格开隔的每个关键字支持regexp/literal/initialism 3种算法
+  ;;   (setq orderless-matching-styles '(orderless-regexp orderless-literal orderless-initialism ))
+  ;;   (defun without-if-$! (pattern _index _total)
+  ;;     (when (or (string-prefix-p "$" pattern) ;如果以! 或$ 开头，则表示否定，即不包含此关键字
+  ;; 		(string-prefix-p "!" pattern))
+  ;; 	`(orderless-without-literal . ,(substring pattern 1))))
+  ;;   (defun flex-if-comma (pattern _index _total) ;如果以逗号结尾，则以flex 算法匹配此组件
+  ;;     (when (string-suffix-p "," pattern)
+  ;; 	`(orderless-flex . ,(substring pattern 0 -1))))
+  ;;   (defun literal-if-= (pattern _index _total) ;如果以=结尾，则以literal  算法匹配此关键字
+  ;;     (when (or (string-suffix-p "=" pattern)
+  ;; 		(string-suffix-p "-" pattern)
+  ;; 		(string-suffix-p ";" pattern))
+  ;; 	`(orderless-literal . ,(substring pattern 0 -1))))
+  ;;   (setq orderless-style-dispatchers '(literal-if-= flex-if-comma without-if-$!)))
 
   (advice-add 'icomplete-vertical-minibuffer-teardown
               :after #'visual-line-mode)
@@ -270,6 +281,7 @@ normally would when calling `yank' followed by `yank-pop'."
           (delete-region (region-beginning) (region-end)))
         (insert
          (completing-read "Yank from kill ring: " kills nil t)))))
+
   :bind (
 	 ([remap yank-pop] . my/icomplete-yank-kill-ring)
 	 :map icomplete-minibuffer-map
@@ -292,7 +304,7 @@ normally would when calling `yank' followed by `yank-pop'."
 	 ("<left>"  . icomplete-backward-completions)
 	 ("<right>" . icomplete-forward-completions)
 	 ("<backtab>" . icomplete-backward-completions)
-	 ("C-l" . icomplete-fido-backward-updir)
+	 ;; ("C-l" . icomplete-fido-backward-updir)
 	 ("DEL" . icomplete-fido-backward-updir)
 
 	 ;; "RET" #'icomplete-fido-ret
@@ -300,23 +312,25 @@ normally would when calling `yank' followed by `yank-pop'."
 	 ("C-s" . icomplete-forward-completions)
 	 ("C-r" . icomplete-backward-completions)
 	 ("C-." . next-history-element)
+	 ;; ("C-l" . my/match-components-literally)
+
 	 ;; "C-l" #'icomplete-fido-backward-updir
-					; ("C-e" . (lambda(&optional argv)(interactive)(if (eolp) (call-interactively #'icomplete-fido-exit) (end-of-line))))
+	 ;; ("C-e" . (lambda(&optional argv)(interactive)(if (eolp) (call-interactively #'icomplete-fido-exit) (end-of-line))))
 	 ([remap next-line] . icomplete-forward-completions)
 	 ;; [remap minibuffer-complete] #'icomplete-backward-completions
 	 ;; ([remap minibuffer-complete-and-exit] . icomplete-ret)
 	 )
   )
 
-					; (use-package restricto
-					;   :after minibuffer
-					;   :straight (:host github :repo "oantolin/restricto")
+;; (use-package restricto
+;;   :after minibuffer
+;;   :straight (:host github :repo "oantolin/restricto")
 
-					;   :bind (:map minibuffer-local-completion-map
-					; 	      ("SPC"   . restricto-narrow)
-					; 	      ("S-SPC" . restricto-widen))
-					;   :config
-					;   (restricto-mode))
+;;   :bind (:map minibuffer-local-completion-map
+;; 	      ("SPC"   . restricto-narrow)
+;; 	      ("S-SPC" . restricto-widen))
+;;   :config
+;;   (restricto-mode))
 
 ;; swiper is a buffer search interface using ivy.
 (use-package swiper

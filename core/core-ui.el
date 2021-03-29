@@ -176,10 +176,6 @@
 (when (and (fboundp 'blink-cursor-mode) (not (eq blink-cursor-mode -1)))
   (blink-cursor-mode -1))
 
-;; ;; tooltips in echo-aera
-;; (when (and (fboundp 'tooltip-mode) (not (eq tooltip-mode -1)))
-;;   (tooltip-mode -1))
-
 (when EMACS27+
   ;; very long line performence optimizy
   (global-so-long-mode t))
@@ -194,24 +190,22 @@
 ;; (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
 (when IS-MAC
-  (setq                   frame-resize-pixelwise t
-			  mac-command-modifier 'super
-			  mac-option-modifier  'meta)
+  (setq frame-resize-pixelwise t
+	mac-command-modifier 'super
+	mac-option-modifier  'meta)
   (when (featurep 'ns)
-    (setq-default ns-use-thin-smoothing t
-                  ns-use-fullscreen-animation t
-                  ns-use-native-fullscreen t
-                  ns-use-proxy-icon t
-                  ns-use-mwheel-momentum t
-                  ns-use-mwheel-acceleration t
-
-                  )
+    (setq ns-use-thin-smoothing t
+          ns-use-fullscreen-animation t
+          ns-use-native-fullscreen t
+          ns-use-proxy-icon t
+          ns-use-mwheel-momentum t
+          ns-use-mwheel-acceleration t)
     (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
     (add-to-list 'default-frame-alist '(ns-appearance . dark)))
   ;; (add-hook 'window-setup-hook #'toggle-frame-maximized)
   )
 
-(setq inhibit-splash-screen t)
+(setq inhibit-splash-screen nil)
 
 ;; Symbol’s value as variable is void: mouse-wheel-down-event
 (when (require 'mwheel nil 'noerror)

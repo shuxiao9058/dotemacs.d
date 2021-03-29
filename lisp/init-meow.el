@@ -98,14 +98,8 @@
   :custom
   (meow-expand-hint-remove-delay 3.0)
   :config
-  ;; (defun my/replace()
-  ;;   (interactive)
-  ;;   (delete-char 1)
-  ;;   (call-interactively #'quoted-insert))
-  (add-to-list 'meow-normal-state-mode-list 'eaf-mode)
-  ;; (add-to-list 'meow-selection-command-fallback
-  ;; 	       (cons 'meow-replace 'my/replace))
-  (add-to-list 'meow-normal-state-mode-list 'eaf-mode)
+  (add-to-list 'meow-char-thing-table '(?\] . line))
+  (add-to-list 'meow-char-thing-table '(?\[ . line))
 
   (dolist (hook '(git-commit-mode-hook
 		  magit-log-edit-mode-hook))
@@ -117,7 +111,6 @@
    '("p" . projectile-command-map)
    '("b" . switch-to-buffer)
    '("s" . save-buffer)
-   ;; '("y" . lsp)
    )
   ;; meow-setup is your custom function, see below
   (meow-setup)
@@ -125,8 +118,7 @@
   (meow-setup-line-number)
   ;; If you need setup indicator, see `meow-indicator' for customizing by hand.
   (meow-setup-indicator)
-  :bind ("?" . meow-cheatsheet)
-  )
+  :bind ("?" . meow-cheatsheet))
 
 (provide 'init-meow)
 
