@@ -6,14 +6,7 @@
    (let ((completion-ignore-case  t))
      (list (completing-read "How is you feeling: "
 			    '("I felt distracted" "My focus was good" "I felt highly focused" "I experienced \"flow\"") nil t))))
-  ;; (list (completing-read "How is you feeling: "
-  ;;                        '(("1" . "Cow") ("2" . "Rabbit") ("3" . "Dog")) nil t)))
-  ;; (message "You chose `%s'" choice)
   choice)
-
-;; (setq my-choice (call-interactively 'my-stop-vitamin-r))
-
-;; (message my-choice)
 
 (use-package org-pomodoro
   :straight t
