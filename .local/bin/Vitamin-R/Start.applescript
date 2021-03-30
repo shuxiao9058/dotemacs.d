@@ -51,12 +51,12 @@ on run (argv)
 							set value of tagsField to item 2 of argv
 							get the value of tagsField
 							set focused of tagsField to true
-							keystroke return
+							-- keystroke return
 							set focused of objectiveArea to true
 						else
 							set value of tagsField to ""
 							set focused of tagsField to true
-							keystroke return
+							-- keystroke return
 							set focused of objectiveArea to true
 						end if
 						

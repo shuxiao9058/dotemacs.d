@@ -22,46 +22,33 @@ on run (argv)
 				set startTimeSliceBtnName to "Start Time Slice"
 				set logBtnName to "Log"
 				set startTimedBreakBtnName to "Start Timed Break"
-				set finishBtnName to "Finish" -- slice or break finish
+				set finishBtnName to "Finish"
 				set hideBtnName to "Hide"
+				set pauseBtnName to "Pause"
+				set abortBtnName to "Abort"
 				
 				set currentStep to ""
-				set isRunning to false
 				set isStoped to false
+				set isAborted to false
 				
-				set currentStep to getCurrentStep(mainWindow) of commonScript
-				
-				repeat while isStoped is not true
+				repeat while isAborted is not true
 					set currentStep to getCurrentStep(mainWindow) of commonScript
 					log currentStep
 					
 					if currentStep = "Time Slice Paused." then
-						click button "Resume" of mainWindow
-						set frontmost to true
-					else if currentStep = "Rate Time Slice" then
-						set feltState to "My focus was good"
-						if argn > 1 then
-							set feltState to item 2 of argv
-						end if
-						
-						log feltState
-						tell pop up button 1
-							click
-							delay 0.1
-							click menu item feltState of menu 1
-						end tell
-						
-						click button logBtnName
-					else if currentStep = "Prepare Timed Break" then
-						click radio button "1st Break"
-						click button startTimedBreakBtnName
+						click button abortBtnName
+						delay 0.2
+						keystroke return
+						set isAborted to true
 					else if currentStep = "Time Slice Running..." or currentStep = "On a Timed Break..." then
-						set isRunning to true
+						click button pauseBtnName
 					else if currentStep = "Define Time Slice" then
 						set isStoped to true
+					else
+						return "ILLEGAL STATE"
 					end if
 					
-					if isRunning or isStoped then
+					if isAborted or isStoped then
 						hideWindow(mainWindow) of commonScript
 						return "OK"
 					end if
