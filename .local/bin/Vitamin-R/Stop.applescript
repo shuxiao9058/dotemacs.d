@@ -57,10 +57,15 @@ on run (argv)
 						if argn > 2 then
 							set myBreakCount to item 3 of argv
 						end if
-						click radio button breakBtnNameWithPomoCount(myBreakCount) of commonScript
+						set breakBtnName to breakBtnNameWithPomoCount(myBreakCount) of commonScript
+						log breakBtnName
+						click radio button breakBtnName
+						delay 0.1
 						click button startTimedBreakBtnName
+						set isStoped to true
 					else if currentStep = "Time Slice Running..." or currentStep = "On a Timed Break..." then
 						set isRunning to true
+						-- click button finishBtnName
 					else if currentStep = "Define Time Slice" then
 						set isStoped to true
 					end if

@@ -27,7 +27,7 @@
      ;; orderless-strict-full-initialism = like strict-initialism but
      ;; require the first initial to match the candidate’s first word. 'bb'
      ;; would match 'bar-baz' but not 'foo-bar-baz'.
-     ;; orderless-strict-leading-initialism
+     orderless-strict-leading-initialism
      ;; The component is treated as a regexp that must match somewhere in
      ;; the candidate.
      orderless-regexp

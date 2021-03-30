@@ -38,7 +38,7 @@ on run (argv)
 					if currentStep = "Time Slice Paused." then
 						click button abortBtnName
 						delay 0.2
-						keystroke return
+						tell process appName to  keystroke return
 						set isAborted to true
 					else if currentStep = "Time Slice Running..." or currentStep = "On a Timed Break..." then
 						click button pauseBtnName

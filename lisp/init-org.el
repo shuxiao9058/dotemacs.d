@@ -114,23 +114,26 @@
 
   (setq org-capture-templates
 	'(("t" "Personal todo" entry
-	   (file+headline +org-capture-gtd-file "Inbox")
-	   "* TODO %?\n%i%U\n" :prepend nil :kill-buffer t)
+	   (file+headline +org-capture-gtd-file "P-GTD")
+	   "* TODO %?\n%i%U\n" :kill-buffer nil)
 	  ("n" "Personal notes" entry
-	   (file+headline +org-capture-notes-file "Inbox")
-	   "* %u %?\n%i%U\n%a" :prepend nil :kill-buffer t)
+	   (file+headline +org-capture-notes-file "P-Note")
+	   "* %u %?\n%i%U\n%a" :kill-buffer nil)
 
 	  ("w" "Templates for work")
 	  ("wt" "Work todo" entry
-	   (file+olp +org-capture-work-gtd-file "Work" "Todo")
-	   "* TODO %?\n%i%U\n" :prepend nil :kill-buffer t)
+	   (file+olp +org-capture-work-gtd-file "W-GTD")
+	   "* TODO %?\n%i%U\n" :kill-buffer nil)
 	  ;; "* TODO %T%?\n%i\n:LOGBOOK:\n\n:END:\n" :prepend t :kill-buffer t)
+	  ("wm" "Work meeting" entry
+	   (file+olp +org-capture-work-notes-file  "W-Meeting")
+	   "* %u %?\n%i\n%a" :kill-buffer nil)
 	  ("wn" "Work notes" entry
-	   (file+olp +org-capture-work-notes-file "Work" "Note")
-	   "* %u %?\n%i\n%a" :prepend nil :kill-buffer t)
+	   (file+olp +org-capture-work-notes-file  "W-Note")
+	   "* %u %?\n%i\n%a" :kill-buffer nil)
 	  ("ww" "Work weekly" entry
-	   (file+olp +org-capture-work-weekly-file "Work" "Weekly")
-	   "* %U 周汇报\n\n   本周事项：\n\n     - %?\n\n   下周计划：\n\n%i\n" :prepend nil :kill-buffer t)
+	   (file+olp +org-capture-work-weekly-file "W-Weekly")
+	   "* %U 周汇报\n\n   本周事项：\n\n     - %?\n\n   下周计划：\n\n     -    \n\n%i\n")
 
 	  ("p" "Templates for projects")
 	  ("pt" "Project todo" entry ; {project-root}/todo.org
