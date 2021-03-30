@@ -14,19 +14,26 @@
   (org-pomodoro-ticking-sound-states '(:pomodoro))
   (org-pomodoro-ticking-frequency 1)
   :config
+  (setq my-org-pomodoro-start-scpt (expand-file-name "bin/Vitamin-R/Start.applescript" poly-local-dir))
+  (setq my-org-pomodoro-stop-scpt (expand-file-name "bin/Vitamin-R/Stop.applescript" poly-local-dir))
   (add-hook 'org-pomodoro-started-hook
 	    (lambda()
-	      (do-applescript "tell application \"JustFocus\" \nlaunch\nstart pomodoro\nend tell")))
+	      (let ((my-todo-title org-clock-heading)
+		    )
+		;; (my-todo-tags (org-get-tags-at)))
+		(princ my-todo-title)
+		(process-lines "osascript" my-org-pomodoro-start-scpt my-todo-title)
+		))
+	    )
+
   (add-hook 'org-pomodoro-finished-hook
 	    (lambda ()
-	      (do-applescript "tell application \"JustFocus\" \nstop\nend tell")
-	      (when (org-clock-is-active)
-		(if (org-pomodoro-active-p)
-		    (org-pomodoro)
-      		  ;; todo: subtract idle time (right not the loss is small, like 3 min)
-		  ;; something like org-clockout nil t (- (org-current-time) idle-time)
-		  (org-clock-out))
-		)))
+	      (let ((my-todo-title org-clock-heading))
+		(princ my-todo-title)
+		(process-lines "osascript" my-org-pomodoro-stop-scpt my-todo-title)
+		)
+	      )
+	    )
   :bind
   (("C-c C-x C-p" . org-pomodoro)
    :map org-mode-map
