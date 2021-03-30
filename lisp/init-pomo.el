@@ -45,8 +45,11 @@
   (add-hook 'org-pomodoro-finished-hook
 	    (lambda ()
 	      (let ((my-todo-title org-clock-heading)
-		    (my-rate-time-slice-choice (call-interactively 'my-stop-vitamin-r)))
-		(process-lines "osascript" my-org-pomodoro-stop-scpt my-todo-title my-rate-time-slice-choice)
+		    (my-rate-time-slice-choice (call-interactively 'my-stop-vitamin-r))
+		    (my-pomodoro-count (number-to-string (mod org-pomodoro-count org-pomodoro-long-break-frequency)))
+		    )
+		(process-lines "osascript" my-org-pomodoro-stop-scpt
+			       my-todo-title my-rate-time-slice-choice my-pomodoro-count)
 		)))
   :bind
   (("C-c C-x C-p" . org-pomodoro)
