@@ -5,9 +5,11 @@
   :ensure t
   :custom
   (org-todo-keywords '((sequence "TODO(t)" "HOLD(h!)" "NEXT(n!)" "WAIT(w!)" "|" "DONE(d!)" "CANCELLED(c@/!)")
+		       (sequence "MEETING(m)" "HOLD(h!)" "WAIT(w!)" "DONE(d!)")
 		       (sequence "REPORT(r)" "BUG(b)" "KNOWNCAUSE(k)" "|" "FIXED(f!)")))
   (org-todo-keyword-faces
    '(("TODO"       :foreground "#7c7c75" :weight bold)
+     ("MEETING"       :foreground "#7c7c75" :weight bold)
      ("HOLD"       :foreground "#feb24c" :weight bold)
      ("NEXT"       :foreground "#0098dd" :weight bold)
      ("WAIT"       :foreground "#9f7efe" :weight bold)
@@ -86,10 +88,13 @@
   (setq +org-capture-notes-file (expand-file-name  "personal-note.org" org-beorg-directory))
   (setq +org-capture-work-gtd-file (expand-file-name "work-gtd.org" org-beorg-directory))
   (setq +org-capture-work-notes-file (expand-file-name "work-note.org" org-beorg-directory))
+  (setq +org-capture-work-meeting-file (expand-file-name "work-meeting.org" org-beorg-directory))
   (setq +org-capture-work-weekly-file (expand-file-name "work-weekly.org" org-beorg-directory))
   (setq org-agenda-files (list
 			  +org-capture-gtd-file
-			  +org-capture-work-gtd-file))
+			  +org-capture-work-gtd-file
+			  +org-capture-work-meeting-file
+			  ))
 
   ;; archived location
   (setq org-archive-location (concat org-directory "archive/%s_archive::"))
@@ -98,17 +103,10 @@
 	`((org-agenda-files :maxlevel . 2)
 	  (,(list +org-capture-notes-file
 		  +org-capture-work-notes-file
-		  +org-capture-work-weekly-file) :maxlevel . 2)
-	  ;; ((list +org-capture-notes-file
-	  ;; 	 +org-capture-work-notes-file
-	  ;; 	 +org-capture-work-weekly-file
-	  ;; 	 ) :maxlevel . 2)
-	  ))
+		  +org-capture-work-weekly-file) :maxlevel . 2)))
 
   (setq org-tag-alist
 	'(("ignore" . ?i)
-	  ;; ("CAT" . ?c)
-	  ;; ("PMP" . ?p)
 	  ("crypt" . ?c)
 	  ))
 
@@ -126,8 +124,8 @@
 	   "* TODO %?\n%i%U\n" :kill-buffer nil)
 	  ;; "* TODO %T%?\n%i\n:LOGBOOK:\n\n:END:\n" :prepend t :kill-buffer t)
 	  ("wm" "Work meeting" entry
-	   (file+olp +org-capture-work-notes-file  "W-Meeting")
-	   "* %u %?\n%i\n%a" :kill-buffer nil)
+	   (file+olp +org-capture-work-meeting-file  "W-Meeting")
+	   "* TODO %?\n%i%U\n")
 	  ("wn" "Work notes" entry
 	   (file+olp +org-capture-work-notes-file  "W-Note")
 	   "* %u %?\n%i\n%a" :kill-buffer nil)
@@ -450,8 +448,7 @@
   :bind
   ("C-c l" . org-store-link)
   ("C-c c" . org-capture)
-  ("C-c a" . org-agenda)
-  )
+  ("C-c a" . org-agenda))
 
 (use-package org-agenda
   :ensure nil

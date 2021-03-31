@@ -1,4 +1,3 @@
-
 on run (argv)
 	set argn to count of argv
 	set appName to "Vitamin-R 3"
@@ -36,28 +35,31 @@ on run (argv)
 					-- check whether start time slice button exist
 					if currentStep = "Define Time Slice" then
 						set objectiveArea to text area 1 of scroll area 1
-						set tagsField to text field 1 -- tagsField set tagsField to text field 1 of text field 1 -- tagsField
+						
+						-- tagsField set tagsField to text field 1 of text field 1 
+						set tagsField to text field 1
 						
 						if argn > 0 then
 							set value of objectiveArea to ""
-							-- get the value of objectiveArea
+							get the value of objectiveArea
 							set value of objectiveArea to item 1 of argv
-							-- get the value of objectiveArea
+							get the value of objectiveArea
 						end if
 						
+						-- clear tagsField
+						set value of tagsField to ""
+						set focused of tagsField to true
+						keystroke return
+						set focused of objectiveArea to true
+						
 						if argn > 1 then
-							set value of tagsField to ""
-							get the value of tagsField
-							set value of tagsField to item 2 of argv
-							get the value of tagsField
-							set focused of tagsField to true
-							-- keystroke return
-							set focused of objectiveArea to true
-						else
-							set value of tagsField to ""
-							set focused of tagsField to true
-							-- keystroke return
-							set focused of objectiveArea to true
+							set tagStr to item 2 of argv
+							if tagStr ­ "" then
+								set value of text field 1 of mainWindow to tagStr
+								set focused of tagsField to true
+								keystroke return
+								set focused of objectiveArea to true
+							end if
 						end if
 						
 						set currentStep to getCurrentStep(mainWindow) of commonScript
@@ -65,7 +67,6 @@ on run (argv)
 							click button startTimeSliceBtnName
 						end if
 						
-						-- click button hideBtnName
 						set createTimeSliceOk to true
 						hideWindow(mainWindow) of commonScript
 						return "OK"
@@ -74,8 +75,6 @@ on run (argv)
 					else if currentStep = "Prepare Timed Break" then
 						click button startTimedBreakBtnName
 					else if currentStep = "Time Slice Running..." or currentStep = "On a Timed Break..." or currentStep = "Time Slice Paused." then
-						-- log currentStep
-						-- click button finishBtnName
 						hideWindow(mainWindow) of commonScript
 						log "Time Slice or Break is Running ... "
 						return "OK"
