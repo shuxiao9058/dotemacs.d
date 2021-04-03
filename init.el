@@ -88,12 +88,6 @@
 
 ;; (require 'init-misc)
 
-;; keybindings
-;; early load with general in core
-;; (eval-after-load 'general
-;;   `(progn
-;;      (require 'init-keybindings)))
-
 ;; Load customization file now
 (let ((custom-file (expand-file-name "custom.el" user-emacs-directory)))
   (when (file-exists-p custom-file)
