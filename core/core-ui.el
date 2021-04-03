@@ -1,32 +1,13 @@
 ;;; core/core-ui.el -*- lexical-binding: t; -*-
 
-;; (use-package dracula-pro-theme
-;;   :straight (:local-repo  "~/.emacs.d/site-lisp/dracula-theme")
-;;   ;; :straight t
-;;   :ensure t
-;;   ;; :custom-face
-;;   ;; (company-tooltip ((t (:inherit default :foreground "white smoke" :background "#333"))))
-;;   ;; (company-scrollbar-bg ((t (:background "#333"))))
-;;   ;; (company-scrollbar-fg ((t (:background "deep sky blue"))))
-;;   ;; (company-tooltip-annotation ((t (:foreground "white smoke"))))
-;;   ;; (company-tooltip-annotation-selection ((t (:foreground "black"))))
-;;   ;; (company-tooltip-selection ((t (:foreground "black" :background "deep sky blue"))))
-;;   ;; (company-tooltip-common ((t (:foreground "orange"))))
-;;   ;; (company-tooltip-common-selection ((t (:foreground "black"))))
-;;   ;; (doom-modeline-inactive-bar ((t (:background "#373844"))))
-;;   ;; ;; (nlinum-current-line ((t (:foreground "orange" :slant italic :weight bold))))
-;;   :config
-;;   (require 'dracula-pro-theme)
-;;   (load-theme 'dracula-pro t))
-
 (use-package doom-themes
   :straight t
   :custom-face
   (icomplete-first-match ((t (:inherit mode-line-emphasis))))
   (mode-line-buffer-id ((t (:foreground "Light Blue"))))
-  (font-lock-variable-name-face ((t (:foreground "#50fa7b"))))
-  (highlight-indentation-face ((t (:inherit default :foreground "#878787"))))
-  (hl-line ((t (:background "DodgerBlue4"))))
+  ;; (font-lock-variable-name-face ((t (:foreground "#50fa7b"))))
+  ;; (highlight-indentation-face ((t (:inherit default :foreground "#878787"))))
+  ;; (hl-line ((t (:background "DodgerBlue4"))))
   (orderless-match-face-0 ((t (:inherit font-lock-type-face :weight bold))))
   (orderless-match-face-1 ((t (:inherit error :weight bold))))
   (orderless-match-face-2 ((t (:inherit font-lock-string-face :weight bold))))
@@ -36,15 +17,7 @@
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
 
-  ;;   (let ((theme-file (expand-file-name "theme/doom-draculapro-theme.el" poly-core-dir)))
-  ;;     (when (file-exists-p theme-file)
-  ;;       (load theme-file nil t)
-  ;;    ;; (load-theme 'doom-draculapro t)
-  ;;       ;; (load-theme 'doom-draculapro-theme t)
-  ;;       ))
-
   (load-theme 'doom-dracula t)
-  ;; (load-theme 'doom-draculapro-theme t)
 
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
@@ -59,105 +32,7 @@
   (doom-themes-org-config)
   )
 
-;; ;; load theme
-;; (let ((theme-file (expand-file-name "theme/draculapro-theme.el" poly-core-dir)))
-;;   (when (file-exists-p theme-file)
-;;     (load theme-file nil t)
-;;     (load-theme 'draculapro t)))
-
 (defalias 'yes-or-no-p 'y-or-n-p)
-
-;;; font
-;; (when (member "Source Code Pro" (font-family-list))
-;;   (add-to-list 'initial-frame-alist '(font . "Source Code Pro"))
-;;   (add-to-list 'default-frame-alist '(font . "Source Code Pro")))
-
-;; (set-face-attribute 'default nil :family "Source Code Pro" :height 120)
-
-(when  IS-GUI
-  ;; (let ((monaco-font "-apple-Monaco-medium-normal-normal-*-12-*-*-*-m-0-iso10646-1")
-  ;; 	;; (sourcode-font "-apple-Source Code Pro-*-normal-normal-*-13-*-*-*-m-0-iso10646-1")
-  ;; 	(firacode-font "-*-Fira Code-*-*-*-*-13-*-*-*-*-*-*-*")
-  ;; 	(sarasa-font "-*-Sarasa Mono SC-*-*-*-*-14-*-*-*-*-*-*-*")
-  ;; 	(wenquanyi-font "-*-WenQuanYi Micro Hei Mono-*-*-*-*-14-*-*-*-*-*-*-*")
-  ;; 	)
-  ;;   (set-face-attribute 'default nil :font sourcode-font)
-  ;;   ;; (set-face-attribute 'default nil :font monaco-font)
-  ;;   ;; (set-face-attribute 'default nil :font sarasa-font)
-  ;;   ;; (set-face-attribute 'default nil :font wenquanyi-font)
-  ;;   )
-
-  ;; (add-to-list 'default-frame-alist '(font . "SourceCodePro+Powerline+Awesome Regular 13" ))
-  ;; (set-face-attribute 'default t :font "SourceCodePro+Powerline+Awesome Regular 13")
-  ;; (set-frame-font "SourceCodePro+Powerline+Awesome Regular 14" nil t)
-
-  ;; (let ((emacs-font-size 14)
-  ;; 	;; (emacs-font-name "SourceCodePro+Powerline+Awesome Regular")
-  ;; 	(emacs-font-name "Unifont")
-  ;; 	;; (emacs-font-name "Dank Mono")
-  ;; 	;; (emacs-font-name "Hack")
-  ;; 	;; (emacs-font-name "Fira Mono")
-  ;; 	;; (emacs-font-name "Sarasa Mono SC")
-  ;; 	;; (emacs-font-name "Cascadia Mono")
-  ;; 	)
-  ;;   (set-frame-font (format "%s-%s" (eval emacs-font-name) (eval emacs-font-size)))
-  ;;   (set-fontset-font (frame-parameter nil 'font) 'unicode (eval emacs-font-name)))
-
-    (let ((fontset (face-attribute 'default :fontset))
-	  (unifont "-gnu-unifont-medium-r-normal--13-120-75-75-c-0-iso10646-1"))
-      (mapc
-       (lambda (x)
-	 (set-fontset-font fontset (car x) (cdr x) nil))
-       `(((#x02000 . #x026ff) . ,unifont )
-	 ((#x0210e . #x0210f) . "Unicode")
-	 ((#x02700 . #x028ff) . "Unicode")
-	 ((#x1f300 . #x1f6ff) . "Unicode"))))
-
-    ;; (defun org-buffer-face-mode-variable ()
-    ;;   (interactive)
-    ;;   (make-face 'width-font-face)
-    ;;   (set-face-attribute 'width-font-face nil :font "Sarasa Mono SC 15")
-    ;;   (setq buffer-face-mode-face 'width-font-face)
-    ;;   (buffer-face-mode))
-
-    ;; (dolist (hook '(org-mode-hook markdown-mode-hook))
-    ;;   (add-hook hook 'org-buffer-face-mode-variable)
-    ;;   )
-    )
-  )
-
-
-
-;; (when IS-GUI
-;;   (set-face-attribute
-;;    'default nil
-;;    :font (font-spec :name "-adobe-Source Code Pro-extralight-italic-normal-*-*-*-*-*-m-0-iso10646-1"
-;;                     :weight 'normal
-;;                     :slant 'normal
-;;                     :size 12))
-;;   (dolist (charset '(kana han symbol cjk-misc bopomofo))
-;;     (set-fontset-font
-;;      (frame-parameter nil 'font)
-;;      charset
-;;      (font-spec :name "-unknown-HYKaiTiJ-normal-normal-normal-*-*-*-*-*-*-0-iso10646-1"
-;; 		:weight 'normal
-;; 		:slant 'normal
-;; 		:size 12.0)))
-;;   )
-
-;; (when IS-GUI
-;;   ;; SF Mono: https://github.com/ZulwiyozaPutra/SF-Mono-Font
-;;   ;; Source Han Serief: https://github.com/adobe-fonts/source-han-serif
-;;   (set-frame-font "SF Mono-13.5:weight=semi-bold" nil t)
-;;   (dolist (charset '(kana han symbol cjk-misc bopomofo))
-;;     (set-fontset-font (frame-parameter nil 'font)
-;;                       charset (font-spec :family "Source Han Serif"))
-;;     (setq face-font-rescale-alist '(("Source Han Serif" . 1.24))))
-;;   )
-
-;; 等宽: Source Code Pro 13 + STkaiti 16
-;; (setq face-font-rescale-alist `(("STkaiti" . ,(/ 16.0 13))))
-;; (set-fontset-font t 'han (font-spec :family "STkaiti"))
 
 ;; Clear Window clutter and set up the look and feel
 (when (and (fboundp 'menu-bar-mode) (not (eq menu-bar-mode -1)))
@@ -186,8 +61,6 @@
 ;; auto maximized frame
 (when (and IS-MAC IS-GUI)
   (add-to-list 'default-frame-alist '(fullscreen . maximized)))
-
-;; (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
 (when IS-MAC
   (setq frame-resize-pixelwise t

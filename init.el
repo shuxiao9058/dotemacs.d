@@ -23,7 +23,6 @@
 (require 'init-recentf)
 ;; case show line numbers
 (require 'init-linum)
-;; (require 'init-font)
 
 (unless window-system
   (require 'init-iterm2))

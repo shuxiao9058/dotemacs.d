@@ -65,6 +65,7 @@
       nil
     (require 'core-straight)
     (require 'core-ui)
+    (require 'core-font)
     (require 'core-keybindings)
     (require 'core-packages)
     ;; (require 'core-evil)

@@ -5,11 +5,11 @@
   :ensure t
   :custom
   (org-todo-keywords '((sequence "TODO(t)" "HOLD(h!)" "NEXT(n!)" "WAIT(w!)" "|" "DONE(d!)" "CANCELLED(c@/!)")
-		       (sequence "MEETING(m)" "HOLD(h!)" "WAIT(w!)" "DONE(d!)")
+		       (sequence "MEETING(m)" "HOLD(h!)" "WAIT(w!)" "|" "DONE(d!)" "CANCELLED(c@/!)")
 		       (sequence "REPORT(r)" "BUG(b)" "KNOWNCAUSE(k)" "|" "FIXED(f!)")))
   (org-todo-keyword-faces
    '(("TODO"       :foreground "#7c7c75" :weight bold)
-     ("MEETING"       :foreground "#7c7c75" :weight bold)
+     ("MEETING"   :foreground "#7c7c75" :weight bold)
      ("HOLD"       :foreground "#feb24c" :weight bold)
      ("NEXT"       :foreground "#0098dd" :weight bold)
      ("WAIT"       :foreground "#9f7efe" :weight bold)
@@ -57,7 +57,6 @@
   (add-to-list 'org-modules 'org-timer)
   (add-to-list 'org-modules 'org-protocol)
   ;; (add-to-list 'org-modules 'org-cliplink)
-  ;; (add-to-list 'org-modules 'org-dashboard)
   ;; (add-to-list 'org-modules 'org-journal)
   (add-to-list 'org-modules 'org-agenda)
   ;; (add-to-list 'org-modules 'org-pdfview)

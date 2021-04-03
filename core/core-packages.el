@@ -261,6 +261,13 @@
   ;; (add-hook 'pre-command-hook (lambda ()(gcmh-mode +1)))
   )
 
+(use-package command-log-mode
+  :straight t
+  :ensure t
+  ;; :config
+  ;; (global-command-log-mode)
+  )
+
 ;; ;; Keep ~/.emacs.d clean
 ;; (use-package no-littering
 ;;   :straight t
