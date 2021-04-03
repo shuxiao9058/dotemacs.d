@@ -4,7 +4,10 @@
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
   (meow-motion-overwrite-define-key
    '("j" . meow-next)
-   '("k" . meow-prev))
+   '("k" . meow-prev)
+   '("J" . meow-next-expand)
+   '("K" . meow-prev-expand)
+   )
   (meow-leader-define-key
    ;; SPC j/k will run the original command in MOTION state.
    '("j" . meow-motion-origin-command)
@@ -84,9 +87,8 @@
    '("Z" . meow-pop-all-selection)
    '("&" . meow-query-replace)
    '("%" . meow-search)
-   ;; '("/" . meow-search)
-   ;; '("." . repeat)
    '("<escape>" . meow-last-buffer)
+   '("?" . meow-cheatsheet)
    ))
 
 (use-package meow
@@ -105,6 +107,12 @@
 		  magit-log-edit-mode-hook))
     (add-hook hook (lambda()(meow--switch-state 'insert))))
 
+  ;; disable <backspace> work as meow-keypad-undo
+  ;; since some useful command may use <backspace> key
+  ;; such as C-x BS
+  (define-key meow-keypad-state-keymap (kbd "<backspace>")
+    'meow-keypad-self-insert)
+
   (meow-leader-define-key
    '("e" . my/icomplete-recentf)
    '("." . find-file)
@@ -117,8 +125,7 @@
   ;; If you want relative line number in NORMAL s tate(for display-line-numbers-mode)
   (meow-setup-line-number)
   ;; If you need setup indicator, see `meow-indicator' for customizing by hand.
-  (meow-setup-indicator)
-  :bind ("?" . meow-cheatsheet))
+  (meow-setup-indicator))
 
 (provide 'init-meow)
 
