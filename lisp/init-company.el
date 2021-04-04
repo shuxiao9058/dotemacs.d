@@ -101,7 +101,7 @@ candidates will be from company-tabnine, others keeping their own origin order."
   (company-tooltip-align-annotations t) ;; Align annotation to the right side.
   (company-auto-commit nil)
   (company-selection-wrap-around t)
-  (company-begin-commands '(self-insert-command))
+  (company-begin-commands '(self-insert-command org-self-insert-command))
   ;; (company-require-match nil)
   ;; Don't use company in the following modes
   (company-global-modes '(not eshell-mode shell-mode comint-mode erc-mode gud-mode rcirc-mode
@@ -123,13 +123,16 @@ candidates will be from company-tabnine, others keeping their own origin order."
 			    company-echo-metadata-frontend))
   ;; set default `company-backends'
   (setq-default company-backends
-		'(
-		  (company-tabnine :with company-capf :separate)
+		'((company-tabnine :with company-capf :separate)
 		  company-dabbrev-code
 		  (company-files          ; files & directory
 		   company-keywords       ; keywords
 		   )
 		  (company-abbrev company-dabbrev)))
+  (defun add-pcomplete-to-capf ()
+    (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
+
+  (add-hook 'org-mode-hook #'add-pcomplete-to-capf)
   :bind
   (:map company-active-map
 	("C-n"   .  company-select-next)

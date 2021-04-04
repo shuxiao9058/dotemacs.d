@@ -270,11 +270,10 @@
 
 (use-package transient
   :straight t
-  :config
   :bind
-  (:map transient-map 
-    ([escape] . transient-quit-one)
-    ("q" . transient-quit-one)))
+  (:map transient-map
+	([escape] . transient-quit-one)
+	("q" . transient-quit-one)))
 
 ;; ;; Keep ~/.emacs.d clean
 ;; (use-package no-littering
