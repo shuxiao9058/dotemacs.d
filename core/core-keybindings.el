@@ -86,11 +86,5 @@
 (bind-key "s-v" #'paste-from-clipboard)
 (bind-key "s-SPC" #'set-mark-command)
 
-(eval-after-load 'transient
-  `(progn
-     (bind-key [escape] #'transient-quit-one 'transient-map)
-     (bind-key "q" #'transient-quit-one 'transient-map)
-     ))
-
 (provide 'core-keybindings)
 ;;; core-keybindings.el ends here

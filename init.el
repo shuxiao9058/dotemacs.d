@@ -45,6 +45,7 @@
 (require 'init-clock)
 (require 'init-pomo)
 (require 'init-org-roam)
+(require 'init-blog)
 
 ;; programming
 (require 'init-flycheck)

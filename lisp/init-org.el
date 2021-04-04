@@ -516,34 +516,19 @@
      ;; (search . "[%-4e] %?-17b")
      )
    )
-  (org-agenda-custom-commands '(
+  (org-agenda-custom-commands `(
 				("1" "Events" agenda "display deadlines and exclude scheduled"
 				 ((org-agenda-span 'month)
 				  (org-agenda-time-grid nil)
 				  (org-agenda-show-all-dates nil)
 				  (org-agenda-entry-types '(:deadline)) ;; this entry excludes :scheduled
-				  (org-deadline-warning-days 0)))))
+				  (org-deadline-warning-days 0)))
+				("2" "Show Work GTD & meeting appointment" todo ""
+				 ((org-agenda-files '(,+org-capture-work-gtd-file
+						      ,+org-capture-work-meeting-file))))))
   :config
   (appt-activate 1)
-  (org-agenda-to-appt)
-  ;; keymap https://github.com/Timidger/dotfiles/blob/master/.emacs.d/layers/+emacs/org/packages.el
-  ;; :general
-  ;; (general-unbind '(org-agenda-mode-map)
-  ;;   "M-m")
-  ;; (:keymaps  'org-agenda-mode-map
-  ;;     "j" #'org-agenda-next-line
-  ;;     "k" #'org-agenda-previous-line
-  ;;     "M-j" #'org-agenda-next-item
-  ;;     "M-k" #'org-agenda-previous-item
-  ;;     "M-h" #'org-agenda-earlier
-  ;;     "M-l" #'org-agenda-later
-  ;;     "gd" #'org-agenda-toggle-time-grid
-  ;;     "gr" #'org-agenda-redo
-  ;;     "M-RET" #'org-agenda-show-and-scroll-up
-  ;;     local-leader-key-non-normal #'hydra-agenda-view/body
-  ;;     ;; (kbd "s-M-SPC") 'spacemacs/org-agenda-transient-state/body
-  ;;     )
-  )
+  (org-agenda-to-appt))
 
 ;; overwrite built-in function (proviError running timer appt-delete-window': (error "No buffer named *appt-buf*")de 'init-org)
 (defun appt-delete-window ()

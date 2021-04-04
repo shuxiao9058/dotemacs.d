@@ -104,7 +104,7 @@ candidates will be from company-tabnine, others keeping their own origin order."
   (company-begin-commands '(self-insert-command))
   ;; (company-require-match nil)
   ;; Don't use company in the following modes
-  (company-global-modes '(not shell-mode eshell-mode shell-mode comint-mode erc-mode gud-mode rcirc-mode
+  (company-global-modes '(not eshell-mode shell-mode comint-mode erc-mode gud-mode rcirc-mode
 			      minibuffer-inactive-mode))
   (company-candidates-length 10)
   (company-echo-delay 0)
@@ -124,22 +124,14 @@ candidates will be from company-tabnine, others keeping their own origin order."
   ;; set default `company-backends'
   (setq-default company-backends
 		'(
-		  ;; company-tabnine
-		  ;; company-capf
-		  (company-tabnine :with
-				   company-capf :separate)
-		  ;; (company-capf :with
-		  ;; 		company-tabnine :separate)
+		  (company-tabnine :with company-capf :separate)
 		  company-dabbrev-code
 		  (company-files          ; files & directory
 		   company-keywords       ; keywords
 		   )
-		  (company-abbrev company-dabbrev)
-		  ))
+		  (company-abbrev company-dabbrev)))
   :bind
   (:map company-active-map
-	;; (help-key-description [13] nil)
-	;; "C-w"     nil  ; don't interfere with `evil-delete-backward-word'
 	("C-n"   .  company-select-next)
 	("C-p"     . company-select-previous)
 	("C-j"     . company-select-next)
@@ -148,7 +140,6 @@ candidates will be from company-tabnine, others keeping their own origin order."
 	("C-u"    . company-previous-page)
 	("C-d"     . company-next-page)
 	("C-s"    . company-filter-candidates)
-	;; "C-S-s"  #'counsel-company
 	("C-SPC"   . company-complete-common)
 	("TAB"     . company-complete-common-or-cycle)
 	([tab]     . company-complete-common-or-cycle)
@@ -159,11 +150,7 @@ candidates will be from company-tabnine, others keeping their own origin order."
 	("C-j"     . company-select-next-or-abort)
 	("C-k"    .  company-select-previous-or-abort)
 	("C-s"    .  (lambda () (interactive) (company-search-abort) (company-filter-candidates)))
-	([escape]  . company-search-abort)
-	)
-  )
-
-
+	([escape]  . company-search-abort)))
 
 ;; (use-package company-posframe
 ;;     :straight t

@@ -268,6 +268,14 @@
   ;; (global-command-log-mode)
   )
 
+(use-package transient
+  :straight t
+  :config
+  :bind
+  (:map transient-map 
+    ([escape] . transient-quit-one)
+    ("q" . transient-quit-one)))
+
 ;; ;; Keep ~/.emacs.d clean
 ;; (use-package no-littering
 ;;   :straight t

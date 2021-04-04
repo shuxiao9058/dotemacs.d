@@ -133,12 +133,16 @@
     "S"
     '("R" "Reset author" m/magit-reset-author))
   :bind
-  (:map transient-base-map ("q" . transient-quit-one))
-  (:map transient-base-map ("<escape>" . transient-quit-one))
-  (:map transient-edit-map ("q" . transient-quit-one))
-  (:map transient-edit-map ("<escape>" . transient-quit-one))
-  (:map transient-sticky-map ("q" . transient-quit-one))
-  (:map transient-sticky-map ("<escape>" . transient-quit-one)))
+  (:map transient-base-map 
+    ("q" . transient-quit-one)
+    ("<escape>" . transient-quit-one))
+  (:map transient-edit-map 
+    ("q" . transient-quit-one)
+    ("<escape>" . transient-quit-one))
+  (:map transient-sticky-map 
+    ("q" . transient-quit-one)
+    ("<escape>" . transient-quit-one))
+  )
 
 (use-package magit-gitflow
   :straight t
