@@ -1,13 +1,19 @@
 ;;; core/core-font.el -*- lexical-binding: t; -*-
 
-;; (defvar +font-family "Roboto Mono")
-(defvar +font-family "Fira Code")
-(defvar +ufont-family "Sarasa Gothic SC")
-;; (defvar +ufont-family "PingFang SC") ;; chinese font
-(defvar +fixed-pitch-family "Sarasa Gothic SC")
-(defvar +variable-pitch-family "Sarasa Gothic SC")
+(setq +font-family "Roboto Mono")
+;; (defvar +font-family "Fira Code")
+;; (defvar +ufont-family "Sarasa Gothic SC")
+;; ;; (defvar +ufont-family "PingFang SC") ;; chinese font
+;; (defvar +fixed-pitch-family "Sarasa Gothic SC")
+;; (defvar +variable-pitch-family "Sarasa Gothic SC")
 ;; (defvar +font-size 10)
 ;; (defvar +ufont-size 10)
+
+(setq +ufont-family "Sarasa Mono SC")
+;; (defvar +ufont-family "PingFang SC") ;; chinese font
+(setq +fixed-pitch-family "Sarasa Mono SC")
+(setq +variable-pitch-family "Sarasa Mono SC")
+
 
 (defun poly/font-exist-p (fontname)
   "test if this font is exist or not."
@@ -67,19 +73,21 @@
   (interactive)
   (setq english-fonts `(,+font-family))
   (setq chinese-fonts `(,+ufont-family))
-  (set-face-attribute 'default nil :font
-		      (format "%s-%d" (car english-fonts) 12)
-                      ;; (format "%s:pixelsize=%d" (car english-fonts) 12)
+  (set-face-attribute 'default nil
+		      ;; (format "%s-%d" (car english-fonts) 12)
+                      :font (format "%s:pixelsize=%d" (car english-fonts) 13) ;; 11 13 17 19 23
 		      )
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
     (set-fontset-font (frame-parameter nil 'font) charset
                       (font-spec :family +ufont-family
 				 ;; (car chinese-fonts)
-				 :size 14)))
-  (set-face-attribute 'variable-pitch nil :font (format "%s-%d" +ufont-family 14))
-  (set-face-attribute 'fixed-pitch nil :font (format "%s-%d" +ufont-family 14))
+				 :size 16))) ;; 14 16 20 22 28
+  (set-face-attribute 'variable-pitch nil :font (format "%s-%d" +ufont-family 16))
+  (set-face-attribute 'fixed-pitch nil :font (format "%s-%d" +ufont-family 16))
 
   ;; (setq face-font-rescale-alist `((,+ufont-family . 1.2)))
+  ;; (setq face-font-rescale-alist `((,+ufont-family . 1.24)))
+
   ;; emoji
   (when IS-MAC
     (if (version< "27.0" emacs-version)
@@ -105,11 +113,13 @@
 ;; 该值的单位是1 / 10pt，因此100等于10pt，依此类推。
 
 (+load-font nil)
+;; (add-to-list 'face-font-rescale-alist `(,+ufont-family . 1.1))
+;; (setq face-font-rescale-alist `((,+ufont-family . 1.24)))
 
 (add-hook 'after-make-frame-functions #'+load-font)
 
-(custom-set-faces
- '(telega-entity-type-pre ((t :inherit 'fixed-pitch :family nil))))
+;; (custom-set-faces
+;;  '(telega-entity-type-pre ((t :inherit 'fixed-pitch :family nil))))
 
 (add-hook 'telega-root-mode-hook '+load-font)
 
@@ -159,6 +169,13 @@
 ;;     (set-fontset-font
 ;;      t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend)))
 
-;; (font-at 123)
+;; SF Mono: https://github.com/ZulwiyozaPutra/SF-Mono-Font
+;; Source Han Serief: https://github.com/adobe-fonts/source-han-serif
+;; (set-frame-font "SF Mono-13.5:weight=semi-bold" nil t)
+;; (dolist (charset '(kana han symbol cjk-misc bopomofo))
+;;   (set-fontset-font (frame-parameter nil 'font)
+;;                     charset (font-spec :family "Source Han Serif"))
+;;   (setq face-font-rescale-alist '(("Source Han Serif" . 1.24))))
+
 (provide 'core-font)
 ;;; core-font.el ends here
