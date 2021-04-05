@@ -7,25 +7,26 @@
 ;; (setq gc-cons-threshold most-positive-fixnum)
 
 (when (boundp 'comp-eln-load-path)
-  (let ((eln-cache-dir (expand-file-name ".local/cache/eln-cache/"
-                                         user-emacs-directory))
-        (find-exec (executable-find "find")))
+  (let ((eln-cache-dir
+	 (expand-file-name ".local/cache/eln-cache/"
+			   user-emacs-directory))
+	(find-exec (executable-find "find")))
     (setcar comp-eln-load-path eln-cache-dir)
     ;; Quitting emacs while native compilation in progress can leave zero byte
     ;; sized *.eln files behind. Hence delete such files during startup.
     (when find-exec
       (call-process find-exec nil nil nil eln-cache-dir
-                    "-name" "*.eln" "-size" "0" "-delete"))))
+		    "-name" "*.eln" "-size" "0" "-delete"))))
 
 (if (and (fboundp 'native-comp-available-p) (native-comp-available-p) (fboundp 'json-serialize))
     (progn
       ;; Prevent compilation of this package
       (require 'comp)
       (setq comp-deferred-compilation t
-            package-native-compile t
+	    package-native-compile t
 	    ;; native-comp settings per
 	    ;; https://github.com/shshkn/emacs.d/blob/master/docs/nativecomp.md
-            comp-speed 2
+	    comp-speed 2
 	    comp-async-report-warnings-errors nil
 	    comp-verbose 0
 	    comp-async-jobs-number 2
@@ -40,7 +41,7 @@
 	      ".+-pkg\\.el$"
 	      "\\(?:[^a-z]+-autoloads\\.el$\\)"))
       (setq comp-deferred-compilation-black-list
-            '(xterm "/xterm\\.el$" "/xterm\\.el.gz$" "/evil-collection-vterm\\.el\\'" "/mu4e.*\\.el$"))
+	    '(xterm "/xterm\\.el$" "/xterm\\.el.gz$" "/evil-collection-vterm\\.el\\'" "/mu4e.*\\.el$"))
 					; (add-to-list 'comp-deferred-compilation-deny-list "init\\.el$")
       ;; (native--compile-async '("~/.emacs.d/lisp/" "~/.emacs.d/themes/" "~/.emacs.d/modules/" "~/.emacs.d/local-config.el") t)
       )
@@ -53,12 +54,12 @@
 (setq inhibit-compacting-font-caches nil)
 (setq file-name-handler-alist nil)
 ;; (run-with-idle-timer 5 t #'garbage-collect)
-(run-with-idle-timer 5 nil (lambda ()
-                             (setq gc-cons-threshold gc-cons-threshold-original)
-                             (setq file-name-handler-alist file-name-handler-alist-original)
-                             (makunbound 'gc-cons-threshold-original)
-                             (makunbound 'file-name-handler-alist-original)))
-
+(run-with-idle-timer 5 nil
+		     (lambda ()
+		       (setq gc-cons-threshold gc-cons-threshold-original)
+		       (setq file-name-handler-alist file-name-handler-alist-original)
+		       (makunbound 'gc-cons-threshold-original)
+		       (makunbound 'file-name-handler-alist-original)))
 
 ;; Package initialize occurs automatically, before `user-init-file' is
 ;; loaded, but after `early-init-file'. We handle package

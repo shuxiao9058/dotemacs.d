@@ -5,13 +5,11 @@
 	     :host github
 	     :repo "zevlg/telega.el"
 	     :branch "releases"
-	     ;; :branch "master"
-	     :files (:defaults "contrib" "etc" "server" "Makefile")
-	     )
+	     :files (:defaults "contrib" "etc" "server" "Makefile"))
   :commands (telega)
   :defer t
   :custom
-  ( telega-symbol-reply "↫")
+  (telega-symbol-reply "↫")
   (telega-root-show-avatars nil)
   (telega-animation-play-inline nil)
   ;; (telega-server-libs-prefix "/opt/td")
@@ -39,14 +37,6 @@
 			     '(telega-company-botcmd))))
 	      (company-mode 1)))
 
-  ;; Sarasa Mono SC can make font align correctly,
-  ;; even with mixed Chinese and English
-  (when (member "Sarasa Mono SC" (font-family-list))
-    (make-face 'telega-align-by-sarasa)
-    (set-face-font 'telega-align-by-sarasa (font-spec :family "Sarasa Mono SC"))
-    (dolist (hook '(telga-chat-mode-hook telega-root-mode-hook))
-      (add-hook hook (lambda()
-		       (buffer-face-set 'telega-align-by-sarasa)))))
   (unbind-key (kbd "k") telega-msg-button-map)  ;; delete marked or at point (doubled with d)
   (unbind-key (kbd "e") telega-msg-button-map)  ;; msg-edit
   (define-key telega-msg-button-map (kbd "E") 'telega-msg-edit)

@@ -20,8 +20,7 @@
 			     meow-normal-mode-p
                              meow-motion-mode-p
                              meow-keypad-mode-p))
-  (rime-inline-predicates '(
-			    rime-predicate-space-after-cc-p
+  (rime-inline-predicates '(rime-predicate-space-after-cc-p
                             +rime-predicate-is-back-quote-or-tilde
                             rime-predicate-current-uppercase-letter-p))
   (rime-translate-keybindings '("C-f" "C-b" "C-n" "C-p" "C-g"))
@@ -46,14 +45,11 @@
   ;; (rime-share-data-dir "")
   (rime-user-data-dir (expand-file-name "rime" poly-local-dir))
   :bind
-  (;; ("M-SPC" . toggle-input-method)
-   :map rime-active-mode-map
-   ("<tab>" . rime-inline-ascii)
-   :map rime-mode-map
-   ("C-$" . rime-send-keybinding)
-   ("M-j" . rime-force-enable)
-   )
-  )
+  (:map rime-active-mode-map
+	("<tab>" . rime-inline-ascii)
+	:map rime-mode-map
+	("C-$" . rime-send-keybinding)
+	("M-j" . rime-force-enable)))
 
 (provide 'init-rime)
 ;;; init-rime.el ends here
