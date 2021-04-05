@@ -43,7 +43,10 @@
 	company-mode
 	magit-status-mode
 	messages-buffer-mode
-        calendar-mode))
+        calendar-mode
+	telega-chat-mode
+	telega-root-mode
+	))
 
 (cond
  ;; ((fbounp 'linum-mode))

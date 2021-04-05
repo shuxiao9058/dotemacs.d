@@ -144,9 +144,9 @@
   (global-undo-tree-mode)
   )
 
-(use-package hide-mode-line
-  :straight t
-  :commands (hide-mode-line-mode))
+;; (use-package hide-mode-line
+;;   :straight t
+;;   :commands (hide-mode-line-mode))
 
 (use-package exec-path-from-shell
   :straight t

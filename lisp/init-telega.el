@@ -9,12 +9,14 @@
   :commands (telega)
   :defer t
   :custom
-  (telega-symbol-reply "↫")
+  ;; (telega-symbol-reply "↫")
   (telega-root-show-avatars nil)
+  ;; (telega-user-show-avatars nil)
+  ;; (telega-avatar-factors-alist '((1 . (0.8 . 0.1))
+  ;; 				 (2 . (0.8 . 0.1))))
   (telega-animation-play-inline nil)
-  ;; (telega-server-libs-prefix "/opt/td")
   (telega-server-libs-prefix "/usr/local/opt/tdlib")
-  ;; (telega-use-images t)
+  (telega-use-images t)
   (telega-proxies
    (list
     '(:server "127.0.0.1" :port 6153 :enable t
@@ -36,7 +38,6 @@
 			   (when (telega-chat-bot-p telega-chatbuf--chat)
 			     '(telega-company-botcmd))))
 	      (company-mode 1)))
-
   (unbind-key (kbd "k") telega-msg-button-map)  ;; delete marked or at point (doubled with d)
   (unbind-key (kbd "e") telega-msg-button-map)  ;; msg-edit
   (define-key telega-msg-button-map (kbd "E") 'telega-msg-edit)

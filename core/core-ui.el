@@ -112,14 +112,6 @@
                    (abbreviate-file-name (buffer-file-name))
                  "%b"))))
 
-;; emoji
-(when IS-MAC
-  (if (version< "27.0" emacs-version)
-      (set-fontset-font
-       "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
-    (set-fontset-font
-     t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend)))
-
 ;; Activate winner mode for quickly changing window sizes, etc
 (when (fboundp 'winner-mode)
   (winner-mode 1))
