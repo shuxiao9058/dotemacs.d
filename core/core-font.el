@@ -6,7 +6,7 @@
 ;; (defvar +ufont-family "PingFang SC") ;; chinese font
 (defvar +fixed-pitch-family "Sarasa Gothic SC")
 (defvar +variable-pitch-family "Sarasa Gothic SC")
-(defvar +font-size 10)
+;; (defvar +font-size 10)
 ;; (defvar +ufont-size 10)
 
 (defun poly/font-exist-p (fontname)
@@ -36,20 +36,20 @@
 ;;     (set-face-attribute 'variable-pitch nil :font variable-pitch-font-spec)
 ;;     (set-face-attribute 'fixed-pitch nil :font fixed-pitch-font-spec)))
 
-(defun +load-ext-font (&optional frame)
-  "set unicode font"
-  (dolist (charset '(kana han cjk-misc bopomofo))
-    (princ (format "charset: %s, +ufont-family: %s\n" charset +ufont-family))
-    (set-fontset-font
-     ;; t
-     (frame-parameter frame 'font)
-     charset
-     (font-spec :family +ufont-family
-		:size +font-size
-		;; :height 110
-		:width 'normal
-		;; :weight 'semi-bold
-		) frame)))
+;; (defun +load-ext-font (&optional frame)
+;;   "set unicode font"
+;;   (dolist (charset '(kana han cjk-misc bopomofo))
+;;     (princ (format "charset: %s, +ufont-family: %s\n" charset +ufont-family))
+;;     (set-fontset-font
+;;      ;; t
+;;      (frame-parameter frame 'font)
+;;      charset
+;;      (font-spec :family +ufont-family
+;; 		:size +font-size
+;; 		;; :height 110
+;; 		:width 'normal
+;; 		;; :weight 'semi-bold
+;; 		) frame)))
 
 ;; (frame-parameter nil 'font)
 
@@ -75,11 +75,11 @@
     (set-fontset-font (frame-parameter nil 'font) charset
                       (font-spec :family +ufont-family
 				 ;; (car chinese-fonts)
-				 :size 12)))
-  (set-face-attribute 'variable-pitch nil :font (format "%s-%d" +ufont-family 12))
-  (set-face-attribute 'fixed-pitch nil :font (format "%s-%d" +ufont-family 12))
+				 :size 14)))
+  (set-face-attribute 'variable-pitch nil :font (format "%s-%d" +ufont-family 14))
+  (set-face-attribute 'fixed-pitch nil :font (format "%s-%d" +ufont-family 14))
 
-  (setq face-font-rescale-alist `((,+ufont-family . 1.2)))
+  ;; (setq face-font-rescale-alist `((,+ufont-family . 1.2)))
   ;; emoji
   (when IS-MAC
     (if (version< "27.0" emacs-version)
