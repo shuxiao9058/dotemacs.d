@@ -40,6 +40,18 @@ Use this for files that change often, like cache files. Must end with a slash.")
 (defconst poly-autoload-dir (expand-file-name "autoload/" poly-emacs-dir)
   "Directory for autoload files.")
 
+(defvar poly-pdump-load-path nil
+  "The load-path backup before dump.
+This variable is non-nil when emacs is started with dump file.")
+
+(defvar poly-pdump-packages '(cl-lib)
+  "A list of package names to dump.")
+
+(defun poly-pdump-packages (&rest pkgs)
+  "Mark pkgs should be dumped."
+  (dolist (pkg pkgs)
+    ;; (push pkg poly-pdump-packages)
+    (cl-pushnew pkg poly-pdump-packages :test #'string=)))
 
 (defconst poly/using-native-comp (fboundp 'native-comp-available-p)
   ;; for native comp branch

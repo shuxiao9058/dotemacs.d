@@ -1,5 +1,26 @@
 ;;; core/core-straight.el -*- lexical-binding: t; -*-
 
+(with-eval-after-load 'use-package-core
+  (when (and (boundp 'use-package-keywords)
+             (listp use-package-keywords))
+    (princ "set use-package-keywords")
+    (setq use-package-keywords (remq :pdump use-package-keywords))
+    (add-to-list 'use-package-keywords :pdump t)))
+
+(defun use-package-normalize/:pdump (name-symbol keyword args)
+  (use-package-only-one (symbol-name keyword) args
+    (lambda (label arg)
+      (cond
+       ((and (listp arg) (keywordp (car arg))) arg)
+       ((symbolp arg) (symbol-name arg))
+       (t
+        (use-package-error
+         ":pdump wants a bool value"))))))
+
+(defun use-package-handler/:pdump (name _keyword arg rest state)
+  (when state
+    (poly-pdump-packages `,name)))
+
 ;; Emacs wants to load `package.el' before the init file,
 ;; so we do the same with `straight.el'
 (setq straight-base-dir poly-local-dir
@@ -22,10 +43,9 @@
       ;; Prefix declarations are unneeded bulk added to our autoloads file. Best
       ;; we just don't have to deal with them at all.
       autoload-compute-prefixes nil
-      straight-fix-org t
       straight-fix-flycheck t
       straight-enable-use-package-integration t
-      straight-disable-native-compilation nil
+      straight-disable-native-compile nil
 
       ;; Tell straight.el about the profiles we are going to be using.
       straight-profiles
@@ -54,7 +74,7 @@
     ;; catch emacs updates that have native compiled leftovers
     ;; Credits: https://github.com/raxod502/straight.el/643/issues
     (unless (catch 'emacs-version-changed
-              (load bootstrap-file nil 'nomessage))
+	      (load bootstrap-file nil 'nomessage))
       ;; remove historian-save-file
       ;; try fix (void-variable _args)
       (when (boundp 'historian-save-file)
@@ -63,21 +83,19 @@
       (when (boundp 'comp-eln-load-path)
 	;; remove leftovers
 	(when (y-or-n-p (format "Delete '%s'? " (car comp-eln-load-path)))
-          (delete-directory (file-truename (expand-file-name (car comp-eln-load-path))) t))
+	  (delete-directory (file-truename (expand-file-name (car comp-eln-load-path))) t))
 	;; try loading again
-	(load bootstrap-file nil 'nomessage)))
-    )
-  (straight-use-package 'use-package)
-  )
+	(load bootstrap-file nil 'nomessage))))
+  (straight-use-package 'use-package))
 
 (straight-override-recipe
  '(semi :host github :repo "wanderlust/semi" :branch "semi-1_14-wl"))
 
 (straight-override-recipe
  '(flim :host github :repo "wanderlust/flim" :branch "flim-1_14-wl"
-        :files ("*.texi" "*.el" (:exclude "md5-dl.el"
-                                          "md5-el.el" "mel-b-dl.el" "sha1-dl.el"
-                                          "smtpmail.el") "flim-pkg.el")))
+	:files ("*.texi" "*.el" (:exclude "md5-dl.el"
+					  "md5-el.el" "mel-b-dl.el" "sha1-dl.el"
+					  "smtpmail.el") "flim-pkg.el")))
 (straight-override-recipe
  '(apel :host github :repo "wanderlust/apel" :branch "apel-wl"))
 (straight-override-recipe
@@ -89,17 +107,6 @@
 ;; after straight's install procedure you will need to add straight-x.el and load the required commands.
 (autoload #'straight-x-pull-all "straight-x")
 (autoload #'straight-x-freeze-versions "straight-x")
-
-;; ;; pinned some package version
-;; (let ((straight-current-profile 'pinned))
-;;   (straight-use-package 'org-plus-contrib)
-;;   (straight-use-package 'org)
-
-;;   ;; Pin org-mode version.
-;;   (add-to-list 'straight-x-pinned-packages
-;;                ;; '("org" . "924308a150ab82014b69c46c04d1ab71e874a2e6")
-;;                )
-;;   )
 
 (provide 'core-straight)
 ;;; core/core-straight.el ends here
