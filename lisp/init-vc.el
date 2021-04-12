@@ -29,7 +29,7 @@
   (magit-log-arguments (quote ("-n64" "--graph" "--decorate" "--color" "--stat")))
   (magit-diff-use-overlays nil)
   (magit-use-overlays nil)
-  (magit-auto-revert-mode t)
+  (magit-auto-revert-mode nil)
   (git-rebase-auto-advance  t)
   (magit-stage-all-confirm nil)
   (magit-commit-squash-commit 'marked-or-curren)

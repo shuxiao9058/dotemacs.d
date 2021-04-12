@@ -11,3 +11,7 @@
 
 (require 'core-ui)
 (require 'core-font)
+
+;; These two modes are disabled in pdump
+(global-font-lock-mode t)
+(transient-mark-mode t)
