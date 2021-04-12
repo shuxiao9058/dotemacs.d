@@ -40,6 +40,16 @@
              find-project-ignore-dir
              )))
 
+
+(defun projectile-selection-at-point ()
+  (when (use-region-p)
+    (buffer-substring-no-properties (region-beginning) (region-end))))
+
+(defun projectile-deadgrep (search-term)
+  (interactive (list (deadgrep--read-search-term)))
+  (let ((deadgrep-project-root-function #'projectile-project-root))
+    (deadgrep search-term)))
+
 (use-package projectile
   :straight t
   :commands projectile-global-mode
@@ -149,7 +159,10 @@ current buffer's, reload dir-locals."
       (projectile-find-file)
     (call-interactively #'find-file)
     )
-  )
+  :bind(
+      :map projectile-command-map
+      ("s s" . projectile-deadgrep)
+    ))
 
 ;; (use-package counsel-projectile
 ;;   :straight t

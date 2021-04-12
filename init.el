@@ -15,10 +15,11 @@
 (require 'init-meow)
 
 ;;; core
-;; (require 'init-env)
+(require 'init-env)
 (require 'init-comp)
 ;; (require 'init-ivy)
-(require 'init-icomplete)
+;; (require 'init-icomplete)
+(require 'init-selectrum)
 (require 'init-ui) ;; ui
 (require 'init-recentf)
 ;; case show line numbers

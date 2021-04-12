@@ -14,35 +14,85 @@
 ;;   ;; (setenv "PATH" (concat "/opt/local/bin:" (getenv "PATH")))
 ;;   )
 
-(use-package exec-path-from-shell
-  :straight t
-  :ensure t
-  :if IS-MAC
-  :config
-  (exec-path-from-shell-initialize)
+;; (use-package exec-path-from-shell
+;;     :straight t
+;;     :ensure t
+;;     :if IS-MAC
+;;     :config
+;;     (exec-path-from-shell-initialize)
 
-  ;; (if (and (fboundp 'native-comp-available-p)
-  ;; 	   (native-comp-available-p))
-  ;;     (progn
-  ;; 	(message "Native comp is available")
-  ;; 	;; Using Emacs.app/Contents/MacOS/bin since it was compiled with
-  ;; 	;; ./configure --prefix="$PWD/nextstep/Emacs.app/Contents/MacOS"
-  ;; 	(add-to-list 'exec-path (concat invocation-directory "bin") t)
-  ;; 	(setenv "LIBRARY_PATH" (concat (getenv "LIBRARY_PATH")
-  ;; 				       (when (getenv "LIBRARY_PATH")
-  ;; 					 ":")
-  ;; 				       ;; This is where Homebrew puts gcc libraries.
-  ;; 				       (car (file-expand-wildcards
-  ;; 					     (expand-file-name "/usr/local/opt/gcc/lib/gcc/10")))))
-  ;; 	(setenv "DYLD_LIBRARY_PATH" (concat (getenv "DYLD_LIBRARY_PATH")
-  ;; 					    (when (getenv "DYLD_LIBRARY_PATH") ":")
-  ;; 					    ;; This is where Homebrew puts gcc libraries.
-  ;; 					    (car (file-expand-wildcards
-  ;; 						  (expand-file-name "/usr/local/opt/gcc/lib/gcc/10")))))
-  ;; 	;; Only set after LIBRARY_PATH can find gcc libraries.
-  ;; 	(setq comp-deferred-compilation t))
-  ;;   (message "Native comp is *not* available"))
-  )
+;;     ;; (if (and (fboundp 'native-comp-available-p)
+;;     ;; 	   (native-comp-available-p))
+;;     ;;     (progn
+;;     ;; 	(message "Native comp is available")
+;;     ;; 	;; Using Emacs.app/Contents/MacOS/bin since it was compiled with
+;;     ;; 	;; ./configure --prefix="$PWD/nextstep/Emacs.app/Contents/MacOS"
+;;     ;; 	(add-to-list 'exec-path (concat invocation-directory "bin") t)
+;;     ;; 	(setenv "LIBRARY_PATH" (concat (getenv "LIBRARY_PATH")
+;;     ;; 				       (when (getenv "LIBRARY_PATH")
+;;     ;; 					 ":")
+;;     ;; 				       ;; This is where Homebrew puts gcc libraries.
+;;     ;; 				       (car (file-expand-wildcards
+;;     ;; 					     (expand-file-name "/usr/local/opt/gcc/lib/gcc/10")))))
+;;     ;; 	(setenv "DYLD_LIBRARY_PATH" (concat (getenv "DYLD_LIBRARY_PATH")
+;;     ;; 					    (when (getenv "DYLD_LIBRARY_PATH") ":")
+;;     ;; 					    ;; This is where Homebrew puts gcc libraries.
+;;     ;; 					    (car (file-expand-wildcards
+;;     ;; 						  (expand-file-name "/usr/local/opt/gcc/lib/gcc/10")))))
+;;     ;; 	;; Only set after LIBRARY_PATH can find gcc libraries.
+;;     ;; 	(setq comp-deferred-compilation t))
+;;     ;;   (message "Native comp is *not* available"))
+;;     )
+
+(use-package exec-path-from-shell
+    :straight t
+    :ensure t
+    :if IS-MAC
+    :config
+    (setq exec-path-from-shell-shell-name "/usr/local/bin/zsh")
+    (setq exec-path-from-shell-arguments '("-l"))
+
+    ;; (when (file-executable-p "/usr/local/bin/fish")
+    ;;   (setq exec-path-from-shell-shell-name "/usr/local/bin/fish"
+    ;;         exec-path-from-shell-debug nil))
+
+    ;; (setq exec-path-from-shell-arguments '("-l"))
+    (setq exec-path-from-shell-variables
+	  '("PATH"
+            "PYENV_ROOT"
+            "JAVA_HOME"
+            "GOPATH"
+            "GOINSECURE"
+            "GOINSECURE"
+            "SDKMAN_DIR"))
+
+    (setenv "GOPROXY" "")
+
+    (exec-path-from-shell-initialize)
+
+    ;; (if (and (fboundp 'native-comp-available-p)
+    ;;       (native-comp-available-p))
+    ;;  (progn
+    ;;    (message "Native comp is available")
+    ;;    ;; Using Emacs.app/Contents/MacOS/bin since it was compiled with
+    ;;    ;; ./configure --prefix="$PWD/nextstep/Emacs.app/Contents/MacOS"
+    ;;    (add-to-list 'exec-path (concat invocation-directory "bin") t)
+    ;;    (setenv "LIBRARY_PATH" (concat (getenv "LIBRARY_PATH")
+    ;;                   (when (getenv "LIBRARY_PATH")
+    ;;                     ":")
+    ;;                   ;; This is where Homebrew puts gcc libraries.
+    ;;                   (car (file-expand-wildcards
+    ;;                         (expand-file-name "/usr/local/lib/gcc/10")))))
+    ;;    (setenv "DYLD_LIBRARY_PATH" (concat (getenv "DYLD_LIBRARY_PATH")
+    ;;                        (when (getenv "DYLD_LIBRARY_PATH") ":")
+    ;;                        ;; This is where Homebrew puts gcc libraries.
+    ;;                        (car (file-expand-wildcards
+    ;;                          (expand-file-name "/usr/local/lib/gcc/10")))))
+    ;;    ;; Only set after LIBRARY_PATH can find gcc libraries.
+    ;;    (setq comp-deferred-compilation t))
+    ;;   (message "Native comp is *not* available"))
+    )
+
 
 (provide 'init-env)
 

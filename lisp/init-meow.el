@@ -126,7 +126,8 @@
     'meow-keypad-self-insert)
 
   (meow-leader-define-key
-   '("e" . my/icomplete-recentf)
+   '("e" . my/selectrum-recentf-open-files)
+   ;; '("e" . my/icomplete-recentf)
    '("." . find-file)
    '("p" . projectile-command-map)
    '("b" . switch-to-buffer)

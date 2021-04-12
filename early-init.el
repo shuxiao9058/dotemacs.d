@@ -69,17 +69,16 @@
 ;; file is loaded. I use straight.el instead of package.el.
 (setq package-enable-at-startup nil)
 
-
 ;; In noninteractive sessions, prioritize non-byte-compiled source files to
 ;; prevent the use of stale byte-code. Otherwise, it saves us a little IO time
 ;; to skip the mtime checks on every *.elc file.
 (setq load-prefer-newer noninteractive)
 
-;; In Emacs 27+, package initialization occurs before `user-init-file' is
-;; loaded, but after `early-init-file'. Doom handles package initialization, so
-;; we must prevent Emacs from doing it early!
-(setq package-enable-at-startup nil)
-(advice-add #'package--ensure-init-file :override #'ignore)
+;; ;; In Emacs 27+, package initialization occurs before `user-init-file' is
+;; ;; loaded, but after `early-init-file'. Doom handles package initialization, so
+;; ;; we must prevent Emacs from doing it early!
+;; (setq package-enable-at-startup nil)
+;; (advice-add #'package--ensure-init-file :override #'ignore)
 
 ;; Prevent the glimpse of un-styled Emacs by disabling these UI elements early.
 ;; (push '(menu-bar-lines . 0) default-frame-alist)
@@ -91,10 +90,10 @@
 ;; larger than the system default.
 (setq frame-inhibit-implied-resize t)
 
-;; Ignore X resources; its settings would be redundant with the other settings
-;; in this file and can conflict with later config (particularly where the
-;; cursor color is concerned).
-(advice-add #'x-apply-session-resources :override #'ignore)
+;; ;; Ignore X resources; its settings would be redundant with the other settings
+;; ;; in this file and can conflict with later config (particularly where the
+;; ;; cursor color is concerned).
+;; (advice-add #'x-apply-session-resources :override #'ignore)
 
 ;; (setq warning-minimum-level :emergency)
 ;; (setq debug-on-error nil)
