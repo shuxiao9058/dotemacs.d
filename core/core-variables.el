@@ -53,6 +53,10 @@ This variable is non-nil when emacs is started with dump file.")
     ;; (push pkg poly-pdump-packages)
     (cl-pushnew pkg poly-pdump-packages :test #'string=)))
 
+(defvar poly-use-package-always-pdump t
+  "always set :pdump to use-package"
+  )
+
 (defconst poly/using-native-comp (fboundp 'native-comp-available-p)
   ;; for native comp branch
   )

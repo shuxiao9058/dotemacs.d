@@ -65,12 +65,14 @@
 (require 'init-lua)
 (require 'init-lisp)
 (require 'init-web)
+(require 'init-rest)
 (require 'init-cc)
 (require 'init-nix)
 (require 'init-fish)
 (require 'init-docker)
 (require 'init-yaml)
 (require 'init-java)
+(require 'init-clojure)
 (require 'init-format)
 
 ;; functions
@@ -86,6 +88,8 @@
 ;; mail
 ;; (require 'init-mail)
 (require 'init-gnus)
+
+(require 'init-pdump)
 
 ;; (require 'init-misc)
 
@@ -112,16 +116,7 @@
  ;; '(lsp-go-gopls-server-path "/usr/local/bin/gopls" nil nil "Customized with use-package lsp-mode")
  '(smtpmail-smtp-server "smtp.google.com" t)
  '(smtpmail-smtp-service 25 t)
- '(warning-suppress-log-types '((comp)))
- '(warning-suppress-types
-   '((emacs)
-     (emacs)
-     (emacs)
-     (emacs)
-     (emacs)
-     (emacs)
-     (emacs)
-     (comp))))
+ '(warning-suppress-log-types '((comp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -142,3 +137,7 @@
 ;; (profiler-start 'cpu)
 ;; (profiler-report)
 ;; (profiler-stop)
+
+;; (frame-parameter nil 'font)
+
+;; (princ (json-encode (font-family-list)))

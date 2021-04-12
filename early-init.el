@@ -6,60 +6,61 @@
 ;; ;; Defer garbage collection further back in the startup process
 ;; (setq gc-cons-threshold most-positive-fixnum)
 
-(when (boundp 'comp-eln-load-path)
-  (let ((eln-cache-dir
-	 (expand-file-name ".local/cache/eln-cache/"
-			   user-emacs-directory))
-	(find-exec (executable-find "find")))
-    (setcar comp-eln-load-path eln-cache-dir)
-    ;; Quitting emacs while native compilation in progress can leave zero byte
-    ;; sized *.eln files behind. Hence delete such files during startup.
-    (when find-exec
-      (call-process find-exec nil nil nil eln-cache-dir
-		    "-name" "*.eln" "-size" "0" "-delete"))))
+;; (when (boundp 'comp-eln-load-path)
+;;   (let ((eln-cache-dir
+;; 	 (expand-file-name ".local/cache/eln-cache/"
+;; 			   user-emacs-directory))
+;; 	(find-exec (executable-find "find")))
+;;     (setcar comp-eln-load-path eln-cache-dir)
+;;     ;; Quitting emacs while native compilation in progress can leave zero byte
+;;     ;; sized *.eln files behind. Hence delete such files during startup.
+;;     (when find-exec
+;;       (call-process find-exec nil nil nil eln-cache-dir
+;; 		    "-name" "*.eln" "-size" "0" "-delete"))))
 
-(if (and (fboundp 'native-comp-available-p) (native-comp-available-p) (fboundp 'json-serialize))
-    (progn
-      ;; Prevent compilation of this package
-      (require 'comp)
-      (setq comp-deferred-compilation t
-	    package-native-compile t
-	    ;; native-comp settings per
-	    ;; https://github.com/shshkn/emacs.d/blob/master/docs/nativecomp.md
-	    comp-speed 2
-	    comp-async-report-warnings-errors nil
-	    comp-verbose 0
-	    comp-async-jobs-number 2
-	    )
+;; (if (and (fboundp 'native-comp-available-p) (native-comp-available-p) (fboundp 'json-serialize))
+;;     (progn
+;;       ;; Prevent compilation of this package
+;;       (require 'comp)
+;;       (setq comp-deferred-compilation t
+;; 	    package-native-compile t
+;; 	    ;; native-comp settings per
+;; 	    ;; https://github.com/shshkn/emacs.d/blob/master/docs/nativecomp.md
+;; 	    comp-speed 2
+;; 	    comp-async-report-warnings-errors nil
+;; 	    comp-verbose 0
+;; 	    comp-async-jobs-number 2
+;; 	    )
 
-      ;; https://github.com/raxod502/straight.el/issues/680
-      (setq comp-deferred-compilation-deny-list
-	    '("init\\.el$"
-	      "xterm\\.el$"
-	      "^.+evil-pkg\\.el$"
-	      "markdown-toc-pkg\\.el$"
-	      ".+-pkg\\.el$"
-	      "\\(?:[^a-z]+-autoloads\\.el$\\)"))
-      (setq comp-deferred-compilation-black-list
-	    '(xterm "/xterm\\.el$" "/xterm\\.el.gz$" "/evil-collection-vterm\\.el\\'" "/mu4e.*\\.el$"))
-					; (add-to-list 'comp-deferred-compilation-deny-list "init\\.el$")
-      ;; (native--compile-async '("~/.emacs.d/lisp/" "~/.emacs.d/themes/" "~/.emacs.d/modules/" "~/.emacs.d/local-config.el") t)
-      )
-  (message "Not support native-comp"))
+;;       ;; https://github.com/raxod502/straight.el/issues/680
+;;       (setq comp-deferred-compilation-deny-list
+;; 	    '("init\\.el$"
+;; 	      "xterm\\.el$"
+;; 	      "^.+evil-pkg\\.el$"
+;; 	      "markdown-toc-pkg\\.el$"
+;; 	      ".+-pkg\\.el$"
+;; 	      "\\(?:[^a-z]+-autoloads\\.el$\\)"))
+;;       (setq comp-deferred-compilation-black-list
+;; 	    '(xterm "/xterm\\.el$" "/xterm\\.el.gz$" "/evil-collection-vterm\\.el\\'" "/mu4e.*\\.el$"))
+;; 					; (add-to-list 'comp-deferred-compilation-deny-list "init\\.el$")
+;;       ;; (native--compile-async '("~/.emacs.d/lisp/" "~/.emacs.d/themes/" "~/.emacs.d/modules/" "~/.emacs.d/local-config.el") t)
+;;       )
+;;   (message "Not support native-comp"))
 
-;;; Automatic Optimization
-(setq gc-cons-threshold-original gc-cons-threshold)
-(setq gc-cons-threshold (* 1024 1024 100))
-(setq file-name-handler-alist-original file-name-handler-alist)
-(setq inhibit-compacting-font-caches nil)
-(setq file-name-handler-alist nil)
-;; (run-with-idle-timer 5 t #'garbage-collect)
-(run-with-idle-timer 5 nil
-		     (lambda ()
-		       (setq gc-cons-threshold gc-cons-threshold-original)
-		       (setq file-name-handler-alist file-name-handler-alist-original)
-		       (makunbound 'gc-cons-threshold-original)
-		       (makunbound 'file-name-handler-alist-original)))
+;; ;;; Automatic Optimization
+;; (defvar gc-cons-threshold-original gc-cons-threshold)
+;; ;; (setq gc-cons-threshold-original gc-cons-threshold)
+;; (setq gc-cons-threshold (* 1024 1024 100))
+;; (setq file-name-handler-alist-original file-name-handler-alist)
+;; (setq inhibit-compacting-font-caches nil)
+;; (setq file-name-handler-alist nil)
+;; ;; (run-with-idle-timer 5 t #'garbage-collect)
+;; (run-with-idle-timer 5 nil
+;; 		     (lambda ()
+;; 		       (setq gc-cons-threshold gc-cons-threshold-original)
+;; 		       (setq file-name-handler-alist file-name-handler-alist-original)
+;; 		       (makunbound 'gc-cons-threshold-original)
+;; 		       (makunbound 'file-name-handler-alist-original)))
 
 ;; Package initialize occurs automatically, before `user-init-file' is
 ;; loaded, but after `early-init-file'. We handle package
@@ -95,8 +96,8 @@
 ;; cursor color is concerned).
 (advice-add #'x-apply-session-resources :override #'ignore)
 
-(setq warning-minimum-level :emergency)
-(setq debug-on-error nil)
+;; (setq warning-minimum-level :emergency)
+;; (setq debug-on-error nil)
 
 ;; (setq warning-minimum-level :debug)
 ;; (setq debug-on-error t)

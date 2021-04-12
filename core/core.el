@@ -68,7 +68,6 @@
     (require 'core-font)
     (require 'core-keybindings)
     (require 'core-packages)
-    ;; (require 'core-evil)
     ;; (require 'core-autoload)
     ;; (poly-load-autoload)
     ;; (when (not noninteractive)

@@ -1,66 +1,5 @@
 ;;; lisp/init-company.el -*- lexical-binding: t; -*-
 
-;; ;; https://github.com/makp/emacs-configs/blob/831d07582269fb63caec087fe71bee398a8b2af8/mk_company.el
-;; ;; Add yasnippet support for all company backends
-;; ;; https://github.com/syl20bnr/spacemacs/pull/179
-;; (defvar company-mode/enable-yas t
-;;   "Enable yasnippet for all backends.")
-
-;; (defun company-mode/backend-with-yas (backend)
-;;   (if (or (not company-mode/enable-yas)
-;;           (and (listp backend) (member 'company-yasnippet backend)))
-;;       backend
-;;     (append (if (consp backend) backend (list backend))
-;;             '(:with company-yasnippet))))
-
-;; ;; Integrate company-tabnine with eglot
-;; (defun company//sort-by-tabnine (candidates)
-;;   (if (or (functionp company-backend)
-;;           (not (and (listp company-backend) (memq 'company-tabnine company-backend))))
-;;       candidates
-;;     (let ((candidates-table (make-hash-table :test #'equal))
-;;           candidates-1
-;;           candidates-2)
-;;       (dolist (candidate candidates)
-;;         (if (eq (get-text-property 0 'company-backend candidate)
-;;                 'company-tabnine)
-;;             (unless (gethash candidate candidates-table)
-;;               (push candidate candidates-2))
-;;           (push candidate candidates-1)
-;;           (puthash candidate t candidates-table)))
-;;       (setq candidates-1 (nreverse candidates-1))
-;;       (setq candidates-2 (nreverse candidates-2))
-;;       (nconc (seq-take candidates-1 2)
-;;              (seq-take candidates-2 2)
-;;              (seq-drop candidates-1 2)
-;;              (seq-drop candidates-2 2)))))
-
-;; (defun tabnine//sort-by-tabnine (candidates)
-;;   (if (or (functionp company-backend)
-;; 	  (not (and (listp company-backend) (memq 'company-tabnine company-backend))))
-;;       candidates
-;;     (let ((candidates-table (make-hash-table :test #'equal))
-;; 	  candidates-capf
-;; 	  candidates-tabnine)
-;;       (dolist (candidate candidates)
-;; 	(if (eq (get-text-property 0 'company-backend candidate)
-;; 		'company-tabnine)
-;; 	    (unless (gethash candidate candidates-table)
-;; 	      (push candidate candidates-tabnine))
-;; 	  (push candidate candidates-capf)
-;; 	  (puthash candidate t candidates-table)))
-;;       (setq candidates-capf (nreverse candidates-capf))
-;;       (setq candidates-tabnine (nreverse candidates-tabnine))
-;;       (nconc (seq-take candidates-tabnine company-tabnine-max-num-results)
-;; 	     (seq-take candidates-capf (- 9 company-tabnine-max-num-results))))))
-
-
-;; (defun tabnine//merge-company-tabnine-to-company-lsp ()
-;;   (when (memq 'company-capf company-backends)
-;;     (setq-local company-backends (remove 'company-capf company-backends))
-;;     (add-to-list 'company-backends '(company-capf :with company-tabnine :separate)))
-;;   )
-
 (defun tabnine//company-box-icons--tabnine (candidate)
   (when (eq (get-text-property 0 'company-backend candidate)
             'company-tabnine)
@@ -90,70 +29,71 @@ candidates will be from company-tabnine, others keeping their own origin order."
              (seq-drop candidates-2 2)))))
 
 (use-package company
-  :straight t
-  :ensure t
-  :custom
-  (company-minimum-prefix-length 2)
-  (company-async-wait 0.5)
-  (company-async-timeout 1)
-  ;; (company-require-match 'never)
-  ;; (company-tooltip-limit           20)
-  (company-tooltip-align-annotations t) ;; Align annotation to the right side.
-  (company-auto-commit nil)
-  (company-selection-wrap-around t)
-  (company-begin-commands '(self-insert-command org-self-insert-command))
-  ;; (company-require-match nil)
-  ;; Don't use company in the following modes
-  (company-global-modes '(not eshell-mode shell-mode comint-mode erc-mode gud-mode rcirc-mode
-			      minibuffer-inactive-mode))
-  (company-candidates-length 10)
-  (company-echo-delay 0)
-  ;; Trigger completion immediately.
-  ;; (company-idle-delay nil)
-  (company-idle-delay 0.1)
-  ;; Number the candidates (use M-1, M-2 etc to select completions).
-  (company-show-numbers t)
-  :hook (after-init . global-company-mode)
-  :config
-  (setq company-frontends '(
-			    ;; company-pseudo-tooltip-frontend
-			    company-pseudo-tooltip-unless-just-one-frontend
-			    ;; company-preview-frontend
-			    company-preview-if-just-one-frontend
-			    company-echo-metadata-frontend))
-  ;; set default `company-backends'
-  (setq-default company-backends
-		'((company-tabnine :with company-capf :separate)
-		  company-dabbrev-code
-		  (company-files          ; files & directory
-		   company-keywords       ; keywords
-		   )
-		  (company-abbrev company-dabbrev)))
-  (defun add-pcomplete-to-capf ()
-    (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
+    :straight t
+    :ensure t
+    :pdump (company-capf company-files company-keywords company-abbrev company-dabbrev company-dabbrev-code)
+    :custom
+    (company-minimum-prefix-length 2)
+    (company-async-wait 0.5)
+    (company-async-timeout 1)
+    ;; (company-require-match 'never)
+    ;; (company-tooltip-limit           20)
+    (company-tooltip-align-annotations t) ;; Align annotation to the right side.
+    (company-auto-commit nil)
+    (company-selection-wrap-around t)
+    (company-begin-commands '(self-insert-command org-self-insert-command))
+    ;; (company-require-match nil)
+    ;; Don't use company in the following modes
+    (company-global-modes '(not eshell-mode shell-mode comint-mode erc-mode gud-mode rcirc-mode
+			    minibuffer-inactive-mode))
+    (company-candidates-length 10)
+    (company-echo-delay 0)
+    ;; Trigger completion immediately.
+    ;; (company-idle-delay nil)
+    (company-idle-delay 0.1)
+    ;; Number the candidates (use M-1, M-2 etc to select completions).
+    (company-show-numbers t)
+    :hook (after-init . global-company-mode)
+    :config
+    (setq company-frontends '(
+			      ;; company-pseudo-tooltip-frontend
+			      company-pseudo-tooltip-unless-just-one-frontend
+			      ;; company-preview-frontend
+			      company-preview-if-just-one-frontend
+			      company-echo-metadata-frontend))
+    ;; set default `company-backends'
+    (setq-default company-backends
+		  '((company-tabnine :with company-capf :separate)
+		    company-dabbrev-code
+		    (company-files          ; files & directory
+		     company-keywords       ; keywords
+		     )
+		    (company-abbrev company-dabbrev)))
+    (defun add-pcomplete-to-capf ()
+      (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
 
-  (add-hook 'org-mode-hook #'add-pcomplete-to-capf)
-  :bind
-  (:map company-active-map
-	("C-n"   .  company-select-next)
-	("C-p"     . company-select-previous)
-	("C-j"     . company-select-next)
-	("C-k"     . company-select-previous)
-	("C-h"     . company-show-doc-buffer)
-	("C-u"    . company-previous-page)
-	("C-d"     . company-next-page)
-	("C-s"    . company-filter-candidates)
-	("C-SPC"   . company-complete-common)
-	("TAB"     . company-complete-common-or-cycle)
-	([tab]     . company-complete-common-or-cycle)
-	([backtab] . company-select-previous)
-	:map company-search-map
-        ("C-n"     . company-select-next-or-abort)
-	("C-p"     . company-select-previous-or-abort)
-	("C-j"     . company-select-next-or-abort)
-	("C-k"    .  company-select-previous-or-abort)
-	("C-s"    .  (lambda () (interactive) (company-search-abort) (company-filter-candidates)))
-	([escape]  . company-search-abort)))
+    (add-hook 'org-mode-hook #'add-pcomplete-to-capf)
+    :bind
+    (:map company-active-map
+	  ("C-n"   .  company-select-next)
+	  ("C-p"     . company-select-previous)
+	  ("C-j"     . company-select-next)
+	  ("C-k"     . company-select-previous)
+	  ("C-h"     . company-show-doc-buffer)
+	  ("C-u"    . company-previous-page)
+	  ("C-d"     . company-next-page)
+	  ("C-s"    . company-filter-candidates)
+	  ("C-SPC"   . company-complete-common)
+	  ("TAB"     . company-complete-common-or-cycle)
+	  ([tab]     . company-complete-common-or-cycle)
+	  ([backtab] . company-select-previous)
+	  :map company-search-map
+          ("C-n"     . company-select-next-or-abort)
+	  ("C-p"     . company-select-previous-or-abort)
+	  ("C-j"     . company-select-next-or-abort)
+	  ("C-k"    .  company-select-previous-or-abort)
+	  ("C-s"    .  (lambda () (interactive) (company-search-abort) (company-filter-candidates)))
+	  ([escape]  . company-search-abort)))
 
 ;; (use-package company-posframe
 ;;     :straight t
@@ -250,8 +190,8 @@ candidates will be from company-tabnine, others keeping their own origin order."
 ;;   (company-flx-mode 1))
 
 (use-package company-prescient
-  :straight t
-  :config (company-prescient-mode 1))
+    :straight t
+    :config (company-prescient-mode 1))
 
 ;; (use-package company-quickhelp
 ;;     :straight t
@@ -260,39 +200,39 @@ candidates will be from company-tabnine, others keeping their own origin order."
 ;;     (company-quickhelp-mode))
 
 (use-package company-tabnine
-  :straight t
-  :commands company-tabnine-start-process
-  :ensure t
-  :after company
-  :custom
-  (company-tabnine-binaries-folder (expand-file-name ".TabNine" "~"))
-  (company-tabnine-log-file-path "/tmp/TabNine.log")
-  (company-tabnine-executable-args (list "--log-level" "Error"))
-  (company-tabnine-wait 0.25)
-  (company-tabnine-max-num-results 5)
-  ;; (company-tabnine-max-num-results 4)
-  (company-tabnine-no-continue t)
-  :config
-  (when (> 9 company-tabnine-max-num-results)
-    ;; (add-to-list 'company-transformers 'company//sort-by-tabnine t)
-    (add-to-list 'company-transformers 'tabnine//sort-by-tabnine t)
+    :straight t
+    :commands company-tabnine-start-process
+    :ensure t
+    :after company
+    :custom
+    (company-tabnine-binaries-folder (expand-file-name ".TabNine" "~"))
+    (company-tabnine-log-file-path "/tmp/TabNine.log")
+    (company-tabnine-executable-args (list "--log-level" "Error"))
+    (company-tabnine-wait 0.25)
+    (company-tabnine-max-num-results 5)
+    ;; (company-tabnine-max-num-results 4)
+    (company-tabnine-no-continue t)
+    :config
+    (when (> 9 company-tabnine-max-num-results)
+      ;; (add-to-list 'company-transformers 'company//sort-by-tabnine t)
+      (add-to-list 'company-transformers 'tabnine//sort-by-tabnine t)
+      )
+    ;; workaround for company-flx-mode and other transformers
+    (setq company-tabnine--disable-next-transform nil)
+    (defun my-company--transform-candidates (func &rest args)
+      (if (not company-tabnine--disable-next-transform)
+	  (apply func args)
+	(setq company-tabnine--disable-next-transform nil)
+	(car args)))
+
+    (defun my-company-tabnine (func &rest args)
+      (when (eq (car args) 'candidates)
+	(setq company-tabnine--disable-next-transform t))
+      (apply func args))
+
+    (advice-add #'company--transform-candidates :around #'my-company--transform-candidates)
+    (advice-add #'company-tabnine :around #'my-company-tabnine)
     )
-  ;; workaround for company-flx-mode and other transformers
-  (setq company-tabnine--disable-next-transform nil)
-  (defun my-company--transform-candidates (func &rest args)
-    (if (not company-tabnine--disable-next-transform)
-	(apply func args)
-      (setq company-tabnine--disable-next-transform nil)
-      (car args)))
-
-  (defun my-company-tabnine (func &rest args)
-    (when (eq (car args) 'candidates)
-      (setq company-tabnine--disable-next-transform t))
-    (apply func args))
-
-  (advice-add #'company--transform-candidates :around #'my-company--transform-candidates)
-  (advice-add #'company-tabnine :around #'my-company-tabnine)
-  )
 
 ;; ;; try nox
 ;; (use-package nox
@@ -349,31 +289,31 @@ candidates will be from company-tabnine, others keeping their own origin order."
 ;;     )
 
 (use-package yasnippet
-  :straight t
-  :ensure t
-  :diminish yas-global-mode
-  :commands yas-global-mode
-  :hook (after-init . yas-global-mode)
-  ;; :config
-  ;; (add-to-list 'yas-snippet-dirs
-  ;; 		 (expand-file-name "snippets" poly-etc-dir))
-  ;; make company break completion
-  ;; (setq company-continue-commands (-snoc company-continue-commands 'yas-insert-snippet))
-  )
+    :straight t
+    :ensure t
+    :diminish yas-global-mode
+    :commands yas-global-mode
+    :hook (after-init . yas-global-mode)
+    ;; :config
+    ;; (add-to-list 'yas-snippet-dirs
+    ;; 		 (expand-file-name "snippets" poly-etc-dir))
+    ;; make company break completion
+    ;; (setq company-continue-commands (-snoc company-continue-commands 'yas-insert-snippet))
+    )
 
 (use-package yasnippet-snippets
-  :straight t
-  :ensure t
-  :after yasnippet)
+    :straight t
+    :ensure t
+    :after yasnippet)
 
 
 (use-package java-snippets
-  :straight t
-  :defer t
-  :after yasnippet)
+    :straight t
+    :defer t
+    :after yasnippet)
 
 (use-package javadoc-lookup
-  :straight t)
+    :straight t)
 
 
 (provide 'init-company)

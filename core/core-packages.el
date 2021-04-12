@@ -1,21 +1,5 @@
 ;;; core/core-packages.el -*- lexical-binding: t; -*-
 
-;; ;; HACK `tty-run-terminal-initialization' is *tremendously* slow for some
-;; ;; reason; inexplicably doubling startup time for terminal Emacs. Keeping
-;; ;; it disabled will have nasty side-effects, so we simply delay it until
-;; ;; later in the startup process and, for some reason, it runs much faster
-;; ;; when it does.
-;; (unless (daemonp)
-;;   (defun doom-init-tty-h ()
-;;     (advice-remove #'tty-run-terminal-initialization #'ignore)
-;;     (tty-run-terminal-initialization (selected-frame) nil t))
-;;   (advice-add #'tty-run-terminal-initialization :override #'ignore)
-;;   (add-hook 'window-setup-hook #'doom-init-tty-h))
-
-;; (require 'faces)
-;; (setq xterm-extra-capabilities nil)
-
-
 (unless (display-graphic-p)
   (advice-add #'tty-run-terminal-initialization :override #'ignore)
   (add-hook 'window-setup-hook
@@ -25,25 +9,14 @@
 
 (use-package server ; built-in
   :straight nil
-  ;; :if (display-graphic-p)
   :defer 1
   :init
   (if IS-WINDOWS
       (progn
 	(setq server-use-tcp t)
-	(setq server-use-socket nil)
-	)
+	(setq server-use-socket nil))
     (setq server-use-tcp nil)
     (setq server-use-socket t))
-
-  ;; (setq server-auth-dir  (expand-file-name "emacs-server" poly-cache-dir))
-  ;; (setq server-socket-dir (expand-file-name "emacs-server" poly-cache-dir))
-  ;; (setq server-name (expand-file-name "emacs-server-file" server-socket-dir))
-
-  ;; (unless (file-exists-p server-auth-dir)
-  ;;   (make-directory server-auth-dir))
-  ;; (unless (or (not server-socket-dir) (file-exists-p server-socket-dir))
-  ;;   (make-directory server-socket-dir))
 
   (defadvice server-ensure-safe-dir
       (around my-around-server-ensure-safe-dir activate)
@@ -51,8 +24,7 @@
     (ignore-errors ad-do-it))
   :config
   (unless (server-running-p)
-    (server-start))
-  )
+    (server-start)))
 
 ;; (use-package files
 ;;   :straight nil
@@ -71,10 +43,10 @@
 (use-package autorevert
   :straight nil
   :diminish auto-revert-mode
-  :config
-  (global-auto-revert-mode +1)
   :custom
-  (auto-revert-verbose nil))
+  (auto-revert-verbose nil)
+  :config
+  (global-auto-revert-mode +1))
 
 ;;; Undo-Fu
 ;; trying another undo package
@@ -84,21 +56,8 @@
 	     :host gitlab
 	     :repo "ideasman42/emacs-undo-fu"
 	     :files ("undo-fu.el"))
-  ;; :after evil
   :ensure t
-  ;; :disabled
   :demand t
-  ;; :init
-  ;; ;; `evil' activates undo-tree, so we must pre-emptively disable it.
-  ;; (eval-after-load 'undo-tree
-  ;;   (global-undo-tree-mode -1))
-  ;; :general
-  ;; (:states '(normal)
-  ;; 	   "u" 'undo-only
-  ;; 	   "\C-r" 'undo-fu-only-redo)
-  ;; (:states '(normal insert motion emacs)
-  ;; 	   "s-z" 'undo-fu-only-undo
-  ;; 	   "s-Z" 'undo-fu-only-redo)
   :custom
   ;; Store more undo history to prevent loss of data
   (undo-limit 400000)
@@ -141,8 +100,7 @@
   (undo-tree-auto-save-history t)
   (undo-tree-visualizer-lazy-drawing 1000)
   :config
-  (global-undo-tree-mode)
-  )
+  (global-undo-tree-mode))
 
 ;; (use-package hide-mode-line
 ;;   :straight t
@@ -207,18 +165,13 @@
 
 (use-package clipetty
   :straight t
-  ;; :after evil
   :ensure t
   :hook (after-init . global-clipetty-mode)
-  ;; :config
-  ;; ;; copy to system clipboard with `:copy`
-  ;; (evil-ex-define-cmd "copy" #'clipetty-kill-ring-save)
   )
 
 (use-package pbcopy
   :straight t
   :if IS-MAC
-  ;; :if IS-MAC
   :init (turn-on-pbcopy)
   )
 

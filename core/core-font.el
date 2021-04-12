@@ -69,21 +69,25 @@
 ;; (add-hook 'after-make-frame-functions #'colawithsauce/set-unicode-fonts)
 ;; (colawithsauce/set-unicode-fonts nil)
 
+(setq english-font-size 12)
+(setq chinese-font-size 14)
+
 (defun +load-font (&optional frame)
   (interactive)
   (setq english-fonts `(,+font-family))
   (setq chinese-fonts `(,+ufont-family))
   (set-face-attribute 'default nil
 		      ;; (format "%s-%d" (car english-fonts) 12)
-                      :font (format "%s:pixelsize=%d" (car english-fonts) 13) ;; 11 13 17 19 23
+                      :font (format "%s:pixelsize=%d" (car english-fonts) english-font-size) ;; 11 13 17 19 23
 		      )
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
-    (set-fontset-font (frame-parameter nil 'font) charset
-                      (font-spec :family +ufont-family
-				 ;; (car chinese-fonts)
-				 :size 16))) ;; 14 16 20 22 28
-  (set-face-attribute 'variable-pitch nil :font (format "%s-%d" +ufont-family 16))
-  (set-face-attribute 'fixed-pitch nil :font (format "%s-%d" +ufont-family 16))
+    (set-fontset-font  nil ;; (frame-parameter nil 'font)
+     charset
+     (font-spec :family +ufont-family
+		;; (car chinese-fonts)
+		:size chinese-font-size))) ;; 14 16 20 22 28
+  (set-face-attribute 'variable-pitch nil :font (format "%s-%d" +ufont-family chinese-font-size))
+  (set-face-attribute 'fixed-pitch nil :font (format "%s-%d" +ufont-family chinese-font-size))
 
   ;; (setq face-font-rescale-alist `((,+ufont-family . 1.2)))
   ;; (setq face-font-rescale-alist `((,+ufont-family . 1.24)))

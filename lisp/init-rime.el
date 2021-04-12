@@ -10,10 +10,6 @@
 	     :repo "DogLooksGood/emacs-rime"
              :files (:defaults "lib.c" "Makefile"))
   :defer t
-  ;; :hook
-  ;; ('kill-emacs . (lambda ()
-  ;;                  (when (fboundp 'rime-sync)
-  ;;                    (ignore-errors (rime-sync)))))
   :custom
   (rime-disable-predicates '(rime-predicate-prog-in-code-p
                              rime-predicate-after-alphabet-char-p

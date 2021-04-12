@@ -349,8 +349,9 @@
   ;; ;; (add-to-list 'org-latex-packages-alist '("" "minted"))
   ;; (add-to-list 'org-latex-packages-alist '("" "color"))
   ;; (add-to-list 'org-latex-packages-alist '("" "geometry"))
-  ;; (add-to-list 'org-latex-packages-alist '("" "tabularx"))
-  ;; (add-to-list 'org-latex-packages-alist '("" "tabu"))
+  (add-to-list 'org-latex-packages-alist '("" "tabularx"))
+  (add-to-list 'org-latex-packages-alist '("" "tabu"))
+  (setq    org-latex-default-table-environment "tabu")
   ;; (add-to-list 'org-latex-packages-alist '("" "fancyhdr"))
   ;; (add-to-list 'org-latex-packages-alist '("" "natbib"))
   ;; (add-to-list 'org-latex-packages-alist '("" "titlesec"))
@@ -593,6 +594,7 @@
 (use-package ox-taskjuggler
   :straight nil
   :after (org osx)
+  :pdump nil
   :init
   (setq org-taskjuggler-default-global-properties
 	"shift s39 \"Full time shift\" {
@@ -614,9 +616,7 @@
 	org-export-taskjuggler-default-global-properties "rversion")
   ;; (setq org-taskjuggler-default-reports '("include \"/Users/chenlong/.emacs.d/lisp/reports.tji\""))
   (add-hook 'org-mode-hook (lambda()
-			     (require 'ox-taskjuggler)
-			     ))
-  )
+			     (require 'ox-taskjuggler))))
 
 (use-package org-bullets
   :straight t
@@ -657,7 +657,19 @@
 	("C-c d" . org-decrypt-entry)
 	("C-c D" . org-decrypt-entries)
 	;; ("C-c I" . org-insert-epa-file-local-variables)
-	)
+	))
+
+(use-package ob
+  :straight nil
+  :after org
+  :config
+  (require 'ob-clojure)
+  (setq org-babel-clojure-backend 'cider)
+  )
+
+(use-package org-dashboard
+  :straight t
+  :after org
   )
 
 ;; (defun org-insert-epa-file-local-variables ()

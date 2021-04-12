@@ -3,23 +3,53 @@
 (with-eval-after-load 'use-package-core
   (when (and (boundp 'use-package-keywords)
              (listp use-package-keywords))
-    (princ "set use-package-keywords")
     (setq use-package-keywords (remq :pdump use-package-keywords))
-    (add-to-list 'use-package-keywords :pdump t)))
+    (add-to-list 'use-package-keywords :pdump t))
+  ;; default :pdump to t when poly-use-package-always-pdump is t and no :pdump attribute
+  (add-to-list 'use-package-defaults
+	       '(:pdump poly-use-package-always-pdump
+			(lambda (name args)
+			  (and poly-use-package-always-pdump
+			       (not (plist-member args :pdump)))))))
 
 (defun use-package-normalize/:pdump (name-symbol keyword args)
   (use-package-only-one (symbol-name keyword) args
     (lambda (label arg)
+      ;; (princ (type-of arg))
+      ;; (princ arg)
       (cond
        ((and (listp arg) (keywordp (car arg))) arg)
+       ((consp arg) arg)
        ((symbolp arg) (symbol-name arg))
+       ((stringp arg) (unless (string= "nil" arg) arg))
        (t
-        (use-package-error
-         ":pdump wants a bool value"))))))
+	(use-package-error
+	 ":pdump wants a bool value"))))))
 
 (defun use-package-handler/:pdump (name _keyword arg rest state)
-  (when state
-    (poly-pdump-packages `,name)))
+  ;; (princ arg)
+  (let* ((enable-pdump (if (and (stringp arg) (string= "nil" arg)) nil t)))
+    ;; (princ (type-of arg))
+    ;; (princ arg)
+    ;; (princ "\t")
+    ;; (princ enable-pdump)
+    ;; (princ "\t")
+    ;; (princ name)
+    ;; (princ "\n")
+    (when enable-pdump
+      (poly-pdump-packages `,name))
+    ;; arg may contain extra packages
+    (when (consp arg)
+      (cl-loop for cell in arg
+	       do
+	       (when  (symbolp cell)
+		 ;; (princ cell)
+		 ;; (princ "\t")
+		 ;; (princ (type-of cell))
+		 ;; (princ "\t")
+		 ;; (princ (symbol-name cell))
+		 ;; (princ "\n")
+		 (poly-pdump-packages cell))))))
 
 ;; Emacs wants to load `package.el' before the init file,
 ;; so we do the same with `straight.el'
@@ -45,7 +75,7 @@
       autoload-compute-prefixes nil
       straight-fix-flycheck t
       straight-enable-use-package-integration t
-      straight-disable-native-compile nil
+      straight-disable-native-compile t
 
       ;; Tell straight.el about the profiles we are going to be using.
       straight-profiles

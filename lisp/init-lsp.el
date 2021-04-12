@@ -9,7 +9,8 @@
   "disable lsp-completion-enable"
   (when (bound-and-true-p my-disable-lsp-completion)
     (setq-local lsp-completion-enable nil
-		lsp-modeline-code-actions-enable nil))
+		;; lsp-modeline-code-actions-enable nil
+		))
   (when (derived-mode-p 'go-mode
 			'java-mode
 			'python-mode
@@ -19,7 +20,8 @@
 			'js2-mode
 			'typescript-mode
 			'c-mode
-			'c++-mode)
+			'c++-mode
+			'clojure-mode)
     ;; https://github.com/golang/tools/commit/b2d8b0336
     (setq-local lsp-completion-filter-on-incomplete nil)
     (lsp-deferred)))
@@ -51,7 +53,7 @@
   (lsp-log-io nil)
   (lsp-log-max nil)
   (lsp-print-performance nil)
-  (lsp-auto-execute-action nil) ;; Auto-execute single action
+  (lsp-auto-execute-action t) ;; Auto-execute single action
   (lsp-document-sync-method nil) ;; use default method recommended by server. 'incremental 'full
   (lsp-enable-xref t)
   (lsp-headerline-breadcrumb-enable nil)
@@ -66,7 +68,7 @@
   (lsp-completion-enable-additional-text-edit nil)
   (lsp-response-timeout 5)
   (lsp-tcp-connection-timeout 2)
-  (lsp-enable-folding nil)             ;; use `evil-matchit' instead
+  (lsp-enable-folding t)             ;; use `evil-matchit' instead
   (lsp-diagnostic-package :none)   ;; prefer flycheck disable
   (lsp-modeline-diagnostics-enable nil)
   (lsp-diagnostics-disabled-modes '(js-mode go-mode))

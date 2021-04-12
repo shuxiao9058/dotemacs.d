@@ -12,11 +12,7 @@
   :custom
   (hydra-if-helpful t)
   :commands (defhydra)
-  :bind ("M-o" . hydra-base/body)
-  ;; :config
-  ;; ;; Make hydra compatible with awesome-tab
-  ;; (advice-add 'lv-window :around 'zenith/lv-window)
-  )
+  :bind ("M-o" . hydra-base/body))
 
 ;; (use-package hydra-posframe
 ;;   :straight (hydra-posframe
@@ -30,17 +26,21 @@
 ;;   )
 
 
+;; _w_indow
+;; _e_in
+
+
 (defhydra hydra-base ()
   "
+_a_genda
+_e_in
 _o_utline & outshine
 _s_traight
-awesome-_t_ab
 _w_indow
-_e_in
 "
+  ("a" hydra-agenda-view/body :exit t)
   ("s" hydra-straight/body :exit t)
   ("w" hydra-window/body :exit t)
-  ("t" awesome-fast-switch/body :exit t)
   ("o" hydra-outline/body :exit t)
   ("e" hydra-ein/body :exit t)
   )
@@ -123,21 +123,18 @@ _SPC_ cancel  _o_nly this     _d_elete
          (interactive)
          (ace-window 16)
          (add-hook 'ace-window-end-once-hook
-                   'hydra-window/body))
-   )
+                   'hydra-window/body)))
   ("o" delete-other-windows)
   ("i" ace-maximize-window)
   ("z" (progn
          (winner-undo)
-         (setq this-command 'winner-undo))
-   )
+         (setq this-command 'winner-undo)))
   ("Z" winner-redo)
-  ("SPC" nil)
-  )
+  ("SPC" nil))
 
 
 ;; (defhydra hydra-git-gutter (:body-pre (git-gutter+-mode 1)
-;;                             :hint nil)
+;; 				      :hint nil)
 ;;   "
 ;; Git gutter:
 ;;   _j_: next hunk        _s_tage hunk     _q_uit
@@ -146,7 +143,7 @@ _SPC_ cancel  _o_nly this     _d_elete
 ;;   _h_: first hunk
 ;;   _l_: last hunk
 ;; "
-;; ;; set start _R_evision
+;;   ;; set start _R_evision
 ;;   ("j" git-gutter+:next-hunk)
 ;;   ("k" git-gutter+:previous-hunk)
 ;;   ("h" (progn (goto-char (point-min))
@@ -163,9 +160,9 @@ _SPC_ cancel  _o_nly this     _d_elete
 ;;               ;; clear the markup right away
 ;;               (sit-for 0.1)
 ;;               ;;(git-gutter:clear)
-;;         )
-;;        :color blue)
-;; )
+;;               )
+;;    :color blue)
+;;   )
 
 ;; from https://www.reddit.com/r/emacs/comments/8of6tx/tip_how_to_be_a_beast_with_hydra/
 (defhydra hydra-outline (:color blue :hint nil)
@@ -200,41 +197,6 @@ _SPC_ cancel  _o_nly this     _d_elete
   ("b" outline-backward-same-level)       ; Backward - same level
   ("z" nil "leave")
   )
-
-(defhydra awesome-fast-switch (:hint nil)
-  "
- ^^^^Fast Move             ^^^^Tab                    ^^Search            ^^Misc
--^^^^--------------------+-^^^^---------------------+-^^----------------+-^^---------------------------
-   ^_k_^   prev group    | _C-a_^^     select first | _b_ search buffer | _C-k_   kill buffer
- _h_   _l_  switch tab   | _C-e_^^     select last  | _g_ search group  | _C-S-k_ kill others in group
-   ^_j_^   next group    | _C-j_^^     ace jump     | ^^                | ^^
- ^^0 ~ 9^^ select window | _C-h_/_C-l_ move current | ^^                | ^^
--^^^^--------------------+-^^^^---------------------+-^^----------------+-^^---------------------------
-"
-  ("h" awesome-tab-backward-tab)
-  ("j" awesome-tab-forward-group)
-  ("k" awesome-tab-backward-group)
-  ("l" awesome-tab-forward-tab)
-  ("0" my-select-window)
-  ("1" my-select-window)
-  ("2" my-select-window)
-  ("3" my-select-window)
-  ("4" my-select-window)
-  ("5" my-select-window)
-  ("6" my-select-window)
-  ("7" my-select-window)
-  ("8" my-select-window)
-  ("9" my-select-window)
-  ("C-a" awesome-tab-select-beg-tab)
-  ("C-e" awesome-tab-select-end-tab)
-  ("C-j" awesome-tab-ace-jump)
-  ("C-h" awesome-tab-move-current-tab-to-left)
-  ("C-l" awesome-tab-move-current-tab-to-right)
-  ;; ("b" ivy-switch-buffer)
-  ;; ("g" awesome-tab-counsel-switch-group)
-  ("C-k" kill-current-buffer)
-  ("C-S-k" awesome-tab-kill-other-buffers-in-current-group)
-  ("q" nil "quit"))
 
 (defhydra hydra-ein (:hint nil)
   "
@@ -367,8 +329,7 @@ Headline^^            Visit entry^^               Filter^^                    Da
   ("q" nil :exit t)
   ("gr" org-agenda-redo)
   ("." org-agenda-goto-today)
-  ("gd" org-agenda-goto-date)
-  )
+  ("gd" org-agenda-goto-date))
 
 
 ;; (defhydra hydra-clock (:color blue)
