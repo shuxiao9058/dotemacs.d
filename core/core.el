@@ -7,17 +7,14 @@
 ;; Ensure `poly-core-dir' is in `load-path'
 (add-to-list 'load-path (file-name-directory load-file-name))
 
+(defalias 'yes-or-no-p 'y-or-n-p)
+
 ;; This is consulted on every `require', `load' and various path/io functions.
 ;; You get a minor speed up by nooping this.
 (unless noninteractive
   (setq file-name-handler-alist nil))
 
 (require 'core-variables)
-
-;;; cua-mode for colum-editing
-;; windows style keybind C-x, C-v, cut paste
-;; (cua-mode t)
-;; (setq cua-auto-tabify-rectangles nil) ;; Don't tabify after rectangle commands
 
 ;; ;; Disable splash screen
 ;; (setq inhibit-startup-message t)
@@ -29,20 +26,9 @@
 ;; Makes *scratch* empty.
 (setq initial-scratch-message nil)
 
-;; Removes *scratch* from buffer after the mode has been set.
-(defun remove-scratch-buffer ()
-  (if (get-buffer "*scratch*")
-      (kill-buffer "*scratch*")))
-(add-hook 'after-change-major-mode-hook 'remove-scratch-buffer)
-
-;; ;; Removes *messages* from the buffer.
-;; (setq-default message-log-max nil)
-;; (kill-buffer "*Messages*")
-
 ;; Don't show *Buffer list* when opening multiple files at the same time.
 (setq inhibit-startup-buffer-menu t)
 
-;;;
 ;; Delete trailing whitespace before save
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (add-hook 'before-save-hook 'whitespace-cleanup)
@@ -65,7 +51,7 @@
       nil
     (require 'core-straight)
     (require 'core-ui)
-    (require 'core-font)
+    ;; (require 'core-font)
     (require 'core-keybindings)
     (require 'core-packages)
     ;; (require 'core-autoload)

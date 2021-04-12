@@ -8,23 +8,23 @@
 	      (tty-run-terminal-initialization (selected-frame) nil t))))
 
 (use-package server ; built-in
-  :straight nil
-  :defer 1
-  :init
-  (if IS-WINDOWS
-      (progn
-	(setq server-use-tcp t)
-	(setq server-use-socket nil))
-    (setq server-use-tcp nil)
-    (setq server-use-socket t))
+    :straight nil
+    :defer 1
+    :init
+    (if IS-WINDOWS
+	(progn
+	  (setq server-use-tcp t)
+	  (setq server-use-socket nil))
+      (setq server-use-tcp nil)
+      (setq server-use-socket t))
 
-  (defadvice server-ensure-safe-dir
-      (around my-around-server-ensure-safe-dir activate)
-    "Ignores any errors raised from server-ensure-safe-dir"
-    (ignore-errors ad-do-it))
-  :config
-  (unless (server-running-p)
-    (server-start)))
+    (defadvice server-ensure-safe-dir
+	(around my-around-server-ensure-safe-dir activate)
+      "Ignores any errors raised from server-ensure-safe-dir"
+      (ignore-errors ad-do-it))
+    :config
+    (unless (server-running-p)
+      (server-start)))
 
 ;; (use-package files
 ;;   :straight nil
@@ -41,44 +41,44 @@
 
 
 (use-package autorevert
-  :straight nil
-  :diminish auto-revert-mode
-  :custom
-  (auto-revert-verbose nil)
-  :config
-  (global-auto-revert-mode +1))
+    :straight nil
+    :diminish auto-revert-mode
+    :custom
+    (auto-revert-verbose nil)
+    :config
+    (global-auto-revert-mode +1))
 
 ;;; Undo-Fu
 ;; trying another undo package
 ;; https://gitlab.com/ideasman42/emacs-undo-fu
 (use-package undo-fu
-  :straight (undo-fu
-	     :host gitlab
-	     :repo "ideasman42/emacs-undo-fu"
-	     :files ("undo-fu.el"))
-  :ensure t
-  :demand t
-  :custom
-  ;; Store more undo history to prevent loss of data
-  (undo-limit 400000)
-  (undo-strong-limit 3000000)
-  (undo-outer-limit 3000000))
+    :straight (undo-fu
+	       :host gitlab
+	       :repo "ideasman42/emacs-undo-fu"
+	       :files ("undo-fu.el"))
+    :ensure t
+    :demand t
+    :custom
+    ;; Store more undo history to prevent loss of data
+    (undo-limit 400000)
+    (undo-strong-limit 3000000)
+    (undo-outer-limit 3000000))
 
 ;; persistent undo across sessions
 (use-package undo-fu-session
-  :straight t
-  :after undo-fu
-  :demand t
-  :custom
-  (undo-fu-session-file-limit nil)
-  (undo-fu-session-directory (expand-file-name "undo-fu-session" poly-cache-dir))
-  (undo-fu-session-incompatible-files '("/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'")))
+    :straight t
+    :after undo-fu
+    :demand t
+    :custom
+    (undo-fu-session-file-limit nil)
+    (undo-fu-session-directory (expand-file-name "undo-fu-session" poly-cache-dir))
+    (undo-fu-session-incompatible-files '("/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'")))
 :config
 (with-eval-after-load 'undo
   (global-undo-fu-session-mode))
 
 (use-package undo-tree
-  :disabled
+    :disabled
   :straight (:type git :host nil :repo "http://www.dr-qubit.org/git/undo-tree.git")
   ;; :disabled
   ;; :if IS-MAC
@@ -107,50 +107,50 @@
 ;;   :commands (hide-mode-line-mode))
 
 (use-package exec-path-from-shell
-  :straight t
-  :ensure t
-  :if (and IS-MAC IS-GUI)
-  :config
-  (when (file-executable-p "/usr/local/bin/fish")
-    (setq exec-path-from-shell-shell-name "/usr/local/bin/fish"
-          exec-path-from-shell-debug nil))
+    :straight t
+    :ensure t
+    :if (and IS-MAC IS-GUI)
+    :config
+    (when (file-executable-p "/usr/local/bin/fish")
+      (setq exec-path-from-shell-shell-name "/usr/local/bin/fish"
+            exec-path-from-shell-debug nil))
 
-  ;; (setq exec-path-from-shell-arguments '("-l"))
-  (setq exec-path-from-shell-variables
-	'("PATH"
-	  "PYENV_ROOT"
-	  "JAVA_HOME"
-	  "GOPATH"
-	  "GOINSECURE"
-	  "GOINSECURE"
-	  "SDKMAN_DIR"))
+    ;; (setq exec-path-from-shell-arguments '("-l"))
+    (setq exec-path-from-shell-variables
+	  '("PATH"
+	    "PYENV_ROOT"
+	    "JAVA_HOME"
+	    "GOPATH"
+	    "GOINSECURE"
+	    "GOINSECURE"
+	    "SDKMAN_DIR"))
 
-  (setenv "GOPROXY" "")
+    (setenv "GOPROXY" "")
 
-  (exec-path-from-shell-initialize)
+    (exec-path-from-shell-initialize)
 
-  (if (and (fboundp 'native-comp-available-p)
-	   (native-comp-available-p))
-      (progn
-	(message "Native comp is available")
-	;; Using Emacs.app/Contents/MacOS/bin since it was compiled with
-	;; ./configure --prefix="$PWD/nextstep/Emacs.app/Contents/MacOS"
-	(add-to-list 'exec-path (concat invocation-directory "bin") t)
-	(setenv "LIBRARY_PATH" (concat (getenv "LIBRARY_PATH")
-				       (when (getenv "LIBRARY_PATH")
-					 ":")
-				       ;; This is where Homebrew puts gcc libraries.
-				       (car (file-expand-wildcards
-					     (expand-file-name "/usr/local/lib/gcc/10")))))
-	(setenv "DYLD_LIBRARY_PATH" (concat (getenv "DYLD_LIBRARY_PATH")
-					    (when (getenv "DYLD_LIBRARY_PATH") ":")
-					    ;; This is where Homebrew puts gcc libraries.
-					    (car (file-expand-wildcards
-						  (expand-file-name "/usr/local/lib/gcc/10")))))
-	;; Only set after LIBRARY_PATH can find gcc libraries.
-	(setq comp-deferred-compilation t))
-    (message "Native comp is *not* available"))
-  )
+    (if (and (fboundp 'native-comp-available-p)
+	     (native-comp-available-p))
+	(progn
+	  (message "Native comp is available")
+	  ;; Using Emacs.app/Contents/MacOS/bin since it was compiled with
+	  ;; ./configure --prefix="$PWD/nextstep/Emacs.app/Contents/MacOS"
+	  (add-to-list 'exec-path (concat invocation-directory "bin") t)
+	  (setenv "LIBRARY_PATH" (concat (getenv "LIBRARY_PATH")
+					 (when (getenv "LIBRARY_PATH")
+					   ":")
+					 ;; This is where Homebrew puts gcc libraries.
+					 (car (file-expand-wildcards
+					       (expand-file-name "/usr/local/lib/gcc/10")))))
+	  (setenv "DYLD_LIBRARY_PATH" (concat (getenv "DYLD_LIBRARY_PATH")
+					      (when (getenv "DYLD_LIBRARY_PATH") ":")
+					      ;; This is where Homebrew puts gcc libraries.
+					      (car (file-expand-wildcards
+						    (expand-file-name "/usr/local/lib/gcc/10")))))
+	  ;; Only set after LIBRARY_PATH can find gcc libraries.
+	  (setq comp-deferred-compilation t))
+      (message "Native comp is *not* available"))
+    )
 
 ;; (use-package xclip
 ;;   :straight t
@@ -164,16 +164,16 @@
 ;;   )
 
 (use-package clipetty
-  :straight t
-  :ensure t
-  :hook (after-init . global-clipetty-mode)
-  )
+    :straight t
+    :ensure t
+    :hook (after-init . global-clipetty-mode)
+    )
 
 (use-package pbcopy
-  :straight t
-  :if IS-MAC
-  :init (turn-on-pbcopy)
-  )
+    :straight t
+    :if IS-MAC
+    :init (turn-on-pbcopy)
+    )
 
 ;; (use-package posframe
 ;;   :straight (posframe
@@ -183,56 +183,43 @@
 ;;   :ensure t)
 
 (use-package restart-emacs
-  :straight t
-  :ensure t)
+    :straight t
+    :ensure t)
 
 ;; Sorting and filtering
 (use-package prescient
-  :straight t)
+    :straight t)
 
 ;; Adopt a sneaky garbage collection strategy of waiting until idle time to
 ;; collect; staving off the collector while the user is working.
 (use-package gcmh
-  :straight t
-  :custom
-  (gcmh-verbose             nil)
-  ;; (gcmh-lows
-  ;; -cons-threshold #x800000)
-  (gcmh-high-cons-threshold most-positive-fixnum)
-  ;; (gc-cons-percentage 0.1)
-  (gcmh-idle-delay 10)
-  ;; :hook ((focus-out  . gcmh-idle-garbage-collect)
-  ;; 	   (pre-command . (lambda()(gcmh-mode +1)))
-  ;; 	   )
-  :config
-  (setq gc-cons-percentage 0.6)
-  (when (not noninteractive)
-    (gcmh-mode +1)
-    (add-function :after after-focus-change-function #'gcmh-idle-garbage-collect)
-    )
-  ;; (add-hook 'focus-out-hook #'gcmh-idle-garbage-collect)
-  ;; (add-hook 'pre-command-hook (lambda ()(gcmh-mode +1)))
-  )
+    :straight t
+    :custom
+    (gcmh-verbose             nil)
+    ;; (gcmh-lows
+    ;; -cons-threshold #x800000)
+    (gcmh-high-cons-threshold most-positive-fixnum)
+    ;; (gc-cons-percentage 0.1)
+    (gcmh-idle-delay 10)
+    :config
+    (setq gc-cons-percentage 0.6)
+    (when (not noninteractive)
+      (gcmh-mode +1)
+      (add-function :after after-focus-change-function #'gcmh-idle-garbage-collect)
+      ))
 
 (use-package command-log-mode
-  :straight t
-  :ensure t
-  ;; :config
-  ;; (global-command-log-mode)
-  )
+    :straight t
+    :ensure t
+    :config
+    (global-command-log-mode))
 
 (use-package transient
-  :straight t
-  :bind
-  (:map transient-map
-	([escape] . transient-quit-one)
-	("q" . transient-quit-one)))
-
-;; ;; Keep ~/.emacs.d clean
-;; (use-package no-littering
-;;   :straight t
-;;   :ensure t
-;;   :demand t)
+    :straight t
+    :bind
+    (:map transient-map
+	  ([escape] . transient-quit-one)
+	  ("q" . transient-quit-one)))
 
 ;;;; disable annoying notifications
 (defcustom message-filter-regexp-list '("^Starting new Ispell process \\[.+\\] \\.\\.\\.$"

@@ -13,4 +13,4 @@
 ;; (princ poly-pdump-load-path)
 
 ;; dump image
-;; (dump-emacs-portable (expand-file-name "emacs.pdmp" user-emacs-directory))
+;; (dump-emacs-portable (expand-file-name "dump/emacs.pdump" poly-cache-dir))
