@@ -6,6 +6,8 @@
 ;; ;; Defer garbage collection further back in the startup process
 ;; (setq gc-cons-threshold most-positive-fixnum)
 
+(setq-default shell-file-name "/run/current-system/sw/bin/zsh")
+
 ;; (when (boundp 'comp-eln-load-path)
 ;;   (let ((eln-cache-dir
 ;; 	 (expand-file-name ".local/cache/eln-cache/"

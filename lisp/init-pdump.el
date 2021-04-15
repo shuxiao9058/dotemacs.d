@@ -114,7 +114,6 @@ the end of the loading of the dump file."
 (defvar dump/dump-process nil
   "The process object to dump Emacs.")
 
-;; (defvar dump/dump-file-path "~/.emacs.d/dumps/emacs.pdump"
 (defvar dump/dump-file-path (expand-file-name "dump/emacs.pdump" poly-cache-dir)
   "The directory to store dump file")
 

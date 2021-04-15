@@ -16,9 +16,9 @@
       (kill-buffer "*scratch*")))
 (add-hook 'after-change-major-mode-hook 'remove-scratch-buffer)
 
-;; auto maximized frame
-(when (and IS-MAC IS-GUI)
-  (add-to-list 'default-frame-alist '(fullscreen . maximized)))
+;; ;; auto maximized frame
+;; (when (and IS-MAC IS-GUI)
+;;   (add-to-list 'default-frame-alist '(fullscreen . maximized)))
 
 (when IS-MAC
   (setq frame-resize-pixelwise t
@@ -32,9 +32,7 @@
           ns-use-mwheel-momentum t
           ns-use-mwheel-acceleration t)
     (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-    (add-to-list 'default-frame-alist '(ns-appearance . dark)))
-  ;; (add-hook 'window-setup-hook #'toggle-frame-maximized)
-  )
+    (add-to-list 'default-frame-alist '(ns-appearance . dark))))
 
 ;; Symbol’s value as variable is void: mouse-wheel-down-event
 (when (require 'mwheel nil 'noerror)

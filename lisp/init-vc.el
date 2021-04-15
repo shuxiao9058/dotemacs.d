@@ -38,7 +38,7 @@
   (git-commit-finish-query-functions nil)
   (magit-log-section-commit-count 10)
   (magit-log-section-arguments '("--graph" "--decorate" "--color"))
-  (magit-git-executable "/usr/local/bin/git")
+  ;; (magit-git-executable "/usr/local/bin/git")
   :init
   ;; Must be set early to prevent ~/.emacs.d/transient from being created
   (setq transient-levels-file  (concat poly-etc-dir "transient/levels")
