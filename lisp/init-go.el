@@ -25,14 +25,14 @@
     :hook (go-mode . flycheck-golangci-lint-setup)
     :disabled
     :custom
-    (flycheck-golangci-lint-enable-all t)
-    (flycheck-golangci-lint-fast t)
+    ;; (flycheck-golangci-lint-enable-all t)
+    ;; (flycheck-golangci-lint-fast t)
     (flycheck-golangci-lint-config
      (expand-file-name "golangci.yml" "~/.config/golangci-lint"))
-    (flycheck-golangci-lint-tests t)
-    ;; :config
-    ;; (eval-after-load 'flycheck
-    ;;   '(add-hook 'flycheck-mode-hook #'flycheck-golangci-lint-setup))
+    ;; (flycheck-golangci-lint-tests t)
+    :config
+    (eval-after-load 'flycheck
+      '(add-hook 'flycheck-mode-hook #'flycheck-golangci-lint-setup))
     )
 
 (use-package go-eldoc
@@ -59,6 +59,15 @@
     :commands go-guru-hl-identifier-mode
     :init
     (add-hook 'go-mode-hook #'go-guru-hl-identifier-mode))
+
+(use-package go-mod-mode
+    :straight (:host github :repo "zkry/go-mod-mode")
+    :after go-mode
+    :ensure t
+    ;; :config
+    ;; (progn
+    ;;   (flycheck-go-mod-setup))
+    )
 
 (provide 'init-go)
 ;;; init-go.el ends here

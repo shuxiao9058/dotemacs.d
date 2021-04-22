@@ -151,10 +151,11 @@ the end of the loading of the dump file."
                (delete-process dump/dump-process)
                (setq dump/dump-process nil)))
            :command
-           (list "emacs"
-                 "--batch"
-                 "-l" (expand-file-name "pdump.el" user-emacs-directory)
-                 "-eval" (concat "(dump/dump-emacs-portable \"" dump-file-temp "\")"))))
+           (list ;; "emacs"
+	    "/run/current-system/Applications/Emacs.app/Contents/MacOS/Emacs.sh"
+            "--batch"
+            "-l" (expand-file-name "pdump.el" user-emacs-directory)
+            "-eval" (concat "(dump/dump-emacs-portable \"" dump-file-temp "\")"))))
     (pop-to-buffer dump/dump-buffer-name)))
 
 (provide 'init-pdump)

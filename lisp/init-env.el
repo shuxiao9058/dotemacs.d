@@ -49,11 +49,10 @@
     :ensure t
     :if IS-MAC
     :config
-    (setq shell-default-term-shell "/run/current-system/sw/bin/zsh")
-    (setq exec-path-from-shell-shell-name "/run/current-system/sw/bin/zsh")
-    ;; (setq exec-path-from-shell-shell-name "/run/current-system/sw/bin/zsh")
-    (setq exec-path-from-shell-arguments '("-l"))
-
+    ;; (setq shell-default-term-shell "/bin/zsh")
+    ;; (setq exec-path-from-shell-shell-name "/bin/zsh")
+    ;; ;; (setq exec-path-from-shell-shell-name "/run/current-system/sw/bin/zsh")
+    ;; (setq exec-path-from-shell-arguments '("-l"))
     ;; (when (file-executable-p "/usr/local/bin/fish")
     ;;   (setq exec-path-from-shell-shell-name "/usr/local/bin/fish"
     ;;         exec-path-from-shell-debug nil))
@@ -69,6 +68,21 @@
             "SDKMAN_DIR"))
 
     (setenv "GOPROXY" "")
+
+    ;; Load path from zsh login shell
+    (when (or IS-LINUX IS-MAC)
+      (defvar zsh-executable  "/bin/zsh")
+      ;; (defvar zsh-executable  "/usr/bin/env zsh")
+      (let* ((zshpath (shell-command-to-string
+                       (concat zsh-executable " -lc 'printenv PATH'")))
+             (pathlst (split-string zshpath ":")))
+	(setq exec-path pathlst)
+	(setq eshell-path-env zshpath)
+	;; (princ zshpath)
+	(setenv "PATH" zshpath))
+
+      ;; use zsh as default shell
+      (setenv "SHELL" "zsh"))
 
     (exec-path-from-shell-initialize)
 

@@ -4,14 +4,12 @@
     :straight t
     :init
     (setq +wakatime-hide-filenames t)
-    ;; (when IS-MAC
-    ;;   (setq wakatime-cli-path "/usr/local/bin/wakatime"
-    ;;         wakatime-python-bin "/usr/local/anaconda3/bin/python3"))
+    (when IS-MAC
+      (setq wakatime-cli-path "/run/current-system/sw/bin/wakatime"))
     :hook ((org-mode . wakatime-mode)
            (prog-mode . wakatime-mode))
     :config
-    (global-wakatime-mode +1)
-    )
+    (global-wakatime-mode +1))
 
 (provide 'init-wakatime)
 
