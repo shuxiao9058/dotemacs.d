@@ -8,6 +8,13 @@
 (defconst IS-GUI (display-graphic-p))
 (defconst IS-CONSOLE (not IS-GUI))
 
+(defun IS-AARCH64 ()
+  (string-match-p "aarch64-apple-darwin.+" system-configuration))
+
+(defconst IS-AARCH64
+  (if (IS-AARCH64) t nil)
+  "Whether apple arm chip")
+
 ;;; Directories/files
 (defconst poly-emacs-dir
   (eval-when-compile (file-truename user-emacs-directory))
