@@ -8,9 +8,9 @@
   ;; default :pdump to t when poly-use-package-always-pdump is t and no :pdump attribute
   (add-to-list 'use-package-defaults
 	       '(:pdump poly-use-package-always-pdump
-			(lambda (name args)
-			  (and poly-use-package-always-pdump
-			       (not (plist-member args :pdump)))))))
+		 (lambda (name args)
+		   (and poly-use-package-always-pdump
+			(not (plist-member args :pdump)))))))
 
 (defun use-package-normalize/:pdump (name-symbol keyword args)
   (use-package-only-one (symbol-name keyword) args
@@ -18,13 +18,13 @@
       ;; (princ (type-of arg))
       ;; (princ arg)
       (cond
-       ((and (listp arg) (keywordp (car arg))) arg)
-       ((consp arg) arg)
-       ((symbolp arg) (symbol-name arg))
-       ((stringp arg) (unless (string= "nil" arg) arg))
-       (t
-	(use-package-error
-	 ":pdump wants a bool value"))))))
+	((and (listp arg) (keywordp (car arg))) arg)
+	((consp arg) arg)
+	((symbolp arg) (symbol-name arg))
+	((stringp arg) (unless (string= "nil" arg) arg))
+	(t
+	 (use-package-error
+	  ":pdump wants a bool value"))))))
 
 (defun use-package-handler/:pdump (name _keyword arg rest state)
   ;; (princ arg)
@@ -41,15 +41,15 @@
     ;; arg may contain extra packages
     (when (consp arg)
       (cl-loop for cell in arg
-	       do
-	       (when  (symbolp cell)
-		 ;; (princ cell)
-		 ;; (princ "\t")
-		 ;; (princ (type-of cell))
-		 ;; (princ "\t")
-		 ;; (princ (symbol-name cell))
-		 ;; (princ "\n")
-		 (poly-pdump-packages cell))))))
+	 do
+	   (when  (symbolp cell)
+	     ;; (princ cell)
+	     ;; (princ "\t")
+	     ;; (princ (type-of cell))
+	     ;; (princ "\t")
+	     ;; (princ (symbol-name cell))
+	     ;; (princ "\n")
+	     (poly-pdump-packages cell))))))
 
 ;; Emacs wants to load `package.el' before the init file,
 ;; so we do the same with `straight.el'
@@ -123,16 +123,23 @@
 
 (straight-override-recipe
  '(flim :host github :repo "wanderlust/flim" :branch "flim-1_14-wl"
-	:files ("*.texi" "*.el" (:exclude "md5-dl.el"
-					  "md5-el.el" "mel-b-dl.el" "sha1-dl.el"
-					  "smtpmail.el") "flim-pkg.el")))
+   :files ("*.texi" "*.el" (:exclude "md5-dl.el"
+			    "md5-el.el" "mel-b-dl.el" "sha1-dl.el"
+			    "smtpmail.el") "flim-pkg.el")))
 (straight-override-recipe
  '(apel :host github :repo "wanderlust/apel" :branch "apel-wl"))
 (straight-override-recipe
  '(wanderlust :host github :repo "wanderlust/wanderlust" :branch "master"))
 
-(straight-override-recipe
- '(org :type git :host github :repo "emacsmirror/org" :no-build t))
+;; (straight-override-recipe
+;;  '(org :type git :host github :repo "emacsmirror/org" :no-build t))
+
+(straight-use-package
+ '(org-plus-contrib
+   :repo "https://code.orgmode.org/bzg/org-mode.git"
+   :includes (org)))
+;; (straight-use-package 'org)
+;; (straight-use-package 'org-plus-contrib)
 
 ;; after straight's install procedure you will need to add straight-x.el and load the required commands.
 (autoload #'straight-x-pull-all "straight-x")

@@ -24,6 +24,7 @@
 (require 'init-recentf)
 ;; case show line numbers
 (require 'init-linum)
+(require 'init-gpg)
 
 (unless window-system
   (require 'init-iterm2))
@@ -45,7 +46,7 @@
 (require 'init-org)
 (require 'init-clock)
 (require 'init-pomo)
-(require 'init-org-roam)
+;; (require 'init-org-roam)
 (require 'init-blog)
 
 ;; programming

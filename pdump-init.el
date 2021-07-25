@@ -17,8 +17,9 @@
 ;; (require 'core-font)
 
 ;; fix env issue
-;; (when IS-MAC
-(exec-path-from-shell-initialize);; )
+;; PATH variable, etc
+(when IS-MAC
+  (exec-path-from-shell-initialize))
 
 ;; These two modes are disabled in pdump
 (global-font-lock-mode t)

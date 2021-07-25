@@ -7,7 +7,6 @@
   :ensure t
   :hook
   (after-init . org-roam-mode)
-
   :custom
   (org-roam-directory (expand-file-name "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/beorg/"))
   (org-roam-file-exclude-regexp ".pdf$|.tex$|.bib$|.html$|.log$|.out$|.xml$")
@@ -16,6 +15,7 @@
   ;; org-roam-graph-viewer "google-chrome-stable"
   (org-roam-completion-system 'default)
   (org-roam-completion-everywhere t)
+  (org-roam-v2-ack t)
   :commands (org-roam-buffer-toggle-display
              org-roam-find-file
              org-roam-graph
@@ -54,6 +54,17 @@
   ;; For org-roam to update LAST_MODIFIED field
   (require 'time-stamp)
   (add-hook 'write-file-functions 'time-stamp) ; update when saving
+  ;; (setq org-roam-v2-ack t)
+
+
+  ;; for org-roam-buffer-toggle
+  ;; Recommendation in the official manual
+  (add-to-list 'display-buffer-alist
+               '("\\*org-roam\\*"
+                 (display-buffer-in-direction)
+                 (direction . right)
+                 (window-width . 0.33)
+                 (window-height . fit-window-to-buffer)))
 
   ;; (setq org-roam-completion-system 'ivy)
 
@@ -86,31 +97,31 @@ Time-stamp: <>
   (add-hook 'org-roam-buffer-prepare-hook #'hide-mode-line-mode)
   )
 
-(use-package org-roam-server
-  :straight t
-  :ensure t
-  :after org
-  :config
-  (setq org-roam-server-host "127.0.0.1"
-        org-roam-server-port 8848
-        org-roam-server-authenticate nil
-        org-roam-server-export-inline-images t
-        org-roam-server-serve-files nil
-        org-roam-server-served-file-extensions '("pdf" "mp4" "ogv")
-        org-roam-server-network-poll t
-        org-roam-server-network-arrows nil
-        org-roam-server-network-label-truncate t
-        org-roam-server-network-label-truncate-length 80
-        org-roam-server-network-label-wrap-length 25)
-  (defun org-roam-server-open ()
-    "Ensure the server is active, then open the roam graph."
-    (interactive)
-    (org-roam-server-mode 1)
-    (browse-url (format "http://localhost:%d" org-roam-server-port))
-    ))
+;; (use-package org-roam-server
+;;   :straight t
+;;   :ensure t
+;;   :after org
+;;   :config
+;;   (setq org-roam-server-host "127.0.0.1"
+;;         org-roam-server-port 8848
+;;         org-roam-server-authenticate nil
+;;         org-roam-server-export-inline-images t
+;;         org-roam-server-serve-files nil
+;;         org-roam-server-served-file-extensions '("pdf" "mp4" "ogv")
+;;         org-roam-server-network-poll t
+;;         org-roam-server-network-arrows nil
+;;         org-roam-server-network-label-truncate t
+;;         org-roam-server-network-label-truncate-length 80
+;;         org-roam-server-network-label-wrap-length 25)
+;;   (defun org-roam-server-open ()
+;;     "Ensure the server is active, then open the roam graph."
+;;     (interactive)
+;;     (org-roam-server-mode 1)
+;;     (browse-url (format "http://localhost:%d" org-roam-server-port))
+;;     ))
 
-(unless (server-running-p)
-  (org-roam-server-mode))
+;; (unless (server-running-p)
+;;   (org-roam-server-mode))
 
 (use-package company-org-roam
   :straight t
@@ -196,7 +207,6 @@ Time-stamp: <>
    ;; org-noter-notes-search-path (list org_notes)
    )
   )
-
 
 (provide 'init-org-roam)
 ;;; init-org-roam.el ends here

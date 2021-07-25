@@ -151,11 +151,9 @@ the end of the loading of the dump file."
                (delete-process dump/dump-process)
                (setq dump/dump-process nil)))
            :command
-           (list ;; "emacs"
+           (list
 	    (if IS-MAC
-		(if IS-AARCH64
-		    "/opt/homebrew/opt/emacs-mac/Emacs.app/Contents/MacOS/Emacs.sh"
-		  "/run/current-system/Applications/Emacs.app/Contents/MacOS/Emacs.sh")
+		"/usr/local/opt/emacs-mac/Emacs.app/Contents/MacOS/Emacs.sh"
 	      "emacs")
             "--batch"
             "-l" (expand-file-name "pdump.el" user-emacs-directory)
