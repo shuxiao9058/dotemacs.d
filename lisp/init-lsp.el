@@ -96,9 +96,11 @@
     ;; (flymake-fringe-indicator-position 'right-fringe)
     ;; (lsp-clients-emmy-lua-jar-path (expand-file-name  "bin/EmmyLua-LS-all.jar" poly-local-dir))
     (lsp-clients-emmy-lua-jar-path (expand-file-name "workspace/EmmyLua-LanguageServer/EmmyLua-LS/build/libs/EmmyLua-LS-all.jar" "~"))
+    ;; lsp-go
     ;; (lsp-gopls-server-path "/usr/local/bin/gopls")
     (lsp-gopls-server-args '("-debug" "127.0.0.1:3000" "-logfile=/tmp/gopls-emacs.log" ;; "-rpc.trace" "-vv"
 			     ))
+    (lsp-go-use-gofumpt t)
     :config
     (add-to-list 'lsp-file-watch-ignored "[/\\\\]\\vendor$")
     (add-to-list 'lsp-file-watch-ignored "[/\\\\].git$")
@@ -139,7 +141,8 @@
        ;; ("gopls.buildFlags" ["-mod=readonly"])
        ("gopls.env" lsp-go-env)
        ("gopls.linkTarget" lsp-go-link-target)
-       ("gopls.gofumpt" ,(if (executable-find "gofumpt") t nil) t)
+       ;; ("gopls.gofumpt" ,(if (executable-find "gofumpt") t nil) t)
+       ;; ("gopls.directoryFilters" lsp-go-directory-filters)
        ;; ("gopls.directoryFilters" ["-vendor" "-internal" "-.gocache" "-.git" "-!out"])
        ))
 

@@ -12,7 +12,8 @@
 
     (eval-after-load 'lsp
       (add-hook 'go-mode-hook #'lsp-go-install-save-hooks))
-    (setenv "GOPROXY" ""))
+    ;; (setenv "GOPROXY" "")
+    )
 
 ;; (use-package gorepl-mode
 ;;   :straight t
