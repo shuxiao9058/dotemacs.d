@@ -100,6 +100,8 @@
     ;; (lsp-gopls-server-path "/usr/local/bin/gopls")
     (lsp-gopls-server-args '("-debug" "127.0.0.1:3000" "-logfile=/tmp/gopls-emacs.log" ;; "-rpc.trace" "-vv"
 			     ))
+    (lsp-go-hover-kind "NoDocumentation")
+    (lsp-go-links-in-hover nil)
     (lsp-go-use-gofumpt t)
     :config
     (add-to-list 'lsp-file-watch-ignored "[/\\\\]\\vendor$")
