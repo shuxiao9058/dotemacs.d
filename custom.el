@@ -17,8 +17,7 @@
       truncate-lines t
       truncate-partial-width-windows 50
       whitespace-style '(face trailing lines-tail)
-      xref-prompt-for-identifier nil
-      )
+      xref-prompt-for-identifier nil)
 
 ;; @see https://github.com/emacs-lsp/lsp-mode#performance
 (setq read-process-output-max (* 3 1024 1024))

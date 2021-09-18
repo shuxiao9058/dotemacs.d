@@ -45,13 +45,30 @@ normally would when calling `yank' followed by `yank-pop'."
     (selectrum-mode t)
     :bind (([remap yank-pop] . my/selectrum-yank-kill-ring)
 	   :map selectrum-minibuffer-map
-	   ("DEL" . selectrum-backward-kill-sexp)
+	   ;; ("DEL" . selectrum-backward-kill-sexp)
+	   ("<S-backspace>" . selectrum-backward-kill-sexp)
 	   ("<down>" . selectrum-next-candidate)
 	   ("C-j"  .  selectrum-next-candidate)
 	   ("<up>" .  selectrum-previous-candidate)
 	   ("C-k"  .  selectrum-previous-candidate)
 	   ("<backtab>" . selectrum-previous-candidate)
 	   ))
+
+(use-package marginalia
+    :straight t
+    :defer 1
+    :after selectrum
+    :bind (;; ("M-A" . marginalia-cycle)
+           :map minibuffer-local-map
+           ("M-A" . marginalia-cycle))
+    :config
+    (marginalia-mode))
+
+;; Consult without consultation fees
+(use-package consult
+    :straight t
+    :after selectrum
+    :defer 1)
 
 (use-package selectrum-prescient
     :straight t

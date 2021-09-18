@@ -174,11 +174,11 @@
 				    ;; (xml "XML")
 				    ;; (tex "TeX")
 				    ;; (latex "TeX")
-				    ;; (shell-script "bash")
+				    (shell-script "bash")
 				    ;; (gnuplot "Gnuplot")
 				    ;; (ocaml "Caml")
-				    ;; (sql "SQL")
-				    ;; (sqlite "sql")
+				    (sql "SQL")
+				    (sqlite "sql")
 				    ;; (R-mode "R")
 				    (go "go")
 				    (lua "lua")
@@ -296,6 +296,20 @@
 	     ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
 	     ("\\paragraph{%s}" . "\\paragraph*{%s}")
 	     ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+
+
+    (unless (assoc "beamer" org-latex-classes)
+      (add-to-list 'org-latex-classes
+		   '("beamer" "
+		     %!TEX TS-program = xelatex
+		     %!TEX encoding = UTF-8 Unicode
+
+                  \\documentclass[presentation]{beamer}
+		     \\usepackage{ctex}
+		     "
+                     ("\\section{%s}" . "\\section*{%s}")
+                     ("\\subsection{%s}" . "\\subsection*{%s}")
+                     ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
 
     ;; (add-to-list 'org-latex-packages-alist '("" "minted"))
     ;; (add-to-list 'org-export-latex-packages-alist '("" "minted"))
@@ -607,7 +621,6 @@
 (use-package ox-taskjuggler
     :straight (:type built-in)
     :after (org osx)
-    :pdump t
     :custom
     (org-taskjuggler-process-command  "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")
     :init
@@ -723,9 +736,9 @@
 	       (contents-end (org-element-property :contents-end eop))
 	       (path (org-element-property :path eop))
 	       (desc (and contents-begin
-                          contents-end
-                          (buffer-substring contents-begin contents-end))))
-          (setf (buffer-substring start end) (or desc path)))))))
+			  contents-end
+			  (buffer-substring contents-begin contents-end))))
+	  (setf (buffer-substring start end) (or desc path)))))))
 
 (defalias 'org-delinkify 'org-unlinkify)
 
@@ -742,11 +755,11 @@ Prefix arguments are interpreted by `org-refile'."
 	    (bookmark-get-filename
 	     (assoc (plist-get org-bookmark-names-plist :last-refile)
 		    bookmark-alist)))
-           (same-file (string= orig-file refile-file))
-           (link (if same-file
+	   (same-file (string= orig-file refile-file))
+	   (link (if same-file
 		     (concat "*" heading)
-                   (concat refile-file "::*" heading)))
-           (desc heading))
+		   (concat refile-file "::*" heading)))
+	   (desc heading))
       (open-line 1)
       (insert (org-make-link-string link desc)))))
 

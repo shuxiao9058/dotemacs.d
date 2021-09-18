@@ -65,7 +65,9 @@
             "GOPATH"
             "GOINSECURE"
             "GOINSECURE"
-            "SDKMAN_DIR"))
+            "SDKMAN_DIR"
+	    "EMACS_MODULE_HEADER_ROOT"
+	    "LIBRIME_ROOT"))
 
     (setenv "GOPROXY" "")
 

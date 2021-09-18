@@ -153,7 +153,7 @@ the end of the loading of the dump file."
            :command
            (list
 	    (if IS-MAC
-		"/usr/local/opt/emacs-mac/Emacs.app/Contents/MacOS/Emacs.sh"
+		"/Applications/MacPorts/EmacsMac.app/Contents/MacOS/Emacs.sh"
 	      "emacs")
             "--batch"
             "-l" (expand-file-name "pdump.el" user-emacs-directory)
