@@ -426,14 +426,14 @@ WIN-ID : Window index."
 ;;   (all-the-icons-ivy-rich-icon-size 0.9)
 ;;   )
 
-;; growl notify
-(use-package alert
-    :straight (alert
-	       :host github
-	       :repo "jwiegley/alert")
-    :commands (alert)
-    :custom
-    (alert-default-style 'osx-notifier))
+;; ;; growl notify
+;; (use-package alert
+;;     :straight (alert
+;; 	       :host github
+;; 	       :repo "jwiegley/alert")
+;;     :commands (alert)
+;;     :custom
+;;     (alert-default-style 'osx-notifier))
 
 (when (fboundp 'mac-auto-operator-composition-mode)
   (mac-auto-operator-composition-mode))

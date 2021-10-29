@@ -276,20 +276,20 @@
 	%   linktoc=all,
 	% }
 	%\\usepackage[outputdir=./build/tex]{minted}
-        \\usepackage[utf8]{inputenc}
-        \\usepackage{alltt}
-        \\usepackage{caption}
-        \\usepackage{listings}
+	\\usepackage[utf8]{inputenc}
+	\\usepackage{alltt}
+	\\usepackage{caption}
+	\\usepackage{listings}
 	%                        \\usepackage{xcolor}
-        \\usepackage{graphicx}
-        \\usepackage{lmodern}
-        \\DeclareCaptionFormat{listing}{\\rule{\\dimexpr\\textwidth+17pt\\relax}{0.4}\\vskip1pt#1#2#3}
-        % \\captionsetup[lstlisting]{singlelinecheck=false, margin=0pt, font={bf,footnotesize}}
-        \\definecolor{wine-stain}{rgb}{0.4,0.3,0.3}
-        \\hypersetup{colorlinks,linkcolor=wine-stain,anchorcolor=black,linktoc=all,
-        citecolor=black}
-        [NO-DEFAULT-PACKAGES]
-        "
+	\\usepackage{graphicx}
+	\\usepackage{lmodern}
+	\\DeclareCaptionFormat{listing}{\\rule{\\dimexpr\\textwidth+17pt\\relax}{0.4}\\vskip1pt#1#2#3}
+	% \\captionsetup[lstlisting]{singlelinecheck=false, margin=0pt, font={bf,footnotesize}}
+	\\definecolor{wine-stain}{rgb}{0.4,0.3,0.3}
+	\\hypersetup{colorlinks,linkcolor=wine-stain,anchorcolor=black,linktoc=all,
+	citecolor=black}
+	[NO-DEFAULT-PACKAGES]
+	"
 
 	     ("\\section{%s}" . "\\section*{%s}")
 	     ("\\subsection{%s}" . "\\subsection*{%s}")
@@ -304,12 +304,12 @@
 		     %!TEX TS-program = xelatex
 		     %!TEX encoding = UTF-8 Unicode
 
-                  \\documentclass[presentation]{beamer}
+		  \\documentclass[presentation]{beamer}
 		     \\usepackage{ctex}
 		     "
-                     ("\\section{%s}" . "\\section*{%s}")
-                     ("\\subsection{%s}" . "\\subsection*{%s}")
-                     ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
+		     ("\\section{%s}" . "\\section*{%s}")
+		     ("\\subsection{%s}" . "\\subsection*{%s}")
+		     ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
 
     ;; (add-to-list 'org-latex-packages-alist '("" "minted"))
     ;; (add-to-list 'org-export-latex-packages-alist '("" "minted"))
@@ -417,7 +417,7 @@
     ;;
 
     ;; (setq org-latex-pdf-process '("xelatex -interaction nonstopmode %f"
-    ;; 				  "xelatex -interaction nonstopmode %f"))
+    ;;				  "xelatex -interaction nonstopmode %f"))
     ;; (setq org-latex-pdf-process
     ;;       '("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"
     ;;         "xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"
@@ -426,7 +426,7 @@
     ;;         ))
 
     ;; (setq org-latex-default-packages-alist
-    ;; 	  (remove '("AUTO" "inputenc" t) org-latex-default-packages-alist))
+    ;;	  (remove '("AUTO" "inputenc" t) org-latex-default-packages-alist))
 
     (setq
      ;; org-latex-caption-above nil ;; 表格等标题置于下方
@@ -483,13 +483,18 @@
     :after (org hydra)
     :hook (org-agenda-finalize . org-agenda-to-appt)
     :config
-    ;; update appt list per 10 minutes
-    (run-at-time nil 600 'org-agenda-to-appt)
+    ;; ;; update appt list per 10 minutes
+    ;; (run-at-time nil 600 'org-agenda-to-appt)
+    :init
+    (unless (fboundp 'native-comp-available-p)
+      ;; Fix `void-function native-comp-available-p`
+      (defun native-comp-available-p ()
+	nil))
     :custom
     ;; appt
     (appt-display-format 'window)
     (appt-disp-window-function
-     (lambda(min-to-app new-time msg)(growl-notify "Reminder" (format "%s" msg))))
+     (lambda(min-to-app new-time msg)(terminal-notify "Reminder" (format "%s" msg))))
     (appt-display-interval 1) ;; 每过1分钟提醒一次
     (appt-message-warning-time 5) ;; set appt waring to 15 minutes prior to appointment)
     ;; (appt-display-duration 20) ;; 这里已经被notify-send接管了，所以此处持续时间无效)
@@ -556,7 +561,8 @@
 							    ,+org-capture-work-meeting-file))))))
     :config
     (appt-activate 1)
-    (org-agenda-to-appt))
+    ;; (org-agenda-to-appt)
+    )
 
 ;; overwrite built-in function (proviError running timer appt-delete-window': (error "No buffer named *appt-buf*")de 'init-org)
 (defun appt-delete-window ()
@@ -626,8 +632,8 @@
     :init
     (setq org-taskjuggler-default-global-properties
 	  "shift s39 \"Full time shift\" {
-           workinghours mon-fri 9:00-12:00,13:00-19:00
-        }")
+	   workinghours mon-fri 9:00-12:00,13:00-19:00
+	}")
     (setq org-duration-units `(("min" . 1)
 			       ("h" . 60)
 			       ("d" . ,(* 60 8))
@@ -643,10 +649,10 @@
     ;; (require 'ox-taskjuggler)
     ;; (require 'taskjuggler-mode)
     ;; (setq org-export-taskjuggler-target-version 3.6
-    ;; 	org-export-taskjuggler-project-tag "project"
-    ;; 	org-export-taskjuggler-resource-tag "resource"
-    ;; 	org-export-taskjuggler-default-project-duration 16256
-    ;; 	org-export-taskjuggler-default-global-properties "rversion")
+    ;;	org-export-taskjuggler-project-tag "project"
+    ;;	org-export-taskjuggler-resource-tag "resource"
+    ;;	org-export-taskjuggler-default-project-duration 16256
+    ;;	org-export-taskjuggler-default-global-properties "rversion")
     ;; ;; (setq org-taskjuggler-default-reports '("include \"/Users/chenlong/.emacs.d/lisp/reports.tji\""))
     )
 
@@ -730,7 +736,7 @@
   (let ((eop (org-element-context)))
     (when (eq (org-element-type eop) 'link)
       (save-excursion
-        (let* ((start (org-element-property :begin eop))
+	(let* ((start (org-element-property :begin eop))
 	       (end (org-element-property :end eop))
 	       (contents-begin (org-element-property :contents-begin eop))
 	       (contents-end (org-element-property :contents-end eop))
@@ -749,7 +755,7 @@ Prefix arguments are interpreted by `org-refile'."
   (when (member current-prefix-arg '(3 (4) (16)))
     (user-error "Linking is incompatible with that prefix argument"))
   (let ((heading  (org-get-heading t t))
-        (orig-file (buffer-file-name)))
+	(orig-file (buffer-file-name)))
     (call-interactively #'org-refile)
     (let* ((refile-file
 	    (bookmark-get-filename

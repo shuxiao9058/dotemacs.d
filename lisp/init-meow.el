@@ -4,9 +4,7 @@
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
   (meow-motion-overwrite-define-key
    '("j" . meow-next)
-   '("k" . meow-prev)
-   '("J" . meow-next-expand)
-   '("K" . meow-prev-expand))
+   '("k" . meow-prev))
   (meow-leader-define-key
    ;; SPC j/k will run the original command in MOTION state.
    '("j" . meow-motion-origin-command)
@@ -47,7 +45,7 @@
    '("B" . meow-back-symbol)
    '("c" . meow-change)
    '("C" . meow-change-save)
-   '("d" . meow-delete)
+   '("d" . meow-C-d)
    '("D" . meow-backward-delete)
    '("e" . meow-next-word)
    '("E" . meow-next-symbol)
@@ -66,7 +64,6 @@
    '("l" . meow-right)
    '("L" . meow-right-expand)
    '("m" . meow-join)
-   '("M" . delete-indentation)
    '("n" . meow-search)
    '("N" . meow-pop-search)
    '("o" . meow-block)
@@ -96,8 +93,6 @@
    '("%" . meow-query-replace-regexp)
    '("'" . repeat)
    '("\\" . quoted-insert)
-   '("<f3>" . meow-start-kmacro)
-   '("<f4>" . meow-end-or-call-kmacro)
    '("<escape>" . meow-last-buffer)))
 
 (use-package meow

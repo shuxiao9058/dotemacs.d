@@ -112,19 +112,32 @@ Accepts the same arguments as `message'."
                  format-string)
         ,@args))))
 
-;;
-;; Growl (Mac OS X only)
-;;
-(defun growl-notify (message &optional title)
-  "Display a Growl MESSAGE. The optional TITLE's default value is \"Emacs\"."
+;; ;;
+;; ;; Growl (Mac OS X only)
+;; ;;
+;; (defun growl-notify (message &optional title)
+;;   "Display a Growl MESSAGE. The optional TITLE's default value is \"Emacs\"."
+;;   (interactive "Message: ")
+;;   (let ((g-title (if (and title (not (eq title ""))) title "Emacs")))
+;;     (shell-command
+;;      (concat
+;;       "growlnotify"
+;;       " --image /Applications/MacPorts/EmacsMac.app/Contents/Resources/Emacs.icns"
+;;       " --title " (shell-quote-argument g-title)
+;;       " --message " (shell-quote-argument message)))))
+
+(defun terminal-notify (message &optional title)
+  "Display a Notify MESSAGE. The optional TITLE's default value is \"Emacs\"."
   (interactive "Message: ")
   (let ((g-title (if (and title (not (eq title ""))) title "Emacs")))
     (shell-command
      (concat
-      "growlnotify"
-      " --image /Applications/Emacs.app/Contents/Resources/Emacs.icns"
-      " --title " (shell-quote-argument g-title)
-      " --message " (shell-quote-argument message)))))
+      "terminal-notifier "
+      " -ignoreDnD "
+      ;; " -appIcon /Applications/MacPorts/EmacsMac.app/Contents/Resources/Emacs.icns"
+      " -title " (shell-quote-argument g-title)
+      " -sender " (shell-quote-argument "org.gnu.Emacs")
+      " -message " (shell-quote-argument message)))))
 
 (provide 'core-lib)
 ;;; core-lib.el ends here

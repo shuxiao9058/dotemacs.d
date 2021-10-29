@@ -73,7 +73,7 @@
 
     ;; Load path from zsh login shell
     (when (or IS-LINUX IS-MAC)
-      (defvar zsh-executable  "/bin/zsh")
+      (defvar zsh-executable  "/opt/local/bin/zsh")
       ;; (defvar zsh-executable  "/usr/bin/env zsh")
       (let* ((zshpath (shell-command-to-string
                        (concat zsh-executable " -lc 'printenv PATH'")))

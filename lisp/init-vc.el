@@ -39,8 +39,8 @@
     :init
     ;; Must be set early to prevent ~/.emacs.d/transient from being created
     (setq transient-levels-file  (concat poly-etc-dir "transient/levels")
-          transient-values-file  (concat poly-etc-dir "transient/values")
-          transient-history-file (concat poly-etc-dir "transient/history"))
+	  transient-values-file  (concat poly-etc-dir "transient/values")
+	  transient-history-file (concat poly-etc-dir "transient/history"))
 
     ;; Have magit-status go full screen and quit to previous
     ;; configuration.  Taken from
@@ -74,8 +74,8 @@
 	    ;; magit-insert-recent-commits
 	    ;; magit-insert-unpulled-from-pushremote
 	    magit-insert-unpushed-to-upstream
-	    ;; magit-insert-unpushed-to-pushremote
-	    ;; magit-insert-unpulled-from-upstream
+	    magit-insert-unpushed-to-pushremote
+	    magit-insert-unpulled-from-upstream
 	    ))
 
     (setq magit-status-headers-hook
@@ -87,33 +87,34 @@
 	    magit-insert-head-branch-header
 	    magit-insert-upstream-branch-header
 	    magit-insert-push-branch-header
-	    ;; magit-insert-tags-header
+	    magit-insert-tags-header
 	    ))
 
     ;; Opening repo externally
     (defun poly/parse-repo-url (url)
       "convert a git remote location as a HTTP URL"
       (if (string-match "^http" url)
-          url
+	  url
 	(replace-regexp-in-string "\\(.*\\)@\\(.*\\):\\(.*\\)\\(\\.git?\\)"
-                                  (concat (if (string-match "17usoft.com" url) "http" "https") "://\\2/\\3")
-                                  url)))
+				  (concat (if (string-match "17usoft.com" url) "http" "https") "://\\2/\\3")
+				  url)))
     (defun poly/magit-open-repo ()
       "open remote repo URL"
       (interactive)
       (let ((url (magit-get "remote" "origin" "url")))
 	(progn
-          (browse-url (poly/parse-repo-url url))
-          (message "opening repo %s" url))))
+	  (browse-url (poly/parse-repo-url url))
+	  (message "opening repo %s" url))))
 
     (defun m/magit-display-buffer-traditional (buffer)
       "Like magit-display-buffer-traditional, but re-uses window for status mode, too."
       (display-buffer
        buffer (if (not (memq (with-current-buffer buffer major-mode)
-                             '(magit-process-mode
-                               magit-revision-mode
-                               magit-diff-mode
-                               magit-stash-mode)))
+			     '(magit-process-mode
+			       magit-revision-mode
+			       magit-diff-mode
+			       magit-stash-mode
+			       magit-status-mode)))
 		  '(display-buffer-same-window)
 		nil)))
 
@@ -153,7 +154,7 @@
     :diminish git-gutter+-mode
     :demand t
     :bind (("C-c g n" . git-gutter+-next-hunk)
-           ("C-c g p" . git-gutter+-previous-hunk))
+	   ("C-c g p" . git-gutter+-previous-hunk))
     :config
     (progn
       (global-git-gutter+-mode)
@@ -179,39 +180,12 @@
     :bind ("C-c g t" . git-timemachine-toggle))
 
 ;; gitignore-mode - Major mode for various Git configuration files
-(use-package gitignore-mode :straight t)
+(use-package git-modes :straight t)
 
 ;; browse-at-remote - Browse target page on github/gitlab/bitbucket
 (use-package browse-at-remote
     :straight t
     :bind ("C-c g b" . browse-at-remote/browse))
-
-;; (use-package evil-magit
-;;     :straight t
-;;     :ensure t
-;;     :after (magit evil)
-;;     :init (evil-magit-init)
-;;     :config
-;;     (evil-set-initial-state 'magit-log-edit-mode 'insert)
-;;     (evil-set-initial-state 'git-commit-mode 'insert)
-;;     (evil-set-initial-state 'magit-log-mode 'motion)
-;;     (evil-set-initial-state 'magit-diff-mode 'normal)
-;;     (evil-set-initial-state 'magit-wassup-mode 'motion)
-;;     (evil-set-initial-state 'magit-mode 'motion)
-;;     (evil-set-initial-state 'git-rebase-mode 'motion)
-;;     (eval-after-load 'git-rebase
-;;       `(progn
-;; 	 (dolist (key '(("M-k" . "gk") ("M-j" . "gj")))
-;; 	   (when-let (desc (assoc (car key) evil-magit-rebase-commands-w-descriptions))
-;; 	     (setcar desc (cdr key))))
-;; 	 )
-;;       )
-;;     :general
-;;     (:states '(evil-magit-state)
-;; 	     :keymaps '(git-rebase-mode-map)
-;; 	     "gj" #'git-rebase-move-line-down
-;; 	     "gk" #'git-rebase-move-line-up)
-;;     )
 
 ;; based on http://manuel-uberti.github.io/emacs/2018/02/17/magit-bury-buffer/
 (defun magit-kill-buffers ()
@@ -239,7 +213,7 @@
 	  (append forge-alist
 		  '(("git.17usoft.com" "git.17usoft.com/api/v4" "git.17usoft.com" forge-gitlab-repository)
 		    ("github.com" "api.github.com" "github.com" forge-github-repository))))
-    ;; remove some hooks for magit performance-s
+    ;; ;; remove some hooks for magit performance-s
     ;; (remove-hook 'magit-status-sections-hook 'forge-insert-pullreqs)
     ;; (remove-hook 'magit-status-sections-hook 'forge-insert-issues)
     )

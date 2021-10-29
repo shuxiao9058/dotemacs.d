@@ -39,6 +39,7 @@
 (require 'init-telega)
 (require 'init-screencast)
 ;; (require 'init-media)
+(require 'init-tramp)
 
 ;; editor
 (require 'init-markdown)

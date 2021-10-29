@@ -187,6 +187,7 @@
 					".+Starting new Ispell process.+" ;;; ispell
 					"Package cl is deprecated"
 					"Loading[\s\w\/\.-]+\(module\).+"
+					".+search-failed.+"
 					;; "Loading[\w\/\d\W]+\(module\).+" ;;; module load
 					"For information about GNU Emacs and the GNU system.+"
                                         )

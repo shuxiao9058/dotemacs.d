@@ -11,10 +11,10 @@
 	    ;; go-mode
 	    python-mode
 	    java-mode
-	    ;; cc-mode
-	    ;; c-mode
-	    ;; c++-mode
-	    ;; clang-mode
+	    cc-mode
+	    c-mode
+	    c++-mode
+	    clang-mode
 	    elisp-mode
 	    emacs-lisp-mode
 	    markdown-mode
@@ -133,6 +133,7 @@
 		      ;; go-mode-hook
 		      python-mode-hook
 		      java-mode-hook
+		      markdown-mode
 		      ;; cc-mode-hook
 		      ;; c-mode-hook
 		      ;; c++-mode-hook
@@ -150,8 +151,9 @@
 		    ;; ("Go" goimports)
 		    ("Lua" cpp-lua-format)
 		    ("Java" my-clang-format)
-		    ;; ("C" my-clang-format)
-		    ;; ("C++" my-clang-format)
+		    ("Markdown" prettier)
+		    ("C" my-clang-format)
+		    ("C++" my-clang-format)
 		    ;; ("Objective-C" my-clang-format)
 		    ("Protocol Buffer" my-clang-format)
 		    ("SQL" pgformatter)

@@ -134,10 +134,10 @@
 ;; (straight-override-recipe
 ;;  '(org :type git :host github :repo "emacsmirror/org" :no-build t))
 
-(straight-use-package
- '(org-plus-contrib
-   :repo "https://code.orgmode.org/bzg/org-mode.git"
-   :includes (org)))
+;; (straight-use-package
+;;  '(org-plus-contrib
+;;    :repo "https://code.orgmode.org/bzg/org-mode.git"
+;;    :includes (org)))
 ;; (straight-use-package 'org)
 ;; (straight-use-package 'org-plus-contrib)
 

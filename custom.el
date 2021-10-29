@@ -2,7 +2,7 @@
 
 
 
-(setq auth-sources '("~/.authinfo.gpg")
+(setq auth-sources '("~/.authinfo")
       make-backup-files nil
       enable-local-eval t
       enable-local-variables :all
