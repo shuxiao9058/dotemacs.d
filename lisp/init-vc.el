@@ -227,5 +227,8 @@
 (use-package smerge-mode
     :straight t)
 
+(use-package vdiff
+    :straight t)
+
 (provide 'init-vc)
 ;;; init-vc.el ends here

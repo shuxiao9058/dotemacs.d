@@ -13,11 +13,11 @@
   (if (eq system-type 'darwin)
       (progn
 	(global-set-key [mouse-4] '(lambda ()
-				     (interactive)
-				     (scroll-down 1)))
+				    (interactive)
+				    (scroll-down 1)))
 	(global-set-key [mouse-5] '(lambda ()
-				     (interactive)
-				     (scroll-up 1)))
+				    (interactive)
+				    (scroll-up 1)))
 	))
 
   (defun track-mouse (e))

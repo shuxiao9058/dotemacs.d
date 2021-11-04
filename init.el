@@ -26,8 +26,8 @@
 (require 'init-linum)
 (require 'init-gpg)
 
-(unless window-system
-  (require 'init-iterm2))
+;; (unless window-system
+;;   (require 'init-iterm2))
 
 ;; ;; tools
 (require 'init-wakatime)

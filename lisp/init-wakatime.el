@@ -8,7 +8,7 @@
       (setq wakatime-cli-path "/usr/local/bin/wakatime"))
     :hook ((org-mode . wakatime-mode)
            (prog-mode . wakatime-mode))
-    :if (not IS-AARCH64)
+    ;; :if (not IS-AARCH64)
     :config
     (global-wakatime-mode +1))
 

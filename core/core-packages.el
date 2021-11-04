@@ -123,11 +123,10 @@
     :hook (after-init . global-clipetty-mode)
     )
 
-(use-package pbcopy
-    :straight t
-    :if IS-MAC
-    :init (turn-on-pbcopy)
-    )
+;; (use-package pbcopy
+;;     :straight t
+;;     :if (and IS-MAC IS-CONSOLE)
+;;     :init (turn-on-pbcopy))
 
 ;; (use-package posframe
 ;;   :straight (posframe

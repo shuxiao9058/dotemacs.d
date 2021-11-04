@@ -19,7 +19,9 @@
 ;; fix env issue
 ;; PATH variable, etc
 (when IS-MAC
-  (exec-path-from-shell-initialize))
+  (require 'init-env)
+  (exec-path-from-shell-initialize)
+  )
 
 ;; These two modes are disabled in pdump
 (global-font-lock-mode t)
