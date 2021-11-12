@@ -11,7 +11,6 @@
                :files (:defaults "lib.c" "Makefile"))
     :defer t
     :custom
-    ;; (setenvEMACS_MODULE_HEADER_ROOT
     (rime-disable-predicates '(rime-predicate-prog-in-code-p
                                rime-predicate-after-alphabet-char-p
 			       meow-normal-mode-p
@@ -27,8 +26,8 @@
     (rime-librime-root "/opt/local")
     ;; (rime-show-candidate 'minibuffer)
     (rime-show-preedit t)
-    ;; (rime-show-candidate 'posframe)
-    (rime-show-candidate 'minibuffer)
+    (rime-show-candidate 'posframe)
+    ;; (rime-show-candidate 'minibuffer)
     ;; (rime-posframe-properties (list :background-color "#202325"
     ;; 				  :foreground-color "#ddddde" ;; "#dedddd"
     ;; 				  :internal-border-width 6))

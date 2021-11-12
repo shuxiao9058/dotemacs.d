@@ -25,6 +25,7 @@
 ;; case show line numbers
 (require 'init-linum)
 (require 'init-gpg)
+(require 'init-activity-watch)
 
 ;; (unless window-system
 ;;   (require 'init-iterm2))

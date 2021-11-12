@@ -92,5 +92,21 @@ src/main/AndroidManifest.xml."
 ;;   :after (lsp-java)
 ;;   )
 
+(use-package mvn
+    :ensure t
+    :straight t
+    :init
+    ;; Correctly colourise the compilation buffer for maven calls.
+    ;; https://github.com/apg/mvn-el
+    (ignore-errors
+      (require 'ansi-color)
+      (defun colorize-compilation-buffer ()
+	(when (eq major-mode 'compilation-mode)
+          (let ((inhibit-read-only t))
+            (if (boundp 'compilation-filter-start)
+		(ansi-color-apply-on-region compilation-filter-start (point))))))
+      (add-hook 'compilation-filter-hook 'colorize-compilation-buffer))
+    )
+
 (provide 'init-java)
 ;;; init-java.el ends here

@@ -54,8 +54,6 @@
 ;;    )
 ;;   )
 
-;; (set-clipboard-coding-system 'euc-cn)
-
 (defun copy-to-clipboard ()
   "Copies selection to x-clipboard."
   (interactive)

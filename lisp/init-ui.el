@@ -380,24 +380,24 @@ WIN-ID : Window index."
 ;;   )
 
 ;; (use-package all-the-icons
-;;   :straight t
-;;   :if (or IS-GUI (daemonp))
-;;   ;; :init
-;;   ;; (setq all-the-icons-scale-factor 0.8)
-;;   )
+;;     :straight t
+;;     :if (or IS-GUI (daemonp))
+;;     ;; :init
+;;     ;; (setq all-the-icons-scale-factor 0.8)
+;;     )
 
 ;; (use-package all-the-icons-dired
-;;   :straight t
-;;   :if (or IS-GUI (daemonp))
-;;   :after (all-the-icons dired)
-;;   :hook (dired-mode . all-the-icons-dired-mode))
+;;     :straight t
+;;     :if (or IS-GUI (daemonp))
+;;     :after (all-the-icons dired)
+;;     :hook (dired-mode . all-the-icons-dired-mode))
 
 ;; (use-package all-the-icons-ibuffer
-;;   :straight t
-;;   :if (or IS-GUI (daemonp))
-;;   :after (all-the-icons ibuffer)
-;;   :config
-;;   (all-the-icons-ibuffer-mode t))
+;;     :straight t
+;;     :if (or IS-GUI (daemonp))
+;;     :after (all-the-icons ibuffer)
+;;     :config
+;;     (all-the-icons-ibuffer-mode t))
 
 ;; (use-package all-the-icons-ivy
 ;;   :straight t
