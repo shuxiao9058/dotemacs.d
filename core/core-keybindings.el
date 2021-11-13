@@ -12,6 +12,12 @@
 (defconst local-leader-key-non-normal "M-,"
   "The local leader prefix key for major mode specific commands in emacs and insert states.")
 
+;; handle emacs utf-8 input
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+(setenv "LANG" "en_US.UTF-8")
+
 (use-package which-key
     :straight t
     :defer 1
@@ -78,8 +84,7 @@
         (clipboard-yank)
         (message "graphics active")
         )
-    (insert (shell-command-to-string paste-from-clipboard-cmd))
-    ))
+    (insert (shell-command-to-string paste-from-clipboard-cmd))))
 
 (bind-key "s-c" #'copy-to-clipboard)
 (bind-key "s-v" #'paste-from-clipboard)

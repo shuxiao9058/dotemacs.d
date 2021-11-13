@@ -100,8 +100,10 @@
                       (consult-line isearch-string))
                     isearch-mode-map)
     :config
-    ( require 'consult)
+    (require 'consult)
     (require 'consult-imenu)
+    (with-eval-after-load 'org
+        (require 'consult-org))
     (declare-function consult--customize-set "consult")
     (progn
       (setq consult-project-root-function #'vc-root-dir)
@@ -129,9 +131,9 @@
 	   ([remap switch-to-buffer] . consult-buffer)
 	   ([remap goto-line] . consult-goto-line)))
 
-(use-package consult-org
-    :straight t
-    :after (consult org))
+;; (use-package consult-org
+;;     :straight t
+;;     :after (consult org))
 
 (use-package consult-lsp
     :straight t

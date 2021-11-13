@@ -85,16 +85,22 @@ WIN-ID : Window index."
     )
 
 (use-package doom-modeline
-    :straight t
+    ;; :straight t
+    :straight (doom-modeline
+	       :type git
+	       :host github
+	       :repo "seagle0128/doom-modeline")
+    :pdump nil
     :custom
     ;; (doom-modeline-buffer-file-name-style 'truncate-with-project)
     ;; (doom-modeline-buffer-file-name-style 'relative-to-project)
     (doom-modeline-buffer-file-name-style 'relative-to-project)
-    (doom-modeline-icon nil)
-    (doom-modeline-major-mode-icon nil)
+    (doom-modeline-modal-icon t)
+    (doom-modeline-icon t)
+    (doom-modeline-major-mode-icon t)
     (doom-modeline-minor-modes nil)
-    (doom-modeline-major-mode-color-icon nil)
-    (doom-modeline-persp-name nil)
+    (doom-modeline-major-mode-color-icon t)
+    (doom-modeline-persp-name t)
     (doom-modeline-lsp t)
     ;; Whether display github notifications or not. Requires `ghub+` package.
     (doom-modeline-github nil)
@@ -104,6 +110,20 @@ WIN-ID : Window index."
     (doom-modeline-bar-width 3)
     (doom-modeline-vcs-max-length 20)
     (doom-modeline-checker-simple-format t)
+    (doom-modeline-env-version t)
+    (doom-modeline-env-enable-python t)
+    (doom-modeline-env-enable-ruby t)
+    (doom-modeline-env-enable-perl t)
+    (doom-modeline-env-enable-go t)
+    (doom-modeline-env-enable-elixir t)
+    (doom-modeline-env-enable-rust t)
+    (doom-modeline-env-python-executable "python")
+    (doom-modeline-env-ruby-executable "ruby")
+    (doom-modeline-env-perl-executable "perl")
+    (doom-modeline-env-go-executable "go")
+    (doom-modeline-env-elixir-executable "iex")
+    (doom-modeline-env-rust-executable "rustc")
+    :after (all-the-icons)
     :hook (after-init . doom-modeline-init)
     :config
     ;; Define your custom doom-modeline
@@ -114,8 +134,7 @@ WIN-ID : Window index."
     ;; Add to `doom-modeline-mode-hook` or other hooks
     (add-hook 'doom-modeline-mode-hook
 	      (lambda() (doom-modeline-set-modeline 'my-simple-line 'default)))
-    (doom-modeline-mode +1)
-    )
+    (doom-modeline-mode +1))
 
 (use-package treemacs
     :straight t
@@ -379,25 +398,25 @@ WIN-ID : Window index."
 ;; 	    "F"  #'dashboard-previous-section)
 ;;   )
 
-;; (use-package all-the-icons
-;;     :straight t
-;;     :if (or IS-GUI (daemonp))
-;;     ;; :init
-;;     ;; (setq all-the-icons-scale-factor 0.8)
-;;     )
+(use-package all-the-icons
+    :straight t
+    :if (or IS-GUI (daemonp))
+    ;; :init
+    ;; (setq all-the-icons-scale-factor 0.8)
+    )
 
-;; (use-package all-the-icons-dired
-;;     :straight t
-;;     :if (or IS-GUI (daemonp))
-;;     :after (all-the-icons dired)
-;;     :hook (dired-mode . all-the-icons-dired-mode))
+(use-package all-the-icons-dired
+    :straight t
+    :if (or IS-GUI (daemonp))
+    :after (all-the-icons dired)
+    :hook (dired-mode . all-the-icons-dired-mode))
 
-;; (use-package all-the-icons-ibuffer
-;;     :straight t
-;;     :if (or IS-GUI (daemonp))
-;;     :after (all-the-icons ibuffer)
-;;     :config
-;;     (all-the-icons-ibuffer-mode t))
+(use-package all-the-icons-ibuffer
+    :straight t
+    :if (or IS-GUI (daemonp))
+    :after (all-the-icons ibuffer)
+    :config
+    (all-the-icons-ibuffer-mode t))
 
 ;; (use-package all-the-icons-ivy
 ;;   :straight t
@@ -467,10 +486,11 @@ WIN-ID : Window index."
        ("\\*ivy-occur .*\\*"        :select t   :align right :regexp t)
        ("\\*eldoc\\( for \\)?.*\\*" :select nil :align t :size 15 :regexp t))))
 
-;; ;; github style emoji input
-;; (use-package company-emoji
-;;   :config
-;;   (add-to-list 'company-backends 'company-emoji))
+;; github style emoji input
+(use-package company-emoji
+    :straight t
+    :config
+    (add-to-list 'company-backends 'company-emoji))
 
 (provide 'init-ui)
 ;;; init-ui.el ends here

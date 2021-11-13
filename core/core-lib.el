@@ -19,6 +19,19 @@
 ;;      ('error
 ;;       (message "watcher: Unable to load [%s] module: %s" ,module ex))))
 
+(defun eval-after-load-all (my-features form)
+  "Run FORM after all MY-FEATURES are loaded.
+See `eval-after-load' for the possible formats of FORM."
+  (if (null my-features)
+      (if (functionp form)
+	  (funcall form)
+	(eval form))
+    (eval-after-load (car my-features)
+      `(lambda ()
+	 (eval-after-load-all
+	  (quote ,(cdr my-features))
+	  (quote ,form))))))
+
 (defun try-require (feature)
   "Attempt to load a library or module. Return true if the
 library given as argument is successfully loaded. If not, instead
