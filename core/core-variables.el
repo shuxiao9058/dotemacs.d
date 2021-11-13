@@ -71,6 +71,12 @@ This variable is non-nil when emacs is started with dump file.")
 ;; (when (boundp 'comp-deferred-compilation)
 ;;   (setq comp-deferred-compilation t))
 
+;; handle emacs utf-8 input
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+(setenv "LANG" "en_US.UTF-8")
+
 (setq x-select-enable-clipboard           t
       x-select-enable-primary             t
       save-interprogram-paste-before-kill t

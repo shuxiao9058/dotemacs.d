@@ -102,9 +102,9 @@
   :config
   (global-undo-tree-mode))
 
-;; (use-package hide-mode-line
-;;   :straight t
-;;   :commands (hide-mode-line-mode))
+(use-package hide-mode-line
+    :straight t
+    :commands (hide-mode-line-mode))
 
 ;; (use-package xclip
 ;;   :straight t
@@ -123,10 +123,10 @@
     :hook (after-init . global-clipetty-mode)
     )
 
-;; (use-package pbcopy
-;;     :straight t
-;;     :if (and IS-MAC IS-CONSOLE)
-;;     :init (turn-on-pbcopy))
+(use-package pbcopy
+    :straight t
+    :if IS-MAC
+    :init (turn-on-pbcopy))
 
 ;; (use-package posframe
 ;;   :straight (posframe

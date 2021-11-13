@@ -36,23 +36,23 @@
 (xterm-mouse-mode t)
 (defun track-mouse (e))
 
-;; ;; Yank text to clipboard
-;; (cond
-;;   ;; OS X
-;;   ((string-equal system-type "darwin") ; Mac OS X
-;;    (progn
-;;      (setq save-to-clipboard-cmd "pbcopy")
-;;      (setq paste-from-clipboard-cmd "pbpaste")
-;;      )
-;;    )
-;;   ;; Linux
-;;   ((string-equal system-type "gnu/linux") ; linux
-;;    (progn
-;;      (setq save-to-clipboard-cmd "xsel -i -b")
-;;      (setq paste-from-clipboard-cmd "xsel -o -b")
-;;      )
-;;    )
-;;   )
+;; Yank text to clipboard
+(cond
+  ;; OS X
+  ((string-equal system-type "darwin") ; Mac OS X
+   (progn
+     (setq save-to-clipboard-cmd "pbcopy")
+     (setq paste-from-clipboard-cmd "pbpaste")
+     )
+   )
+  ;; Linux
+  ((string-equal system-type "gnu/linux") ; linux
+   (progn
+     (setq save-to-clipboard-cmd "xsel -i -b")
+     (setq paste-from-clipboard-cmd "xsel -o -b")
+     )
+   )
+  )
 
 (defun copy-to-clipboard ()
   "Copies selection to x-clipboard."
@@ -79,8 +79,7 @@
         (message "graphics active")
         )
     (insert (shell-command-to-string paste-from-clipboard-cmd))
-    )
-  )
+    ))
 
 (bind-key "s-c" #'copy-to-clipboard)
 (bind-key "s-v" #'paste-from-clipboard)
