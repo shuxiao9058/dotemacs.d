@@ -48,7 +48,7 @@
 (require 'init-org)
 (require 'init-clock)
 (require 'init-pomo)
-;; (require 'init-org-roam)
+(require 'init-org-roam)
 (require 'init-blog)
 
 ;; programming

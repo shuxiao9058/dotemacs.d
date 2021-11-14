@@ -3,10 +3,16 @@
 ;; https://github.com/iecaser/Configurations/blob/a7e61c25c49556b33d7888599a853da9d4c9cb95/.doom.d/note.el
 ;; https://www.orgroam.com/manual/Installation-_00281_0029.html#Installation-_00281_0029
 (use-package org-roam
-  :straight t
+  ;; :straight t
+  ;; :straight (:files (:defaults "extensions/*"))
+  :straight (:host github :repo "org-roam/org-roam"
+		   :files (:defaults "extensions/*"))
   :ensure t
+  :pdump nil
   :hook
   (after-init . org-roam-mode)
+  :init
+  (setq org-roam-v2-ack t)
   :custom
   (org-roam-directory (expand-file-name "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/beorg/"))
   (org-roam-file-exclude-regexp ".pdf$|.tex$|.bib$|.html$|.log$|.out$|.xml$")
@@ -15,7 +21,6 @@
   ;; org-roam-graph-viewer "google-chrome-stable"
   (org-roam-completion-system 'default)
   (org-roam-completion-everywhere t)
-  (org-roam-v2-ack t)
   :commands (org-roam-buffer-toggle-display
              org-roam-find-file
              org-roam-graph
@@ -25,62 +30,68 @@
              org-roam-dailies-today
              org-roam-dailies-tomorrow
              org-roam-dailies-yesterday)
-  ;; :general
-  ;; (:keymaps 'org-roam-mode-map
-  ;; 	    "C-c n l"  #'org-roam
-  ;; 	    "C-c n f" #'org-roam-find-file
-  ;; 	    "C-c n g" #'org-roam-graph
-  ;; 	    ;; "C-c n n" . org-roam
-  ;;           "C-c n f" #'org-roam-find-file
-  ;;           "C-c n c" #'org-roam-capture
-  ;;           "C-c n o" #'org-noter ;; open
-  ;;           "C-c n g" #'org-noter-sync-current-note  ;; goto
-  ;;           "C-c n G" #'org-noter-sync-current-page-or-chapter
-  ;;           "C-c n v" #'org-roam-server-open  ;; view
-  ;;           "C-c n u" #'org-roam-unlinked-references  ;; unlinked
-  ;;           "C-c n j" #'org-roam-jump-to-index
-  ;;           "C-c n b" #'org-roam-switch-to-buffer
-  ;;           "C-c n d" #'deft
-  ;;           "C-c n r" #'org-ref-helm-insert-cite-link
-  ;;           ;; "C-c n s" #'+default/org-notes-search)
-  ;;           "C-c n t" #'org-roam-dailies-today
-  ;;           "C-c n i"  #'org-roam-insert
-  ;; 	    )
-  ;; (:keymaps 'org-mode-map
-  ;; 	    "C-c n i" #'org-roam-insert
-  ;; 	    "C-c n I" #'org-roam-insert-immediate)
   :after org
   :config
   ;; For org-roam to update LAST_MODIFIED field
   (require 'time-stamp)
   (add-hook 'write-file-functions 'time-stamp) ; update when saving
-  ;; (setq org-roam-v2-ack t)
-
-
   ;; for org-roam-buffer-toggle
   ;; Recommendation in the official manual
   (add-to-list 'display-buffer-alist
-               '("\\*org-roam\\*"
+	       '("\\*org-roam\\*"
                  (display-buffer-in-direction)
                  (direction . right)
                  (window-width . 0.33)
                  (window-height . fit-window-to-buffer)))
 
-  ;; (setq org-roam-completion-system 'ivy)
-
   ;; #+LATEX_HEADER: \\addbibresource{~/Cloud/Documents/bib/zotLib.bib}
+  ;;     (setq org-roam-capture-templates
+  ;; 	  (quote
+  ;; 	   (("d" "default" plain
+  ;; 		 (function org-roam-capture--get-point)
+  ;; 		 "%?" :file-name "%<%Y%m%d%H%M%S>-${slug}"
+  ;; 		 :head "#+LATEX_HEADER: \\usepackage[citestyle=authoryear-icomp,bibstyle=authoryear, hyperref=true,backref=true,maxcitenames=3,url=true,backend=bibtex,natbib=true] {biblatex}
+  ;; #+SETUPFILE: ~/.config/emacs/.local/etc/org-html-themes/setup/theme-readtheorg.setup
+  ;; #+TITLE: ${title}
+  ;; #+CREATED: %u
+  ;; Time-stamp: <>
+  ;; - tags ::
+  ;; " :unnarrowed t))))
+
   (setq org-roam-capture-templates
-	(quote
-	 (("d" "default" plain
-           (function org-roam-capture--get-point)
-           "%?" :file-name "%<%Y%m%d%H%M%S>-${slug}"
-           :head "#+LATEX_HEADER: \\usepackage[citestyle=authoryear-icomp,bibstyle=authoryear, hyperref=true,backref=true,maxcitenames=3,url=true,backend=bibtex,natbib=true] {biblatex}
-#+SETUPFILE: ~/.config/emacs/.local/etc/org-html-themes/setup/theme-readtheorg.setup
-#+TITLE: ${title}
-#+CREATED: %u
-Time-stamp: <>
-- tags ::
-" :unnarrowed t))))
+	'((
+	   "d" "default" plain
+	   "%?"
+	   :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n")
+	   :unnarrowed t
+	   )
+          (
+	   "l" "programming language" plain
+	   "* Characteristics:\n\n- Family: %?\n- Inspired by: \n\n* Reference:\n\n"
+	   :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+	   :unnarrowed t
+	   )
+          ("b" "book notes" plain
+	   "\n* Source\n\nAuthor: %^{Author}\nTitle: ${title}\nYear: %^{Year}\n\n* Summary\n\n%?"
+	   :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+	   :unnarrowed t
+	   )
+          ("p" "project" plain
+	   "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n*Dates\n\n"
+	   :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags:Project")
+	   :unnarrowed t
+	   ))
+	org-roam-dailies-capture-templates '(
+                                             (
+					      "d" "default" entry
+					      "* %<%I:%M %p>: %?"
+					      :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n")
+					      ))
+	;; ;; optimise local variable evaluate and babel
+	;; enable-local-variables :all
+	;; ;; remote zsh related
+	;; shell-prompt-pattern '"^[^#$%>\n]*~?[#$%>] *"
+	)
 
   ;; ;; Normally, the org-roam buffer doesn't open until you explicitly call
   ;; ;; `org-roam'. If `+org-roam-open-buffer-on-find-file' is non-nil, the
@@ -95,30 +106,43 @@ Time-stamp: <>
   ;; 		   (with-current-buffer (window-buffer)
   ;; 		     (org-roam-buffer--get-create)))))
   (add-hook 'org-roam-buffer-prepare-hook #'hide-mode-line-mode)
+  :bind (("C-c z l" . org-roam-buffer-toggle)
+         ("C-c z f" . org-roam-node-find)
+         ("C-c z i" . org-roam-node-insert)
+         ("C-c z r" . org-roam-node-random)
+         :map org-mode-map
+         (("C-M-i" . completion-at-point)
+          ("C-c z t" . org-roam-tag-add)
+          ("C-c z a" . org-roam-alias-add)
+          ("C-c z I" . org-roam-node-insert-immediate))
+         :map org-roam-dailies-map
+         ("Y" . org-roam-dailies-capture-yesterday)
+         ("T" . org-roam-dailies-capture-tomorrow))
+  :bind-keymap
+  ("C-c z d" . org-roam-dailies-map)
+  :config
+  (require 'org-roam-protocol)
+  (require 'org-roam-dailies)
+  ;; (org-roam-setup) ;; can cause failure of dump
+  ;; (require 'org-roam-dailies)
   )
 
-;; (use-package org-roam-server
-;;   :straight t
-;;   :ensure t
-;;   :after org
-;;   :config
-;;   (setq org-roam-server-host "127.0.0.1"
-;;         org-roam-server-port 8848
-;;         org-roam-server-authenticate nil
-;;         org-roam-server-export-inline-images t
-;;         org-roam-server-serve-files nil
-;;         org-roam-server-served-file-extensions '("pdf" "mp4" "ogv")
-;;         org-roam-server-network-poll t
-;;         org-roam-server-network-arrows nil
-;;         org-roam-server-network-label-truncate t
-;;         org-roam-server-network-label-truncate-length 80
-;;         org-roam-server-network-label-wrap-length 25)
-;;   (defun org-roam-server-open ()
-;;     "Ensure the server is active, then open the roam graph."
-;;     (interactive)
-;;     (org-roam-server-mode 1)
-;;     (browse-url (format "http://localhost:%d" org-roam-server-port))
-;;     ))
+
+(use-package org-roam-ui
+  :straight (:type git :host github :repo "org-roam/org-roam-ui" :files ("*.el" "out"))
+  :after org-roam
+  :pdump nil
+  :custom
+  (org-roam-ui-sync-theme t)
+  (org-roam-ui-follow t)
+  (org-roam-ui-update-on-save t)
+  (org-roam-ui-open-on-start t))
+
+;; required by org-roam-ui
+(use-package websocket
+  :straight t
+  :pdump nil
+  )
 
 ;; (unless (server-running-p)
 ;;   (org-roam-server-mode))

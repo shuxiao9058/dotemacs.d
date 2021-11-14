@@ -4,14 +4,14 @@
     :straight t
     :ensure t
     :commands (godoc gofmt gofmt-before-save)
-    :config
-    (defun lsp-go-install-save-hooks ()
-      (add-hook 'before-save-hook #'lsp-format-buffer t t)
-      (add-hook 'before-save-hook #'lsp-organize-imports t t)
-      )
+    ;; :config
+    ;; (defun lsp-go-install-save-hooks ()
+    ;;   (add-hook 'before-save-hook #'lsp-format-buffer t t)
+    ;;   (add-hook 'before-save-hook #'lsp-organize-imports t t)
+    ;;   )
 
-    (eval-after-load-all '(lsp doom-modeline-env)
-			 (add-hook 'go-mode-hook #'lsp-go-install-save-hooks))
+    ;; (eval-after-load-all '(lsp doom-modeline)
+    ;; 			 (add-hook 'go-mode-hook #'lsp-go-install-save-hooks))
     ;; (setenv "GOPROXY" "")
     )
 
