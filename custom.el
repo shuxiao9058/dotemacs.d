@@ -26,6 +26,12 @@
 (setq ;; lisp-body-indent   2
  lisp-indent-function  'lisp-indent-function)
 
+;; handle emacs utf-8 input
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+(setenv "LANG" "en_US.UTF-8")
+
 ;; enable C-x C-u to upcase-region
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)

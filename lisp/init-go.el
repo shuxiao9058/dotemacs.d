@@ -4,14 +4,14 @@
     :straight t
     :ensure t
     :commands (godoc gofmt gofmt-before-save)
-    ;; :config
-    ;; (defun lsp-go-install-save-hooks ()
-    ;;   (add-hook 'before-save-hook #'lsp-format-buffer t t)
-    ;;   (add-hook 'before-save-hook #'lsp-organize-imports t t)
-    ;;   )
+    :after (format-all)
+    :config
+    (defun lsp-go-install-save-hooks ()
+      (add-hook 'before-save-hook #'lsp-format-buffer t t)
+      (add-hook 'before-save-hook #'lsp-organize-imports t t))
 
-    ;; (eval-after-load-all '(lsp doom-modeline)
-    ;; 			 (add-hook 'go-mode-hook #'lsp-go-install-save-hooks))
+    (with-eval-after-load 'lsp
+      (add-hook 'go-mode-hook #'lsp-go-install-save-hooks))
     ;; (setenv "GOPROXY" "")
     )
 
@@ -20,21 +20,21 @@
     :after go-mode
     :commands gorepl-run-load-current-file)
 
-(use-package flycheck-golangci-lint
-    :straight t
-    :after go-mode
-    :hook (go-mode . flycheck-golangci-lint-setup)
-    :disabled
-    :custom
-    ;; (flycheck-golangci-lint-enable-all t)
-    ;; (flycheck-golangci-lint-fast t)
-    (flycheck-golangci-lint-config
-     (expand-file-name "golangci.yml" "~/.config/golangci-lint"))
-    ;; (flycheck-golangci-lint-tests t)
-    :config
-    (eval-after-load 'flycheck
-      '(add-hook 'flycheck-mode-hook #'flycheck-golangci-lint-setup))
-    )
+;; (use-package flycheck-golangci-lint
+;;     :straight t
+;;     :after go-mode
+;;     :hook (go-mode . flycheck-golangci-lint-setup)
+;;     ;; :disabled
+;;     :custom
+;;     ;; (flycheck-golangci-lint-enable-all t)
+;;     ;; (flycheck-golangci-lint-fast t)
+;;     (flycheck-golangci-lint-config
+;;      (expand-file-name "golangci.yml" "~/.config/golangci-lint"))
+;;     ;; (flycheck-golangci-lint-tests t)
+;;     :config
+;;     (eval-after-load 'flycheck
+;;       '(add-hook 'flycheck-mode-hook #'flycheck-golangci-lint-setup))
+;;     )
 
 (use-package go-eldoc
     :straight t

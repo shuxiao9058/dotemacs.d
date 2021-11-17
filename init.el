@@ -48,8 +48,8 @@
 (require 'init-org)
 (require 'init-clock)
 (require 'init-pomo)
-(require 'init-org-roam)
 (require 'init-blog)
+;; (require 'init-org-roam)
 
 ;; programming
 (require 'init-flycheck)
@@ -64,7 +64,8 @@
     (require 'init-lsp)
   (require 'init-eglot))
 
-(require 'init-go)
+(require 'init-tridactylrc)
+;; (require 'init-go)
 (require 'init-python)
 (require 'init-lua)
 (require 'init-lisp)

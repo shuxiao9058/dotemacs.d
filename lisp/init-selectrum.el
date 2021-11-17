@@ -1,11 +1,17 @@
 ;;; lisp/init-selectrum.el -*- lexical-binding: t; -*-
 
-(defun my/selectrum-recentf-open-files ()
-  "Open `recent-list' item in a new buffer.
-  The user's $HOME directory is abbreviated as a tilde."
-  (interactive)
-  (let ((files (mapcar 'abbreviate-file-name recentf-list)))
-    (find-file (completing-read "Find recent file: " files nil t))))
+
+(use-package vertico
+    :straight t
+    :init
+    (vertico-mode))
+
+;; (defun my/selectrum-recentf-open-files ()
+;;   "Open `recent-list' item in a new buffer.
+;;   The user's $HOME directory is abbreviated as a tilde."
+;;   (interactive)
+;;   (let ((files (mapcar 'abbreviate-file-name recentf-list)))
+;;     (find-file (completing-read "Find recent file: " files nil t))))
 
 ;; (defun my/selectrum-yank-kill-ring ()
 ;;   "Insert the selected `kill-ring' item directly at point.
@@ -63,11 +69,30 @@
     :custom
     (marginalia-annotators '(marginalia-annotators-heavy
                              marginalia-annotators-light))
+    :init
+    (setq marginalia-command-categories
+          '((imenu . imenu)
+	    (projectile-find-file . project-file)
+            (projectile-find-dir . project-file)
+            (projectile-switch-project . file)
+	    (projectile-switch-open-project . file)
+	    (projectile-recentf . project-file)
+	    (projectile-display-buffer . project-buffer)
+	    (projectile-switch-to-buffer . project-buffer)))
     :bind (;; ("M-A" . marginalia-cycle)
            :map minibuffer-local-map
            ("M-A" . marginalia-cycle))
     :config
-    (marginalia-mode))
+    (marginalia-mode)
+    )
+
+(use-package all-the-icons-completion
+    :straight t
+    :after marginalia
+    :commands all-the-icons-completion-marginalia-setup
+    :hook (marginalia-mode . all-the-icons-completion-marginalia-setup)
+    :init
+    (all-the-icons-completion-mode))
 
 (use-package selectrum-prescient
     :straight t
@@ -103,7 +128,7 @@
     (require 'consult)
     (require 'consult-imenu)
     (with-eval-after-load 'org
-        (require 'consult-org))
+      (require 'consult-org))
     (declare-function consult--customize-set "consult")
     (progn
       (setq consult-project-root-function #'vc-root-dir)
@@ -142,13 +167,26 @@
 
 (use-package embark
     :straight t
+    :init
+    (setq prefix-help-command #'embark-prefix-help-command)
     :bind (("C-c o" . embark-act)
            :map minibuffer-local-map
-           ("M-o"   . embark-act)))
+           ("M-o"   . embark-act))
+    :config
+    ;; Hide the mode line of the Embark live/completions buffers
+    (add-to-list 'display-buffer-alist
+		 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                   nil
+                   (window-parameters (mode-line-format . none)))))
 
 (use-package embark-consult
     :straight t
-    :after (embark consult))
+    :after (embark consult)
+    :demand t ; only necessary if you have the hook below
+    ;; if you want to have consult previews as you move around an
+    ;; auto-updating embark collect buffer
+    :hook
+    (embark-collect-mode . consult-preview-at-point-mode))
 
 (provide 'init-selectrum)
 ;;; init-selectrum.el ends here

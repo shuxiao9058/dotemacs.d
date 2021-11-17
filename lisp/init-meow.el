@@ -149,7 +149,8 @@
       'meow-keypad-self-insert)
 
     (meow-leader-define-key
-     '("e" . my/selectrum-recentf-open-files)
+     '(;; "e" . my/selectrum-recentf-open-files)
+       "e" . consult-recent-file)
      ;; '("e" . my/icomplete-recentf)
      '("." . find-file)
      '("p" . projectile-command-map)

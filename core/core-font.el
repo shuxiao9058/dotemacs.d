@@ -82,10 +82,10 @@
 		      )
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
     (set-fontset-font  nil ;; (frame-parameter nil 'font)
-     charset
-     (font-spec :family +ufont-family
-		;; (car chinese-fonts)
-		:size chinese-font-size))) ;; 14 16 20 22 28
+		       charset
+		       (font-spec :family +ufont-family
+				  ;; (car chinese-fonts)
+				  :size chinese-font-size))) ;; 14 16 20 22 28
   (set-face-attribute 'variable-pitch nil :font (format "%s-%d" +ufont-family chinese-font-size))
   (set-face-attribute 'fixed-pitch nil :font (format "%s-%d" +ufont-family chinese-font-size))
 

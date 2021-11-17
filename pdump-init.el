@@ -14,7 +14,11 @@
 
 ;; (require 'core-ui)
 (require 'core-frame)
-;; (require 'core-font)
+(require 'core-font)
+
+(with-eval-after-load 'doom-modeline
+  (require 'init-go))
+(require 'init-org-roam)
 
 ;; fix env issue
 ;; PATH variable, etc
