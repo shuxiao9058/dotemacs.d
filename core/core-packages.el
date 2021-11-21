@@ -174,6 +174,13 @@
 	  ([escape] . transient-quit-one)
 	  ("q" . transient-quit-one)))
 
+(use-package multiple-cursors
+    :straight t
+    :bind (("C-S-c C-S-c" . mc/edit-lines)
+	   ("C-<" . mc/mark-next-like-this)
+	   ("C->" . mc/mark-previous-like-this)
+	   ("C-c C-<" . mc/mark-all-like-this)))
+
 ;;;; disable annoying notifications
 (defcustom message-filter-regexp-list '("^Starting new Ispell process \\[.+\\] \\.\\.\\.$"
                                         "^Ispell process killed$"

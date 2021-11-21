@@ -73,18 +73,52 @@
     (setq marginalia-command-categories
           '((imenu . imenu)
 	    (projectile-find-file . project-file)
+	    ;; (projectile-find-file . project)
             (projectile-find-dir . project-file)
+	    ;; (projectile-find-dir . project)
+	    ;; (projectile-switch-project . project)
             (projectile-switch-project . file)
 	    (projectile-switch-open-project . file)
 	    (projectile-recentf . project-file)
 	    (projectile-display-buffer . project-buffer)
-	    (projectile-switch-to-buffer . project-buffer)))
+	    (projectile-switch-to-buffer . project-buffer)
+	    ;; (projectile-commander . project)
+	    ))
     :bind (;; ("M-A" . marginalia-cycle)
            :map minibuffer-local-map
            ("M-A" . marginalia-cycle))
     :config
     (marginalia-mode)
-    )
+
+    ;; Display more annotations - e.g. docstring with M-x
+    (setq marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
+
+    ;; When using Selectrum, ensure that Selectrum is refreshed when cycling annotations.
+    (advice-add #'marginalia-cycle :after
+		(lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit)))))
+
+;; -----------------------------------------------------------------------------
+;; Marginalia doesn't remember the this-command when switching projects using
+;; projectile, since it uses multiple minibuffers. In order to classify project
+;; completions properly, we keep track of when we're in the process of switching
+;; projects and make sure to return the correct category
+
+(defvar c/switching-project? nil)
+(defun c/projectile-before-switch-project ()
+  (setq c/switching-project? t))
+(defun c/projectile-after-switch-project ()
+  (setq c/switching-project? nil))
+
+(after-load (projectile marginalia)
+  (add-hook 'projectile-before-switch-project-hook #'c/projectile-before-switch-project)
+  (add-hook 'projectile-after-switch-project-hook #'c/projectile-after-switch-project)
+
+  (advice-add 'marginalia-classify-by-prompt :around
+	      (lambda (orig-fun &rest args)
+                (if c/switching-project?
+		    'project
+                  (apply orig-fun args)))))
+
 
 (use-package all-the-icons-completion
     :straight t
@@ -187,6 +221,11 @@
     ;; auto-updating embark collect buffer
     :hook
     (embark-collect-mode . consult-preview-at-point-mode))
+
+(use-package savehist
+    :straight t
+    :config
+    (savehist-mode 1))
 
 (provide 'init-selectrum)
 ;;; init-selectrum.el ends here

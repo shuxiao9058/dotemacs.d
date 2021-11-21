@@ -67,6 +67,7 @@
 (require 'init-tridactylrc)
 ;; (require 'init-go)
 (require 'init-python)
+(require 'init-nginx)
 (require 'init-lua)
 (require 'init-lisp)
 (require 'init-web)
@@ -79,6 +80,7 @@
 (require 'init-java)
 (require 'init-clojure)
 (require 'init-format)
+(require 'init-lookup)
 
 ;; functions
 (require 'init-utils)

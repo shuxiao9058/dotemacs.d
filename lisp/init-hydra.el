@@ -6,13 +6,13 @@
 ;;   lv-wnd)
 
 (use-package hydra
-  :straight t
-  :ensure t
-  ;; :after outline
-  :custom
-  (hydra-if-helpful t)
-  :commands (defhydra)
-  :bind ("M-o" . hydra-base/body))
+    :straight t
+    :ensure t
+    ;; :after outline
+    :custom
+    (hydra-if-helpful t)
+    :commands (defhydra)
+    :bind ("M-o" . hydra-base/body))
 
 ;; (use-package hydra-posframe
 ;;   :straight (hydra-posframe
@@ -39,6 +39,7 @@ _s_traight
 _w_indow
 "
   ("a" hydra-agenda-view/body :exit t)
+  ("d" dumb-jump-hydra/body :exit t)
   ("s" hydra-straight/body :exit t)
   ("w" hydra-window/body :exit t)
   ("o" hydra-outline/body :exit t)
@@ -101,17 +102,17 @@ _SPC_ cancel  _o_nly this     _d_elete
          (ace-window 1)
          (add-hook 'ace-window-end-once-hook
                    'hydra-window/body))
-   )
+       )
   ("v" (lambda ()
          (interactive)
          (split-window-right)
          (windmove-right))
-   )
+       )
   ("x" (lambda ()
          (interactive)
          (split-window-below)
          (windmove-down))
-   )
+       )
   ("s" (lambda ()
          (interactive)
          (ace-window 4)
@@ -331,6 +332,15 @@ Headline^^            Visit entry^^               Filter^^                    Da
   ("." org-agenda-goto-today)
   ("gd" org-agenda-goto-date))
 
+(defhydra dumb-jump-hydra (:color blue :columns 3)
+  "Dumb Jump"
+  ("j" dumb-jump-go "Go")
+  ("o" dumb-jump-go-other-window "Other window")
+  ("e" dumb-jump-go-prefer-external "Go external")
+  ("x" dumb-jump-go-prefer-external-other-window "Go external other window")
+  ("i" dumb-jump-go-prompt "Prompt")
+  ("l" dumb-jump-quick-look "Quick look")
+  ("b" dumb-jump-back "Back"))
 
 ;; (defhydra hydra-clock (:color blue)
 ;;     "
@@ -384,6 +394,78 @@ Headline^^            Visit entry^^               Filter^^                    Da
 ;;   ("g" straight-get-recipe)
 ;;   ("e" straight-prune-build)
 ;;   ("q" nil))
+
+
+;; (defhydra sm/smerge-hydra
+;;     (:color pink :hint nil :post (smerge-auto-leave))
+;;   "
+;; ^Move^       ^Keep^               ^Diff^                 ^Other^
+;; ^^-----------^^-------------------^^---------------------^^-------
+;; _n_ext       _b_ase               _<_: upper/base        _C_ombine
+;; _p_rev       _u_pper              _=_: upper/lower       _r_esolve
+;; ^^           _l_ower              _>_: base/lower        _k_ill current
+;; ^^           _a_ll                _R_efine
+;; ^^           _RET_: current       _E_diff
+;; "
+;;   ("n" smerge-next)
+;;   ("p" smerge-prev)
+;;   ("b" smerge-keep-base)
+;;   ("u" smerge-keep-upper)
+;;   ("l" smerge-keep-lower)
+;;   ("a" smerge-keep-all)
+;;   ("RET" smerge-keep-current)
+;;   ("\C-m" smerge-keep-current)
+;;   ("<" smerge-diff-base-upper)
+;;   ("=" smerge-diff-upper-lower)
+;;   (">" smerge-diff-base-lower)
+;;   ("R" smerge-refine)
+;;   ("E" smerge-ediff)
+;;   ("C" smerge-combine-with-next)
+;;   ("r" smerge-resolve)
+;;   ("k" smerge-kill-current)
+;;   ("ZZ" (lambda ()
+;;           (interactive)
+;;           (save-buffer)
+;;           (bury-buffer))
+;; 	"Save and bury buffer" :color blue)
+;;   ("q" nil "cancel" :color blue))
+
+
+(defhydra hydra-smerge (:color pink
+                        :hint nil
+                        :pre (unless smerge-mode (smerge-mode +1))
+                        :post (smerge-auto-leave))
+  "
+^Move^       ^Keep^               ^Diff^                 ^Other^
+^^-----------^^-------------------^^---------------------^^-------
+_n_ext       _b_ase               _<_: upper/base        _C_ombine
+_p_rev       _u_pper              _=_: upper/lower       _r_esolve
+^^           _l_ower              _>_: base/lower        _k_ill current
+^^           _a_ll                _R_efine
+^^           _RET_: current       _E_diff
+"
+  ("n" smerge-next)
+  ("p" smerge-prev)
+  ("b" smerge-keep-base)
+  ("u" smerge-keep-upper)
+  ("l" smerge-keep-lower)
+  ("a" smerge-keep-all)
+  ("RET" smerge-keep-current)
+  ("\C-m" smerge-keep-current)
+  ("<" smerge-diff-base-upper)
+  ("=" smerge-diff-upper-lower)
+  (">" smerge-diff-base-lower)
+  ("R" smerge-refine)
+  ("E" smerge-ediff)
+  ("C" smerge-combine-with-next)
+  ("r" smerge-resolve)
+  ("k" smerge-kill-current)
+  ("ZZ" (lambda ()
+          (interactive)
+          (save-buffer)
+          (bury-buffer))
+	"Save and bury buffer" :color blue)
+  ("q" nil "cancel" :color blue))
 
 (provide 'init-hydra)
 ;;; init-hydra.el ends here

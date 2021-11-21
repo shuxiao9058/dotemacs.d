@@ -17,10 +17,10 @@
     (telega-animation-play-inline nil)
     (telega-server-libs-prefix "/usr/local")
     (telega-use-images t)
-    (telega-proxies
-     (list
-      '(:server "127.0.0.1" :port 6153 :enable t
-	:type (:@type "proxyTypeSocks5"))))
+    ;; (telega-proxies
+    ;;  (list
+    ;;   '(:server "127.0.0.1" :port 6153 :enable nil
+    ;; 	:type (:@type "proxyTypeSocks5"))))
     (telega-directory (expand-file-name "telega" poly-cache-dir))
     :config
     ;; show previews for photo/video webpages

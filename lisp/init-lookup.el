@@ -1,148 +1,68 @@
 ;;; lisp/init-lookup.el -*- lexical-binding: t; -*-
 
-(defvar +lookup-definition-functions
-  '(+lookup-xref-definitions-backend-fn
-    +lookup-dumb-jump-backend-fn
-    +lookup-project-search-backend-fn
-    +lookup-evil-goto-definition-backend-fn)
-  "Functions for `+lookup/definition' to try, before resorting to `dumb-jump'.
-Stops at the first function to return non-nil or change the current
-window/point.
-
-If the argument is interactive (satisfies `commandp'), it is called with
-`call-interactively' (with no arguments). Otherwise, it is called with one
-argument: the identifier at point. See `set-lookup-handlers!' about adding to
-this list.")
-
-
-
-(defvar +lookup-references-functions
-  '(+lookup-xref-references-backend-fn
-    +lookup-project-search-backend-fn)
-  "Functions for `+lookup/references' to try, before resorting to `dumb-jump'.
-Stops at the first function to return non-nil or change the current
-window/point.
-
-If the argument is interactive (satisfies `commandp'), it is called with
-`call-interactively' (with no arguments). Otherwise, it is called with one
-argument: the identifier at point. See `set-lookup-handlers!' about adding to
-this list.")
-
-(defvar +lookup-documentation-functions
-  '(+lookup-online-backend-fn)
-  "Functions for `+lookup/documentation' to try, before resorting to
-`dumb-jump'. Stops at the first function to return non-nil or change the current
-window/point.
-
-If the argument is interactive (satisfies `commandp'), it is called with
-`call-interactively' (with no arguments). Otherwise, it is called with one
-argument: the identifier at point. See `set-lookup-handlers!' about adding to
-this list.")
-
-(defvar +lookup-file-functions ()
-  "Function for `+lookup/file' to try, before restoring to `find-file-at-point'.
-Stops at the first function to return non-nil or change the current
-window/point.
-
-If the argument is interactive (satisfies `commandp'), it is called with
-`call-interactively' (with no arguments). Otherwise, it is called with one
-argument: the identifier at point. See `set-lookup-handlers!' about adding to
-this list.")
-
-(defvar +lookup-dictionary-prefer-offline (featurep! +offline)
-  "If non-nil, look up dictionaries online.
-
-Setting this to nil will force it to use offline backends, which may be less
-than perfect, but available without an internet connection.
-
-Used by `+lookup/dictionary-definition' and `+lookup/synonyms'.
-
-For `+lookup/dictionary-definition', this is ignored on Mac, where Emacs users
-Dictionary.app behind the scenes to get definitions.")
-
-
-;;
-;;; xref
-
-;; The lookup commands are superior, and will consult xref if there are no
-;; better backends available.
-(global-set-key [remap xref-find-definitions] #'+lookup/definition)
-(global-set-key [remap xref-find-references]  #'+lookup/references)
-
-
-(eval-after-load 'xref
-    `(progn
-  ;; We already have `projectile-find-tag' and `evil-jump-to-tag', no need for
-  ;; xref to be one too.
-  (remove-hook 'xref-backend-functions #'etags--xref-backend)
-  ;; ...however, it breaks `projectile-find-tag', unless we put it back.
- ;;; (defadvice! +lookup--projectile-find-tag-a (orig-fn)
- ;;;    :around #'projectile-find-tag
- ;;;    (let ((xref-backend-functions '(etags--xref-backend t)))
- ;;;     (funcall orig-fn)))
-
-  ;; ;; Use `better-jumper' instead of xref's marker stack
-  ;; (advice-add #'xref-push-marker-stack :around #'doom-set-jump-a)
-
-  (use-package ivy-xref
-    :straight t
-    :config
-    (setq xref-show-xrefs-function #'ivy-xref-show-xrefs)
-    ;; (set-popup-rule! "^\\*xref\\*$" :ignore t))
-    )
-
 ;;
 ;;; dumb-jump
-
 (use-package dumb-jump
-  :straight t
-  :commands dumb-jump-result-follow
-  :config
-  (setq dumb-jump-default-project doom-emacs-dir
-        dumb-jump-aggressive nil
-        dumb-jump-selector
-        'ivy)
-  (add-hook 'dumb-jump-after-jump-hook #'better-jumper-set-jump))
+    :straight t
+    :commands dumb-jump-result-follow
+    :config
+    (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 
+(use-package counsel-dash
+    :straight t
+    :commands (counsel-dash counsel-dash-at-point counsel-dash-install-docset)
+    :custom
+    (counsel-dash-enable-debugging nil)
+    (dash-docs-common-docsets '("Django"  "Go" "Flask" "NumPy" "Pandas" "Scala" "Rust" "Python 3" "Java_SE17"))
+    :init
+    ;; Language Hooks
+    (add-hook 'emacs-lisp-mode-hook (lambda () (setq-local counsel-dash-docsets '("Emacs Lisp"))))
+    (add-hook 'scala-mode-hook (lambda () (setq-local counsel-dash-docsets '("Scala" "Akka" "Play_Scala" "Java"))))
+    (add-hook 'java-mode-hook (lambda () (setq-local counsel-dash-docsets '("Java" "Play_Java"))))
+    (add-hook 'rust-mode-hook (lambda () (setq-local counsel-dash-docsets '("Rust"))))
+    (add-hook 'clojure-mode-hook (lambda () (setq-local counsel-dash-docsets '("Clojure"))))
+    (add-hook 'haskell-mode-hook (lambda () (setq-local counsel-dash-docsets '("Haskell"))))
+    (add-hook 'sh-mode-hook (lambda () (setq-local counsel-dash-docsets '("Bash"))))
+    (add-hook 'c-mode-hook (lambda () (setq-local counsel-dash-docsets '("C"))))
+    (add-hook 'c++-mode-hook (lambda () (setq-local counsel-dash-docsets '("C++"))))
+    (add-hook 'js2-mode-hook (lambda () (setq-local counsel-dash-docsets '("JavaScript"))))
+    (add-hook 'js-mode-hook (lambda () (setq-local counsel-dash-docsets '("JavaScript"))))
+    (add-hook 'go-mode-hook (lambda () (setq-local counsel-dash-docsets '("Go"))))
+    (add-hook 'lua-mode-hook (lambda () (setq-local counsel-dash-docsets '("Lua"))))
+    (add-hook 'html-mode-hook (lambda () (setq-local counsel-dash-docsets '("HTML" "Javascript"))))
+    (add-hook 'python-mode-hook (lambda () (setq-local counsel-dash-docsets '("Python 3"))))
+    ;; :bind (("C-h C-d" . counsel-dash))
+    :bind
+    (("C-c d" . counsel-dash-at-point)))
 
+(use-package dash-docs
+    :straight t
+    ;; :preface
+    ;; (defun yc/eww-dash-doc (url)
+    ;;   "View dash doc with `eww' in dedicated buffer."
+    ;;   (interactive)
 
-; ;;
-; ;;; Dash docset integration
+    ;;   (with-current-buffer (get-buffer-create "*eww-dash-doc*")
+    ;;     (eww-mode)
+    ;;     (eww url)))
 
-; (use-package! dash-docs
-;     :straight t
-;   :defer t
-;   :init
-;   (add-hook '+lookup-documentation-functions #'+lookup-dash-docsets-backend-fn)
-;   :config
-;   (setq dash-docs-enable-debugging doom-debug-mode
-;         dash-docs-docsets-path (concat poly-etc-dir "docsets/")
-;         dash-docs-min-length 2
-;         dash-docs-browser-func #'eww)
+    :custom
+    (dash-docs-enable-debugging nil)
+    (dash-docs-docsets-path
+     (let ((original-dash-path (expand-file-name "~/Library/Application Support/Dash/DocSets")))
+       (if (and IS-MAC
+		(file-directory-p original-dash-path))
+           original-dash-path
+	 (expand-file-name "~/Documents/dash-docsets"))))
+    ;; (dash-docs-browser-func 'yc/eww-dash-doc)
+    :config
+    (setq
+     dash-docs-common-docsets (dash-docs-installed-docsets)))
 
-;   ;; Before `gnutls' is loaded, `gnutls-algorithm-priority' is treated as a
-;   ;; lexical variable, which breaks `+lookup*fix-gnutls-error'
-;   (defvar gnutls-algorithm-priority)
-; ;   (defadvice! +lookup--fix-gnutls-error-a (orig-fn url)
-; ;     "Fixes integer-or-marker-p errors emitted from Emacs' url library,
-; ; particularly, the `url-retrieve-synchronously' call in
-; ; `dash-docs-read-json-from-url'. This is part of a systemic issue with Emacs 26's
-; ; networking library (fixed in Emacs 27+, apparently).
-
-; ; See https://github.com/magit/ghub/issues/81"
-; ;     :around #'dash-docs-read-json-from-url
-; ;     (let ((gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
-; ;       (funcall orig-fn url)))
-
-; )
-
-; (use-package counsel-dash
-;    :straight t)
-
-; (use-package zeal-at-point
-;     :straight t
-;     :when (and IS-LINUX (display-graphic-p))
-;     :defer t)
+;; (use-package zeal-at-point
+;;     :straight t
+;;     :when (and IS-LINUX (display-graphic-p))
+;;     :defer t)
 
 (provide 'init-lookup)
 ;;; init-lookup.el ends here

@@ -32,6 +32,23 @@ See `eval-after-load' for the possible formats of FORM."
 	  (quote ,(cdr my-features))
 	  (quote ,form))))))
 
+
+(cl-defmacro after-load (pkgs &body body)
+  "Waits until all packages are loaded before evaluating body.
+Example:
+(after-load (ivy counsel projectile)
+  (do-stuff))
+Expands to:
+(with-eval-after-load \"ivy\"
+  (with-eval-after-load \"counsel\"
+    (with-eval-after-load \"projectile\"
+      ...)))"
+  (declare (indent 1))
+  (if pkgs
+      `(with-eval-after-load ,(symbol-name (car pkgs))
+         (after-load ,(cdr pkgs) ,@body))
+    `(progn ,@body)))
+
 (defun try-require (feature)
   "Attempt to load a library or module. Return true if the
 library given as argument is successfully loaded. If not, instead

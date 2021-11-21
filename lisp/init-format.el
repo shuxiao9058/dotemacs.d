@@ -1,7 +1,8 @@
 ;;; lisp/init-format.el -*- lexical-binding: t; -*-
 
 (use-package format-all
-    :straight t
+    ;; :straight t
+    :straight (:host github :repo "shuxiao9058/emacs-format-all-the-code")
     :ensure t
     :hook ((
 	    fish-mode
@@ -21,6 +22,7 @@
 	    yaml-mode
 	    nix-mode
 	    protobuf-mode
+	    nginx-mode
 	    ;;  objc-mode
 	    ;;  swift-mode
 	    ;;  typescript-mode
@@ -126,6 +128,27 @@
 					  (mksh "mksh")
 					  (t "posix")))))))
 
+
+    ;; (define-format-all-formatter nginxfmt
+    ;; 	(:executable "nginxfmt")
+    ;;   (:install (macos "pip install nginxfmt"))
+    ;;   ;; (:install
+    ;;   ;;  (macos "brew install shfmt")
+    ;;   ;;  (windows "scoop install shfmt"))
+    ;;   (:languages "_Nginx")
+    ;;   ;; (:modes nginx-mode)
+    ;;   (:features)
+    ;;   (:format
+    ;;    (format-all--buffer-easy executable "-i" "4" "-")))
+
+    ;; (define-format-all-formatter crossplane
+    ;; 	(:executable "/usr/local/bin/nginx_format.sh")
+    ;;   (:install (macos "pip install crossplane"))
+    ;;   (:languages "Nginx")
+    ;;   (:features)
+    ;;   ;; (:modes nginx-mode)
+    ;;   (:format (format-all--buffer-easy executable)))
+
     ;; lsp-format-buffer
 
     (eval-after-load 'format-all
@@ -133,12 +156,13 @@
 		      ;; go-mode-hook
 		      python-mode-hook
 		      java-mode-hook
-		      markdown-mode
+		      markdown-mode-hook
 		      ;; cc-mode-hook
 		      ;; c-mode-hook
 		      ;; c++-mode-hook
 		      ;; clang-mode-hook
 		      ;; objc-mode-hook
+		      nginx-mode-hook
 		      emacs-lisp-mode-hook
 		      markdown-mode-hook
 		      fish-mode-hook
@@ -165,6 +189,7 @@
 		    ("Nix" nixpkgs-fmt)
 		    ;; ("Emacs Lisp" emacs-lisp)
 		    ;; ("YAML" prettier)
+		    ;; ("Nginx" nginx-fmt)
 		    ))
     )
 

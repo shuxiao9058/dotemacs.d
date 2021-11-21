@@ -225,7 +225,37 @@
     (ghub-insecure-hosts '("git.17usoft.com/api/v4")))
 
 (use-package smerge-mode
-    :straight t)
+    :straight t
+    :ensure t
+    :diminish
+    :commands (smerge-mode
+               smerge-auto-leave
+               smerge-next
+               smerge-prev
+               smerge-keep-base
+               smerge-keep-upper
+               smerge-keep-lower
+               smerge-keep-all
+               smerge-keep-current
+               smerge-keep-current
+               smerge-diff-base-upper
+               smerge-diff-upper-lower
+               smerge-diff-base-lower
+               smerge-refine
+               smerge-ediff
+               smerge-combine-with-next
+               smerge-resolve
+               smerge-kill-current)
+    :after (hydra magit)
+    :hook ((find-file . (lambda ()
+                          (save-excursion
+                            (goto-char (point-min))
+                            (when (re-search-forward "^<<<<<<< " nil t)
+                              (smerge-mode 1)))))
+
+	   ( magit-diff-visit-file . (lambda ()
+				       (when smerge-mode
+					 (smerge-hydra/body))))))
 
 (use-package vdiff
     :straight t)
