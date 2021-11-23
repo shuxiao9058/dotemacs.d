@@ -95,15 +95,33 @@
     (lsp-imenu-show-container-name nil)
     ;; (flymake-fringe-indicator-position 'right-fringe)
     ;; (lsp-clients-emmy-lua-jar-path (expand-file-name  "bin/EmmyLua-LS-all.jar" poly-local-dir))
-    (lsp-clients-emmy-lua-jar-path (expand-file-name "workspace/EmmyLua-LanguageServer/EmmyLua-LS/build/libs/EmmyLua-LS-all.jar" "~"))
+    ;; (lsp-clients-emmy-lua-jar-path (expand-file-name "workspace/EmmyLua-LanguageServer/EmmyLua-LS/build/libs/EmmyLua-LS-all.jar" "~"))
     ;; lsp-go
     ;; (lsp-gopls-server-path "/usr/local/bin/gopls")
+    (lsp-clients-lua-language-server-install-dir (expand-file-name "workspace/lua-language-server/bin/macOS" "~"))
+    (lsp-clients-lua-language-server-bin (expand-file-name "workspace/lua-language-server/bin/macOS/lua-language-server" "~"))
+    (lsp-clients-lua-language-server-main-location (expand-file-name "workspace/lua-language-server/bin/macOS/main.lua" "~") )
+    (lsp-lua-workspace-max-preload 2048); Default: 300, Max preloaded files
+    (lsp-lua-workspace-preload-file-size 1024) ; Default: 100, Skip files larger than this value (KB) when preloading.
+    (lsp-lua-diagnostics-globals "'Lua.diagnostics.globals': ['use', 'awesome', 'client', 'root']")
+    (lsp-lua-workspace-library  `((,(intern (expand-file-name "workspace/openresty-lua/lualib" "~")) . t)))
     (lsp-gopls-server-args '("-debug" "127.0.0.1:3000" "-logfile=/tmp/gopls-emacs.log" ;; "-rpc.trace" "-vv"
 			     ))
     (lsp-go-hover-kind "NoDocumentation")
     (lsp-go-links-in-hover nil)
     (lsp-go-use-gofumpt t)
     :config
+    ;; (lsp-ensure-server 'css-ls)
+    ;; (lsp-ensure-server 'dockerfile-ls)
+    ;; (lsp-ensure-server 'eslint)
+    ;; (lsp-ensure-server 'html-ls)
+    ;; (lsp-ensure-server 'json-ls)
+    (lsp-ensure-server 'lua-language-server)
+    ;; (lsp-ensure-server 'omnisharp)
+    ;; (lsp-ensure-server 'rust-analyzer)
+    ;; (lsp-ensure-server 'ts-ls)
+    ;; (lsp-ensure-server 'yamlls)
+    ;; (setq lsp-eslint-auto-fix-on-save t)
     (add-to-list 'lsp-file-watch-ignored "[/\\\\]\\vendor$")
     (add-to-list 'lsp-file-watch-ignored "[/\\\\].git$")
     (add-to-list 'lsp-file-watch-ignored "[/\\\\]internal$")
@@ -199,9 +217,9 @@
     (lsp-ui-imenu-window-width 200)
     (lsp-ui-doc-border (face-foreground 'font-lock-comment-face))
     (lsp-ui-imenu-colors `(,(face-foreground 'font-lock-keyword-face)
-                            ,(face-foreground 'font-lock-string-face)
-                            ,(face-foreground 'font-lock-constant-face)
-                            ,(face-foreground 'font-lock-variable-name-face)))
+			    ,(face-foreground 'font-lock-string-face)
+			    ,(face-foreground 'font-lock-constant-face)
+			    ,(face-foreground 'font-lock-variable-name-face)))
     :config
     ;; ;; Use lsp-ui-doc-webkit only in GUI
     ;; (when IS-GUI

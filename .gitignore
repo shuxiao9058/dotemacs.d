@@ -25,3 +25,6 @@ history/
 /eglot-eclipse-jdt-cache/
 /eln-cache/
 /.personal.el
+/.org-id-locations
+/.mc-lists.el
+/.dap-breakpoints

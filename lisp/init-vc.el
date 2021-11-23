@@ -148,6 +148,14 @@
     :hook (magit-mode . turn-on-magit-gitflow)
     )
 
+;; Show TODOs in magit
+(use-package magit-todos
+    :straight t
+    :diminish
+    :after magit
+    :config
+    (magit-todos-mode))
+
 ;; git-gutter-plus - View, stage and revert Git changes from the buffer (inspired by package of same name from vim)
 (use-package git-gutter+
     :straight t
