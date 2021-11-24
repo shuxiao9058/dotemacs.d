@@ -263,7 +263,7 @@
 
 	   ( magit-diff-visit-file . (lambda ()
 				       (when smerge-mode
-					 (smerge-hydra/body))))))
+					 (hydra-smerge/body))))))
 
 (use-package vdiff
     :straight t)

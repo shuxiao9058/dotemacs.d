@@ -436,16 +436,22 @@ Headline^^            Visit entry^^               Filter^^                    Da
                         :pre (unless smerge-mode (smerge-mode +1))
                         :post (smerge-auto-leave))
   "
+                                                         [smerge]
 ^Move^       ^Keep^               ^Diff^                 ^Other^
-^^-----------^^-------------------^^---------------------^^-------
+  ╭─────────────────────────────────────────────────────────╯
 _n_ext       _b_ase               _<_: upper/base        _C_ombine
 _p_rev       _u_pper              _=_: upper/lower       _r_esolve
-^^           _l_ower              _>_: base/lower        _k_ill current
-^^           _a_ll                _R_efine
-^^           _RET_: current       _E_diff
+_C-k_        _l_ower              _>_: base/lower        _R_move
+_k_ ↑       _a_ll                _R_efine
+_j_ ↓       _RET_: current       _E_diff
+_C-j_
 "
   ("n" smerge-next)
   ("p" smerge-prev)
+  ("C-j" smerge-next)
+  ("C-k" smerge-prev)
+  ("j" next-line)
+  ("k" previous-line)
   ("b" smerge-keep-base)
   ("u" smerge-keep-upper)
   ("l" smerge-keep-lower)
@@ -455,11 +461,11 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
   ("<" smerge-diff-base-upper)
   ("=" smerge-diff-upper-lower)
   (">" smerge-diff-base-lower)
-  ("R" smerge-refine)
+  ("H" smerge-refine)
   ("E" smerge-ediff)
   ("C" smerge-combine-with-next)
   ("r" smerge-resolve)
-  ("k" smerge-kill-current)
+  ("R" smerge-kill-current)
   ("ZZ" (lambda ()
           (interactive)
           (save-buffer)
