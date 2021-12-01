@@ -18,7 +18,7 @@
     (add-hook 'cperl-mode-hook
               (lambda ()
 		(auto-fill-mode -1)
-		(setq require-final-newline nil)
+		(setq-local require-final-newline nil)
 		(setq indent-tabs-mode nil)))
     :config
     ;; comprehensively switch from perl-mode to cperl-mode
