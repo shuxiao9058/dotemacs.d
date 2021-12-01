@@ -21,7 +21,10 @@
 			'typescript-mode
 			'c-mode
 			'c++-mode
-			'clojure-mode)
+			'clojure-mode
+			'cperl-mode
+			'go-dot-mod-mode
+			'perl-mode)
     ;; https://github.com/golang/tools/commit/b2d8b0336
     (setq-local lsp-completion-filter-on-incomplete nil)
     (lsp-deferred)))
@@ -43,7 +46,9 @@
     :straight t
     :diminish
     :commands (lsp lsp-deferred lsp-enable-which-key-integration lsp-format-buffer lsp-organize-imports)
-    :hook (lsp-mode . lsp-enable-which-key-integration)
+    :hook (;; (perl-mode . lsp-deferred)
+	   ;; (cperl-mode . lsp-deferred)
+           (lsp-mode . lsp-enable-which-key-integration))
     :custom
     (lsp-restart 'auto-restart)
     ;; (lsp-restart 'ignore)
@@ -101,7 +106,7 @@
     (lsp-clients-lua-language-server-install-dir (expand-file-name "workspace/lua-language-server/bin/macOS" "~"))
     (lsp-clients-lua-language-server-bin (expand-file-name "workspace/lua-language-server/bin/macOS/lua-language-server" "~"))
     (lsp-clients-lua-language-server-main-location (expand-file-name "workspace/lua-language-server/bin/macOS/main.lua" "~") )
-    (lsp-lua-workspace-max-preload 2048); Default: 300, Max preloaded files
+    (lsp-lua-workspace-max-preload 4096); Default: 300, Max preloaded files
     (lsp-lua-workspace-preload-file-size 1024) ; Default: 100, Skip files larger than this value (KB) when preloading.
     (lsp-lua-diagnostics-globals "'Lua.diagnostics.globals': ['use', 'awesome', 'client', 'root']")
     (lsp-lua-workspace-library  `((,(intern (expand-file-name "workspace/openresty-lua/lualib" "~")) . t)))

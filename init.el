@@ -70,6 +70,7 @@
 (require 'init-nginx)
 (require 'init-lua)
 (require 'init-lisp)
+(require 'init-perl)
 (require 'init-web)
 (require 'init-rest)
 (require 'init-cc)

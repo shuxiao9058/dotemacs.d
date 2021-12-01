@@ -440,8 +440,8 @@ Headline^^            Visit entry^^               Filter^^                    Da
 ^Move^       ^Keep^               ^Diff^                 ^Other^
   ╭─────────────────────────────────────────────────────────╯
 _n_ext       _b_ase               _<_: upper/base        _C_ombine
-_p_rev       _u_pper              _=_: upper/lower       _r_esolve
-_C-k_        _l_ower              _>_: base/lower        _R_move
+_p_rev       _m_ine              _=_: upper/lower       _r_esolve
+_C-k_        _o_ther             _>_: base/lower        _R_move
 _k_ ↑       _a_ll                _R_efine
 _j_ ↓       _RET_: current       _E_diff
 _C-j_
@@ -453,8 +453,10 @@ _C-j_
   ("j" next-line)
   ("k" previous-line)
   ("b" smerge-keep-base)
-  ("u" smerge-keep-upper)
-  ("l" smerge-keep-lower)
+  ("m" smerge-keep-upper) ;; keep mine
+  ("o" smerge-keep-lower) ;; keep other
+  ;; ("u" smerge-keep-upper)
+  ;; ("l" smerge-keep-lower)
   ("a" smerge-keep-all)
   ("RET" smerge-keep-current)
   ("\C-m" smerge-keep-current)

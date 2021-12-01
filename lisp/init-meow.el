@@ -104,14 +104,24 @@
     :custom
     (meow-expand-hint-remove-delay 3.0)
     :config
-    (add-to-list 'meow-mode-state-list '(inf-iex-mode . normal))
-    (add-to-list 'meow-mode-state-list '(authinfo-mode . normal))
-    (add-to-list 'meow-mode-state-list '(Custom-mode . normal))
-    (add-to-list 'meow-mode-state-list '(cider-test-report-mode . normal))
-    (add-to-list 'meow-mode-state-list '(comint-mode . normal))
-    (add-to-list 'meow-mode-state-list '(protobuf-mode . normal))
-    ;; (add-to-list 'meow-mode-state-list '(git-commit-mode . motion))
-    ;; (add-to-list 'meow-mode-state-list '(magit-log-edit-mode . motion))
+    (dolist (mode '(inf-iex-mode
+		    authinfo-mode
+		    Custom-mode
+		    cider-test-report-mode
+		    comint-mode
+		    protobuf-mode
+		    cperl-mode
+		    perl-mode
+		    debuffer-mode
+                    ielm-mode
+                    inferior-python-mode
+                    go-dot-mod-mode
+		    go-mod-mode
+                    diff-mode))
+      (add-to-list 'meow-mode-state-list `(,mode . normal)))
+
+    (add-to-list 'meow-mode-state-list '(git-commit-mode . motion))
+    (add-to-list 'meow-mode-state-list '(magit-log-edit-mode . motion))
     (add-to-list 'meow-grab-fill-commands 'eval-expression)
 
     (setq meow-cursor-type-keypad 'box)
@@ -125,12 +135,12 @@
      meow-cursor-type-normal 'box
      meow-cursor-type-insert '(bar . 4)
      meow-selection-command-fallback '((meow-replace . meow-page-up)
-                                       (meow-change . meow-change-char)
-                                       (meow-save . meow-save-empty)
-                                       (meow-kill . meow-C-k)
-                                       (meow-cancel . keyboard-quit)
-                                       (meow-pop . meow-pop-grab)
-                                       (meow-delete . meow-C-d)))
+				       (meow-change . meow-change-char)
+				       (meow-save . meow-save-empty)
+				       (meow-kill . meow-C-k)
+				       (meow-cancel . keyboard-quit)
+				       (meow-pop . meow-pop-grab)
+				       (meow-delete . meow-C-d)))
 
     (add-to-list 'meow-char-thing-table '(?\] . line))
     (add-to-list 'meow-char-thing-table '(?\[ . line))

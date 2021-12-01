@@ -61,10 +61,10 @@
     :init
     (add-hook 'go-mode-hook #'go-guru-hl-identifier-mode))
 
-(use-package go-mod-mode
-    :straight (:host github :repo "zkry/go-mod-mode")
-    :ensure t
-    :mode (("go\\.mod\\'" . go-mod-mode)))
+;; (use-package go-mod-mode
+;;     :straight (:host github :repo "zkry/go-mod-mode")
+;;     :ensure t
+;;     :mode (("go\\.mod\\'" . go-mod-mode)))
 
 (provide 'init-go)
 ;;; init-go.el ends here

@@ -23,6 +23,7 @@
 	    nix-mode
 	    protobuf-mode
 	    nginx-mode
+	    cperl-mode
 	    ;;  objc-mode
 	    ;;  swift-mode
 	    ;;  typescript-mode
