@@ -78,11 +78,14 @@ WIN-ID : Window index."
     :straight t
     :ensure t
     :defer t
+    :init
+    (global-set-key [remap other-window] #'ace-window)
     :custom
     (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+    (aw-scope 'global)
+    (aw-background t)
     :bind
-    (("C-x o" . ace-window))
-    )
+    (("C-x o" . ace-window)))
 
 (use-package doom-modeline
     ;; :straight t

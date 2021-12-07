@@ -268,5 +268,26 @@
 (use-package vdiff
     :straight t)
 
+(use-package magit-delta
+    :straight t
+    :delight
+    :if (executable-find "delta")
+    :hook ((magit-mode . magit-delta-mode))
+    :custom
+    ( magit-delta-delta-args
+      '("--max-line-distance" "0.6" "--24-bit-color" "always" "--color-only" ;; "--no-gitconfig"
+	))
+    ;; :config
+    )
+
+(use-package code-review
+    :straight t
+    :bind (:map forge-topic-mode-map
+		("C-c r" . code-review-forge-pr-at-point))
+    :custom
+    (code-review-db-database-file (expand-file-name "code-review-db.sqlite" poly-cache-dir))
+    (code-review-log-file (expand-file-name "code-review-error.log" poly-cache-dir))
+    )
+
 (provide 'init-vc)
 ;;; init-vc.el ends here
