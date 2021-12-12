@@ -13,24 +13,24 @@
   "The local leader prefix key for major mode specific commands in emacs and insert states.")
 
 (use-package which-key
-    :straight t
-    :defer 1
-    :custom
-    (which-key-idle-delay 0.5)
-    (which-key-idle-secondary-delay 0.3)
-    (which-key-sort-order #'which-key-prefix-then-key-order)
-    (which-key-sort-uppercase-first nil)
-    (which-key-add-column-padding 1)
-    (which-key-max-display-columns nil)
-    (which-key-min-display-lines 4)
-    (which-key-side-window-slot -10)
-    (which-key-show-early-on-C-h t)
-    (which-key-allow-evil-operators t)
-    :config
-    ;; general improvements to which-key readability
-    (set-face-attribute 'which-key-local-map-description-face nil :weight 'bold)
-    (which-key-setup-side-window-bottom)
-    (which-key-mode +1))
+  :straight t
+  :defer 1
+  :custom
+  (which-key-idle-delay 0.5)
+  (which-key-idle-secondary-delay 0.3)
+  (which-key-sort-order #'which-key-prefix-then-key-order)
+  (which-key-sort-uppercase-first nil)
+  (which-key-add-column-padding 1)
+  (which-key-max-display-columns nil)
+  (which-key-min-display-lines 4)
+  (which-key-side-window-slot -10)
+  (which-key-show-early-on-C-h t)
+  (which-key-allow-evil-operators t)
+  :config
+  ;; general improvements to which-key readability
+  (set-face-attribute 'which-key-local-map-description-face nil :weight 'bold)
+  (which-key-setup-side-window-bottom)
+  (which-key-mode +1))
 
 (require 'mouse)
 (xterm-mouse-mode t)
@@ -38,21 +38,21 @@
 
 ;; Yank text to clipboard
 (cond
-  ;; OS X
-  ((string-equal system-type "darwin") ; Mac OS X
-   (progn
-     (setq save-to-clipboard-cmd "pbcopy")
-     (setq paste-from-clipboard-cmd "pbpaste")
-     )
-   )
-  ;; Linux
-  ((string-equal system-type "gnu/linux") ; linux
-   (progn
-     (setq save-to-clipboard-cmd "xsel -i -b")
-     (setq paste-from-clipboard-cmd "xsel -o -b")
-     )
-   )
+ ;; OS X
+ ((string-equal system-type "darwin") ; Mac OS X
+  (progn
+    (setq save-to-clipboard-cmd "pbcopy")
+    (setq paste-from-clipboard-cmd "pbpaste")
+    )
   )
+ ;; Linux
+ ((string-equal system-type "gnu/linux") ; linux
+  (progn
+    (setq save-to-clipboard-cmd "xsel -i -b")
+    (setq paste-from-clipboard-cmd "xsel -o -b")
+    )
+  )
+ )
 
 (defun copy-to-clipboard ()
   "Copies selection to x-clipboard."
@@ -80,9 +80,15 @@
         )
     (insert (shell-command-to-string paste-from-clipboard-cmd))))
 
+;; comment with new line
+;; Fix M-j behaviour in block comments in js-mode
+(setq-local comment-multi-line t)
+(local-set-key [remap indent-new-comment-line] 'c-indent-new-comment-line)
+
 (bind-key "s-c" #'copy-to-clipboard)
 (bind-key "s-v" #'paste-from-clipboard)
 (bind-key "s-SPC" #'set-mark-command)
+(bind-key "M-RET" #'toggle-frame-fullscreen)
 (unbind-key "C-z")
 
 (provide 'core-keybindings)

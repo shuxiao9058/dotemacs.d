@@ -83,17 +83,17 @@ the end of the loading of the dump file."
   (declare (indent defun))
   (let ((curr-file (when (fboundp '__FILE__) (__FILE__))))
     (cl-flet ((wrap-file-fn (body)
-                            `(let ((prev-file-fn (symbol-function '__FILE__))
-                                   (prev-max-lisp-eval-depth max-lisp-eval-depth)
-                                   (prev-max-specpdl-size max-specpdl-size))
-                               (fset '__FILE__ (lambda () (or ,curr-file (when prev-file-fn (prev-file-fn)))))
-                               (setq max-lisp-eval-depth (+ 100 max-lisp-eval-depth)
-                                     max-specpdl-size (+ 100 max-specpdl-size))
-                               ,@body
-                               (when prev-file-fn
-                                 (fset '__FILE__ prev-file-fn))
-                               (setq max-lisp-eval-depth prev-max-lisp-eval-depth
-                                     max-specpdl-size prev-max-specpdl-size))))
+                `(let ((prev-file-fn (symbol-function '__FILE__))
+                       (prev-max-lisp-eval-depth max-lisp-eval-depth)
+                       (prev-max-specpdl-size max-specpdl-size))
+                   (fset '__FILE__ (lambda () (or ,curr-file (when prev-file-fn (prev-file-fn)))))
+                   (setq max-lisp-eval-depth (+ 100 max-lisp-eval-depth)
+                         max-specpdl-size (+ 100 max-specpdl-size))
+                   ,@body
+                   (when prev-file-fn
+                     (fset '__FILE__ prev-file-fn))
+                   (setq max-lisp-eval-depth prev-max-lisp-eval-depth
+                         max-specpdl-size prev-max-specpdl-size))))
       (if (dump/dumping-p)
           (let ((funcname2 (intern (format "dump//after-dump-%S" funcname))))
             `(progn
@@ -153,7 +153,8 @@ the end of the loading of the dump file."
            :command
            (list
 	    (if IS-MAC
-		"/Applications/MacPorts/EmacsMac.app/Contents/MacOS/Emacs.sh"
+		"/Applications/Emacs.app/Contents/MacOS/Emacs"
+	      ;; "/Applications/MacPorts/EmacsMac.app/Contents/MacOS/Emacs.sh"
 	      "emacs")
             "--batch"
             "-l" (expand-file-name "pdump.el" user-emacs-directory)

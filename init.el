@@ -24,6 +24,7 @@
 (require 'init-recentf)
 ;; case show line numbers
 (require 'init-linum)
+(require 'init-tab-bar)
 (require 'init-gpg)
 (require 'init-activity-watch)
 
@@ -65,7 +66,9 @@
   (require 'init-eglot))
 
 (require 'init-tridactylrc)
-;; (require 'init-go)
+(require 'init-go)
+;; (with-eval-after-load 'doom-modeline
+;;   (require 'init-go))
 (require 'init-python)
 (require 'init-nginx)
 (require 'init-lua)
@@ -99,7 +102,7 @@
 
 (require 'init-pdump)
 
-;; (require 'init-misc)
+(require 'init-misc)
 
 ;; Load customization file now
 (let ((custom-file (expand-file-name "custom.el" user-emacs-directory)))

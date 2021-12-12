@@ -6,13 +6,13 @@
 ;;   lv-wnd)
 
 (use-package hydra
-    :straight t
-    :ensure t
-    ;; :after outline
-    :custom
-    (hydra-if-helpful t)
-    :commands (defhydra)
-    :bind ("M-o" . hydra-base/body))
+  :straight t
+  :ensure t
+  ;; :after outline
+  :custom
+  (hydra-if-helpful t)
+  :commands (defhydra)
+  :bind ("M-o" . hydra-base/body))
 
 ;; (use-package hydra-posframe
 ;;   :straight (hydra-posframe
@@ -25,24 +25,21 @@
 ;; (hydra-posframe-enable)
 ;;   )
 
-
-;; _w_indow
-;; _e_in
-
-
 (defhydra hydra-base ()
   "
 _a_genda
 _e_in
 _o_utline & outshine
 _s_traight
+_t_ab
 _w_indow
 "
   ("a" hydra-agenda-view/body :exit t)
   ("d" dumb-jump-hydra/body :exit t)
-  ("s" hydra-straight/body :exit t)
   ("w" hydra-window/body :exit t)
   ("o" hydra-outline/body :exit t)
+  ("s" hydra-straight/body :exit t)
+  ("t" hydra-tab/body :exit t)
   ("e" hydra-ein/body :exit t)
   )
 
@@ -83,7 +80,7 @@ _h_ ←         _v_ertical      _b_uffer    _q_ ←→ shrink
 _j_ ↓         _x_ horizontal  _f_ind files  _w_ ←→ grow
 _k_ ↑         _z_ undo        _a_ce 1   _e_ ↑↓ shrink
 _l_ →         _Z_ reset       _s_wap    _r_ ↑↓ grow
-_F_ollow    _D_lt Other     _S_ave    max_i_mize
+_F_ollow       _D_lt Other     _S_ave    max_i_mize
 _SPC_ cancel  _o_nly this     _d_elete
 "
   ("h" windmove-left )
@@ -102,17 +99,17 @@ _SPC_ cancel  _o_nly this     _d_elete
          (ace-window 1)
          (add-hook 'ace-window-end-once-hook
                    'hydra-window/body))
-       )
+   )
   ("v" (lambda ()
          (interactive)
          (split-window-right)
          (windmove-right))
-       )
+   )
   ("x" (lambda ()
          (interactive)
          (split-window-below)
          (windmove-down))
-       )
+   )
   ("s" (lambda ()
          (interactive)
          (ace-window 4)
@@ -432,9 +429,9 @@ Headline^^            Visit entry^^               Filter^^                    Da
 
 
 (defhydra hydra-smerge (:color pink
-                        :hint nil
-                        :pre (unless smerge-mode (smerge-mode +1))
-                        :post (smerge-auto-leave))
+                               :hint nil
+                               :pre (unless smerge-mode (smerge-mode +1))
+                               :post (smerge-auto-leave))
   "
                                                          [smerge]
 ^Move^       ^Keep^               ^Diff^                 ^Other^
@@ -472,8 +469,91 @@ _C-j_
           (interactive)
           (save-buffer)
           (bury-buffer))
-	"Save and bury buffer" :color blue)
+   "Save and bury buffer" :color blue)
   ("q" nil "cancel" :color blue))
+
+(defhydra hydra-tab (:color red :hint nil)
+  "
+                                                ^tab^
+-------^^-----------------------------^^--------------------------------^^-----------------------^^-------------------
+    ^Switch^                        ^Move^                        ^Create & Kill^              ^Other^
+_h_:       left tab              _<_: tab to left               _n_: new tab                  _rr_: rename
+_l_:       right tab             _>_: tab to right              _N_: new tab with name        _rp_: rename default
+[_1_.._9_]: switch [1st..last]     [_m1_..._9_]: move [1st..last]   _x_: kill                     _U_ : undo
+                                                                                        _R_ : redo
+"
+
+  ;; ("u" winner-undo)
+  ;; ;; doesn't work
+  ;; ;; ("C-r" winner-redo)
+
+  ;; ;; tab-bar-mode (Emacs 27)
+  ;; ;; `awesome-tab`: https://github.com/manateelazycat/awesome-tab
+  ("h"  #'tab-bar-switch-to-prev-tab)
+  ("l"  #'tab-bar-switch-to-next-tab)
+  ("<"  #'toy/tab-move-left)
+  (">"  #'toy/tab-move-right)
+
+  ;; ;; FIXME:
+  ;; ;; ("w" #'toy/hydra-window/body)
+  ;; ("w" (lambda () (interactive) (hydra-disable)
+  ;;           (toy/hydra-window/body)))
+
+  ("rr" #'tab-bar-rename-tab)
+  ;; rename to project name
+  ("rp" #'toy/set-tab-name-default) ;; NOTE: defined in `ide.el`
+
+  ("n" #'tab-bar-new-tab)
+  ;; new tab and set name
+  ("N" (lambda () (interactive)
+	 (tab-bar-new-tab)
+	 (call-interactively 'tab-bar-rename-tab)))
+  ("x" #'tab-bar-close-tab)
+
+  ;; select tab
+  ("1" (lambda () (interactive) (tab-bar-select-tab 1)))
+  ("2" (lambda () (interactive) (tab-bar-select-tab 2)))
+  ("3" (lambda () (interactive) (tab-bar-select-tab 3)))
+  ("4" (lambda () (interactive) (tab-bar-select-tab 4)))
+  ("5" (lambda () (interactive) (tab-bar-select-tab 5)))
+  ("6" (lambda () (interactive) (tab-bar-select-tab 6)))
+  ("7" (lambda () (interactive) (tab-bar-select-tab 7)))
+  ("8" (lambda () (interactive) (tab-bar-select-tab 8)))
+  ("9" (lambda () (interactive) (tab-bar-select-tab 9)))
+
+  ;; move tab
+  ("m1" (lambda () (interactive) (tab-bar-move-tab-to 1)))
+  ("m2" (lambda () (interactive) (tab-bar-move-tab-to 2)))
+  ("m3" (lambda () (interactive) (tab-bar-move-tab-to 3)))
+  ("m4" (lambda () (interactive) (tab-bar-move-tab-to 4)))
+  ("m5" (lambda () (interactive) (tab-bar-move-tab-to 5)))
+  ("m6" (lambda () (interactive) (tab-bar-move-tab-to 6)))
+  ("m7" (lambda () (interactive) (tab-bar-move-tab-to 7)))
+  ("m8" (lambda () (interactive) (tab-bar-move-tab-to 8)))
+  ("m9" (lambda () (interactive) (tab-bar-move-tab-to 9)))
+
+  ;; winner
+  ("U" winner-undo)
+  ("R" winner-redo)
+
+  ("q" nil "cancel" :color blue)
+  )
+
+(defun toy/tab-move-right ()
+  (interactive)
+  (let* ((ix (tab-bar--current-tab-index))
+         (n-tabs (length (funcall tab-bar-tabs-function)))
+         (next-ix (mod (+ ix 1) n-tabs)))
+    ;; use 1-based index
+    (tab-bar-move-tab-to (+ 1 next-ix))))
+
+(defun toy/tab-move-left ()
+  (interactive)
+  (let* ((ix (tab-bar--current-tab-index))
+         (n-tabs (length (funcall tab-bar-tabs-function)))
+         (next-ix (mod (+ ix n-tabs -1) n-tabs)))
+    ;; use 1-based index
+    (tab-bar-move-tab-to (+ 1 next-ix))))
 
 (provide 'init-hydra)
 ;;; init-hydra.el ends here

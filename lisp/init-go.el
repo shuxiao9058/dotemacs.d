@@ -1,24 +1,23 @@
 ;;; lisp/init-go.el -*- lexical-binding: t; -*-
 
 (use-package go-mode
-    :straight t
-    :ensure t
-    :commands (godoc gofmt gofmt-before-save)
-    :after (format-all)
-    :config
-    (defun lsp-go-install-save-hooks ()
-      (add-hook 'before-save-hook #'lsp-format-buffer t t)
-      (add-hook 'before-save-hook #'lsp-organize-imports t t))
-
-    (with-eval-after-load 'lsp
-      (add-hook 'go-mode-hook #'lsp-go-install-save-hooks))
-    ;; (setenv "GOPROXY" "")
-    )
+  :straight t
+  :ensure t
+  :commands (godoc gofmt gofmt-before-save)
+  ;; :after (format-all)
+  :init
+  (defun lsp-go-install-save-hooks()
+    (add-hook 'before-save-hook #'lsp-format-buffer t t)
+    (add-hook 'before-save-hook #'lsp-organize-imports t t)
+    (setq-local lsp-enable-on-type-formatting t))
+  (eval-after-load 'lsp
+    (add-hook 'go-mode-hook #'lsp-go-install-save-hooks))
+  )
 
 (use-package gorepl-mode
-    :straight t
-    :after go-mode
-    :commands gorepl-run-load-current-file)
+  :straight t
+  :after go-mode
+  :commands gorepl-run-load-current-file)
 
 ;; (use-package flycheck-golangci-lint
 ;;     :straight t
@@ -37,29 +36,29 @@
 ;;     )
 
 (use-package go-eldoc
-    :straight t
-    :after go-mode
-    :ensure t
-    :disabled
-    :commands go-eldoc-setup
-    :init
-    (add-hook 'go-mode-hook #'go-eldoc-setup))
+  :straight t
+  :after go-mode
+  :ensure t
+  :disabled
+  :commands go-eldoc-setup
+  :init
+  (add-hook 'go-mode-hook #'go-eldoc-setup))
 
 (use-package go-rename
-    :straight t
-    :after go-mode
-    :disabled
-    :ensure t
-    :commands go-rename)
+  :straight t
+  :after go-mode
+  :disabled
+  :ensure t
+  :commands go-rename)
 
 (use-package go-guru
-    :straight t
-    :after go-mode
-    :disabled
-    :ensure t
-    :commands go-guru-hl-identifier-mode
-    :init
-    (add-hook 'go-mode-hook #'go-guru-hl-identifier-mode))
+  :straight t
+  :after go-mode
+  :disabled
+  :ensure t
+  :commands go-guru-hl-identifier-mode
+  :init
+  (add-hook 'go-mode-hook #'go-guru-hl-identifier-mode))
 
 ;; (use-package go-mod-mode
 ;;     :straight (:host github :repo "zkry/go-mod-mode")

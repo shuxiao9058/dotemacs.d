@@ -72,5 +72,9 @@
 (when (and (fboundp 'blink-cursor-mode) (not (eq blink-cursor-mode -1)))
   (blink-cursor-mode -1))
 
+;; emacs 28 new feature, CJK word breaking lines
+(when (boundp 'word-wrap-by-category)
+  (setq word-wrap-by-category t))
+
 (provide 'core-ui)
 ;;; core-ui.el ends here

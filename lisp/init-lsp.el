@@ -66,7 +66,8 @@
     (lsp-modeline-code-actions-enable nil)
     (lsp-modeline-diagnostics-enable nil)
     (lsp-modeline-diagnostics-scope :file)
-    (lsp-diagnostics-provider :none)
+    ;; (lsp-diagnostics-provider :none)
+    (lsp-diagnostics-provider :flycheck)
     (lsp-diagnostic-clean-after-change nil)
     (lsp-enable-indentation nil)
     (lsp-completion-enable t)
@@ -74,7 +75,8 @@
     (lsp-response-timeout 5)
     (lsp-tcp-connection-timeout 2)
     (lsp-enable-folding t)             ;; use `evil-matchit' instead
-    (lsp-diagnostic-package :none)   ;; prefer flycheck disable
+    ;; (lsp-diagnostic-package :none)   ;; prefer flycheck disable
+    (lsp-diagnostic-package :flycheck)   ;; prefer flycheck disable
     (lsp-modeline-diagnostics-enable nil)
     (lsp-diagnostics-disabled-modes '(js-mode go-mode))
     (lsp-flycheck-live-reporting nil)    ;; obey `flycheck-check-syntax-automatically'

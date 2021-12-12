@@ -3,10 +3,24 @@
 ;; Emacs HEAD (27+) introduces early-init.el, which is run before init.el,
 ;; before package and UI initialization happens.
 
-;; ;; Defer garbage collection further back in the startup process
-;; (setq gc-cons-threshold most-positive-fixnum)
+;; Defer garbage collection further back in the startup process
+(setq gc-cons-threshold most-positive-fixnum)
 
 (setq-default shell-file-name "/opt/local/bin/zsh")
+
+;; since emacs 28
+(setq use-short-answers t)
+
+(setq create-lockfiles nil)
+
+;; Disable most GUI widgets early on
+(setq default-frame-alist '((horizontal-scroll-bars . nil)
+                            (vertical-scroll-bars . nil)
+                            (menu-bar-lines . 0)
+                            (tool-bar-lines . 0) ;; <----- here
+                            (internal-border-width . 0)
+                            (height . 50)
+                            (width . 95)))
 
 ;; (when (boundp 'comp-eln-load-path)
 ;;   (let ((eln-cache-dir
@@ -71,10 +85,11 @@
 ;; file is loaded. I use straight.el instead of package.el.
 (setq package-enable-at-startup nil)
 
-;; In noninteractive sessions, prioritize non-byte-compiled source files to
-;; prevent the use of stale byte-code. Otherwise, it saves us a little IO time
-;; to skip the mtime checks on every *.elc file.
-(setq load-prefer-newer noninteractive)
+;; ;; In noninteractive sessions, prioritize non-byte-compiled source files to
+;; ;; prevent the use of stale byte-code. Otherwise, it saves us a little IO time
+;; ;; to skip the mtime checks on every *.elc file.
+;; (setq load-prefer-newer noninteractive)
+(setq load-prefer-newer nil)
 
 ;; ;; In Emacs 27+, package initialization occurs before `user-init-file' is
 ;; ;; loaded, but after `early-init-file'. Doom handles package initialization, so
@@ -110,5 +125,22 @@
 ;; (debug-on-entry 'tty-find-type)
 
 ;; (tty-run-terminal-initialization (selected-frame) "xterm-256color")
+
+;; http://akrl.sdf.org/
+(defmacro my/timer (&rest body)
+  "Measure and return the time it takes evaluating BODY."
+  `(let ((time (current-time)))
+     ,@body
+     (float-time (time-since time))))
+
+;; When idle for 30s run the GC no matter what.
+(defvar my/gc-timer
+  (run-with-idle-timer 30 t
+                       (lambda ()
+                         (let ((inhibit-read-only t)
+                               (gc-msg (format "Garbage Collector has run for %.06fsec"
+                                               (my/timer (garbage-collect)))))
+                           (with-current-buffer "*Messages*"
+	                     (insert gc-msg "\n"))))))
 
 ;;; early-init.el ends here

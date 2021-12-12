@@ -275,10 +275,9 @@
     :hook ((magit-mode . magit-delta-mode))
     :custom
     ( magit-delta-delta-args
-      '("--max-line-distance" "0.6" "--24-bit-color" "always" "--color-only" ;; "--no-gitconfig"
-	))
-    ;; :config
-    )
+      '("--max-line-distance" "0.6" "--24-bit-color" "always" "--color-only" "--dark" ;; "--diff-so-fancy"
+	;; "--no-gitconfig"
+	)))
 
 (use-package code-review
     :straight t
