@@ -15,11 +15,13 @@
 (require 'init-meow)
 
 ;;; core
+(require 'init-benchmarking)
 (require 'init-env)
 (require 'init-comp)
 ;; (require 'init-ivy)
 ;; (require 'init-icomplete)
-(require 'init-selectrum)
+;; (require 'init-selectrum)
+(require 'init-vertico)
 (require 'init-ui) ;; ui
 (require 'init-recentf)
 ;; case show line numbers
@@ -27,6 +29,7 @@
 (require 'init-tab-bar)
 (require 'init-gpg)
 (require 'init-activity-watch)
+(require 'init-desktop)
 
 ;; (unless window-system
 ;;   (require 'init-iterm2))
@@ -35,7 +38,7 @@
 (require 'init-wakatime)
 (require 'init-keyfreq)
 (require 'init-rime)
-;; (require 'init-vterm)
+(require 'init-vterm)
 (require 'init-dired)
 (require 'init-search)
 (require 'init-telega)
@@ -78,7 +81,7 @@
 (require 'init-rest)
 (require 'init-cc)
 (require 'init-nix)
-(require 'init-fish)
+;; (require 'init-fish)
 (require 'init-docker)
 (require 'init-yaml)
 (require 'init-java)

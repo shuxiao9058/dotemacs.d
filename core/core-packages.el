@@ -128,6 +128,12 @@
   :if IS-MAC
   :init (turn-on-pbcopy))
 
+(use-package reveal-in-osx-finder
+  :straight t
+  :if IS-MAC
+  :commands reveal-in-osx-finder
+  :bind ("C-c z" . reveal-in-osx-finder))
+
 ;; (use-package posframe
 ;;   :straight (posframe
 ;; 	     :host github

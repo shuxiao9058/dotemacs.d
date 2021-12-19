@@ -8,6 +8,7 @@
 
 (setq-default shell-file-name "/opt/local/bin/zsh")
 
+
 ;; since emacs 28
 (setq use-short-answers t)
 
@@ -34,34 +35,33 @@
 ;;       (call-process find-exec nil nil nil eln-cache-dir
 ;; 		    "-name" "*.eln" "-size" "0" "-delete"))))
 
-;; (if (and (fboundp 'native-comp-available-p) (native-comp-available-p) (fboundp 'json-serialize))
-;;     (progn
-;;       ;; Prevent compilation of this package
-;;       (require 'comp)
-;;       (setq comp-deferred-compilation t
-;; 	    package-native-compile t
-;; 	    ;; native-comp settings per
-;; 	    ;; https://github.com/shshkn/emacs.d/blob/master/docs/nativecomp.md
-;; 	    comp-speed 2
-;; 	    comp-async-report-warnings-errors nil
-;; 	    comp-verbose 0
-;; 	    comp-async-jobs-number 2
-;; 	    )
+(if (and (fboundp 'native-comp-available-p) (native-comp-available-p) (fboundp 'json-serialize))
+    (progn
+      ;; Prevent compilation of this package
+      (require 'comp)
+      (setq comp-deferred-compilation t
+	    package-native-compile t
+	    ;; native-comp settings per
+	    ;; https://github.com/shshkn/emacs.d/blob/master/docs/nativecomp.md
+	    comp-speed 2
+	    comp-async-report-warnings-errors nil
+	    comp-verbose 0
+	    comp-async-jobs-number 2)
 
-;;       ;; https://github.com/raxod502/straight.el/issues/680
-;;       (setq comp-deferred-compilation-deny-list
-;; 	    '("init\\.el$"
-;; 	      "xterm\\.el$"
-;; 	      "^.+evil-pkg\\.el$"
-;; 	      "markdown-toc-pkg\\.el$"
-;; 	      ".+-pkg\\.el$"
-;; 	      "\\(?:[^a-z]+-autoloads\\.el$\\)"))
-;;       (setq comp-deferred-compilation-black-list
-;; 	    '(xterm "/xterm\\.el$" "/xterm\\.el.gz$" "/evil-collection-vterm\\.el\\'" "/mu4e.*\\.el$"))
-;; 					; (add-to-list 'comp-deferred-compilation-deny-list "init\\.el$")
-;;       ;; (native--compile-async '("~/.emacs.d/lisp/" "~/.emacs.d/themes/" "~/.emacs.d/modules/" "~/.emacs.d/local-config.el") t)
-;;       )
-;;   (message "Not support native-comp"))
+      ;; https://github.com/raxod502/straight.el/issues/680
+      (setq comp-deferred-compilation-deny-list
+	    '("init\\.el$"
+	      "xterm\\.el$"
+	      "^.+evil-pkg\\.el$"
+	      "markdown-toc-pkg\\.el$"
+	      ".+-pkg\\.el$"
+	      "\\(?:[^a-z]+-autoloads\\.el$\\)"))
+      ;; (setq comp-deferred-compilation-black-list
+      ;; 	    '(xterm "/xterm\\.el$" "/xterm\\.el.gz$" "/evil-collection-vterm\\.el\\'" "/mu4e.*\\.el$"))
+					; (add-to-list 'comp-deferred-compilation-deny-list "init\\.el$")
+      ;; (native--compile-async '("~/.emacs.d/lisp/" "~/.emacs.d/" "~/.emacs.d/" "~/.emacs.d/local-config.el") t)
+      )
+  (message "Not support native-comp"))
 
 ;; ;;; Automatic Optimization
 ;; (defvar gc-cons-threshold-original gc-cons-threshold)

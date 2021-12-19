@@ -96,9 +96,11 @@ No tab will created if the command is cancelled."
 ;; use project name as default tab name
 (defun toy/set-tab-name-default ()
   (interactive)
-  (let ((proj-name (projectile-project-name)))
-    (unless (or (= (length proj-name) 0) (string= proj-name "-"))
-      (tab-bar-rename-tab proj-name))))
+  (if (buffer-file-name (current-buffer))
+      (let ((proj-name (projectile-project-name)))
+	(unless (or (= (length proj-name) 0) (string= proj-name "-"))
+	  ;; (message proj-name)
+	  (tab-bar-rename-tab proj-name)))))
 
 (advice-add 'tab-bar-new-tab :after (lambda (&rest x) (toy/set-tab-name-default)))
 (advice-add 'tab-bar-tab-name-format-function :after (lambda (&rest x) (toy/set-tab-name-default)))

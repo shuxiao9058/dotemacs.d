@@ -63,7 +63,9 @@ candidates will be from company-tabnine, others keeping their own origin order."
 			    company-echo-metadata-frontend))
   ;; set default `company-backends'
   (setq-default company-backends
-		'((company-tabnine :with company-capf :separate)
+		'(company-tabnine
+		  ;; (company-tabnine :with company-capf :separate)
+		  ;; company-capf
 		  company-dabbrev-code
 		  (company-files          ; files & directory
 		   company-keywords       ; keywords
@@ -198,13 +200,13 @@ candidates will be from company-tabnine, others keeping their own origin order."
   (company-quickhelp-mode))
 
 (use-package company-tabnine
-  ;; :straight t
-  :straight (company-tabnine
-	     :host github
-	     :repo "karta0807913/company-tabnine"
-	     ;; :branch "master"
-	     ;; :files (:defaults "contrib" "etc" "server" "Makefile")
-	     )
+  :straight t
+  ;; :straight (company-tabnine
+  ;; 	     :host github
+  ;; 	     :repo "karta0807913/company-tabnine"
+  ;; 	     ;; :branch "master"
+  ;; 	     ;; :files (:defaults "contrib" "etc" "server" "Makefile")
+  ;; 	     )
   :commands company-tabnine-start-process
   :ensure t
   :after company

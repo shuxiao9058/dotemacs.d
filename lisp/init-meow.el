@@ -96,97 +96,99 @@
    '("<escape>" . meow-last-buffer)))
 
 (use-package meow
-    :straight t
-    :demand t
-    :ensure t
-    :init
-    (meow-global-mode 1)
-    :custom
-    (meow-expand-hint-remove-delay 3.0)
-    :config
-    (dolist (mode '(inf-iex-mode
-		    authinfo-mode
-		    Custom-mode
-		    cider-test-report-mode
-		    comint-mode
-		    protobuf-mode
-		    cperl-mode
-		    perl-mode
-		    debuffer-mode
-                    ielm-mode
-                    inferior-python-mode
-                    go-dot-mod-mode
-		    go-mod-mode
-                    diff-mode))
-      (add-to-list 'meow-mode-state-list `(,mode . normal)))
+  :straight t
+  :demand t
+  :ensure t
+  :init
+  (meow-global-mode 1)
+  :custom
+  (meow-expand-hint-remove-delay 3.0)
+  :config
+  (dolist (mode '(inf-iex-mode
+		  authinfo-mode
+		  Custom-mode
+		  cider-test-report-mode
+		  comint-mode
+		  protobuf-mode
+		  cperl-mode
+		  perl-mode
+		  debuffer-mode
+                  ielm-mode
+                  inferior-python-mode
+                  go-dot-mod-mode
+		  go-mod-mode
+                  diff-mode))
+    (add-to-list 'meow-mode-state-list `(,mode . normal)))
 
-    (add-to-list 'meow-mode-state-list '(git-commit-mode . motion))
-    (add-to-list 'meow-mode-state-list '(magit-log-edit-mode . motion))
-    (add-to-list 'meow-grab-fill-commands 'eval-expression)
+  (add-to-list 'meow-mode-state-list '(git-commit-mode . motion))
+  (add-to-list 'meow-mode-state-list '(magit-log-edit-mode . motion))
+  (add-to-list 'meow-grab-fill-commands 'eval-expression)
 
-    (setq meow-cursor-type-keypad 'box)
-    (setq meow-cursor-type-insert '(bar . 2))
+  (setq meow-cursor-type-keypad 'box)
+  (setq meow-cursor-type-insert '(bar . 2))
 
-    (setq
-     ;; meow-visit-sanitize-completion nil
-     meow-esc-delay 0.001
-     meow-keypad-describe-delay 0.5
-     meow-select-on-change t
-     meow-cursor-type-normal 'box
-     meow-cursor-type-insert '(bar . 4)
-     meow-selection-command-fallback '((meow-replace . meow-page-up)
-				       (meow-change . meow-change-char)
-				       (meow-save . meow-save-empty)
-				       (meow-kill . meow-C-k)
-				       (meow-cancel . keyboard-quit)
-				       (meow-pop . meow-pop-grab)
-				       (meow-delete . meow-C-d)))
+  (setq
+   ;; meow-visit-sanitize-completion nil
+   meow-esc-delay 0.001
+   meow-keypad-describe-delay 0.5
+   meow-select-on-change t
+   meow-cursor-type-normal 'box
+   meow-cursor-type-insert '(bar . 4)
+   meow-selection-command-fallback '((meow-replace . meow-page-up)
+				     (meow-change . meow-change-char)
+				     (meow-save . meow-save-empty)
+				     (meow-kill . meow-C-k)
+				     (meow-cancel . keyboard-quit)
+				     (meow-pop . meow-pop-grab)
+				     (meow-delete . meow-C-d)))
 
-    (add-to-list 'meow-char-thing-table '(?\] . line))
-    (add-to-list 'meow-char-thing-table '(?\[ . line))
+  (add-to-list 'meow-char-thing-table '(?\] . line))
+  (add-to-list 'meow-char-thing-table '(?\[ . line))
 
-    (dolist (hook '(git-commit-mode-hook
-		    magit-log-edit-mode-hook))
-      (add-hook hook (lambda()(meow--switch-state 'insert))))
+  (dolist (hook '(git-commit-mode-hook
+		  magit-log-edit-mode-hook))
+    (add-hook hook (lambda()(meow--switch-state 'insert))))
 
-    ;; disable <backspace> work as meow-keypad-undo
-    ;; since some useful command may use <backspace> key
-    ;; such as C-x BS
-    (define-key meow-keypad-state-keymap (kbd "<backspace>")
-      'meow-keypad-self-insert)
+  ;; disable <backspace> work as meow-keypad-undo
+  ;; since some useful command may use <backspace> key
+  ;; such as C-x BS
+  (define-key meow-keypad-state-keymap (kbd "<backspace>")
+    'meow-keypad-self-insert)
 
-    (define-key meow-keypad-state-keymap (kbd "DEL")
-      'meow-keypad-self-insert)
+  (define-key meow-keypad-state-keymap (kbd "DEL")
+    'meow-keypad-self-insert)
 
-    (meow-leader-define-key
-     '(;; "e" . my/selectrum-recentf-open-files)
-       "e" . consult-recent-file)
-     ;; '("e" . my/icomplete-recentf)
-     '("." . find-file)
-     '("p" . projectile-command-map)
-     '("b" . switch-to-buffer)
-     '("s" . save-buffer)
-     '("j" . sp-join-sexp)
-     '("(" . sp-wrap-round)
-     '("[" . sp-wrap-square)
-     '("{" . sp-wrap-curly)
-     '("o" . ace-window)
-     '("a" . delete-other-windows)
-     '("-" . split-window-below)
-     '("/" . swiper)
-     '("\\" . split-window-right)
-     '("w" . ace-swap-window)
-     '("k" . kill-buffer)
-     )
-    ;; meow-setup is your custom function, see below
-    (meow-setup)
-    ;; If you want relative line number in NORMAL s tate(for display-line-numbers-mode)
-    (meow-setup-line-number)
-    ;; If you need setup indicator, see `meow-indicator' for customizing by hand.
-    (meow-setup-indicator)
+  (meow-leader-define-key
+   '(;; "e" . my/selectrum-recentf-open-files)
+     "e" . consult-recent-file)
+   ;; '("e" . my/icomplete-recentf)
+   ;; '("." . find-file)
+   '("." . poly/find-file)
+   '("p" . projectile-command-map)
+   ;; '("b" . switch-to-buffer)
+   '("b" . poly/switch-to-buffer)
+   '("s" . save-buffer)
+   '("j" . sp-join-sexp)
+   '("(" . sp-wrap-round)
+   '("[" . sp-wrap-square)
+   '("{" . sp-wrap-curly)
+   '("o" . ace-window)
+   '("a" . delete-other-windows)
+   '("-" . split-window-below)
+   '("/" . swiper)
+   '("\\" . split-window-right)
+   '("w" . ace-swap-window)
+   '("k" . kill-buffer)
+   )
+  ;; meow-setup is your custom function, see below
+  (meow-setup)
+  ;; If you want relative line number in NORMAL s tate(for display-line-numbers-mode)
+  (meow-setup-line-number)
+  ;; If you need setup indicator, see `meow-indicator' for customizing by hand.
+  (meow-setup-indicator)
 
-    (unbind-key (kbd "<escape>") meow-leader-keymap) ;; disable meow-temp-normal
-    )
+  (unbind-key (kbd "<escape>") meow-leader-keymap) ;; disable meow-temp-normal
+  )
 
 (provide 'init-meow)
 

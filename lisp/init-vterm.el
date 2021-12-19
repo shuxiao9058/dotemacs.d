@@ -8,37 +8,51 @@
                    )
   :demand
   :commands (vterm ds/vterm)
-  :custom ((vterm-max-scrollback 10000))
-  ;; :init
-  ;; (defun ds/vterm-send-C-x ()
-  ;;   (interactive)
-  ;;   (vterm-send "C-x"))
-  ;; :bind (:map vterm-mode-map
-  ;;             ("C-c t" . 'vterm-copy-mode)
-  ;;             ("C-x C-x" . 'ds/vterm-send-C-x)
-  ;;             :map vterm-copy-mode-map
-  ;;             ("C-c t" . 'vterm-copy-mode))
+  :custom
+  (vterm-max-scrollback 10000)
+  (vterm-ignore-blink-cursor nil)
+  :init
+  (defun ds/vterm-send-C-x ()
+    (interactive)
+    (vterm-send "C-x"))
+  (defun ds/vterm-send-C-z ()
+    (interactive)
+    (vterm-send "C-z"))
+  :bind (:map vterm-mode-map
+              ("C-c t" . 'vterm-copy-mode)
+              ("C-x C-x" . 'ds/vterm-send-C-x)
+	      ("C-z" . vterm-send-C-z)
+	      :map vterm-copy-mode-map
+              ("C-c t" . 'vterm-copy-mode))
   ;; :after ds-theme
   ;; :config
-  ;; (defun ds/vterm (&optional name)
-  ;;   (interactive "MName: ")
-  ;;   (if (< 0 (length name))
-  ;;       (if (get-buffer name)
-  ;;           (switch-to-buffer name)
-  ;;         (vterm name))
-  ;;     (vterm)))
-  :general
-  (:keymaps 'vterm-mode-map
-            [escape] #'vterm--self-insert
-            [return] #'vterm--self-insert
-            "p" #'vterm-yank
-            "u" #'vterm-undo
-            "C-y" #'vterm-yank
-            "M-n" #'vterm-send-down
-            "M-p" #'vterm-send-up
-            "M-y" #'vterm-yank-pop
-            "M-/" #'vterm-send-tab
-            )
+  ;; :general
+  ;; (:keymaps 'vterm-mode-map
+  ;;           [escape] #'vterm--self-insert
+  ;;           [return] #'vterm--self-insert
+  ;;           "p" #'vterm-yank
+  ;;           "u" #'vterm-undo
+  ;;           "C-y" #'vterm-yank
+  ;;           "M-n" #'vterm-send-down
+  ;;           "M-p" #'vterm-send-up
+  ;;           "M-y" #'vterm-yank-pop
+  ;;           "M-/" #'vterm-send-tab
+  ;;           )
+  :config
+  (define-key vterm-mode-map (kbd "C-h") 'vterm-send-C-h)
+  (define-key vterm-mode-map (kbd "C-z") 'vterm-send-C-z)
+  (setq vterm-keymap-exceptions (remove "C-h" vterm-keymap-exceptions))
+  (add-hook 'vterm-mode-hook
+            (lambda ()
+              (set (make-local-variable 'buffer-face-mode-face) 'fixed-pitch)
+              (buffer-face-mode t)))
+  (defun ds/vterm (&optional name)
+    (interactive "MName: ")
+    (if (< 0 (length name))
+        (if (get-buffer name)
+            (switch-to-buffer name)
+          (vterm name))
+      (vterm)))
   )
 
 ;; (use-package multi-libvterm
@@ -79,6 +93,10 @@
 ;;               ("C-s" . ds/multi-libvterm-create)
 ;;               ("n" . multi-libvterm-next)
 ;;               ("p" . multi-libvterm-prev)))
+
+
+;; (use-package shell-mode
+;;   :straight nil)
 
 (provide 'init-vterm)
 ;;; init-vterm.el ends here
