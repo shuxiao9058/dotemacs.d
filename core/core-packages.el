@@ -187,6 +187,10 @@
 	 ("C->" . mc/mark-previous-like-this)
 	 ("C-c C-<" . mc/mark-all-like-this)))
 
+;; required by core-hammerspoon
+(use-package dash
+  :straight t)
+
 ;;;; disable annoying notifications
 (defcustom message-filter-regexp-list '("^Starting new Ispell process \\[.+\\] \\.\\.\\.$"
                                         "^Ispell process killed$"
@@ -220,6 +224,24 @@
 	(progn
 	  (ad-set-args 0 `("%s" ,formatted-string))
 	  ad-do-it)))))
+
+;; Michael Hoffman at the comment of
+;; http://endlessparentheses.com/understanding-letf-and-how-it-replaces-flet.html
+
+(defalias 'tl/message-orig (symbol-function 'message))
+
+;; Unfortunately this isn't re-entrant, so if you stack uses of
+;; with-suppress-message I think only the innermost regexes will still be
+;; suppressed. The this-fn of noflet would be nice but I use this very early in
+;; my emacs startup so I wouldn't necessarily have access to it.
+(defmacro tl/with-suppress-message (regex &rest body)
+  "Suppress any `message' starting with REGEX when executing BODY."
+  (declare (indent 1))
+  `(cl-letf (((symbol-function 'message)
+              (lambda (format-string &rest args)
+                (unless (string-match-p ,regex format-string)
+                  (apply 'tl/message-orig format-string args)))))
+     ,@body))
 
 ;; enable winner-mode
 (winner-mode 1)

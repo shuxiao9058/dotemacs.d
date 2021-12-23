@@ -63,6 +63,7 @@
   ;; (add-to-list 'org-modules 'org-journal)
   (add-to-list 'org-modules 'org-agenda)
   (add-to-list 'org-modules 'org-element)
+  (add-to-list 'org-modules 'org-bars)
   ;; (add-to-list 'org-modules 'org-pdfview)
   ;; (add-to-list 'org-modules 'org-download)
 
@@ -80,6 +81,7 @@ do not already have one."
 
   (add-hook 'org-mode-hook
 	    (lambda () (setq truncate-lines nil)))
+
   (dolist (face '(org-level-1
 		  org-level-2 org-level-3
 		  org-level-4 org-level-5
@@ -483,7 +485,62 @@ do not already have one."
    ;;                         )
    org-latex-default-class "article"
    )
+  ;; ;; auto save all org files after doing a common action
+  ;; (advice-add 'org-agenda-quit      :before #'org-save-all-org-buffers)
+  ;; ;; (advice-add 'org-agenda-schedule  :after #'org-save-all-org-buffers)
+  ;; (advice-add 'org-agenda-todo      :after #'org-save-all-org-buffers)
+  ;; (advice-add 'org-agenda-refile    :after #'org-save-all-org-buffers)
+  ;; (advice-add 'org-agenda-clock-in  :after #'org-save-all-org-buffers)
+  ;; ;; (advice-add 'org-agenda-clock-out :after #'org-save-all-org-buffers)
+
+  ;; ;; (advice-add 'org-deadline         :after #'org-save-all-org-buffers)
+  ;; ;; (advice-add 'org-schedule         :after #'org-save-all-org-buffers)
+  ;; ;; (advice-remove 'org-schedule  #'org-save-all-org-buffers)
+
+  ;; (advice-add 'org-todo             :after #'org-save-all-org-buffers)
+  ;; (advice-add 'org-refile           :after #'org-save-all-org-buffers)
+  ;; ;; (advice-add 'org-clock-in         :after #'org-save-all-org-buffers)
+  ;; ;; (advice-add 'org-clock-out        :after #'org-save-all-org-buffers)
+  ;; (advice-add 'org-store-log-note   :after #'org-save-all-org-buffers)
+
+  ;; (advice-add 'org-deadline       :after (η #'org-save-all-org-buffers))
+  ;; (advice-add 'org-schedule       :after (η #'org-save-all-org-buffers))
+  ;; (advice-add 'org-store-log-note :after (η #'org-save-all-org-buffers))
+  ;; (advice-add 'org-todo           :after (η #'org-save-all-org-buffers))
+  ;; (advice-add 'org-refile         :after (η #'org-save-all-org-buffers))
+  ;; (advice-add 'org-clock-in       :after (η #'org-save-all-org-buffers))
+  ;; (advice-add 'org-clock-out      :after (η #'org-save-all-org-buffers))
+  ;; (advice-add 'org-agenda-todo    :after (η #'org-save-all-org-buffers))
+  ;; (advice-add 'org-agenda-refile  :after (η #'org-save-all-org-buffers))
+  ;; (advice-add 'org-agenda-clock-in :after (η #'org-save-all-org-buffers))
+  ;; (advice-add 'org-agenda-quit :after (η #'org-save-all-org-buffers))
   ;; (setq org-modules (append org-modules '(org-drill)))
+  (dolist (command '(org-agenda-archive
+		     org-agenda-archive-default
+		     org-sort-entries
+		     org-roam-refile
+		     org-roam-extract-subtree
+		     org-agenda-quit
+		     org-agenda-todo
+		     org-agenda-refile
+		     org-agenda-clock-in
+		     org-agenda-clock-out
+		     org-deadline
+		     org-schedule
+		     org-todo
+		     org-refile
+		     org-clock-in
+		     org-clock-out
+		     org-clock-report
+		     org-clock-cancel
+		     org-archive-subtree
+		     org-archive-subtree-default
+		     org-agenda-set-effort
+		     org-cut-special
+		     org-pomodoro))
+    (advice-add command :after (η #'org-save-all-org-buffers))
+    ;; (advice-add command :after  #'org-save-all-org-buffers)
+    )
   :bind
   ("C-c l" . org-store-link)
   ("C-c c" . org-capture)
@@ -885,6 +942,12 @@ Prefix arguments are interpreted by `org-refile'."
   :straight t
   :hook
   (text-mode . mixed-pitch-mode))
+
+(use-package org-analyzer
+  :straight t
+  :after org
+  :custom
+  (org-analyzer-org-directory org-beorg-directory))
 
 (provide 'init-org)
 ;;; init-org.el ends here

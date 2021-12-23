@@ -88,6 +88,11 @@ of an error, just add the package to a list of missing packages."
          (now-ms (nth 2 nowtime)))
     (concat (format-time-string "[%Y-%m-%dT%T" nowtime) (format ".%d] " now-ms))))
 
+(defmacro η (fnc)
+  "Return function that ignores its arguments and invokes FNC."
+  `(lambda (&rest _rest)
+     (funcall ,fnc)))
+
 (defadvice message (before test-symbol activate)
   (if (not (string-equal (ad-get-arg 0) "%s%s"))
       (let ((deactivate-mark nil)

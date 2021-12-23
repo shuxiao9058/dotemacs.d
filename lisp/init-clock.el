@@ -20,7 +20,8 @@
   (org-clock-out-switch-to-state "WAIT")
   (org-clock-out-remove-zero-time-clocks t)
   (org-clock-report-include-clocking-task t)
-  (org-clock-clocked-in-display 'both)
+  (org-clock-clocked-in-display 'mode-line)
+  ;; (org-clock-clocked-in-display nil)
   :config
   (org-clock-persistence-insinuate)
   (setq org-show-notification-handler
@@ -31,8 +32,7 @@
   :bind
   ("C-c C-x C-i" . org-clock-in)
   ("C-c C-x C-o" . org-clock-out)
-  ("C-c C-x C-x" . org-clock-in-last)
-  )
+  ("C-c C-x C-x" . org-clock-in-last))
 
 (use-package org-clock-budget
   :straight (org-clock-budget

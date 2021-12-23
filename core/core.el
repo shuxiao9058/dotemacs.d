@@ -54,6 +54,7 @@
     (require 'core-font)
     (require 'core-keybindings)
     (require 'core-packages)
+    (require 'core-hammerspoon)
     ;; (require 'core-autoload)
     ;; (poly-load-autoload)
     ;; (when (not noninteractive)
