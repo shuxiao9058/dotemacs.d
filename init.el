@@ -28,7 +28,7 @@
 (require 'init-linum)
 (require 'init-tab-bar)
 (require 'init-gpg)
-(require 'init-activity-watch)
+;; (require 'init-activity-watch)
 (require 'init-desktop)
 
 ;; (unless window-system
@@ -38,7 +38,7 @@
 (require 'init-wakatime)
 (require 'init-keyfreq)
 (require 'init-rime)
-;; (require 'init-vterm)
+(require 'init-vterm)
 (require 'init-dired)
 (require 'init-search)
 (require 'init-telega)
@@ -61,6 +61,7 @@
 (require 'init-projectile)
 (require 'init-perspective)
 (require 'init-company)
+(require 'init-tabnine)
 
 ;; language server protocol
 (setq with-company-lsp t)

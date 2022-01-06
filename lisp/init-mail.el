@@ -66,8 +66,8 @@
 
   ;; (setq wl-message-id-domain wl-local-domain)
 
-  (add-hook 'wl-folder-mode-hook #'evil-emacs-state)
-  (add-hook 'wl-summary-mode-hook #'evil-emacs-state)
+  ;; (add-hook 'wl-folder-mode-hook #'evil-emacs-state)
+  ;; (add-hook 'wl-summary-mode-hook #'evil-emacs-state)
 
   (add-hook 'mime-edit-mode-hook #'auto-fill-mode)
 
