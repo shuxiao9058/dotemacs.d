@@ -23,9 +23,9 @@
 ;; @see https://github.com/emacs-lsp/lsp-mode#performance
 (setq read-process-output-max (* 3 1024 1024))
 
-;;; lisp
-(setq ;; lisp-body-indent   2
- lisp-indent-function  'lisp-indent-function)
+;; ;;; lisp
+;; (setq ;; lisp-body-indent   2
+;;  lisp-indent-function  'lisp-indent-function)
 
 ;; handle emacs utf-8 input
 (set-terminal-coding-system 'utf-8)

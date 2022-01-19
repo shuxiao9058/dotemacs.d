@@ -35,7 +35,7 @@
 ;;       (call-process find-exec nil nil nil eln-cache-dir
 ;; 		    "-name" "*.eln" "-size" "0" "-delete"))))
 
-(if (and (fboundp 'native-comp-available-p) (native-comp-available-p) (fboundp 'json-serialize))
+(if (and (fboundp 'native-comp-available-p) (native-comp-available-p))
     (progn
       ;; Prevent compilation of this package
       (require 'comp)
@@ -112,8 +112,8 @@
 ;; ;; cursor color is concerned).
 ;; (advice-add #'x-apply-session-resources :override #'ignore)
 
-;; (setq warning-minimum-level :emergency)
-;; (setq debug-on-error nil)
+(setq warning-minimum-level :emergency)
+(setq debug-on-error nil)
 
 ;; (setq warning-minimum-level :debug)
 ;; (setq debug-on-error t)

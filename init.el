@@ -29,16 +29,16 @@
 (require 'init-tab-bar)
 (require 'init-gpg)
 ;; (require 'init-activity-watch)
-(require 'init-desktop)
+;; (require 'init-desktop)
 
 ;; (unless window-system
 ;;   (require 'init-iterm2))
 
-;; ;; tools
+;; tools
 (require 'init-wakatime)
 (require 'init-keyfreq)
 (require 'init-rime)
-(require 'init-vterm)
+;; (require 'init-vterm)
 (require 'init-dired)
 (require 'init-search)
 (require 'init-telega)
@@ -125,13 +125,11 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(git-messenger:use-magit-popup t)
- ;; '(helm-minibuffer-history-key "M-p")
- ;; '(lsp-go-gopls-server-args
- ;; '("-debug" "127.0.0.1:3000" "-logfile=/tmp/gopls-emacs.log") nil nil "Customized with use-package lsp-mode")
- ;; '(lsp-go-gopls-server-path "/usr/local/bin/gopls" nil nil "Customized with use-package lsp-mode")
+ '(session-use-package t nil (session))
  '(smtpmail-smtp-server "smtp.google.com" t)
  '(smtpmail-smtp-service 25 t)
- '(warning-suppress-log-types '((comp))))
+ '(warning-suppress-log-types '((comp)))
+ '(warning-suppress-types '((use-package) (use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -141,7 +139,6 @@
  '(highlight-indentation-face ((t (:inherit default :foreground "#878787"))))
  '(hl-line ((t (:background "DodgerBlue4"))))
  '(icomplete-first-match ((t (:inherit mode-line-emphasis))))
- ;; '(ivy-posframe-cursor ((t (:background "#268bd2"))))
  '(mode-line-buffer-id ((t (:foreground "Light Blue"))))
  '(orderless-match-face-0 ((t (:inherit font-lock-type-face :weight bold))))
  '(orderless-match-face-1 ((t (:inherit error :weight bold))))
