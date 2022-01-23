@@ -19,21 +19,32 @@
   :after go-mode
   :commands gorepl-run-load-current-file)
 
-;; (use-package flycheck-golangci-lint
-;;     :straight t
-;;     :after go-mode
-;;     :hook (go-mode . flycheck-golangci-lint-setup)
-;;     ;; :disabled
-;;     :custom
-;;     ;; (flycheck-golangci-lint-enable-all t)
-;;     ;; (flycheck-golangci-lint-fast t)
-;;     (flycheck-golangci-lint-config
-;;      (expand-file-name "golangci.yml" "~/.config/golangci-lint"))
-;;     ;; (flycheck-golangci-lint-tests t)
-;;     :config
-;;     (eval-after-load 'flycheck
-;;       '(add-hook 'flycheck-mode-hook #'flycheck-golangci-lint-setup))
-;;     )
+;; Install: See https://github.com/golangci/golangci-lint#install
+(use-package flycheck-golangci-lint
+  :straight t
+  :after (flycheck go-mode)
+  ;; :hook (go-mode . flycheck-golangci-lint-setup)
+  :hook (go-mode . (lambda ()
+                     "Enable golangci-lint."
+                     (setq flycheck-disabled-checkers '(go-gofmt
+                                                        go-golint
+                                                        go-vet
+                                                        go-build
+                                                        go-test
+                                                        go-staticcheck
+                                                        go-errcheck))
+                     (flycheck-golangci-lint-setup)))
+  :defines flycheck-disabled-checkers
+  :custom
+  ;; (flycheck-golangci-lint-enable-all t)
+  ;; (flycheck-golangci-lint-fast t)
+  (flycheck-golangci-lint-config
+   (expand-file-name "golangci.yml" "~/.config/golangci-lint"))
+  ;; (flycheck-golangci-lint-tests t)
+  :config
+  (eval-after-load 'flycheck
+    '(add-hook 'flycheck-mode-hook #'flycheck-golangci-lint-setup))
+  )
 
 (use-package go-eldoc
   :straight t
@@ -64,6 +75,33 @@
 ;;     :straight (:host github :repo "zkry/go-mod-mode")
 ;;     :ensure t
 ;;     :mode (("go\\.mod\\'" . go-mod-mode)))
+
+(use-package go-tag
+  :straight t
+  :bind (:map go-mode-map
+              ("C-c t a" . go-tag-add)
+              ("C-c t r" . go-tag-remove))
+  :init (setq go-tag-args (list "-transform" "camelcase")))
+
+(use-package go-gen-test
+  :straight t
+  :bind (:map go-mode-map
+              ("C-c t g" . go-gen-test-dwim)))
+
+(use-package gotest
+  :straight t
+  :bind (:map go-mode-map
+              ("C-c t f" . go-test-current-file)
+              ("C-c t t" . go-test-current-test)
+              ("C-c t j" . go-test-current-project)
+              ("C-c t b" . go-test-current-benchmark)
+              ("C-c t c" . go-test-current-coverage)
+              ("C-c t x" . go-run)))
+
+(use-package go-playground
+  :straight t
+  :diminish
+  :commands (go-playground-mode))
 
 (provide 'init-go)
 ;;; init-go.el ends here

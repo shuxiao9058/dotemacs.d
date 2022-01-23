@@ -12,6 +12,24 @@
 (add-to-list 'load-path
 	     (concat user-emacs-directory "lisp"))
 
+(defconst my-emacs-d (file-name-as-directory user-emacs-directory)
+  "Directory of emacs.d")
+
+(defconst my-site-lisp-dir (concat my-emacs-d "site-lisp")
+  "Directory of site-lisp")
+
+(defconst my-lisp-dir (concat my-emacs-d "lisp")
+  "Directory of lisp.")
+
+(defun my-vc-merge-p ()
+  "Use Emacs for git merge only?"
+  (boundp 'startup-now))
+
+(defun require-init (pkg &optional maybe-disabled)
+  "Load PKG if MAYBE-DISABLED is nil or it's nil but start up in normal slowly."
+  (when (or (not maybe-disabled) (not (my-vc-merge-p)))
+    (load (file-truename (format "%s/%s" my-lisp-dir pkg)) t t)))
+
 (require 'init-meow)
 
 ;;; core
@@ -61,7 +79,9 @@
 (require 'init-projectile)
 (require 'init-perspective)
 (require 'init-company)
-(require 'init-tabnine)
+(require-init 'init-tabnine-capf)
+(require-init 'company-tabnine)
+;; (require 'init-tabnine)
 
 ;; language server protocol
 (setq with-company-lsp t)

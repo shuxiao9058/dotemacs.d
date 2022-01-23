@@ -1,73 +1,85 @@
 ;;; lisp/init-company.el -*- lexical-binding: t; -*-
 
 (use-package company
-    :straight t
-    :ensure t
-    :pdump (company-capf company-files company-keywords company-abbrev company-dabbrev company-dabbrev-code)
-    :custom
-    (company-minimum-prefix-length 2)
-    (company-async-wait 0.5)
-    (company-async-timeout 1)
-    ;; (company-require-match 'never)
-    ;; (company-tooltip-limit           20)
-    (company-tooltip-align-annotations t) ;; Align annotation to the right side.
-    (company-auto-commit nil)
-    (company-selection-wrap-around t)
-    (company-begin-commands '(self-insert-command org-self-insert-command))
-    ;; (company-require-match nil)
-    ;; Don't use company in the following modes
-    (company-global-modes '(not eshell-mode shell-mode comint-mode erc-mode gud-mode rcirc-mode
-			    minibuffer-inactive-mode))
-    (company-candidates-length 10)
-    (company-echo-delay 0)
-    ;; Trigger completion immediately.
-    ;; (company-idle-delay nil)
-    (company-idle-delay 0.1)
-    ;; Number the candidates (use M-1, M-2 etc to select completions).
-    (company-show-numbers t)
-    :hook (after-init . global-company-mode)
-    :config
-    (setq company-frontends '(
-			      ;; company-pseudo-tooltip-frontend
-			      company-pseudo-tooltip-unless-just-one-frontend
-			      ;; company-preview-frontend
-			      company-preview-if-just-one-frontend
-			      company-echo-metadata-frontend))
-    ;; set default `company-backends'
-    (setq-default company-backends
-		  '(;; company-tabnine
-		    ;; (company-tabnine :with company-capf :separate)
-		    company-capf
-		    company-dabbrev-code
-		    (company-files          ; files & directory
-		     company-keywords       ; keywords
-		     )
-		    (company-abbrev company-dabbrev)))
-    (defun add-pcomplete-to-capf ()
-      (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
+  :straight t
+  :ensure t
+  :pdump (company-capf company-files company-keywords company-abbrev company-dabbrev company-dabbrev-code)
+  :custom
+  (company-minimum-prefix-length 3)
+  (company-async-wait 0.5)
+  (company-async-timeout 1)
+  ;; (company-require-match 'never)
+  ;; (company-tooltip-limit           20)
+  (company-tooltip-align-annotations t) ;; Align annotation to the right side.
+  (company-auto-commit nil)
+  (company-selection-wrap-around t)
+  (company-begin-commands '(self-insert-command org-self-insert-command))
+  (company-require-match nil)
+  ;; Don't use company in the following modes
+  (company-global-modes '(not eshell-mode shell-mode comint-mode erc-mode gud-mode rcirc-mode
+			      minibuffer-inactive-mode))
+  (company-candidates-length 10)
+  (company-echo-delay 0)
+  ;; Trigger completion immediately.
+  ;; (company-idle-delay nil)
+  (company-idle-delay 0.2)
+  (company-tooltip-idle-delay 0.5)
+  ;; Number the candidates (use M-1, M-2 etc to select completions).
+  (company-show-numbers t)
+  (company-dabbrev-downcase nil)
+  (company-dabbrev-ignore-case nil)
+  :hook (after-init . global-company-mode)
+  :config
+  (setq company-frontends '(
+			    ;; company-pseudo-tooltip-frontend
+			    company-pseudo-tooltip-unless-just-one-frontend
+			    ;; company-preview-frontend
+			    company-preview-if-just-one-frontend
+			    company-echo-metadata-frontend))
+  ;; set default `company-backends'
+  (setq company-backends
+        '(company-tabnine-capf
+	  company-capf
+	  company-tabnine
+          (company-dabbrev company-dabbrev-code)
+          company-keywords
+          company-files))
+  ;; (setq-default company-backends
+  ;; 		  '(;; company-tabnine
+  ;; 		    ;; (company-tabnine :with company-capf :separate)
+  ;; 		    company-capf
+  ;; 		    company-dabbrev-code
+  ;; 		    (company-files          ; files & directory
+  ;; 		     company-keywords       ; keywords
+  ;; 		     )
+  ;; 		    (company-abbrev company-dabbrev)))
+  (defun add-pcomplete-to-capf ()
+    (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
 
-    (add-hook 'org-mode-hook #'add-pcomplete-to-capf)
-    :bind
-    (:map company-active-map
-	  ("C-n"   .  company-select-next)
-	  ("C-p"     . company-select-previous)
-	  ("C-j"     . company-select-next)
-	  ("C-k"     . company-select-previous)
-	  ("C-h"     . company-show-doc-buffer)
-	  ("C-u"    . company-previous-page)
-	  ("C-d"     . company-next-page)
-	  ("C-s"    . company-filter-candidates)
-	  ("C-SPC"   . company-complete-common)
-	  ("TAB"     . company-complete-common-or-cycle)
-	  ([tab]     . company-complete-common-or-cycle)
-	  ([backtab] . company-select-previous)
-	  :map company-search-map
-          ("C-n"     . company-select-next-or-abort)
-	  ("C-p"     . company-select-previous-or-abort)
-	  ("C-j"     . company-select-next-or-abort)
-	  ("C-k"    .  company-select-previous-or-abort)
-	  ("C-s"    .  (lambda () (interactive) (company-search-abort) (company-filter-candidates)))
-	  ([escape]  . company-search-abort)))
+  (add-hook 'org-mode-hook #'add-pcomplete-to-capf)
+  (unbind-key (kbd "M-n") company-active-map)
+  (unbind-key (kbd "M-p") company-active-map)
+  :bind
+  (:map company-active-map
+	("C-n"   .  company-select-next)
+	("C-p"     . company-select-previous)
+	("C-j"     . company-select-next)
+	("C-k"     . company-select-previous)
+	("C-h"     . company-show-doc-buffer)
+	("C-u"    . company-previous-page)
+	("C-d"     . company-next-page)
+	("C-s"    . company-filter-candidates)
+	("C-SPC"   . company-complete-common)
+	("TAB"     . company-complete-common-or-cycle)
+	([tab]     . company-complete-common-or-cycle)
+	([backtab] . company-select-previous)
+	:map company-search-map
+        ("C-n"     . company-select-next-or-abort)
+	("C-p"     . company-select-previous-or-abort)
+	("C-j"     . company-select-next-or-abort)
+	("C-k"    .  company-select-previous-or-abort)
+	("C-s"    .  (lambda () (interactive) (company-search-abort) (company-filter-candidates)))
+	([escape]  . company-search-abort)))
 
 ;; (use-package company-posframe
 ;;   :straight t
@@ -154,22 +166,22 @@
 ;;   )
 
 (use-package company-flx
-    :straight t
-    :after company
-    :custom
-    (company-flx-limit 256)
-    :config
-    (company-flx-mode 1))
+  :straight t
+  :after company
+  :custom
+  (company-flx-limit 256)
+  :config
+  (company-flx-mode 1))
 
 (use-package company-prescient
-    :straight t
-    :config (company-prescient-mode 1))
+  :straight t
+  :config (company-prescient-mode 1))
 
 (use-package company-quickhelp
-    :straight t
-    :after company
-    :config
-    (company-quickhelp-mode))
+  :straight t
+  :after company
+  :config
+  (company-quickhelp-mode))
 
 ;; ;; try nox
 ;; (use-package nox
@@ -226,31 +238,31 @@
 ;;     )
 
 (use-package yasnippet
-    :straight t
-    :ensure t
-    :diminish yas-global-mode
-    :commands yas-global-mode
-    :hook (after-init . yas-global-mode)
-    ;; :config
-    ;; (add-to-list 'yas-snippet-dirs
-    ;; 		 (expand-file-name "snippets" poly-etc-dir))
-    ;; make company break completion
-    ;; (setq company-continue-commands (-snoc company-continue-commands 'yas-insert-snippet))
-    )
+  :straight t
+  :ensure t
+  :diminish yas-global-mode
+  :commands yas-global-mode
+  :hook (after-init . yas-global-mode)
+  ;; :config
+  ;; (add-to-list 'yas-snippet-dirs
+  ;; 		 (expand-file-name "snippets" poly-etc-dir))
+  ;; make company break completion
+  ;; (setq company-continue-commands (-snoc company-continue-commands 'yas-insert-snippet))
+  )
 
 (use-package yasnippet-snippets
-    :straight t
-    :ensure t
-    :after yasnippet)
+  :straight t
+  :ensure t
+  :after yasnippet)
 
 
 (use-package java-snippets
-    :straight t
-    :defer t
-    :after yasnippet)
+  :straight t
+  :defer t
+  :after yasnippet)
 
 (use-package javadoc-lookup
-    :straight t)
+  :straight t)
 
 (provide 'init-company)
 ;;; init-company.el ends here
