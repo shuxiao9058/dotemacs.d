@@ -11,6 +11,9 @@
 ;; lisp
 (add-to-list 'load-path
 	     (concat user-emacs-directory "lisp"))
+;; themes
+(add-to-list 'load-path
+	     (expand-file-name "themes" user-emacs-directory))
 
 (defconst my-emacs-d (file-name-as-directory user-emacs-directory)
   "Directory of emacs.d")
@@ -99,7 +102,7 @@
 (require 'init-lisp)
 (require 'init-perl)
 (require 'init-web)
-(require 'init-rest)
+;; (require 'init-rest)
 (require 'init-cc)
 (require 'init-nix)
 ;; (require 'init-fish)
@@ -150,20 +153,7 @@
  '(smtpmail-smtp-service 25 t)
  '(warning-suppress-log-types '((comp)))
  '(warning-suppress-types '((use-package) (use-package))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(font-lock-variable-name-face ((t (:foreground "#50fa7b"))))
- '(highlight-indentation-face ((t (:inherit default :foreground "#878787"))))
- '(hl-line ((t (:background "DodgerBlue4"))))
- '(icomplete-first-match ((t (:inherit mode-line-emphasis))))
- '(mode-line-buffer-id ((t (:foreground "Light Blue"))))
- '(orderless-match-face-0 ((t (:inherit font-lock-type-face :weight bold))))
- '(orderless-match-face-1 ((t (:inherit error :weight bold))))
- '(orderless-match-face-2 ((t (:inherit font-lock-string-face :weight bold))))
- '(orderless-match-face-3 ((t (:inherit font-lock-keyword-face :weight bold)))))
+
 
 ;; For profiling
 ;; (profiler-start 'cpu)

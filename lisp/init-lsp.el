@@ -93,7 +93,7 @@
   (lsp-signature-render-documentation nil)
   (lsp-eldoc-enable-hover nil)         ;; disable eldoc displays in minibuffer
   (lsp-eldoc-render-all nil)
-  (lsp-enable-snippet nil)
+  (lsp-enable-snippet t)
   (lsp-enable-imenu nil)
   (lsp-enable-links nil) ;;
   (lsp-prefer-flymake nil) ;; Use lsp-ui and flycheck
@@ -104,15 +104,26 @@
   ;; (lsp-clients-emmy-lua-jar-path (expand-file-name "workspace/EmmyLua-LanguageServer/EmmyLua-LS/build/libs/EmmyLua-LS-all.jar" "~"))
   ;; lsp-go
   ;; (lsp-gopls-server-path "/usr/local/bin/gopls")
-  (lsp-clients-lua-language-server-install-dir (expand-file-name "workspace/lua-language-server/bin/macOS" "~"))
-  (lsp-clients-lua-language-server-bin (expand-file-name "workspace/lua-language-server/bin/macOS/lua-language-server" "~"))
-  (lsp-clients-lua-language-server-main-location (expand-file-name "workspace/lua-language-server/bin/macOS/main.lua" "~") )
+  ;; (lsp-clients-lua-language-server-install-dir (expand-file-name "workspace/lua-language-server/bin/macOS" "~"))
+  (lsp-clients-lua-language-server-install-dir "/usr/local/lua-language-server/")
+  (lsp-clients-lua-language-server-command (expand-file-name "bin/lua-language-server" lsp-clients-lua-language-server-install-dir))
+  ;; (lsp-clients-lua-language-server-bin (expand-file-name "bin/lua-language-server" lsp-clients-lua-language-server-install-dir))
+  ;; (lsp-clients-lua-language-server-main-location (expand-file-name "main.lua" lsp-clients-lua-language-server-install-dir))
+  ;; (lsp-clients-lua-language-server-bin (expand-file-name "workspace/lua-language-server/bin/macOS/lua-language-server" "~"))
+  ;; (lsp-clients-lua-language-server-main-location (expand-file-name "workspace/lua-language-server/bin/macOS/main.lua" "~") )
+  ;; (lsp-clients-lua-language-server-args '("-E" "--configpath=/Users/jiya/.config/lua-language-server/config.json" "--logpath=/tmp/lua-language-server.log" "--locale=en-us"))
   (lsp-lua-workspace-max-preload 4096); Default: 300, Max preloaded files
   (lsp-lua-workspace-preload-file-size 1024) ; Default: 100, Skip files larger than this value (KB) when preloading.
   (lsp-lua-diagnostics-globals "'Lua.diagnostics.globals': ['use', 'awesome', 'client', 'root']")
   (lsp-lua-workspace-library  `((,(intern (expand-file-name "workspace/openresty-lua/lualib" "~")) . t)))
-  ;; (lsp-gopls-server-args '("-debug" "127.0.0.1:3000" "-logfile=/tmp/gopls-emacs.log" ;; "-rpc.trace" "-vv"
-  ;; 			   ))
+  (lsp-lua-completion-enable nil)
+  (lsp-lua-diagnostics-disable t)
+  (lsp-lua-hint-enable nil)
+  (lsp-lua-hint-param-name nil)
+  (lsp-lua-hint-param-type nil)
+  (lsp-lua-hover-enable nil)
+  (lsp-gopls-server-args '("-debug" "127.0.0.1:3000" "-logfile=/tmp/gopls-emacs.log" ;; "-rpc.trace" "-vv"
+			   ))
   (lsp-go-hover-kind "NoDocumentation")
   (lsp-go-links-in-hover nil)
   (lsp-go-use-gofumpt t)
@@ -132,7 +143,6 @@
   (add-to-list 'lsp-file-watch-ignored "[/\\\\].git$")
   (add-to-list 'lsp-file-watch-ignored "[/\\\\]internal$")
   (add-to-list 'lsp-file-watch-ignored "[/\\\\]\\.gocache$")
-
   (add-hook 'hack-local-variables-hook #'my/local-variables-hook)
   (setq lsp-go-env '((GOFLAGS . "-mod=mod")))
   (lsp-register-custom-settings
@@ -178,7 +188,10 @@
      ;; ("gopls.gofumpt" ,(if (executable-find "gofumpt") t nil) t)
      ;; ("gopls.directoryFilters" lsp-go-directory-filters)
      ;; ("gopls.directoryFilters" ["-vendor" "-internal" "-.gocache" "-.git" "-!out"])
-     ))
+     ("Lua.runtime.version" "LuaJIT" t)
+     ("Lua.workspace.checkThirdParty" nil t)
+     )
+   )
 
   ;; cancel warning
   (advice-add 'lsp-warn

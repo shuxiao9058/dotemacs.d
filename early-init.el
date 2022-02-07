@@ -18,10 +18,12 @@
 (setq default-frame-alist '((horizontal-scroll-bars . nil)
                             (vertical-scroll-bars . nil)
                             (menu-bar-lines . 0)
-                            (tool-bar-lines . 0) ;; <----- here
+                            (tool-bar-lines . 0)
                             (internal-border-width . 0)
                             (height . 50)
-                            (width . 95)))
+                            (width . 95)
+			    (undecorated . t) ;; remove title bar
+			    ))
 
 ;; (when (boundp 'comp-eln-load-path)
 ;;   (let ((eln-cache-dir
@@ -46,7 +48,7 @@
 	    comp-speed 2
 	    comp-async-report-warnings-errors nil
 	    comp-verbose 0
-	    comp-async-jobs-number 2)
+	    comp-async-jobs-number 5)
 
       ;; https://github.com/raxod502/straight.el/issues/680
       (setq comp-deferred-compilation-deny-list
