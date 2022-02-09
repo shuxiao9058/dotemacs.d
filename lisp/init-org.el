@@ -72,7 +72,8 @@
     "Add ID properties to all headlines in the current file which
 do not already have one."
     (interactive)
-    (org-map-entries 'org-id-get-create))
+    (if org-auto-add-ids-to-headlines-in-file
+	(org-map-entries 'org-id-get-create)))
   (add-hook 'org-mode-hook
             (lambda ()
 	      (add-hook 'before-save-hook 'my/org-add-ids-to-headlines-in-file nil 'local)))
@@ -105,11 +106,13 @@ do not already have one."
   (setq +org-capture-notes-file (expand-file-name  "personal-note.org" org-beorg-directory))
   (setq +org-capture-work-gtd-file (expand-file-name "work-gtd.org" org-beorg-directory))
   (setq +org-capture-work-notes-file (expand-file-name "work-note.org" org-beorg-directory))
+  (setq +org-capture-work-talk-file (expand-file-name "work-talk.org" org-beorg-directory))
   (setq +org-capture-work-meeting-file (expand-file-name "work-meeting.org" org-beorg-directory))
   (setq +org-capture-work-weekly-file (expand-file-name "work-weekly.org" org-beorg-directory))
   (setq org-agenda-files (list
 			  +org-capture-gtd-file
 			  +org-capture-work-gtd-file
+			  +org-capture-work-talk-file
 			  +org-capture-work-meeting-file))
 
   ;; archived location
@@ -304,7 +307,6 @@ do not already have one."
 	citecolor=black}
 	[NO-DEFAULT-PACKAGES]
 	"
-
 	   ("\\section{%s}" . "\\section*{%s}")
 	   ("\\subsection{%s}" . "\\subsection*{%s}")
 	   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")

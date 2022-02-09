@@ -20,6 +20,7 @@
                             (menu-bar-lines . 0)
                             (tool-bar-lines . 0)
                             (internal-border-width . 0)
+			    (fullscreen . maximized)
                             (height . 50)
                             (width . 95)
 			    (undecorated . t) ;; remove title bar
