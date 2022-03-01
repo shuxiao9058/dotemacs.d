@@ -14,6 +14,7 @@
       whitespace-line-column 100
       default-directory (expand-file-name "workspace/" "~")
       vagrant-vagrantfile (expand-file-name "vagrant/Vagrantfile" default-directory)
+      max-lisp-eval-depth 10000
       ;; Wrapping
       truncate-lines t
       truncate-partial-width-windows 50

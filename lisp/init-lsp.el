@@ -101,7 +101,7 @@
   (lsp-imenu-show-container-name nil)
   ;; (flymake-fringe-indicator-position 'right-fringe)
   ;; (lsp-clients-emmy-lua-jar-path (expand-file-name  "bin/EmmyLua-LS-all.jar" poly-local-dir))
-  ;; (lsp-clients-emmy-lua-jar-path (expand-file-name "workspace/EmmyLua-LanguageServer/EmmyLua-LS/build/libs/EmmyLua-LS-all.jar" "~"))
+  (lsp-clients-emmy-lua-jar-path (expand-file-name "workspace/EmmyLua-LanguageServer/EmmyLua-LS/build/libs/EmmyLua-LS-all.jar" "~"))
   ;; lsp-go
   ;; (lsp-gopls-server-path "/usr/local/bin/gopls")
   ;; (lsp-clients-lua-language-server-install-dir (expand-file-name "workspace/lua-language-server/bin/macOS" "~"))
@@ -127,13 +127,16 @@
   (lsp-go-hover-kind "NoDocumentation")
   (lsp-go-links-in-hover nil)
   (lsp-go-use-gofumpt t)
+  (lsp-beancount-langserver-executable (expand-file-name "workspace/beancount-language-server/target/release/beancount-language-server" "~"))
+  (lsp-beancount-journal-file (expand-file-name ".emacs.d/.local/beancount/beancount.beancount" "~"))
   :config
   ;; (lsp-ensure-server 'css-ls)
   ;; (lsp-ensure-server 'dockerfile-ls)
   ;; (lsp-ensure-server 'eslint)
   ;; (lsp-ensure-server 'html-ls)
   ;; (lsp-ensure-server 'json-ls)
-  (lsp-ensure-server 'lua-language-server)
+  ;; (lsp-ensure-server 'lua-language-server)
+  (lsp-ensure-server 'emmy-lua)
   ;; (lsp-ensure-server 'omnisharp)
   ;; (lsp-ensure-server 'rust-analyzer)
   ;; (lsp-ensure-server 'ts-ls)
@@ -274,7 +277,6 @@
   (defadvice lsp-ui-imenu (after hide-lsp-ui-imenu-mode-line activate)
     (setq mode-line-format nil))
   )
-
 
 ;; (require 'graph-symbol)
 ;; (graph-body-print '(1 2 3 4 6 4 3 5 7 6 5 2 3))

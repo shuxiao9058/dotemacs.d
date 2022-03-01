@@ -66,6 +66,7 @@
 (require 'init-screencast)
 ;; (require 'init-media)
 (require 'init-tramp)
+(require 'init-beancount)
 
 ;; editor
 (require 'init-markdown)
