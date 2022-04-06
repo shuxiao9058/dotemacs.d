@@ -21,6 +21,7 @@ patch:
     # - schema: guhuwubi_pro_dvorak
     # - schema: guhuwubi_dvorak_1_06d
     - schema: guhuwubi
+    - schema: pinyin_simp
 
   switcher:
     caption: 〔方案選單〕
