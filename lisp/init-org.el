@@ -5,16 +5,21 @@
   :straight (org-contrib)
   :ensure org-plus-contrib
   :custom
-  (org-todo-keywords '((sequence "TODO(t)" "HOLD(h!)" "NEXT(n!)" "WAIT(w!)" "|" "DONE(d!)" "CANCELLED(c@/!)")
-		       (sequence "MEETING(m)" "HOLD(h!)" "WAIT(w!)" "|" "DONE(d!)" "CANCELLED(c@/!)")
+  (org-todo-keywords '((sequence "TODO(t)" "DOING(i)" "WAITING(w)" ;; "HOLD(h!)" "NEXT(n!)" "WAIT(w!)"
+				 "DELAYED(y)" "|" "DONE(d!)" "DEFERRED(F)" "CANCELLED(c@/!)")
+		       (sequence "MEETING(m)" "DOING(i)" "WAITING(w)" "|" "DONE(d!)" "CANCELLED(c@/!)")
 		       (sequence "REPORT(r)" "BUG(b)" "KNOWNCAUSE(k)" "|" "FIXED(f!)")))
   (org-todo-keyword-faces
    '(("TODO"       :foreground "#7c7c75" :weight bold)
-     ("MEETING"   :foreground "#7c7c75" :weight bold)
-     ("HOLD"       :foreground "#feb24c" :weight bold)
-     ("NEXT"       :foreground "#0098dd" :weight bold)
-     ("WAIT"       :foreground "#9f7efe" :weight bold)
+     ("DOING"      :foreground "goldenrod" :weight bold)
+     ("DELAYED"    :foreground "white" :background "#f44242" :weight bold)
+     ("MEETING"    :foreground "#7c7c75" :weight bold)
+     ;; ("HOLD"       :foreground "#feb24c" :weight bold)
+     ;; ("NEXT"       :foreground "#0098dd" :weight bold)
+     ;; ("WAIT"       :foreground "#9f7efe" :weight bold)
+     ("WAITING"    :foreground "#9f7efe" :weight bold)
      ("DONE"       :foreground "#50a14f" :weight bold)
+     ("DEFERRED"   :foreground "#ff6480" :weight bold)
      ("CANCELLED"  :foreground "#ff6480" :weight bold)
      ("REPORT"     :foreground "magenta" :weight bold)
      ("BUG"        :foreground "red"     :weight bold)
@@ -105,6 +110,7 @@ do not already have one."
   (setq +org-capture-gtd-file (expand-file-name  "personal-gtd.org" org-beorg-directory))
   (setq +org-capture-notes-file (expand-file-name  "personal-note.org" org-beorg-directory))
   (setq +org-capture-work-gtd-file (expand-file-name "work-gtd.org" org-beorg-directory))
+  (setq +org-capture-work-team-gtd-file (expand-file-name "work-team-gtd.org" org-beorg-directory))
   (setq +org-capture-work-notes-file (expand-file-name "work-note.org" org-beorg-directory))
   (setq +org-capture-work-talk-file (expand-file-name "work-talk.org" org-beorg-directory))
   (setq +org-capture-work-meeting-file (expand-file-name "work-meeting.org" org-beorg-directory))
@@ -112,6 +118,7 @@ do not already have one."
   (setq org-agenda-files (list
 			  +org-capture-gtd-file
 			  +org-capture-work-gtd-file
+			  +org-capture-work-team-gtd-file
 			  +org-capture-work-talk-file
 			  +org-capture-work-meeting-file))
 
@@ -122,6 +129,7 @@ do not already have one."
 	`((org-agenda-files :maxlevel . 2)
 	  (,(list +org-capture-notes-file
 		  +org-capture-work-notes-file
+		  +org-capture-work-team-gtd-file
 		  +org-capture-work-weekly-file) :maxlevel . 2)))
 
   (setq org-tag-alist

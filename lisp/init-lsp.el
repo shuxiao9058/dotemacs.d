@@ -13,6 +13,7 @@
 		))
   (when (derived-mode-p 'go-mode
 			'java-mode
+			'beancount-mode
 			;; 'python-mode
 			'lua-mode
 			'scala-mode

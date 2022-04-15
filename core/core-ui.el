@@ -76,5 +76,7 @@
 (when (boundp 'word-wrap-by-category)
   (setq word-wrap-by-category t))
 
+(setq mode-line-compact t)
+
 (provide 'core-ui)
 ;;; core-ui.el ends here

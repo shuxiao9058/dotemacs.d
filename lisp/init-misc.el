@@ -168,6 +168,15 @@
   :config
   (savehist-mode 1))
 
+(use-package docker-compose-mode
+  :straight t)
 
+;; (booleanp 2)
+
+;; (count-loop (i 0 10)
+;; 	    (message "i: %d" i)
+;; 	    )
+
+;; (defun where())
 (provide 'init-misc)
 ;;; init-misc.el ends here

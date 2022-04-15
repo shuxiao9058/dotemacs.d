@@ -2,7 +2,8 @@
 
 ;; https://github.com/DEbling/dotfiles/blob/9dc0e347267dd68111baf8e7ab7d33c2e39ed404/.emacs.d/elisp/lang-java.el
 ;; (defconst jdt-jar-path "~/.emacs.d/.local/jar/org.eclipse.equinox.launcher.jar")
-(defconst jdt-jar-path "/opt/jdt-language-server/plugins/org.eclipse.equinox.launcher_1.6.0.v20200915-1508.jar")
+;; (defconst jdt-jar-path "/opt/jdt-language-server/plugins/org.eclipse.equinox.launcher_1.6.0.v20200915-1508.jar")
+(defconst jdt-jar-path (expand-file-name "jdt-language-server/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar" "~/workspace"))
 (defconst jdt-extra-jvm-args '("-noverify"
 			       "-javaagent:/Users/jiya/workspace/dotemacs.d/.local/jar/lombok.jar"
 			       ;; "-javaagent:[~/.emacs.d/.local/jar/lombok.jar][classes=META-INF/]"
@@ -26,7 +27,7 @@ If INTERACTIVE, prompt user for details."
 		    (setenv "CLASSPATH" cp)))
 	 (jdt-class (car contact))
 	 (args (cddr contact)))
-    (append (list jdt-class "/usr/local/opt/java11/bin/java")
+    (append (list jdt-class "/usr/bin/java")
 	    jdt-extra-jvm-args args)))
 ;; (setq aaabb (my-eclipse-jdt-contact))
 
@@ -39,7 +40,7 @@ If INTERACTIVE, prompt user for details."
 
 (use-package eglot
   :straight t
-  :hook ((go-mode lua-mode python-mode c-mode c++-mode python-mode java-mode) . eglot-ensure)
+  :hook ((go-mode lua-mode beancount-mode python-mode c-mode c++-mode python-mode java-mode) . eglot-ensure)
   :custom
   (eglot-stay-out-of '(flymake imenu eldoc company))  ;; eglot reinits backends
   (eglot-autoshutdown t)
@@ -60,11 +61,12 @@ If INTERACTIVE, prompt user for details."
   :config
   (setq eldoc-echo-area-use-multiline-p nil)
   (setq eglot-workspace-configuration
-        '((:gopls . (:usePlaceholders t
-				      :completeUnimported  t
-				      :experimentalWorkspaceModule t
-				      ;; :experimentalDiagnosticsDelay "800ms"
-				      ))))
+        '((:gopls .
+		  (:usePlaceholders t
+				    :completeUnimported  t
+				    :experimentalWorkspaceModule t
+				    ;; :experimentalDiagnosticsDelay "800ms"
+				    ))))
   ;; emmylua
   (let ((emmylua-jar-path (expand-file-name "bin/EmmyLua-LS-all.jar" poly-local-dir)))
     (add-to-list 'eglot-server-programs
@@ -74,46 +76,44 @@ If INTERACTIVE, prompt user for details."
 	       '(java-mode .  my-eclipse-jdt-contact))
 
   (add-to-list 'eglot-server-programs
+	       `(beancount-mode .  ("beancount-language-server")))
+
+  (add-to-list 'eglot-server-programs
 	       '(dart-mode . dart-lsp-contact))
 
   (when (executable-find "ccls")
     (add-to-list 'eglot-server-programs '((c-mode c++-mode) "ccls"
  					  "-init={\"compilationDatabaseDirectory\":\"build\"}")))
   (when (executable-find "gopls")
-    (add-to-list 'eglot-server-programs `(go-mode . ("/usr/local/bin/gopls" "-logfile=/tmp/gopls.log" "-rpc.trace" "-vv" "--debug=localhost:6060"))))
+    (add-to-list 'eglot-server-programs '(go-mode . ("gopls"))))
 
-  (add-hook 'eglot-managed-mode-hook (lambda()
-				       (make-local-variable 'company-backends)
-				       ;; (setq-local company-backends nil)
-				       ;; (setq company-backends
-				       ;; 	     '(company-capf
-				       ;; 	       ;; company-dabbrev-code
-				       ;; 	       (company-files          ; files & directory
-				       ;; 		company-keywords       ; keywords
-				       ;; 		)
-				       ;; 	       (company-abbrev company-dabbrev)))
-				       (setq-local company-backends
-						   ;; '((company-tabnine :with company-capf :separate)
-						   '(company-tabnine
-						     company-dabbrev-code
-						     (company-files          ; files & directory
-						      company-keywords       ; keywords
-						      )
-						     (company-abbrev company-dabbrev)))
-				       ))
-  ;; :general
-  ;; (leader-def
-  ;;   "cC" '(eglot :wk "connect to lsp"))
-  ;; (leader-def :keymaps 'eglot-mode-map
-  ;;   "ce" '(:ignore t :wk "eglot")
-  ;;   "ced" '(xref-find-definitions :wk "Jump to definition")
-  ;;   "ceD" '(xref-find-references :wk "Jump to references")'
-  ;;   "ce=" #'eglot-format-buffer
-  ;;   "cef" #'eglot-format
-  ;;   "ceh" #'eglot-help-at-point
-  ;;   "cem" #'eglot-events-buffer
-  ;;   "cer" #'eglot-rename
-  ;;   "ceR" #'eglot-reconnect)
+  (add-hook 'eglot-managed-mode-hook
+	    (lambda()
+	      (make-local-variable 'company-backends)
+	      (setq-local company-backends
+			  '(company-tabnine-capf company-capf company-tabnine
+						 (company-dabbrev company-dabbrev-code)
+						 company-keywords company-files))))
+  ;; (add-hook 'eglot-managed-mode-hook (lambda()
+  ;; 				       (make-local-variable 'company-backends)
+  ;; 				       ;; (setq-local company-backends nil)
+  ;; 				       ;; (setq company-backends
+  ;; 				       ;; 	     '(company-capf
+  ;; 				       ;; 	       ;; company-dabbrev-code
+  ;; 				       ;; 	       (company-files          ; files & directory
+  ;; 				       ;; 		company-keywords       ; keywords
+  ;; 				       ;; 		)
+  ;; 				       ;; 	       (company-abbrev company-dabbrev)))
+  ;; 				       (setq-local company-backends
+  ;; 						   ;; '((company-tabnine :with company-capf :separate)
+  ;; 						   '(company-tabnine
+  ;; 						     company-dabbrev-code
+  ;; 						     (company-files          ; files & directory
+  ;; 						      company-keywords       ; keywords
+  ;; 						      )
+  ;; 						     (company-abbrev company-dabbrev)))
+  ;; 				       ))
+  ;; )
   )
 
 (provide 'init-eglot)

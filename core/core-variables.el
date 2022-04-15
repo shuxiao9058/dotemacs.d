@@ -64,9 +64,17 @@ This variable is non-nil when emacs is started with dump file.")
   "always set :pdump to use-package"
   )
 
-(defconst poly/using-native-comp (fboundp 'native-comp-available-p)
-  ;; for native comp branch
+(defvar poly-use-lsp-mode t
+  "use lsp-mode for completion"
   )
+
+; (defconst poly/using-native-comp (fboundp 'native-comp-available-p)
+;   ;; for native comp branch
+;   )
+(defconst poly/using-native-comp
+ (and poly-enable-native-comp (fboundp 'native-comp-available-p))
+;; native compilation
+ )
 
 ;; (when (boundp 'comp-deferred-compilation)
 ;;   (setq comp-deferred-compilation t))

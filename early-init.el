@@ -3,11 +3,31 @@
 ;; Emacs HEAD (27+) introduces early-init.el, which is run before init.el,
 ;; before package and UI initialization happens.
 
+;; (add-to-list 'default-frame-alist '(undecorated . t))
+
 ;; Defer garbage collection further back in the startup process
 (setq gc-cons-threshold most-positive-fixnum)
 
 (setq-default shell-file-name "/opt/local/bin/zsh")
 
+
+(defvar poly-enable-native-comp t
+  "Enable native compilation")
+
+;; (setenv "LIBRARY_PATH"
+;; 	(concat (getenv "LIBRARY_PATH")
+;; 		(when (getenv "LIBRARY_PATH")
+;; 		  ":")
+;; 		;; This is where Homebrew puts gcc libraries.
+;; 		(car (file-expand-wildcards
+;; 		      (expand-file-name "/opt/local/lib/gcc11/")))))
+
+;; (setenv "DYLD_LIBRARY_PATH"
+;; 	(concat (getenv "DYLD_LIBRARY_PATH")
+;; 		(when (getenv "DYLD_LIBRARY_PATH") ":")
+;; 		;; This is where Homebrew puts gcc libraries.
+;; 		(car (file-expand-wildcards
+;; 		      (expand-file-name "/opt/local/lib/gcc11/")))));
 
 ;; since emacs 28
 (setq use-short-answers t)
@@ -16,10 +36,13 @@
 
 ;; Disable most GUI widgets early on
 (setq default-frame-alist '((horizontal-scroll-bars . nil)
+			    (drag-internal-border . 1)
+			    (drag-with-tab-line . t)
+			    (internal-border-width . 0)
+			    ;; (internal-border-width . 5)
                             (vertical-scroll-bars . nil)
                             (menu-bar-lines . 0)
                             (tool-bar-lines . 0)
-                            (internal-border-width . 0)
 			    (fullscreen . maximized)
                             (height . 50)
                             (width . 95)
@@ -38,8 +61,12 @@
 ;;       (call-process find-exec nil nil nil eln-cache-dir
 ;; 		    "-name" "*.eln" "-size" "0" "-delete"))))
 
-(if (and (fboundp 'native-comp-available-p) (native-comp-available-p))
+(if (and poly-enable-native-comp
+	 (fboundp 'native-comp-available-p) (native-comp-available-p))
     (progn
+      (defvar native-comp-driver-options nil)
+      (push "-L/opt/local/lib/gcc11" native-comp-driver-options)
+      (setenv "LIBRARY_PATH" "/opt/local/lib/gcc-devel/gcc/aarch64-apple-darwin21/12.0.1")
       ;; Prevent compilation of this package
       (require 'comp)
       (setq comp-deferred-compilation t
@@ -115,8 +142,8 @@
 ;; ;; cursor color is concerned).
 ;; (advice-add #'x-apply-session-resources :override #'ignore)
 
-(setq warning-minimum-level :emergency)
-(setq debug-on-error nil)
+;; (setq warning-minimum-level :emergency)
+;; (setq debug-on-error nil)
 
 ;; (setq warning-minimum-level :debug)
 ;; (setq debug-on-error t)

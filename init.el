@@ -38,7 +38,7 @@
 ;;; core
 (require 'init-benchmarking)
 (require 'init-env)
-(require 'init-comp)
+;; (require 'init-comp)
 ;; (require 'init-ivy)
 ;; (require 'init-icomplete)
 ;; (require 'init-selectrum)
@@ -49,18 +49,18 @@
 (require 'init-linum)
 (require 'init-tab-bar)
 (require 'init-gpg)
-;; (require 'init-activity-watch)
+(require 'init-activity-watch)
 ;; (require 'init-desktop)
 
 ;; (unless window-system
 ;;   (require 'init-iterm2))
 
 ;; tools
-(require 'init-wakatime)
 (require 'init-keyfreq)
-(require 'init-rime)
-;; (require 'init-vterm)
+(require 'init-wakatime)
+(require 'init-vterm)
 (require 'init-dired)
+(require 'init-rime)
 (require 'init-search)
 (require 'init-telega)
 (require 'init-screencast)
@@ -72,10 +72,11 @@
 (require 'init-markdown)
 (require 'init-pair)
 (require 'init-org)
+(require 'init-org-mind) ;; mindmap
 (require 'init-clock)
 (require 'init-pomo)
 (require 'init-blog)
-;; (require 'init-org-roam)
+(require 'init-org-roam)
 
 ;; programming
 (require 'init-flycheck)
@@ -88,8 +89,9 @@
 ;; (require 'init-tabnine)
 
 ;; language server protocol
-(setq with-company-lsp t)
-(if with-company-lsp
+;; (setq with-company-lsp t)
+;; (setq with-company-lsp nil)
+(if poly-use-lsp-mode
     (require 'init-lsp)
   (require 'init-eglot))
 
@@ -149,7 +151,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(git-messenger:use-magit-popup t)
- '(session-use-package t nil (session))
+ '(lsp-go-gopls-server-args
+   '("-debug" "127.0.0.1:3000" "-logfile=/tmp/gopls-emacs.log") nil nil "Customized with use-package lsp-mode")
+ '(safe-local-variable-values '((org-auto-add-ids-to-headlines-in-file . t)))
+ '(session-use-package t)
  '(smtpmail-smtp-server "smtp.google.com" t)
  '(smtpmail-smtp-service 25 t)
  '(warning-suppress-log-types '((comp)))
@@ -164,3 +169,13 @@
 ;; (frame-parameter nil 'font)
 
 ;; (princ (json-encode (font-family-list)))
+
+;; (ash 7 1)
+
+;; (ash 7 -1)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

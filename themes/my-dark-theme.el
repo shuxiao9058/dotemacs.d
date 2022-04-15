@@ -274,6 +274,9 @@ You may want to set this to window's border color.")
    )
   )
 
+;; (set-face-attribute 'mode-line-active nil :inherit 'mode-line)
+;; (set-face-attribute 'mode-line-inactive nil :inherit 'mode-line)
+
 (and load-file-name
      (boundp 'custom-theme-load-path)
      (add-to-list 'custom-theme-load-path

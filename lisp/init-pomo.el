@@ -117,6 +117,12 @@
             (lambda () (terminal-notify "A short break done, ready a new pomodoro !!!" "Pomo")))
   (add-hook 'org-pomodoro-long-break-finished-hook
             (lambda () (terminal-notify "A long break done, ready a new pomodoro !!!" "Pomo")))
+
+  ;; init emacs startup
+  (add-hook 'emacs-startup-hook (lambda() (tl/open-hammerspoon-url "Clocking" "status" "No Task")))
+
+  (add-hook 'kill-emacs-hook (lambda() (tl/open-hammerspoon-url "Clocking" "status" "Emacs Stopped")))
+
   ;; (setq org-pomodoro-tick-hook nil)
 
   (add-hook 'org-pomodoro-tick-hook #'poly/org-clock-tick)
@@ -134,6 +140,14 @@
   (("C-c C-x C-p" . org-pomodoro)
    :map org-mode-map
    ("C-c C-x C-p" . org-pomodoro)))
+
+;; ;; used for check whether clock is running
+;; ;; when the clock is not running, tell hammerspoon that no task running.
+;; (defvar poly/clock-check-timer
+;;   (run-with-timer 30 t
+;;                   (lambda ()
+;; 		    (unless (org-clock-is-active)
+;; 		      (tl/open-hammerspoon-url "Clocking" "status" "No Task")))))
 
 (provide 'init-pomo)
 ;;; init-pomo.el ends here

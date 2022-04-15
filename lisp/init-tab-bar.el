@@ -76,22 +76,20 @@ No tab will created if the command is cancelled."
   (tab-bar-mode 1)
   :bind
   ("H-t" . an/hydra-window-management/body)
-  (("C-x t t" . my/tab-bar-select-tab-dwim)
-   ("s-t" . my/tab-bar-select-tab-dwim)
-   ;; Add alias for C-tab.
-   ("<s-tab>" . tab-next)
-   ;; Add alias for C-S-tab.
-   ("<C-s-tab>" . tab-previous))
+  ("C-x t t" . my/tab-bar-select-tab-dwim)
+  ("s-t" . tab-new)
+  ("s-<left>" . tab-previous)
+  ("s-<right>" . tab-next)
   ;; monkey-with-hammer.png
-  ("M-1" .  (lambda () (interactive) (tab-bar-select-tab 1)))
-  ("M-2" .  (lambda () (interactive) (tab-bar-select-tab 2)))
-  ("M-3" .  (lambda () (interactive) (tab-bar-select-tab 3)))
-  ("M-4" .  (lambda () (interactive) (tab-bar-select-tab 4)))
-  ("M-5" .  (lambda () (interactive) (tab-bar-select-tab 5)))
-  ("M-6" .  (lambda () (interactive) (tab-bar-select-tab 6)))
-  ("M-7" .  (lambda () (interactive) (tab-bar-select-tab 7)))
-  ("M-8" .  (lambda () (interactive) (tab-bar-select-tab 8)))
-  ("M-9" .  (lambda () (interactive) (tab-bar-select-tab 9))))
+  ("s-1" .  (lambda () (interactive) (tab-bar-select-tab 1)))
+  ("s-2" .  (lambda () (interactive) (tab-bar-select-tab 2)))
+  ("s-3" .  (lambda () (interactive) (tab-bar-select-tab 3)))
+  ("s-4" .  (lambda () (interactive) (tab-bar-select-tab 4)))
+  ("s-5" .  (lambda () (interactive) (tab-bar-select-tab 5)))
+  ("s-6" .  (lambda () (interactive) (tab-bar-select-tab 6)))
+  ("s-7" .  (lambda () (interactive) (tab-bar-select-tab 7)))
+  ("s-8" .  (lambda () (interactive) (tab-bar-select-tab 8)))
+  ("s-9" .  (lambda () (interactive) (tab-bar-select-tab 9))))
 
 ;; use project name as default tab name
 (defun toy/set-tab-name-default ()

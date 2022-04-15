@@ -10,8 +10,15 @@
     (add-hook 'before-save-hook #'lsp-format-buffer t t)
     ;; (add-hook 'before-save-hook #'lsp-organize-imports t t)
     (setq-local lsp-enable-on-type-formatting t))
-  (eval-after-load 'lsp
-    (add-hook 'go-mode-hook #'lsp-go-install-save-hooks))
+
+  (defun eglot-go-install-save-hooks()
+    (add-hook 'before-save-hook #'eglot-format-buffer t t))
+
+  (if poly-use-lsp-mode
+      (eval-after-load 'lsp
+	(add-hook 'go-mode-hook #'lsp-go-install-save-hooks))
+    (eval-after-load 'eglot
+      (add-hook 'go-mode-hook #'eglot-go-install-save-hooks)))
   )
 
 (use-package gorepl-mode
