@@ -12,6 +12,7 @@
   (vterm-max-scrollback 10000)
   (vterm-ignore-blink-cursor nil)
   :init
+  (setq vterm-shell "zsh")
   (defun ds/vterm-send-C-x ()
     (interactive)
     (vterm-send "C-x"))
@@ -39,9 +40,26 @@
   ;;           "M-/" #'vterm-send-tab
   ;;           )
   :config
+  (setq vterm-always-compile-module t)
   (define-key vterm-mode-map (kbd "C-h") 'vterm-send-C-h)
   (define-key vterm-mode-map (kbd "C-z") 'vterm-send-C-z)
+  (defun vterm-send-meta-left ()
+    "Send `M-<left>' to the libvterm."
+    (interactive)
+    (vterm-send-key "<left>" nil t))
+
+  (defun vterm-send-meta-right ()
+    "Send `M-<right>' to the libvterm."
+    (interactive)
+    (vterm-send-key "<right>" nil t))
+  (define-key vterm-mode-map (kbd "M-<left>") 'vterm-send-meta-left)
+  (define-key vterm-mode-map (kbd "M-<right>") 'vterm-send-meta-right)
   (setq vterm-keymap-exceptions (remove "C-h" vterm-keymap-exceptions))
+  ;; (defun vterm-send-C-k-and-kill ()
+  ;;   "Send `C-k' to libvterm, and put content in kill-ring."
+  ;;   (interactive)
+  ;;   (kill-ring-save (point) (vterm-end-of-line))
+  ;;   (vterm-send-key "k" nil nil t))
   (add-hook 'vterm-mode-hook
             (lambda ()
               (set (make-local-variable 'buffer-face-mode-face) 'fixed-pitch)
@@ -54,6 +72,34 @@
           (vterm name))
       (vterm)))
   )
+
+(use-package vterm-toggle
+  :straight t
+  :when (memq window-system '(mac ns x))
+  :bind (([f8] . vterm-toggle)
+         ([f9] . vterm-compile)
+         :map vterm-mode-map
+         ([f8] . vterm-toggle)
+         ([(control return)] . vterm-toggle-insert-cd))
+  :config
+  (setq vterm-toggle-cd-auto-create-buffer nil)
+  (defvar vterm-compile-buffer nil)
+  (defun vterm-compile ()
+    "Compile the program including the current buffer in `vterm'."
+    (interactive)
+    (let* ((command (eval compile-command))
+           (w (vterm-toggle--get-window)))
+      (setq compile-command (compilation-read-command command))
+      (let ((vterm-toggle-use-dedicated-buffer t)
+            (vterm-toggle--vterm-dedicated-buffer (if w (vterm-toggle-hide)
+                                                    vterm-compile-buffer)))
+        (with-current-buffer (vterm-toggle-cd)
+          (setq vterm-compile-buffer (current-buffer))
+          (rename-buffer "*vterm compilation*")
+          (compilation-shell-minor-mode 1)
+          (vterm-send-M-w)
+          (vterm-send-string compile-command t)
+          (vterm-send-return))))))
 
 ;; (use-package multi-libvterm
 ;;   :straight (multi-libvterm :type git :host github :repo "suonlight/multi-libvterm")

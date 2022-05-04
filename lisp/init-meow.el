@@ -144,10 +144,10 @@
   ;; since some useful command may use <backspace> key
   ;; such as C-x BS
   (define-key meow-keypad-state-keymap (kbd "<backspace>")
-	      'meow-keypad-self-insert)
+    'meow-keypad-self-insert)
 
   (define-key meow-keypad-state-keymap (kbd "DEL")
-	      'meow-keypad-self-insert)
+    'meow-keypad-self-insert)
 
   (meow-leader-define-key
    '(;; "e" . my/selectrum-recentf-open-files)
@@ -178,7 +178,7 @@
   ;; If you need setup indicator, see `meow-indicator' for customizing by hand.
   (meow-setup-indicator)
 
-  (unbind-key (kbd "<escape>") meow-leader-keymap) ;; disable meow-temp-normal
+  ;; (unbind-key (kbd "<escape>") meow-leader-keymap) ;; disable meow-temp-normal
   )
 
 (provide 'init-meow)

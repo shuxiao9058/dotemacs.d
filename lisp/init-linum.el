@@ -35,6 +35,7 @@
         org-mode
         vc-git-log-edit-mode
         log-edit-mode
+	vterm-mode
         term-mode
         w3m-mode
         speedbar-mode
@@ -45,8 +46,7 @@
 	messages-buffer-mode
         calendar-mode
 	telega-chat-mode
-	telega-root-mode
-	))
+	telega-root-mode))
 
 (cond
  ;; ((fbounp 'linum-mode))

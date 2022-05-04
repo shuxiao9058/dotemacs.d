@@ -111,6 +111,7 @@
 ;; (require 'init-fish)
 (require 'init-docker)
 (require 'init-yaml)
+(require 'init-csv)
 (require 'init-java)
 (require 'init-clojure)
 (require 'init-format)

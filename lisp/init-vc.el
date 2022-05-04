@@ -62,17 +62,17 @@
   (setq magit-status-sections-hook
 	'(
 	  magit-insert-status-headers
-	  ;; magit-insert-merge-log
+	  magit-insert-merge-log
 	  magit-insert-rebase-sequence
 	  ;; magit-insert-am-sequence
 	  ;; magit-insert-sequencer-sequence
-	  ;; magit-insert-bisect-output
-	  ;; magit-insert-bisect-rest
-	  ;; magit-insert-bisect-log
+	  magit-insert-bisect-output
+	  magit-insert-bisect-rest
+	  magit-insert-bisect-log
 	  magit-insert-untracked-files
 	  magit-insert-unstaged-changes
 	  magit-insert-staged-changes
-	  ;; magit-insert-unpushed-cherries
+	  magit-insert-unpushed-cherries
 	  magit-insert-stashes
 	  ;; magit-insert-recent-commits
 	  ;; magit-insert-unpulled-from-pushremote
@@ -83,8 +83,8 @@
 
   (setq magit-status-headers-hook
 	'(
-	  ;; magit-insert-repo-header
-	  ;; magit-insert-remote-header
+	  magit-insert-repo-header
+	  magit-insert-remote-header
 	  magit-insert-error-header
 	  magit-insert-diff-filter-header
 	  magit-insert-head-branch-header
@@ -157,13 +157,13 @@
   :hook (magit-mode . turn-on-magit-gitflow)
   )
 
-;; ;; Show TODOs in magit
-;; (use-package magit-todos
-;;   :straight t
-;;   :diminish
-;;   :after magit
-;;   :config
-;;   (magit-todos-mode))
+;; Show TODOs in magit
+(use-package magit-todos
+  :straight t
+  :diminish
+  :after magit
+  :config
+  (magit-todos-mode))
 
 ;; git-gutter-plus - View, stage and revert Git changes from the buffer (inspired by package of same name from vim)
 (use-package git-gutter+
@@ -249,8 +249,9 @@
 (use-package ghub
   :straight t
   :after (magit forge)
-  :custom
-  (ghub-insecure-hosts '("git.17usoft.com/api/v4")))
+  ;; :custom
+  ;; (ghub-insecure-hosts '("git.17usoft.com/api/v4"))
+  )
 
 (use-package smerge-mode
   :straight t
@@ -306,7 +307,10 @@
   :custom
   (code-review-db-database-file (expand-file-name "code-review-db.sqlite" poly-cache-dir))
   (code-review-log-file (expand-file-name "code-review-error.log" poly-cache-dir))
-  )
+  :config
+  (setq code-review-gitlab-host "git.17usoft.com/api")
+  (setq code-review-gitlab-baseurl "git.17usoft.com")
+  (setq code-review-gitlab-graphql-host "git.17usoft.com/api"))
 
 (provide 'init-vc)
 ;;; init-vc.el ends here

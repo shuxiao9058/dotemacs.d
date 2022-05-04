@@ -959,5 +959,10 @@ Prefix arguments are interpreted by `org-refile'."
   :custom
   (org-analyzer-org-directory org-beorg-directory))
 
+
+;; devonthink
+(use-package org-devonthink
+  :straight (:host github :repo "lasvice/org-devonthink"))
+
 (provide 'init-org)
 ;;; init-org.el ends here
