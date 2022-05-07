@@ -502,6 +502,7 @@ WIN-ID : Window index."
 (defun move-frame-left-or-right-side (left)
   (when (display-graphic-p)
     (set-frame-width (selected-frame) (- (/ (display-pixel-width) 2) 31) nil t)
+    (set-frame-height (selected-frame) (- (display-pixel-height)  55) nil t)
     (if left
 	(set-frame-position (selected-frame) 0 0)
       ;; (set-frame-position (selected-frame) (/ (display-pixel-width) 2) 0)
@@ -524,6 +525,9 @@ WIN-ID : Window index."
 
 (bind-key "C-M-<left>" #'move-frame-to-left-side)
 (bind-key "C-M-<right>" #'move-frame-to-right-side)
+
+;; (bind-key "C-M-s-<left>" #'move-frame-to-left-side)
+;; (bind-key "C-M-s-<right>" #'move-frame-to-right-side)
 
 (provide 'init-ui)
 ;;; init-ui.el ends here

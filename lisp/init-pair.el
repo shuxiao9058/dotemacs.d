@@ -69,6 +69,10 @@
 
   (bind-key "s-<delete>" 'sp-kill-sexp smartparens-mode-map)
   (bind-key "s-<backspace>" 'sp-backward-kill-sexp smartparens-mode-map)
+
+  ;; fix conflict with move frame left/right side
+  (unbind-key "C-M-<left>" smartparens-mode-map)
+  (unbind-key "C-M-<right>" smartparens-mode-map)
   )
 
 (use-package rainbow-mode
