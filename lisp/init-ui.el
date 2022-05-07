@@ -300,11 +300,7 @@ WIN-ID : Window index."
 ;;   ("M-z" #'awesome-tab-switch-group)
 ;;   )
 
-(use-package rainbow-delimiters
-  :straight t
-  :ensure t
-  :init
-  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+
 
 (use-package highlight-indent-guides
   :straight t
@@ -502,6 +498,32 @@ WIN-ID : Window index."
   :straight t
   :config
   (add-to-list 'company-backends 'company-emoji))
+
+(defun move-frame-left-or-right-side (left)
+  (when (display-graphic-p)
+    (set-frame-width (selected-frame) (- (/ (display-pixel-width) 2) 31) nil t)
+    (if left
+	(set-frame-position (selected-frame) 0 0)
+      ;; (set-frame-position (selected-frame) (/ (display-pixel-width) 2) 0)
+      (let* ((frame (selected-frame))
+	     (frame-width-pixel (frame-native-width frame))
+	     (screen-width-pixel (display-pixel-width)))
+	(set-frame-position frame (- screen-width-pixel frame-width-pixel 30) 0)))))
+
+(defun move-frame-to-left-side ()
+  "Move frame to left side."
+  (interactive)
+  (if (display-graphic-p)
+      (move-frame-left-or-right-side t)))
+
+(defun move-frame-to-right-side ()
+  "Move frame to right side."
+  (interactive)
+  (if (display-graphic-p)
+      (move-frame-left-or-right-side nil)))
+
+(bind-key "C-M-<left>" #'move-frame-to-left-side)
+(bind-key "C-M-<right>" #'move-frame-to-right-side)
 
 (provide 'init-ui)
 ;;; init-ui.el ends here

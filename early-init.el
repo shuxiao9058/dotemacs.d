@@ -14,6 +14,15 @@
 (defvar poly-enable-native-comp t
   "Enable native compilation")
 
+(set-face-background 'default "mac:windowBackgroundColor")
+(dolist (f (face-list)) (set-face-stipple f "alpha:60%"))
+(defface my/default-blurred
+  '((t :inherit 'default :stipple "alpha:60%"))
+  "Like 'default but blurred."
+  :group 'my)
+(setq face-remapping-alist (append face-remapping-alist '((default my/default-blurred))))
+
+
 ;; (setenv "LIBRARY_PATH"
 ;; 	(concat (getenv "LIBRARY_PATH")
 ;; 		(when (getenv "LIBRARY_PATH")
@@ -36,6 +45,9 @@
 
 ;; Disable most GUI widgets early on
 (setq default-frame-alist '((horizontal-scroll-bars . nil)
+			    (alpha . (0.90 0.90))
+			    (ns-appearance . dark)
+			    (ns-transparent-titlebar . t)
 			    (drag-internal-border . 1)
 			    (drag-with-tab-line . t)
 			    (internal-border-width . 0)

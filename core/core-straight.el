@@ -118,6 +118,11 @@
 (straight-override-recipe
  '(wanderlust :host github :repo "wanderlust/wanderlust" :branch "master"))
 
+(straight-override-recipe
+ '(company-tabnine :host github :repo "shuxiao9058/company-tabnine" :branch "master"))
+
+(straight-override-recipe '(company-tabnine :type git :host github :repo "shuxiao9058/company-tabnine" ))
+
 ;; (straight-override-recipe
 ;;  '(org :type git :host github :repo "emacsmirror/org" :no-build t))
 

@@ -161,7 +161,6 @@
  '(warning-suppress-log-types '((comp)))
  '(warning-suppress-types '((use-package) (use-package))))
 
-
 ;; For profiling
 ;; (profiler-start 'cpu)
 ;; (profiler-report)

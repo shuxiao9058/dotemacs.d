@@ -31,8 +31,9 @@
           ns-use-proxy-icon t
           ns-use-mwheel-momentum t
           ns-use-mwheel-acceleration t)
-    (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-    (add-to-list 'default-frame-alist '(ns-appearance . dark))))
+    ;; (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+    ;; (add-to-list 'default-frame-alist '(ns-appearance . dark))
+    ))
 
 ;; Symbol’s value as variable is void: mouse-wheel-down-event
 (when (require 'mwheel nil 'noerror)
