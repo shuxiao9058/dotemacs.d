@@ -499,17 +499,33 @@ WIN-ID : Window index."
   :config
   (add-to-list 'company-backends 'company-emoji))
 
+(defun current-monitor-pixel-dimensions ()
+  (let* ((monitor-attributes (display-monitor-attributes-list
+			      (frame-parameter nil 'display))))
+    (list (nth 3 (assq 'geometry (nth 0 monitor-attributes)))
+          (nth 4 (assq 'geometry (nth 0 monitor-attributes))))))
+
+;; (defun current-monitor-pixel-width ()
+;;   (car (current-monitor-pixel-dimensions)))
+
+;; (defun current-monitor-pixel-height ()
+;;   (nth 1 (current-monitor-pixel-dimensions )))
+
 (defun move-frame-left-or-right-side (left)
   (when (display-graphic-p)
-    (set-frame-width (selected-frame) (- (/ (display-pixel-width) 2) 31) nil t)
-    (set-frame-height (selected-frame) (- (display-pixel-height)  55) nil t)
-    (if left
-	(set-frame-position (selected-frame) 0 0)
-      ;; (set-frame-position (selected-frame) (/ (display-pixel-width) 2) 0)
-      (let* ((frame (selected-frame))
-	     (frame-width-pixel (frame-native-width frame))
-	     (screen-width-pixel (display-pixel-width)))
-	(set-frame-position frame (- screen-width-pixel frame-width-pixel 30) 0)))))
+    (let* ((monitor-width-height-in-pixel (current-monitor-pixel-dimensions))
+	   (monitor-width (car monitor-width-height-in-pixel))
+	   (monitor-height (nth 1 monitor-width-height-in-pixel)))
+
+      (set-frame-width (selected-frame) (- (/ monitor-width 2) 31) nil t)
+      (set-frame-height (selected-frame) (- monitor-height  55) nil t)
+      (if left
+	  (set-frame-position (selected-frame) 0 0)
+	;; (set-frame-position (selected-frame) (/ (display-pixel-width) 2) 0)
+	(let* ((frame (selected-frame))
+	       (frame-width-pixel (frame-native-width frame))
+	       (screen-width-pixel (display-pixel-width)))
+	  (set-frame-position frame (- monitor-width frame-width-pixel 30) 0))))))
 
 (defun move-frame-to-left-side ()
   "Move frame to left side."
@@ -523,11 +539,12 @@ WIN-ID : Window index."
   (if (display-graphic-p)
       (move-frame-left-or-right-side nil)))
 
-(bind-key "C-M-<left>" #'move-frame-to-left-side)
-(bind-key "C-M-<right>" #'move-frame-to-right-side)
+;; preserve smartparens's shortcut
+;; (bind-key "C-M-<left>" #'move-frame-to-left-side)
+;; (bind-key "C-M-<right>" #'move-frame-to-right-side)
 
-;; (bind-key "C-M-s-<left>" #'move-frame-to-left-side)
-;; (bind-key "C-M-s-<right>" #'move-frame-to-right-side)
+(bind-key "C-M-s-<left>" #'move-frame-to-left-side)
+(bind-key "C-M-s-<right>" #'move-frame-to-right-side)
 
 (provide 'init-ui)
 ;;; init-ui.el ends here
