@@ -14,6 +14,7 @@
   ;; :straight t
   :init
   (vertico-mode)
+  :config
   ;; Different scroll margin
   ;; (setq vertico-scroll-margin 0)
 
@@ -24,7 +25,7 @@
   ;; (setq vertico-resize t)
 
   ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
-  ;; (setq vertico-cycle t)
+  (setq vertico-cycle t)
   )
 
 ;; Configure directory extension.

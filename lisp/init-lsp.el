@@ -190,7 +190,7 @@
        ;; ("gopls.buildFlags" ["-mod=readonly"])
        ("gopls.env" lsp-go-env)
        ("gopls.linkTarget" lsp-go-link-target)
-       ;; ("gopls.gofumpt" ,(if (executable-find "gofumpt") t nil) t)
+       ("gopls.gofumpt" ,(if (executable-find "gofumpt") t nil) t)
        ;; ("gopls.directoryFilters" lsp-go-directory-filters)
        ;; ("gopls.directoryFilters" ["-vendor" "-internal" "-.gocache" "-.git" "-!out"])
        ("Lua.runtime.version" "LuaJIT" t)

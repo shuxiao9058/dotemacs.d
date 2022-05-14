@@ -493,11 +493,11 @@ WIN-ID : Window index."
      ("\\*ivy-occur .*\\*"        :select t   :align right :regexp t)
      ("\\*eldoc\\( for \\)?.*\\*" :select nil :align t :size 15 :regexp t))))
 
-;; github style emoji input
-(use-package company-emoji
-  :straight t
-  :config
-  (add-to-list 'company-backends 'company-emoji))
+;; ;; github style emoji input
+;; (use-package company-emoji
+;;   :straight t
+;;   :config
+;;   (add-to-list 'company-backends 'company-emoji))
 
 (defun current-monitor-pixel-dimensions ()
   (let* ((monitor-attributes (display-monitor-attributes-list

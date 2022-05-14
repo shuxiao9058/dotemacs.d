@@ -83,9 +83,11 @@
 (require 'init-proto)
 (require 'init-projectile)
 (require 'init-perspective)
-(require 'init-company)
-(require-init 'init-tabnine-capf)
-(require-init 'company-tabnine)
+;; (require 'init-company)
+(require 'init-corfu)
+(require 'init-prog)
+;; (require-init 'init-tabnine-capf)
+;; (require-init 'company-tabnine)
 ;; (require 'init-tabnine)
 
 ;; language server protocol

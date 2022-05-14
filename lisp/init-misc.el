@@ -66,13 +66,13 @@
 ;;   ;; (nov-mode . 'my-nov-font)
 ;;   )
 
-(defun log-complete-time-elapsed()
-  (interactive)
-  (let ((time (current-time)))
-    (company-complete-common)
-    (message "%.03fms"
-             (* 1000 (float-time (time-since time)))))
-  )
+;; (defun log-complete-time-elapsed()
+;;   (interactive)
+;;   (let ((time (current-time)))
+;;     (company-complete-common)
+;;     (message "%.03fms"
+;;              (* 1000 (float-time (time-since time)))))
+;;   )
 
 (use-package conf-mode
   :straight nil

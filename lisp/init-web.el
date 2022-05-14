@@ -68,7 +68,8 @@
   ;; company is an optional dependency. You have to
   ;; install it separately via package-install
   ;; `M-x package-install [ret] company`
-  (company-mode +1))
+  ;; (company-mode +1)
+  )
 
 (use-package tide
   :straight t
@@ -76,7 +77,7 @@
   :hook
   (before-save . tide-format-before-save)
   (typescript-mode . setup-tide-mode)
-  :after (web-mode company)
+  :after web-mode
   :custom
   (typescript-indent-level 2)
   (tide-format-options '(:indentSize 2 :tabSize 2)))
@@ -95,9 +96,8 @@
 ;;     :after (web-mode flycheck company))
 
 
-(use-package company-web
-  :straight t)
-
+;; (use-package company-web
+;;   :straight t)
 
 (use-package typescript-mode
   :straight t

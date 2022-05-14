@@ -7,7 +7,7 @@
   ;; :after (format-all)
   :init
   (defun lsp-go-install-save-hooks()
-    (add-hook 'before-save-hook #'lsp-format-buffer t t)
+    ;; (add-hook 'before-save-hook #'lsp-format-buffer t t)
     ;; (add-hook 'before-save-hook #'lsp-organize-imports t t)
     (setq-local lsp-enable-on-type-formatting t))
 

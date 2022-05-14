@@ -4,7 +4,7 @@
   :straight t
   :ensure t
   :defer t
-  :after (company company-tabnine)
+  ;; :after (company company-tabnine)
   :custom
   (lua-indent-level tab-width)
   (lua-indent-string-contents t)

@@ -141,16 +141,16 @@
 ;; (unless (server-running-p)
 ;;   (org-roam-server-mode))
 
-(use-package company-org-roam
-  :straight t
-  :after org
-  :ensure t
-  :after '(org-roam company)
-  :config
-  (add-to-list 'company-backends 'company-org-roam)
-  ;; :config
-  ;; (push 'company-org-roam company-backends)
-  )
+;; (use-package company-org-roam
+;;   :straight t
+;;   :after org
+;;   :ensure t
+;;   :after '(org-roam company)
+;;   :config
+;;   (add-to-list 'company-backends 'company-org-roam)
+;;   ;; :config
+;;   ;; (push 'company-org-roam company-backends)
+;;   )
 
 (provide 'init-org-roam)
 ;;; init-org-roam.el ends here
