@@ -68,6 +68,10 @@ This variable is non-nil when emacs is started with dump file.")
   "use lsp-mode for completion"
   )
 
+(defvar poly-use-company nil
+  "use company for completion"
+  )
+
 ;; (defconst poly/using-native-comp (fboundp 'native-comp-available-p)
 ;;   ;; for native comp branch
 ;;   )

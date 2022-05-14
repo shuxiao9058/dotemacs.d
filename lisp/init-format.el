@@ -105,12 +105,12 @@
     (:format (format-all--buffer-easy executable)))
 
   (define-format-all-formatter gofumpt
-    ;; (:executable "gofumpt")
-    (:executable "/bin/sh")
+    (:executable "gofumpt")
+    ;; (:executable "/bin/sh")
     (:install (macos ""))
     (:languages "Go")
     (:features)
-    (:format (format-all--buffer-easy executable "-c" "gofumpt | goimports ")))
+    (:format (format-all--buffer-easy executable)))
 
   (define-format-all-formatter my-shfmt
     (:executable "shfmt")

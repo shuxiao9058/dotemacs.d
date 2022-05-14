@@ -42,11 +42,12 @@ If INTERACTIVE, prompt user for details."
   :straight t
   :hook ((go-mode lua-mode beancount-mode python-mode c-mode c++-mode python-mode java-mode) . eglot-ensure)
   :custom
-  (eglot-stay-out-of '(flymake imenu eldoc company))  ;; eglot reinits backends
+  (eglot-stay-out-of '(flymake imenu eldoc))  ;; eglot reinits backends
   (eglot-autoshutdown t)
   (eglot-sync-connect 1)
   (eglot-connect-timeout 40)
   (eglot-send-changes-idle-time 0.5)
+  (eglot-confirm-server-initiated-edits nil)
   ;; (eglot-events-buffer-size 500000)
   (eglot-events-buffer-size 0)
   ;; disable symbol highlighting and documentation on hover
@@ -87,13 +88,30 @@ If INTERACTIVE, prompt user for details."
   (when (executable-find "gopls")
     (add-to-list 'eglot-server-programs '(go-mode . ("gopls"))))
 
+  ;; (tabnine-completion-at-point cape-line cape-symbol cape-ispell cape-dabbrev cape-tex cape-file tags-completion-at-point-function)
+  ;;   completion-at-point-functions is a variable defined in ‘minibuffer.el’.
+
+  ;; Its value is (eglot-completion-at-point t)
+  ;; Local in buffer robot.go; global value is
+  ;; (tabnine-completion-at-point cape-line cape-symbol cape-ispell cape-dabbrev cape-tex cape-file tags-completion-at-point-function)
+
   (add-hook 'eglot-managed-mode-hook
 	    (lambda()
-	      (make-local-variable 'company-backends)
-	      (setq-local company-backends
-			  '(company-tabnine-capf company-capf company-tabnine
-						 (company-dabbrev company-dabbrev-code)
-						 company-keywords company-files))))
+	      (progn
+                (lsp/non-greedy-eglot)
+                (lsp/extra-capf))
+	      ;; (make-local-variable 'completion-at-point-functions)
+	      ;; (setq-local completion-at-point-functions
+	      ;; 		  '(tabnine-completion-at-point cape-line cape-symbol cape-ispell cape-dabbrev cape-tex cape-file tags-completion-at-point-function))
+	      ))
+
+  ;; (add-hook 'eglot-managed-mode-hook
+  ;; 	    (lambda()
+  ;; 	      (make-local-variable 'company-backends)
+  ;; 	      (setq-local company-backends
+  ;; 			  '(company-tabnine-capf company-capf company-tabnine
+  ;; 						 (company-dabbrev company-dabbrev-code)
+  ;; 						 company-keywords company-files))))
   ;; (add-hook 'eglot-managed-mode-hook (lambda()
   ;; 				       (make-local-variable 'company-backends)
   ;; 				       ;; (setq-local company-backends nil)
@@ -114,7 +132,27 @@ If INTERACTIVE, prompt user for details."
   ;; 						     (company-abbrev company-dabbrev)))
   ;; 				       ))
   ;; )
+  :bind (:map eglot-mode-map
+	      ("C-c C-r" . eglot-rename)
+	      ("C-c C-a" . eglot-code-actions)
+	      ("C-c C-f" . eglot-format-buffer))
   )
+
+
+(defun lsp/non-greedy-eglot ()
+  "Making Eglot capf non-greedy."
+  (progn
+    (fset 'non-greedy-eglot
+          (cape-capf-buster
+           (cape-capf-properties #'eglot-completion-at-point :exclusive 'no)))
+    (setq completion-at-point-functions
+          (list #'non-greedy-eglot))))
+
+(defun lsp/extra-capf ()
+  "Adding extra capf during LSP startup."
+  (let ((tmp-symbol (intern (concat "capf/" (symbol-name major-mode)))))
+    (unless (null (symbol-function tmp-symbol))
+      (funcall (symbol-function tmp-symbol)))))
 
 (provide 'init-eglot)
 ;;; init-eglot.el ends here
