@@ -11,6 +11,10 @@
               ("S-TAB" . corfu-previous)
 	      ("C-p" . corfu-previous)
               ("<backtab>" . corfu-previous)
+	      ("RET"     . corfu-insert)
+	      ("<return>"  . corfu-insert)
+	      ;; ("<escape>" . corfu-reset)
+	      ;; ("ESC"    . corfu-reset)
 	      ;; ("SPC" . corfu-move-to-minibuffer)
               ;; ("<space>" . corfu-move-to-minibuffer)
 	      ([remap completion-at-point] . corfu-next))
@@ -18,33 +22,34 @@
   (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
   (corfu-auto t)                 ;; Enable auto completion
   (corfu-commit-predicate nil)
-  (corfu-auto-delay 0.2)
-  (corfu-auto-prefix 2)
+  (corfu-auto-delay 0.4)
+  (corfu-auto-prefix 1)
   (corfu-quit-at-boundary nil)
   (corfu-separator ?\s)          ;; Orderless field separator
   (corfu-quit-no-match t)
-  ;; (corfu-preview-current nil)    ;; Disable current candidate preview
-  ;; (corfu-preselect-first nil)    ;; Disable candidate preselection
+  (corfu-preview-current t)
+  (corfu-preselect-first t)
   ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
   (corfu-echo-documentation nil) ;; Disable documentation in the echo area
-  ;; (corfu-scroll-margin 5)        ;; Use scroll margin
-  ;; :hook ((prog-mode . corfu-mode)
-  ;; 	 (org-mode . corfu-mode))
-  :init
-  (global-corfu-mode))
+  (corfu-min-width 30)
+  ;; hide scroll-bar
+  (corfu-bar-width 0)
+  (corfu-right-margin-width 0)
+  (corfu-scroll-margin 5)        ;; Use scroll margin
+  :hook (after-init-hook . global-corfu-mode))
 
 
-(unless (display-graphic-p)
-  (use-package popon
-    :straight (popon
-	       :type git
-	       :repo "https://codeberg.org/akib/emacs-popon.git"))
-  (use-package corfu-popup
-    :straight (corfu-popup
-	       :type git
-	       :repo "https://codeberg.org/akib/emacs-corfu-popup.git")
-    :init
-    (corfu-popup-mode +1)))
+;; (unless (display-graphic-p)
+;;   (use-package popon
+;;     :straight (popon
+;; 	       :type git
+;; 	       :repo "https://codeberg.org/akib/emacs-popon.git"))
+;;   (use-package corfu-popup
+;;     :straight (corfu-popup
+;; 	       :type git
+;; 	       :repo "https://codeberg.org/akib/emacs-corfu-popup.git")
+;;     :init
+;;     (corfu-popup-mode +1)))
 
 ;; Icon support
 (use-package kind-icon
@@ -233,9 +238,9 @@
    #'cape-file
    (cape-capf-buster
     (cape-super-capf
-     arg-capf
      #'tabnine-completion-at-point
-     ;; #'tempel-expand
+     #'tempel-expand
+     arg-capf
      )
     )
    ;; #'cape-dabbrev
